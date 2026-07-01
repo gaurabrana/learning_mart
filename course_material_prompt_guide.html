@@ -1,0 +1,283 @@
+
+<h2 class="sr-only">Course Material Creation Guide: Prompts, PDF vs PPT comparison, and editing scenarios</h2>
+
+<style>
+  .guide { padding: 1rem 0; font-size: 15px; color: var(--color-text-primary); }
+  .section-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-secondary); margin: 2rem 0 0.5rem; }
+  .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+  .card-title { font-size: 15px; font-weight: 500; margin: 0 0 0.5rem; display: flex; align-items: center; gap: 8px; }
+  .card-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 99px; font-weight: 500; }
+  .badge-teal { background: #E1F5EE; color: #0F6E56; }
+  .badge-amber { background: #FAEEDA; color: #854F0B; }
+  .badge-purple { background: #EEEDFE; color: #3C3489; }
+  .badge-blue { background: #E6F1FB; color: #0C447C; }
+  .badge-coral { background: #FAECE7; color: #993C1D; }
+  .prompt-box { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 1rem 1.25rem; margin: 0.75rem 0; font-family: var(--font-mono); font-size: 12.5px; color: var(--color-text-primary); line-height: 1.75; white-space: pre-wrap; }
+  .tab-row { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .tab-btn { border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 6px 14px; font-size: 13px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-primary); }
+  .tab-btn.active { background: var(--color-background-info); color: var(--color-text-info); border-color: var(--color-border-info); }
+  .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .comp-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem; }
+  .comp-head { font-size: 14px; font-weight: 500; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px; }
+  .row-item { font-size: 12.5px; color: var(--color-text-secondary); padding: 4px 0; display: flex; align-items: flex-start; gap: 6px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .row-item:last-child { border-bottom: none; }
+  .win { color: #0F6E56; font-weight: 500; }
+  .lose { color: #993C1D; }
+  .copy-btn { border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 4px 10px; font-size: 12px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); float: right; margin-top: -2px; }
+  .copy-btn:hover { background: var(--color-background-secondary); }
+  .section { display: none; }
+  .section.active { display: block; }
+  .step { display: flex; gap: 10px; margin-bottom: 0.75rem; align-items: flex-start; }
+  .step-num { min-width: 24px; height: 24px; border-radius: 50%; background: var(--color-background-info); color: var(--color-text-info); font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; }
+  .step-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; padding-top: 3px; }
+  .verdict { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 0.75rem 1rem; background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); margin-top: 1rem; }
+  .verdict strong { color: var(--color-text-primary); }
+</style>
+
+<div class="guide">
+
+  <div class="section-label">Navigation</div>
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="show('prompts')"><i class="ti ti-file-text" aria-hidden="true"></i> Master Prompt</button>
+    <button class="tab-btn" onclick="show('compare')"><i class="ti ti-arrows-diff" aria-hidden="true"></i> PDF vs PPT</button>
+    <button class="tab-btn" onclick="show('edit')"><i class="ti ti-edit" aria-hidden="true"></i> Editing & Updates</button>
+    <button class="tab-btn" onclick="show('tips')"><i class="ti ti-bulb" aria-hidden="true"></i> Best Practices</button>
+  </div>
+
+  <!-- MASTER PROMPT SECTION -->
+  <div id="s-prompts" class="section active">
+
+    <div class="section-label">Step 1 — Course Setup Prompt (run this first, once per course)</div>
+    <div class="card">
+      <div class="card-title"><span class="badge badge-purple">Setup</span> Course Context Block</div>
+      <div class="card-body">Paste this once to establish your course profile before generating any session material.</div>
+      <div class="prompt-box">You are a professional academic study material designer. I am a university lecturer creating teaching materials for bachelor-level students. Here is my course profile:
+
+COURSE NAME: [e.g. Introduction to Marketing]
+DEPARTMENT: [e.g. Business Administration]
+STUDENT LEVEL: Bachelor's Year [1/2/3/4]
+SESSION DURATION: 50 minutes per class
+TOTAL WEEKS: [e.g. 14 weeks]
+SESSIONS PER WEEK: [e.g. 2]
+
+STUDENT BACKGROUND: [e.g. No prior marketing knowledge, basic business understanding]
+LEARNING STYLE: Mix of theory, real-world examples, and interactive elements
+TONE: Professional but engaging; friendly academic style
+
+OUTPUT FORMAT: [PPT slides / PDF handout — choose one]
+
+Remember this context for all future material generation in this chat.</div>
+      <button class="copy-btn" onclick="copyText('setup')"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+    </div>
+
+    <div class="section-label">Step 2 — Per-Session Prompt (run once per lecture)</div>
+    <div class="card">
+      <div class="card-title"><span class="badge badge-teal">Per Session</span> Lecture Material Generator</div>
+      <div class="card-body">Fill in the brackets and send this for each session. This is your core workhorse prompt.</div>
+      <div class="prompt-box" id="session-prompt">Generate complete study material for the following session:
+
+SESSION: Week [X], Lecture [Y]
+TOPIC: [e.g. Consumer Behaviour and Decision Making]
+ALLOCATED HOURS: [e.g. 1.5 hours = 3 × 50-min sessions]
+SUBTOPICS TO COVER:
+  1. [Subtopic A]
+  2. [Subtopic B]
+  3. [Subtopic C]
+
+LEARNING OUTCOMES: By end of this session, students will be able to:
+  - [Outcome 1]
+  - [Outcome 2]
+  - [Outcome 3]
+
+STRUCTURE THE MATERIAL AS FOLLOWS:
+
+🎯 OPENING (5 min)
+- Hook: A surprising fact, statistic, or question to grab attention
+- Brief agenda preview
+
+📚 CONTENT SECTIONS (35 min)
+For EACH subtopic include:
+  • Clear definition in plain English
+  • Core theory or concept (2–3 bullet points max per slide/section)
+  • Real-world example from a well-known company or everyday life
+  • Local/regional example relevant to [your country/context]
+  • Mini case study (2–3 sentence scenario students can discuss)
+  • Common misconception students have — and the correction
+  • Fun element: analogy, mnemonic, or pop culture connection
+
+🧠 CHECK FOR UNDERSTANDING (5 min)
+- 2 quick quiz questions (MCQ format) with answers
+- 1 discussion prompt for class participation
+
+💡 REAL-LIFE APPLICATION (3 min)
+- "This matters because..." — direct link to future careers or daily life
+
+📝 SUMMARY & TAKEAWAYS (2 min)
+- 3 key points to remember
+- Preview of next session
+
+VISUAL/DESIGN NOTES:
+- Suggest where to add diagrams, charts, or images
+- Mark slides that benefit from a visual vs text-heavy
+- Add speaker notes for the lecturer under each slide
+
+TONE: Engaging, clear, not condescending. Use "we" and "you" to address students directly. Avoid jargon unless defining it.</div>
+      <button class="copy-btn" onclick="copyText('session')"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+    </div>
+
+    <div class="section-label">Step 3 — Optional Add-ons</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+      <div class="card">
+        <div class="card-title" style="font-size:13px;"><i class="ti ti-clipboard-list" aria-hidden="true" style="color:var(--color-text-secondary)"></i> Student Handout Version</div>
+        <div class="card-body" style="font-size:12px;">Now convert the above into a student handout PDF. Remove speaker notes. Add blank "Notes" space after each section. Include a glossary of new terms at the end. Add 3 self-study questions students can review at home.</div>
+        <button class="copy-btn" onclick="copyPrompt('Now convert the above into a student handout PDF. Remove speaker notes. Add blank \"Notes\" space after each section. Include a glossary of new terms at the end. Add 3 self-study questions students can review at home.')"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+      </div>
+      <div class="card">
+        <div class="card-title" style="font-size:13px;"><i class="ti ti-trophy" aria-hidden="true" style="color:var(--color-text-secondary)"></i> Quiz / Assessment</div>
+        <div class="card-body" style="font-size:12px;">Create a 10-question quiz for this session's content. Include: 5 MCQ, 3 true/false, 2 short answer. Vary difficulty (easy/medium/hard). Provide an answer key with brief explanations.</div>
+        <button class="copy-btn" onclick="copyPrompt('Create a 10-question quiz for this session\'s content. Include: 5 MCQ, 3 true/false, 2 short answer. Vary difficulty: 3 easy, 5 medium, 2 hard. Provide an answer key with brief explanations for each answer.')"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COMPARE SECTION -->
+  <div id="s-compare" class="section">
+    <div class="section-label">Cost & effort comparison</div>
+    <div class="comparison-grid">
+      <div class="comp-card">
+        <div class="comp-head"><i class="ti ti-file-type-pdf" aria-hidden="true" style="color:#993C1D; font-size:20px;"></i> PDF / Markdown</div>
+        <div class="row-item"><i class="ti ti-check" style="color:#0F6E56" aria-hidden="true"></i><span><span class="win">Cheapest</span> — Claude generates raw text/markdown; convert with any tool</span></div>
+        <div class="row-item"><i class="ti ti-check" style="color:#0F6E56" aria-hidden="true"></i><span><span class="win">Fastest edits</span> — find & replace text, no layout to break</span></div>
+        <div class="row-item"><i class="ti ti-check" style="color:#0F6E56" aria-hidden="true"></i><span><span class="win">Universal</span> — opens on any device, prints cleanly</span></div>
+        <div class="row-item"><i class="ti ti-check" style="color:#0F6E56" aria-hidden="true"></i><span>No software needed beyond a browser</span></div>
+        <div class="row-item"><i class="ti ti-x" style="color:#993C1D" aria-hidden="true"></i><span><span class="lose">Less visual</span> — harder to present in-class</span></div>
+        <div class="row-item"><i class="ti ti-x" style="color:#993C1D" aria-hidden="true"></i><span><span class="lose">Static</span> — no animations or builds</span></div>
+        <div class="row-item"><i class="ti ti-clock" aria-hidden="true"></i><span>Setup time: <strong>~5 min per session</strong></span></div>
+      </div>
+      <div class="comp-card" style="border: 2px solid var(--color-border-info);">
+        <div class="comp-head"><i class="ti ti-presentation" aria-hidden="true" style="color:#185FA5; font-size:20px;"></i> PowerPoint (.pptx) <span class="badge badge-blue" style="margin-left:auto;">Recommended</span></div>
+        <div class="row-item"><i class="ti ti-check" style="color:#0F6E56" aria-hidden="true"></i><span><span class="win">Best for teaching</span> — visual flow, slide-by-slide control</span></div>
+        <div class="row-item"><i class="ti ti-check" style="color:#0F6E56" aria-hidden="true"></i><span><span class="win">Speaker notes</span> built-in — your cue cards are inside the file</span></div>
+        <div class="row-item"><i class="ti ti-check" style="color:#0F6E56" aria-hidden="true"></i><span>Can export as PDF for student handout (best of both)</span></div>
+        <div class="row-item"><i class="ti ti-check" style="color:#0F6E56" aria-hidden="true"></i><span>Reusable across semesters — just update content</span></div>
+        <div class="row-item"><i class="ti ti-x" style="color:#993C1D" aria-hidden="true"></i><span><span class="lose">Higher token cost</span> — Claude must generate layout code</span></div>
+        <div class="row-item"><i class="ti ti-x" style="color:#993C1D" aria-hidden="true"></i><span><span class="lose">More complex edits</span> if redesigning layout</span></div>
+        <div class="row-item"><i class="ti ti-clock" aria-hidden="true"></i><span>Setup time: <strong>~15–25 min per session</strong></span></div>
+      </div>
+    </div>
+    <div class="verdict">
+      <strong>Recommended approach:</strong> Generate content as PDF/markdown first to verify accuracy and flow cheaply. Then ask Claude to convert the approved content into a PPT. This gives you fast review + professional delivery output — best of both.
+    </div>
+
+    <div class="section-label" style="margin-top:1.5rem;">Token cost reality check</div>
+    <div class="card">
+      <div class="card-body">
+        <div class="row-item"><i class="ti ti-currency-dollar" aria-hidden="true" style="color:var(--color-text-secondary)"></i><span>Markdown/text response → <strong>1×</strong> base cost</span></div>
+        <div class="row-item"><i class="ti ti-currency-dollar" aria-hidden="true" style="color:var(--color-text-secondary)"></i><span>PDF (via Python script) → <strong>1.2×</strong> — adds formatting layer</span></div>
+        <div class="row-item"><i class="ti ti-currency-dollar" aria-hidden="true" style="color:var(--color-text-secondary)"></i><span>PPT (pptxgenjs code) → <strong>2–3×</strong> — layout code adds significant tokens</span></div>
+        <div class="row-item"><i class="ti ti-currency-dollar" aria-hidden="true" style="color:var(--color-text-secondary)"></i><span>PPT with custom design + images → <strong>3–5×</strong> — most expensive</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDITING SECTION -->
+  <div id="s-edit" class="section">
+    <div class="section-label">Scenario A — Minor text change (typo, update a fact)</div>
+    <div class="card">
+      <div class="prompt-box">In [Session 3 material], on the slide/section about [topic], change "[old text]" to "[new text]". Keep everything else identical.</div>
+      <div class="card-body" style="margin-top:0.5rem;"><strong>For PPT files:</strong> Open in PowerPoint → Ctrl+H (Find & Replace) → done in 30 seconds. No need to regenerate.</div>
+    </div>
+
+    <div class="section-label">Scenario B — Add a new example or case study</div>
+    <div class="card">
+      <div class="prompt-box">For Session [X], topic "[Subtopic]", add one more real-world example. The example should: be from [region/industry], be relatable to 20-year-old students, and follow the same format as the existing examples (situation → action → result).</div>
+    </div>
+
+    <div class="section-label">Scenario C — Restructure for different time allocation</div>
+    <div class="card">
+      <div class="prompt-box">The original Session [X] was planned for [90 min / 2 sessions]. I now only have [50 min / 1 session]. Please condense the material. Keep: [list must-keep items]. Cut or move to self-study: [less critical parts]. Adjust the opening/closing timings accordingly.</div>
+    </div>
+
+    <div class="section-label">Scenario D — Regenerate one section only</div>
+    <div class="card">
+      <div class="prompt-box">Keep all of Session [X] the same except for the [quiz / case study / summary]. Regenerate only that part. Make it more [challenging / simpler / industry-specific].</div>
+    </div>
+
+    <div class="section-label">Scenario E — Translate or localize for new audience</div>
+    <div class="card">
+      <div class="prompt-box">Take Session [X] material. Replace all Western examples with examples from [Nepal / South Asia / your country]. Keep the theory and structure identical. Ensure all company names and scenarios are locally recognizable to students in [your city/region].</div>
+    </div>
+
+    <div class="section-label">Scenario F — Convert between formats</div>
+    <div class="card">
+      <div class="prompt-box">Take the Session [X] content (pasted below) and convert it into [PPT slides / a student PDF handout / a one-page summary sheet]. Maintain all content but optimize the layout for [presentation / self-study / quick reference].
+
+[paste your content here]</div>
+    </div>
+  </div>
+
+  <!-- TIPS SECTION -->
+  <div id="s-tips" class="section">
+    <div class="section-label">Workflow recommendation</div>
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Send Setup Prompt once</strong> — establishes course context Claude will remember throughout the conversation.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Generate as markdown first</strong> — review accuracy, add your own notes, correct facts. Much faster to edit at this stage.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Convert to PPT/PDF after approval</strong> — only convert once you're happy with the content, to avoid wasted tokens on redesigns.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Save your prompts</strong> — keep the per-session prompt in a doc. Just fill in the brackets for each new session.</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Build a template PPT once</strong> — your colors, fonts, logo. Then ask Claude to fill content into it. Never redesign from scratch again.</div></div>
+
+    <div class="section-label" style="margin-top:1.5rem;">Quality boosters to add to any prompt</div>
+    <div class="card">
+      <div class="card-body">
+        <div class="row-item"><i class="ti ti-star" aria-hidden="true" style="color:#BA7517"></i><span>Add "Use the Feynman technique — explain it like I'm explaining to a smart 18-year-old who has never heard this term."</span></div>
+        <div class="row-item"><i class="ti ti-star" aria-hidden="true" style="color:#BA7517"></i><span>Add "For every definition, give one analogy to something from everyday life (food, sport, social media, money)."</span></div>
+        <div class="row-item"><i class="ti ti-star" aria-hidden="true" style="color:#BA7517"></i><span>Add "Flag any slide where students are likely to get confused and suggest a 60-second activity to re-engage them."</span></div>
+        <div class="row-item"><i class="ti ti-star" aria-hidden="true" style="color:#BA7517"></i><span>Add "Where relevant, suggest a 2-minute YouTube video topic I can search for to illustrate this concept visually."</span></div>
+        <div class="row-item"><i class="ti ti-star" aria-hidden="true" style="color:#BA7517"></i><span>Add "Mark slides as [THEORY], [EXAMPLE], [ACTIVITY], or [QUIZ] so I can pace the lecture easily."</span></div>
+      </div>
+    </div>
+
+    <div class="section-label">Common mistakes to avoid</div>
+    <div class="card">
+      <div class="card-body">
+        <div class="row-item"><i class="ti ti-x" style="color:#993C1D" aria-hidden="true"></i><span>Don't paste all your topics into one prompt — one session at a time gives better quality and lower cost</span></div>
+        <div class="row-item"><i class="ti ti-x" style="color:#993C1D" aria-hidden="true"></i><span>Don't skip the Setup Prompt — without context, Claude defaults to generic content</span></div>
+        <div class="row-item"><i class="ti ti-x" style="color:#993C1D" aria-hidden="true"></i><span>Don't ask Claude to make PPT on first try — approve content first, then format</span></div>
+        <div class="row-item"><i class="ti ti-x" style="color:#993C1D" aria-hidden="true"></i><span>Don't forget to specify your students' background — huge impact on explanation depth</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function show(tab) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('s-' + tab).classList.add('active');
+  event.target.closest('.tab-btn').classList.add('active');
+}
+
+function copyText(id) {
+  let text = '';
+  if (id === 'setup') {
+    text = document.querySelector('.prompt-box').innerText;
+  } else if (id === 'session') {
+    text = document.getElementById('session-prompt').innerText;
+  }
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target.closest('.copy-btn');
+    btn.innerHTML = '<i class="ti ti-check"></i> Copied!';
+    setTimeout(() => btn.innerHTML = '<i class="ti ti-copy"></i> Copy', 2000);
+  });
+}
+
+function copyPrompt(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target.closest('.copy-btn');
+    btn.innerHTML = '<i class="ti ti-check"></i> Copied!';
+    setTimeout(() => btn.innerHTML = '<i class="ti ti-copy"></i> Copy', 2000);
+  });
+}
+</script>

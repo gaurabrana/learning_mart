@@ -1,0 +1,50 @@
+IT 238: Data Structure and Algorithms
+BIM 3rd Semester
+Credits:3
+Lecture Hours: 48
+Course Objectives
+Main objective of this course is to introduce data abstraction and data representation in memory,
+describe, design and use of elementary data structures such as stack, queue, linked list, tree and
+graph, introduce algorithms and their complexity. Course Description
+The course contains Introduction of data structure and algorithms, Complexity Analysis, Linked
+Lists, Stacks, Queues, Recursion, Trees, Graph, Sorting, Searching and Hashing.
+Course Details
+Unit 1: Introduction to data structure and algorithms 4 LHs
+Data types, Data structure and Abstract date type (ADT), Operations performed in data
+structure, Introduction to Algorithms, Computational complexity, Asymptotic notations:
+Big-O, Big-Ω and Big-Ө Notation, Properties of Big-O, Ω and Ө Notation, Finding
+Asymptotic Complexity: Examples. The Best, Average, and Worst-Case analysis. Unit 2: Linked Lists 7 LHs
+Basic Concept, List and ADT, Array Implementation of Lists, Linked List, Types of
+Linked List: Singly Linked List, Doubly Linked List, Circular Linked List, Basic
+operations in Linked List: Node Creation, Node Insertion and Deletion from Beginning,
+End and Specified Position, Skip List, Lists in java.util: LinkedList, ArrayList
+Unit 3: Stack 4 LHs
+Basic Concept of Stack, Stack as an ADT, Stack Operations, Stack Implementation
+(Array and Linked List), Stack Applications, Conversion from infix to postfix/prefix
+expression, Evaluation of postfix/ prefix expressions, Stacks in java.util. Unit 4: Queues 4 LHs
+Basic Concept of Queue, Queue as an ADT, Primitive Operations in Queue, Linear
+Queue, Queue Implementation (Array and Linked List), Circular Queue, Priority Queue,
+Queue Applications. Unit 5: Recursion 2 LHs
+Recursive Definitions, Method Calls and Recursion Implementation, Direct Recursion, Indirect Recursion, Tail Recursion, Nested Recursion, Excessive Recursion, Factorial,
+Fibonacci Sequence, GCD, Tower of Hanoi (TOH) Problem, Recursion Vs Iteration.
+Unit 6: Trees 9 LHs
+Introduction of Trees, Applications of Tree, Tree as an ADT, Binary Trees, and Types of
+Binary Trees. Implementing Binary Trees, Tree Traversal: in-order Pre-order, Post-order, Binary Search Tree Operation: Insertion, Deletion, Searching, AVL Trees, Expression
+Trees, Operations on Expression Trees, Heap, Huffman Algorithm, Self-Adjusting Trees,
+Multiway Search Tree: B-Tree. Unit 7: Graphs 7 LHs
+Introduction of graph, Graph as an ADT, Graph Representation. Graph Traversals: BFT,
+DFT, Greedy Algorithm, Shortest Path Problem: Dijkstra Algorithm, All-to-All Shortest
+Path Problem: Floyd Warshall Algorithm, Spanning Trees and Minimum Spanning Tree:
+Kruskal and Prims Algorithm, Topological Sort. Unit 8: Sorting 6 LHs
+Introduction, Internal and External Sorting, Sorting Algorithms: Bubble Sort, Insertion
+Sort, Selection Sort, Heap Sort, Quicksort, Mergesort, Radix Sort, Efficiency of sorting
+algorithms, Sorting in java.util. Unit 9: Searching and Hashing 5 LHs
+Introduction, linear search, binary search, efficiency of searching algorithms, Hashing,
+Hash Functions: Division, Folding, Mid-Square Function, Extraction. Collision
+Resolution technique, Hashing in java.util. Laboratory Works:
+
+The laboratory work consists of implementing the algorithms and data structures studied in the
+course. Lab work will be implemented on Java. Student should implement at least following
+concepts:  Array and Linked List implementation of List  Stack operations and Queue operations  Recursion
+ Linked List implementation of Stack and Queues  Binary Search Tree  Graph Representation
+ Spanning Tree and Shortest Path Algorithms  Sorting, Searching and Hashing algorithms

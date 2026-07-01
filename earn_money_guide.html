@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Earn Money — A Practical Offline Guide</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2230; --panel2:#212c3d; --ink:#e8edf4;
+    --muted:#9fb0c3; --accent:#34d399; --accent2:#60a5fa; --gold:#fbbf24;
+    --line:#2c384b; --danger:#f87171;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(160deg,#0f1419,#121a26);color:var(--ink);line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  header{
+    padding:56px 24px 40px;text-align:center;
+    background:radial-gradient(900px 320px at 50% -60px,rgba(52,211,153,.18),transparent 70%);
+    border-bottom:1px solid var(--line);
+  }
+  header .kicker{color:var(--accent);font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:.72rem}
+  header h1{font-size:clamp(1.9rem,5vw,3rem);margin:.4em 0 .2em;line-height:1.15}
+  header p{color:var(--muted);max-width:620px;margin:0 auto;font-size:1.05rem}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 20px 80px}
+
+  nav{
+    position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+    padding:14px 12px;background:rgba(15,20,25,.85);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav a{
+    color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:600;
+    padding:6px 12px;border-radius:999px;border:1px solid transparent;transition:.2s;
+  }
+  nav a:hover{color:var(--ink);border-color:var(--line);background:var(--panel)}
+
+  section{margin-top:48px}
+  h2{font-size:1.6rem;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  h2 .num{
+    display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;
+    background:var(--panel2);color:var(--accent);font-size:.95rem;border:1px solid var(--line);
+  }
+  .lead{color:var(--muted);margin-bottom:20px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;
+    transition:.2s;
+  }
+  .card:hover{transform:translateY(-3px);border-color:var(--accent2)}
+  .card h3{font-size:1.1rem;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .card .tag{font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.05em}
+  .t-low{background:rgba(52,211,153,.15);color:var(--accent)}
+  .t-mid{background:rgba(96,165,250,.15);color:var(--accent2)}
+  .t-high{background:rgba(251,191,36,.15);color:var(--gold)}
+  .card p{color:var(--muted);font-size:.92rem}
+  .card .meta{margin-top:12px;font-size:.8rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px}
+  .card .meta b{color:var(--ink)}
+
+  .steps{counter-reset:step;display:grid;gap:14px;margin-top:8px}
+  .step{
+    position:relative;background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:16px 18px 16px 60px;
+  }
+  .step::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:16px;width:30px;height:30px;border-radius:8px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));color:#07121b;
+    display:grid;place-items:center;font-weight:800;
+  }
+  .step h4{margin-bottom:3px}
+  .step p{color:var(--muted);font-size:.92rem}
+
+  .callout{
+    background:var(--panel2);border-left:4px solid var(--gold);border-radius:10px;
+    padding:16px 18px;margin-top:18px;
+  }
+  .callout.warn{border-left-color:var(--danger)}
+  .callout b{color:var(--gold)}
+  .callout.warn b{color:var(--danger)}
+
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.9rem;overflow:hidden;border-radius:12px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+  th{background:var(--panel2);color:var(--ink);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+  td{background:var(--panel);color:var(--muted)}
+  tr:last-child td{border-bottom:none}
+
+  /* Calculator */
+  .calc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;margin-top:8px}
+  .calc .row{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end}
+  .field{flex:1;min-width:180px}
+  .field label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:6px;font-weight:600}
+  .field input{
+    width:100%;padding:11px 12px;border-radius:9px;border:1px solid var(--line);
+    background:var(--bg);color:var(--ink);font-size:1rem;
+  }
+  .field input:focus{outline:none;border-color:var(--accent)}
+  .calc .out{
+    margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;
+  }
+  .stat{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center}
+  .stat .v{font-size:1.5rem;font-weight:800;color:var(--accent)}
+  .stat .l{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+
+  details{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-top:10px;overflow:hidden}
+  summary{padding:14px 18px;cursor:pointer;font-weight:600;list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"+ ";color:var(--accent);font-weight:800}
+  details[open] summary::before{content:"– "}
+  details .body{padding:0 18px 16px;color:var(--muted);font-size:.92rem}
+
+  footer{text-align:center;color:var(--muted);font-size:.82rem;padding:30px 20px;border-top:1px solid var(--line)}
+  .offline-badge{
+    display:inline-flex;align-items:center;gap:7px;background:var(--panel2);
+    border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.78rem;color:var(--accent);
+    margin-top:14px;font-weight:600;
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+  ul.clean{list-style:none;margin-top:8px}
+  ul.clean li{padding:6px 0 6px 24px;position:relative;color:var(--muted)}
+  ul.clean li::before{content:"→";position:absolute;left:0;color:var(--accent2)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">Practical Guide</div>
+  <h1>How to Earn Money</h1>
+  <p>A clear, honest, step-by-step roadmap — from your first rupee to a sustainable income. No hype, no get-rich-quick schemes.</p>
+  <div class="offline-badge"><span class="dot"></span> 100% Offline · No internet required</div>
+</header>
+
+<nav>
+  <a href="#mindset">Mindset</a>
+  <a href="#ways">Ways to Earn</a>
+  <a href="#start">Getting Started</a>
+  <a href="#calc">Income Calculator</a>
+  <a href="#grow">Growing Money</a>
+  <a href="#avoid">Scams to Avoid</a>
+  <a href="#faq">FAQ</a>
+</nav>
+
+<div class="wrap">
+
+  <!-- MINDSET -->
+  <section id="mindset">
+    <h2><span class="num">01</span> The Core Idea</h2>
+    <p class="lead">Money is earned by creating <b>value</b> for other people — and getting paid a share of it. Every method below is a variation of that one principle.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>⏱️ Trade Time</h3>
+        <p>A job, freelancing, or hourly work. Reliable and fast to start, but income is capped by the hours you have.</p>
+      </div>
+      <div class="card">
+        <h3>🛠️ Trade Skill</h3>
+        <p>The more rare and valuable your skill, the more each hour is worth. Skill is the multiplier on your time.</p>
+      </div>
+      <div class="card">
+        <h3>📦 Trade Products</h3>
+        <p>Build or sell something once, get paid many times. Slower to start, but income isn't tied to your hours.</p>
+      </div>
+      <div class="card">
+        <h3>💰 Put Money to Work</h3>
+        <p>Savings and investments earn while you sleep. Needs capital first — which the methods above provide.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAYS -->
+  <section id="ways">
+    <h2><span class="num">02</span> Real Ways to Earn</h2>
+    <p class="lead">Sorted roughly from easiest-to-start to highest-potential. Tags show the starting difficulty.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Local Services <span class="tag t-low">Easy start</span></h3>
+        <p>Tutoring, cleaning, repairs, cooking, delivery, gardening, babysitting. People nearby always need help.</p>
+        <div class="meta"><b>Needs:</b> Time · a skill you already have<br><b>First income:</b> Days</div>
+      </div>
+      <div class="card">
+        <h3>Sell What You Own <span class="tag t-low">Easy start</span></h3>
+        <p>Unused clothes, electronics, books, furniture. Clears clutter and builds your first small capital.</p>
+        <div class="meta"><b>Needs:</b> Things you no longer use<br><b>First income:</b> Today</div>
+      </div>
+      <div class="card">
+        <h3>Freelancing <span class="tag t-mid">Some skill</span></h3>
+        <p>Writing, design, coding, translation, data entry, video editing. Sell a skill to clients anywhere.</p>
+        <div class="meta"><b>Needs:</b> One marketable skill<br><b>First income:</b> Weeks</div>
+      </div>
+      <div class="card">
+        <h3>Small Trading / Reselling <span class="tag t-mid">Some skill</span></h3>
+        <p>Buy goods cheaply (wholesale, secondhand) and resell at a margin. Learn what people want and where to source it.</p>
+        <div class="meta"><b>Needs:</b> Small capital · market sense<br><b>First income:</b> Weeks</div>
+      </div>
+      <div class="card">
+        <h3>A Job with Growth <span class="tag t-mid">Some skill</span></h3>
+        <p>Steady salary while you learn and save. Choose roles where your skills compound over time.</p>
+        <div class="meta"><b>Needs:</b> Basic qualifications<br><b>First income:</b> Monthly, stable</div>
+      </div>
+      <div class="card">
+        <h3>Make & Sell Products <span class="tag t-high">Bigger effort</span></h3>
+        <p>Handmade crafts, food, farming produce, or digital products (courses, templates, designs).</p>
+        <div class="meta"><b>Needs:</b> A product · customers<br><b>First income:</b> Months</div>
+      </div>
+      <div class="card">
+        <h3>Start a Small Business <span class="tag t-high">Bigger effort</span></h3>
+        <p>A shop, a service company, or a brand. Highest potential, highest risk. Start lean and test demand first.</p>
+        <div class="meta"><b>Needs:</b> Capital · planning<br><b>First income:</b> Months</div>
+      </div>
+      <div class="card">
+        <h3>Invest Your Savings <span class="tag t-high">Needs capital</span></h3>
+        <p>Fixed deposits, mutual funds, stocks, or property. Money grows over years through compounding.</p>
+        <div class="meta"><b>Needs:</b> Saved capital · patience<br><b>First income:</b> Long term</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- START -->
+  <section id="start">
+    <h2><span class="num">03</span> A Plan You Can Start This Week</h2>
+    <div class="steps">
+      <div class="step">
+        <h4>List what you can already do</h4>
+        <p>Write down every skill, tool, and resource you have. You will earn fastest from something you already know.</p>
+      </div>
+      <div class="step">
+        <h4>Pick ONE method</h4>
+        <p>Don't spread thin. Choose a single "Easy start" option from above and commit to it for 30 days.</p>
+      </div>
+      <div class="step">
+        <h4>Find your first customer</h4>
+        <p>Tell friends, family, and neighbours exactly what you offer and what it costs. Word of mouth is free and powerful.</p>
+      </div>
+      <div class="step">
+        <h4>Deliver and ask for referrals</h4>
+        <p>Do great work, then ask "Do you know anyone else who needs this?" One happy customer becomes three.</p>
+      </div>
+      <div class="step">
+        <h4>Save the first portion</h4>
+        <p>Keep at least 20% of every payment. This becomes the capital for bigger, less time-bound methods.</p>
+      </div>
+      <div class="step">
+        <h4>Reinvest in skill or tools</h4>
+        <p>Use savings to learn a higher-value skill or buy tools that let you charge more per hour.</p>
+      </div>
+    </div>
+    <div class="callout">
+      <b>The 1-skill rule:</b> Getting good at one valuable skill (and saying no to distractions) beats chasing ten opportunities at once. Depth pays more than breadth.
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <section id="calc">
+    <h2><span class="num">04</span> Income Goal Calculator</h2>
+    <p class="lead">Work backwards from your goal. Enter numbers below — it all runs offline in your browser.</p>
+    <div class="calc">
+      <div class="row">
+        <div class="field">
+          <label>Monthly income goal</label>
+          <input id="goal" type="number" value="30000" min="0">
+        </div>
+        <div class="field">
+          <label>Price per job / sale</label>
+          <input id="price" type="number" value="500" min="1">
+        </div>
+        <div class="field">
+          <label>Hours each job takes</label>
+          <input id="hours" type="number" value="2" min="0" step="0.5">
+        </div>
+        <div class="field">
+          <label>Working days / month</label>
+          <input id="days" type="number" value="24" min="1" max="31">
+        </div>
+      </div>
+      <div class="out">
+        <div class="stat"><div class="v" id="oJobs">—</div><div class="l">Sales needed / month</div></div>
+        <div class="stat"><div class="v" id="oPerDay">—</div><div class="l">Sales / working day</div></div>
+        <div class="stat"><div class="v" id="oHrsDay">—</div><div class="l">Hours / working day</div></div>
+        <div class="stat"><div class="v" id="oRate">—</div><div class="l">Your hourly value</div></div>
+      </div>
+      <div class="callout" id="calcNote">Adjust the price up or the hours down to reach your goal with less strain.</div>
+    </div>
+  </section>
+
+  <!-- GROW -->
+  <section id="grow">
+    <h2><span class="num">05</span> Keeping &amp; Growing What You Earn</h2>
+    <p class="lead">Earning is half the game. Keeping and multiplying it is the other half.</p>
+    <table>
+      <thead><tr><th>Habit</th><th>Why it works</th></tr></thead>
+      <tbody>
+        <tr><td><b>Pay yourself first</b></td><td>Save a fixed % the moment money arrives — before spending. You won't miss what you never see.</td></tr>
+        <tr><td><b>Track every rupee</b></td><td>You can't manage what you don't measure. A simple notebook beats a fancy app you won't use.</td></tr>
+        <tr><td><b>Keep an emergency fund</b></td><td>3–6 months of expenses saved means one bad month won't undo your progress.</td></tr>
+        <tr><td><b>Avoid bad debt</b></td><td>Borrowing for things that lose value (gadgets, lifestyle) drains future income. Borrow only to build income.</td></tr>
+        <tr><td><b>Let it compound</b></td><td>Invested savings earn returns, and those returns earn more. Time is the biggest factor — start early.</td></tr>
+        <tr><td><b>Raise your prices</b></td><td>As you get better and busier, charge more. Most people undercharge for years out of fear.</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <b>The snowball:</b> Earn → save a portion → reinvest in skills/tools/assets → earn more → repeat. Small loops, run consistently, compound into large results.
+    </div>
+  </section>
+
+  <!-- AVOID -->
+  <section id="avoid">
+    <h2><span class="num">06</span> Red Flags &amp; Scams to Avoid</h2>
+    <p class="lead">If earning money were instant and effortless, everyone would be rich. Treat these as warning signs.</p>
+    <ul class="clean">
+      <li><b>"Guaranteed" high returns with no risk</b> — real investments never guarantee big gains.</li>
+      <li><b>Pay-to-join schemes</b> where you earn mainly by recruiting others (pyramid/MLM structures).</li>
+      <li><b>Upfront fees</b> for a "job" or "opportunity" — legitimate work pays you, not the other way around.</li>
+      <li><b>Pressure to act now</b> before you can think or research.</li>
+      <li><b>Promises of passive income with zero effort or skill.</b></li>
+      <li><b>Anyone asking for your passwords, OTPs, or full bank access.</b></li>
+    </ul>
+    <div class="callout warn">
+      <b>Rule of thumb:</b> If it sounds too good to be true, it is. Real income comes from real value delivered over real time.
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <h2><span class="num">07</span> Common Questions</h2>
+    <details>
+      <summary>I have no money to start — what now?</summary>
+      <div class="body">Start with methods that need only time and existing skills: local services, tutoring, or selling things you own. Your first earnings become the capital for everything else.</div>
+    </details>
+    <details>
+      <summary>How long until I see real money?</summary>
+      <div class="body">Service and odd-job work can pay within days. Freelancing takes a few weeks to find clients. Products and businesses take months. Investments pay over years. Match your choice to how soon you need cash.</div>
+    </details>
+    <details>
+      <summary>Should I quit my job to chase a bigger idea?</summary>
+      <div class="body">Usually no — not at first. Build the new income on the side until it reliably covers your needs. A steady income gives you the freedom to take smart risks instead of desperate ones.</div>
+    </details>
+    <details>
+      <summary>What's the single most important habit?</summary>
+      <div class="body">Consistency. A modest method done every day for a year beats a brilliant plan you abandon in a week. Show up, improve a little, repeat.</div>
+    </details>
+  </section>
+
+</div>
+
+<footer>
+  <p>This guide is educational and offline. It is not financial advice — adapt it to your own situation and local laws.</p>
+  <p style="margin-top:8px">Built as a single self-contained HTML file · works with no internet connection.</p>
+</footer>
+
+<script>
+  // Fully offline income calculator
+  (function(){
+    var ids = ['goal','price','hours','days'];
+    var f = {};
+    ids.forEach(function(id){ f[id] = document.getElementById(id); });
+    var oJobs = document.getElementById('oJobs');
+    var oPerDay = document.getElementById('oPerDay');
+    var oHrsDay = document.getElementById('oHrsDay');
+    var oRate = document.getElementById('oRate');
+    var note = document.getElementById('calcNote');
+
+    function num(el, min){ var v = parseFloat(el.value); return isNaN(v) ? 0 : Math.max(v, min); }
+    function fmt(n){ return n.toLocaleString(undefined,{maximumFractionDigits:1}); }
+
+    function update(){
+      var goal  = num(f.goal, 0);
+      var price = num(f.price, 0.0001);
+      var hours = num(f.hours, 0);
+      var days  = num(f.days, 1);
+
+      var jobs = goal / price;                 // sales per month
+      var perDay = jobs / days;                // sales per working day
+      var hrsDay = perDay * hours;             // hours per working day
+      var rate = price > 0 && hours > 0 ? price / hours : 0;
+
+      oJobs.textContent   = fmt(Math.ceil(jobs));
+      oPerDay.textContent = fmt(perDay);
+      oHrsDay.textContent = fmt(hrsDay) + 'h';
+      oRate.textContent   = fmt(rate) + '/h';
+
+      if (hrsDay > 10){
+        note.style.borderLeftColor = 'var(--danger)';
+        note.innerHTML = '<b style="color:var(--danger)">That needs ' + fmt(hrsDay) + ' hours a day</b> — likely too much. Raise your price or sell a higher-value service to work fewer hours.';
+      } else if (hrsDay > 7){
+        note.style.borderLeftColor = 'var(--gold)';
+        note.innerHTML = '<b>Roughly a full work day.</b> Achievable, but consider raising your price to build in breathing room.';
+      } else {
+        note.style.borderLeftColor = 'var(--accent)';
+        note.innerHTML = '<b style="color:var(--accent)">This looks realistic</b> — about ' + fmt(hrsDay) + ' hours of work on each of your ' + fmt(days) + ' working days.';
+      }
+    }
+
+    ids.forEach(function(id){ f[id].addEventListener('input', update); });
+    update();
+  })();
+</script>
+
+</body>
+</html>

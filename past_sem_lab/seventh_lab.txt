@@ -1,0 +1,41 @@
+IT 247: E-Commerce and Internet Marketing
+Credits: 3
+Lecture Hours: 48
+Course Objectives:
+The main objective of this course is to provide knowledge of different concepts of e-commerce
+and internet marketing to students. After completing this course, students will be able to
+ Understand different types of e-commerce and its importance to organizations,  Know about different e-commerce business models,  Understand technology infrastructure for e-commerce,  Know the process of building e-commerce applications,  Understand security threats and solutions to e-commerce transactions,  Know different payment systems for e-commerce and
+ Learn different concepts Internet marketing and learn to use different digital marketing
+tools available.
+Course Description:
+This course covers different concepts of e-commerce including introduction, business models,
+technology infrastructure, building e-commerce applications, e-commerce security and payment
+systems. This course also covers different concepts of concepts internet marketing.
+Course Details
+Unit 1: Introduction to E-Commerce 4 LHs
+What is E-Commerce? Importance of E-Commerce; E-Commerce vs. E-Business;
+Technology Building Blocks; Unique Features of E-Commerce; E-Commerce Types;
+Understanding E-Commerce: Organizing Themes. Unit 2: E-Commerce Business Models and Concepts 8 LHs
+E-Commerce Business Models; Major Business-to-Consumer (B2C) Business Models;
+Major Business-to-Business (B2B) Business Models; How E-Commerce Changes
+Business: Strategy, Structure, and Process. Unit 3: E-Commerce Infrastructure 6 LHs
+The Internet: Technology Background; Internet Infrastructure and Access; The Web;
+Features and Serves of Internet and Web; Mobile Apps. Unit 4: Building an E-Commerce Presence: Websites, Mobile Sites, and Apps 8 LHs
+Imagine Your E-Commerce Presence; Building an E-Commerce Presence: A Systematic
+Approach; Choosing Software and Hardware; E-Commerce Site Tools; Building Mobile
+Website and Mobile Applications.
+Unit 5: E-Commerce Security and Payment Systems 10 LHs
+E-Commerce Security Environment; Security Threats; Technology Solutions;
+Management Policies, Business Procedures, and Public Laws; E-Commerce Payment
+Systems. Unit 6: Internet Marketing 12 LHs
+Introduction to Digital Marketing; Importance of Digital Marketing; SEO; On-Page and
+Off-Page Optimization; Concepts of Pay-Per-Click (PPC) Advertisement, Digital Display
+Advertising, E-Mail Marketing, Social Media Marketing, Mobile Marketing, and Web
+Analytics. Laboratory Works:
+The laboratory work includes developing an e-commerce web application and learning to use
+different digital marketing tools such as Google Ads, Google Search Console, Google Keyword
+Planar, Google Analytics, Social Media Analysis tools etc.
+Suggested Reading
+Kenneth C. Laudon and Carol Guercio Traver, E-Commerce: Business, Technology, and
+Society, 17th Edition, Pearson, 2023.
+Ian Dodson, The Art of Digital Marketing, Wiley, 2016.

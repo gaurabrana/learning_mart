@@ -1,0 +1,69 @@
+IT 246: IT Ethics and Cybersecurity
+(BIM 6th Sem)
+Course Objectives
+The main objective of this course is to provide knowledge of different concepts of ethics related
+to Information Technologies and cyber security. After completing this course, students will be
+able to
+ Understand different concepts of ethics, and ethics for IT workers and IT organizations,  Know intellectual property and related concepts and issues,  Gain knowledge of threats, cybersecurity and digital forensics,  Know the provision of cyber law in the context of Nepal.
+Course Description
+This course presents different concepts of IT ethics, cyber threats, cybersecurity, and digital
+forensics. This course also presents provision of cyber law in the context of Nepal.
+Course Details
+Unit 1: An Overview of Ethics 5 LHs
+Ethics; Ethics in the Business World; Corporate Social Responsibility; Fostering
+Corporate Social Responsibility and Good Business Ethics; Improving Business Ethics;
+Ethical Considerations in Decision Making; Ethics in Information Technology
+Unit 2: Ethics for IT Workers and IT Users 5 LHs
+Managing IT Worker Relationship; Encouraging Professionalism of IT Workers;
+Encouraging Ethical Use of IT Resources among Users; Key Privacy and Anonymity
+Issues; Social Networking Ethical Issues
+Unit 3: Intellectual Property 6 LHs
+Intellectual Property; Copyright; Patient; Trade Secrets; Intellectual Property Issues:
+Plagiarism, Reverse Engineering, Open Source Code, Competitive Intelligence,
+Trademark Infringement, and Cybersquatting
+Unit 4: Ethical Decision in Software Development and Ethics of IT Organizations 5 LHs
+Software Quality and its Importance; Strategies for Developing Quality Software; Use of
+Contingent Workers; Outsourcing; Whistle-Blowing; Green Computing
+Unit 5: Fundamentals of Cybersecurity 6 LHs
+Introduction to Cyberspace and Cybersecurity, Cybersecurity Perspectives, Key
+Development Areas and their impacts on the ever-evolving nature of Cybersecurity:
+Technological Changes, Economic Model Shifts, and Outsourcing, Risks Cybersecurity
+Mitigates, Common Cyberattacks, Poisoned Web Service Attacks, Network
+Infrastructure Poisoning, Technical Attack Techniques, Cyberattackers and Their Colored
+Hats.
+Unit 6: Personal Cybersecurity 5 LHs
+Evaluating Your Current Cybersecurity Posture: Home Computer, Mobile Devices,
+Internet of Things (IoT) Devices, Enhancing Physical Security, Cybersecurity
+Considerations When Working from Home, Securing Your Accounts, Passwords.
+Unit 7: Social Engineering and Cyber Terrorism 5 LHs
+Introduction, Need for Social Engineering, Reasons for Social Engineering Attack,
+Understanding the Implications, Building Trust, Exploiting the Relationship, Performing
+Social Engineering Attacks, Social Engineering Countermeasures, Preventing Social
+Engineering Attacks, Cyber Terrorism, Types of Cyber Terrorism, Effects of Cyber
+Terrorism in Infrastructure, Countering Cyber Terrorism.
+Unit 8: Digital Forensics 7 LHs
+Introduction, Computer Forensic to Digital Forensics, Stages of Digital Forensic, Role of
+Digital Evidence, Methods and Lab, Collecting, Seizing and Protecting Evidence,
+Recovering Data, Mobile Forensics, Legal Aspects of Digital Forensics, Cyber Forensics
+in Nepal
+Unit 9: Cyber Law in Context of Nepal 4 LHs
+Cyber Law in Context of Nepal, Legal Perspective of Cybercrime, Electronic Transaction
+Act, Electronics Transaction Rules, IT Policy, Information Security and Policies.
+Laboratory Work
+The laboratory work includes learning to use tools and techniques for cybersecurity and
+digital forensics. Special focus will be given to network scanning, sniffing, identify
+common vulnerabilities in web applications such as SQL Injection, XSS, phishing using
+social engineering toolkit lab, password cracking, firewall configuration and analysis
+Lab, incident response.
+Suggested Readings:
+Ethics in Information Technology, Sixth Edition, George W. Reynolds.
+Ethics and Technology: Controversies, Questions, and Strategies for Ethical Computing, Fifth
+Edition, Herman T. Tavani, John Wiley and Sons, 2016.
+Ethics for Information Age, Eighth Edition, Michael J. Quinn, Pearson.
+Cybersecurity All-in-One for Dummies, Joseph Steinberg; Kevin Beaver; Ted Coombs; and Ira
+Winkler, 2023, 1st Edition, John Wiley & Sons, Inc
+Cybercrime and Digital Forensics: An Introduction, Thomas J. Holt, Adam M. Bossler, Kathryn
+C. Seigfried-Spellar, 2022, 3rd Edition, Routledge
+Electronic Transaction Act (ETA), Government of Nepal.
+Electronic transaction Rule (ETR), Government of Nepal.
+IT policy Of Nepal
