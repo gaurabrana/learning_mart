@@ -52,7 +52,7 @@ Do all of this before Session 1. If you skip it, you'll spend lab time installin
 ### Accounts to create (all free)
 | Account | Where | For |
 |---|---|---|
-| **Google account** | accounts.google.com | Search Console, Keyword Planner, GA4, Ads |
+| **Google account** | accounts.google.com | Search Console, Google Trends, GA4 |
 | **InfinityFree** | infinityfree.com | Deploying your PHP + MySQL store live (Session 3) |
 | **eSewa / Khalti sandbox** | developer.esewa.com.np / docs.khalti.com | Payment test mode (Session 2) |
 | **Buffer** | buffer.com | Social analytics (Session 6) |
@@ -181,9 +181,10 @@ found. **Google Search Console** lets you tell Google "I exist — please look."
 > **GOOD TO KNOW.** Your store may not appear in Google results during this course — totally normal for a
 > new site. You're learning the *process*, not chasing a ranking.
 
-> **PHP note:** in a PHP app your pages share one **`layout/header.php`**. So the Search Console
-> verification meta tag and the GA4 script go **there once**, and every page gets them automatically —
-> nicer than editing a separate `index.html`.
+> **PHP note:** in a PHP app your pages share one **`layout/header.php`** — that's why the GA4 script
+> lives there once and every page is tracked automatically (you only set `$GA4_ID` in `config.php`). For
+> Search Console, verify with the **HTML-file method** (upload `google<...>.html` to the site root) rather
+> than a meta tag.
 
 ### Keywords — the foundation
 | Type | Example (tech store) | Meaning |
@@ -192,9 +193,11 @@ found. **Google Search Console** lets you tell Google "I exist — please look."
 | Too specific | `noise cancelling over-ear headphones under 3000 bhaktapur` | Almost nobody searches this. |
 | Just right | `buy wireless earbuds Kathmandu` | Clear buyer intent, local, realistic. |
 
-### Google Ads — you pay per click, not per view
-Ads put your store at the top of results for your keywords. You pay only when someone **clicks** (CPC). In
-Session 5 you build a full campaign but **save it as a draft** — no spending.
+### Paid search — you pay per click, not per view
+Ads put your store at the top of results for your keywords. You pay only when someone **clicks** (CPC).
+Google Ads now needs a **credit card just to sign up**, so in Session 5 you write the campaign as a
+**plan (paper campaign)** instead — same setup (goal, keywords, ad copy, UTM landing URL), no account, no
+spending. *(Optional: build a real draft in Meta / Facebook Ads Manager.)*
 
 ### GA4 — knowing who visits
 GA4 is a small script in your `layout/header.php`. Once added, every visit records the page, time,
@@ -249,11 +252,12 @@ gateway redirects back, call its verification API from PHP before setting the or
 **Search Console won't verify** — the meta tag must be on the **live** pages. Put it in
 `layout/header.php`, re-upload to the host, wait ~30s, then Verify.
 
-**GA4 Realtime shows 0** — you didn't replace `G-XXXXXXXXXX` with your real Measurement ID, or didn't
-re-upload `header.php`. Fix and re-deploy.
+**GA4 Realtime shows 0** — you didn't set your real `G-XXXXXXXXXX` in `config.php`, or didn't re-upload it,
+or an **ad-blocker/Brave** is blocking GA (test in plain Chrome incognito). Fix and re-deploy.
 
-**Keyword Planner asks for billing** — when creating the Ads account choose **Expert mode → "Create an
-account without a campaign"**.
+**Keyword Planner asks for a credit card** — it now does, even for "account only". Don't fight it: use
+**Google Trends** (`trends.google.com`) instead — no account, no card. (For ads, write a **campaign plan**;
+Google Ads also needs a card.)
 
 > **REMEMBER.** If nothing works, copy the **exact** error message and search it, starting with `PHP` or
 > `MySQL`. Someone has hit the same error — usually with a clear fix.
@@ -311,11 +315,12 @@ Deploy: InfinityFree → upload files → import schema in host phpMyAdmin → *
 ☐ live HTTPS URL ☐ injection/XSS fail ☐ creds updated ☐ URL to instructor
 
 **Session 4 — Google Search Tools**
-`search.google.com/search-console` → URL prefix → meta tag into `layout/header.php` → re-upload → Verify →
-URL Inspection. ☐ verified ☐ 10 keywords + volume/competition/justification
+`search.google.com/search-console` → URL prefix → upload `google<...>.html` to site root → Verify →
+URL Inspection. Keywords via **Google Trends** (region Nepal). ☐ verified ☐ 10 keywords + demand/intent/where-used
 
-**Session 5 — Ads & Analytics** — Ads: Expert mode → Search campaign → **Draft**. GA4: paste gtag into
-`header.php`, replace `G-XXXXXXXXXX`, re-upload, watch Realtime. ☐ draft campaign ☐ GA4 realtime user
+**Session 5 — Campaign plan & Analytics** — write an ad **campaign plan** (goal, 5 keywords, ad copy, UTM
+landing URL) — no account needed. GA4: set `$GA4_ID` in **`config.php`** (snippet already in `header.php`),
+re-upload, watch Realtime. ☐ campaign plan ☐ GA4 realtime user
 
 **Session 6 — Social Media Analysis** — `(likes + comments) ÷ followers × 100`, over 5 posts. Audit:
 platform, frequency, content, engagement, 2 strengths, 2 weaknesses, 3 recommendations.
@@ -330,8 +335,8 @@ At the end of Session 6 you present — a show-and-tell of what you built.
 | 20 | **Live deployed store** | Open your InfinityFree URL; products from DB, add-to-cart, checkout, mobile view |
 | 10 | **Payment** | Sandbox payment on the live site; show the order row in phpMyAdmin |
 | 10 | **Security** | HTTPS padlock; explain your prepared statements + output escaping |
-| 15 | **Keyword report** | 10 keywords, volume, competition, justification |
-| 15 | **Google Ads** | Draft campaign — headlines, keywords; explain CPC |
+| 15 | **Keyword report** | 10 keywords (Google Trends): demand, intent, where used on site |
+| 15 | **Ad campaign plan** | Plan — headlines, keywords, UTM landing URL; explain CPC |
 | 15 | **GA4 + Search Console** | Realtime active user + verified property |
 | 10 | **Social audit** | Competitor analysis + 3 recommendations |
 | 5 | **Explanation** | Explain your decisions clearly |

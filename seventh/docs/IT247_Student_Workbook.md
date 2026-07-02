@@ -30,7 +30,7 @@ Session 1 (electronics, books, clothing, handicrafts…) and keep it all semeste
 | 2 | Cart, Checkout & Payment | Session cart + checkout that saves an order + sandbox payment |
 | 3 | Security & Deployment | A secure store, live on a public HTTPS URL |
 | 4 | Google Search Tools | Keyword research report |
-| 5 | Google Ads & Analytics | Draft ad campaign + GA4 on your live store |
+| 5 | Ad campaign plan & Analytics | Ad campaign plan (paper) + GA4 on your live store |
 | 6 | Social Media Analysis | A social media audit report |
 
 ### The Demo Store: LearningMart
@@ -212,65 +212,77 @@ between browser and server; the padlock) · *Deployment* (putting your site on a
 # Phase 2 — Market
 
 ## Session 4 — Google Search Tools
-**Phase:** Market · **Duration:** ~2 hours · **Tools:** Google Search Console, Keyword Planner
+**Phase:** Market · **Duration:** ~2 hours · **Tools:** Google Search Console, Google Trends
 
 Now your store is live, help people find it. Register it with Google and research keywords.
 
 ### Steps
 1. **Add property.** search.google.com/search-console → Add Property → URL prefix → paste your
    InfinityFree URL.
-2. **Verify.** Copy the HTML **meta** verification tag. Paste it inside the `<head>` in your
-   **`layout/header.php`** (so it's on every page), save, re-upload to the host, then click Verify.
+2. **Verify (HTML-file method).** Download the `google<...>.html` file Google gives you and upload it to
+   your **site root** (`htdocs/`), then click Verify. *(Use the file method, not the meta tag — Google
+   fetches it over your live HTTPS URL to prove you own the domain.)*
 3. **URL Inspection.** Paste your URL → Request Indexing. (It won't rank instantly — that's normal.)
-4. **Keyword Planner.** ads.google.com → if no account, create one in **Expert mode → "Create an account
-   without a campaign"** (skips billing) → Tools → Keyword Planner → Discover new keywords.
-5. **Research.** Type 3 phrases about your store (e.g. for a tech store: "buy wireless earbuds Nepal",
-   "smart watch Kathmandu"). Read volume & competition.
-6. **Build the table.** Pick 10 relevant keywords; record keyword, monthly searches, competition
-   (Low/Med/High), and a one-sentence reason for each.
+4. **Google Trends.** trends.google.com (no account, no card) → type a seed phrase about your store
+   (e.g. "wireless earbuds") → set **region = Nepal**, **past 12 months**. *(We use Trends because Google
+   Keyword Planner now forces a credit card at signup.)*
+5. **Research.** Scroll to **Commonly searched queries** → read **Top** (steady) and **Rising** (growing;
+   "Breakout" = spiking). Repeat for 3–4 seeds to gather 10+ terms. **Discard off-topic matches** (e.g.
+   "power bank" surfaces "bank share price" — not your product).
+6. **Build the table.** Pick 10 relevant keywords; record **keyword, demand** (from the Search-interest
+   bar), **intent** (transactional = price/buy/in nepal; commercial = best/review), and **where you'll use
+   it**. Then put one keyword into a product's title/description.
 
 > **EXPECTED OUTPUT — Session 4**
 > ✓ Property verified (green tick)
 > ✓ URL submitted for indexing
-> ✓ 10 keywords with volume + competition + justification
+> ✓ 10 keywords with demand + intent + where used, and one wired into a product's title/description
 
-> **BEFORE YOU SUBMIT** ☐ Property verified ☐ URL Inspection used ☐ 10 keywords with data ☐ justification for each
+> **BEFORE YOU SUBMIT** ☐ Property verified ☐ URL Inspection used ☐ 10 keywords with demand+intent ☐ one keyword wired into a product (View-Source proof)
 
-**Glossary:** *Keyword* (what a user types into Google) · *Search Volume* (avg monthly searches) ·
-*Competition* (how many advertisers bid on it) · *Indexing* (Google storing your page) · *SEO* (getting
-found without paying).
+**Glossary:** *Keyword* (what a user types into Google) · *Demand* (relative search interest, from the
+Trends bar) · *Intent* (transactional = ready to buy vs commercial = comparing) · *Indexing* (Google
+storing your page) · *SEO* (getting found without paying).
 
 ---
 
-## Session 5 — Google Ads & Analytics
-**Phase:** Market · **Duration:** ~2.5 hours · **Tools:** Google Ads, Google Analytics 4
+## Session 5 — Ad campaign plan & Analytics
+**Phase:** Market · **Duration:** ~2.5 hours · **Tools:** (paper plan / Meta Ads Manager), Google Analytics 4
 
-Create a real ad campaign (saved as **draft** — no spending) and install GA4 on your live store.
+Write an ad campaign **plan** (no spending, no account needed) and turn on GA4 on your live store.
+
+> **Why a plan?** Google Ads now asks for a **credit card at signup**, so you document the campaign as a
+> written plan (a "paper campaign") — the report grades the plan, not a live account. *(Optional: build a
+> real draft in **Meta / Facebook Ads Manager** if you want a screenshot.)*
 
 ### Steps
-1. **New campaign.** ads.google.com → Expert mode → New Campaign. Goal: **Sales**. Type: **Search**. URL:
-   your InfinityFree store.
-2. **Targeting/budget.** Location: Nepal/Kathmandu. Language: English. Daily budget Rs. 100 — you'll save
-   as **draft**, so nothing is charged.
-3. **Ad group + keywords.** Name it after your main category. Add 5 keywords from Session 4.
+1. **Campaign settings.** Write them down: Goal **Sales**, Type **Search**, Location Nepal/Kathmandu,
+   Language English, planning budget Rs. 100 (nothing is spent).
+2. **Landing URL with UTM.** Choose a real **product/category page** on your live store and add UTM tags:
+   `…/product.php?cat=1&utm_source=google&utm_medium=cpc&utm_campaign=audio` (send earbuds ads to the
+   earbuds page, not the homepage).
+3. **Ad group + keywords.** Name it after your main category. Add **5 keywords** from Session 4 (prefer
+   transactional).
 4. **Ad copy.** 3 headlines (store name / main product / USP e.g. "Free delivery in Kathmandu") + 2
-   descriptions. Preview it.
-5. **Save as DRAFT.** Do **not** publish. Confirm it shows "Draft".
-6. **GA4.** analytics.google.com → create a Web property → copy the Measurement ID `G-XXXXXXXXXX`.
-7. **Install GA4.** Paste the gtag `<script>` into the `<head>` in **`layout/header.php`** (every page),
-   **replace `G-XXXXXXXXXX` with your real ID**, save, re-upload. Open your store; GA4 **Realtime** should
-   show 1 active user within ~30s. Screenshot it.
+   descriptions.
+5. **GA4.** analytics.google.com → create a Web property → copy the Measurement ID `G-XXXXXXXXXX`.
+6. **Turn on GA4.** Set `$GA4_ID = 'G-XXXXXXXXXX';` in **`config.php`** (the gtag snippet is already in
+   `layout/header.php` — do **not** paste it again or you'll double-count). Save, re-upload. Open your
+   store; GA4 **Realtime** should show 1 active user within ~30s. Screenshot it.
+7. **Prove the loop.** Open your **UTM landing URL** → in GA4 **Realtime → by source/medium** you'll see
+   `google / cpc`. Screenshot it — that's the ad→analytics integration, done for free.
 
 > **EXPECTED OUTPUT — Session 5**
-> ✓ Ads campaign saved as **Draft** (1 ad group, 5 keywords, 3+2 ad copy)
-> ✓ GA4 Measurement ID obtained and added to `header.php`
-> ✓ GA4 Realtime shows an active user when you open the store
+> ✓ Ad campaign plan (settings, 1 ad group, 5 keywords, 3+2 ad copy, UTM landing URL)
+> ✓ GA4 Measurement ID set in `config.php`
+> ✓ GA4 Realtime shows an active user (bonus: attributed to your UTM source)
 
-> **BEFORE YOU SUBMIT** ☐ Campaign is Draft (not published) ☐ 5 keywords added ☐ ad copy written ☐ GA4 in `header.php` with real ID ☐ Realtime screenshot saved
+> **BEFORE YOU SUBMIT** ☐ Campaign plan written ☐ 5 keywords + ad copy ☐ UTM landing URL ☐ `$GA4_ID` set in `config.php` ☐ Realtime screenshot saved
 
-**Glossary:** *Google Ads* (paid search ads) · *Ad Group* (ads sharing keywords) · *CPC* (cost per click)
-· *Quality Score* (ad/keyword/page relevance, 1–10) · *GA4* (web analytics) · *Measurement ID*
-(`G-XXXXXXXXXX`, links GA4 to your site) · *Realtime* (who's on your site right now).
+**Glossary:** *Ad campaign plan* (documented paid-search setup, no live account) · *Ad Group* (ads sharing
+keywords) · *CPC* (cost per click) · *UTM tags* (URL tags GA4 uses to attribute a visit's source) · *GA4*
+(web analytics) · *Measurement ID* (`G-XXXXXXXXXX`, links GA4 to your site) · *Realtime* (who's on your
+site right now).
 
 ---
 

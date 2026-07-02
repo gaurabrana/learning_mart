@@ -59,14 +59,21 @@ live host?
 
 ## Part B — Digital Marketing (answer from your live store + tool screenshots)
 
-**Q12. Search Console.** Include a screenshot of your **verified property** in Google Search Console. Where
-did you place the verification tag on your site, and why there?
+**Q12. Search Console.** Include a screenshot of your **verified property** in Google Search Console. You
+verify with the **HTML-file method** — upload the `google<...>.html` file Google gives you to your site
+root. Where did you place that file, and why does verification need a live HTTPS URL?
 
-**Q13. Keyword report.** Present your **10-keyword report** (keyword, monthly searches, competition).
-Explain what "search volume" and "competition" mean.
+**Q13. Keyword report.** Present your **10-keyword report** built with **Google Trends** (region = Nepal),
+with columns **keyword, demand, intent, where you used it on the site**. Explain how you read "demand" from
+the Search-interest bar, and the difference between **transactional** and **commercial** intent. Show one
+product where you put a keyword into the `<title>`/`<meta description>`.
 
-**Q14. Google Ads (draft).** Show your **draft Search campaign** — the ad group, 5 keywords, and ad copy.
-What does **CPC** mean, and why did you keep the campaign as a draft?
+**Q14. Ad campaign plan.** Present a **Google Search ad campaign plan** for your store: the goal, one ad
+group, **5 keywords** (from Q13), **3 headlines + 2 descriptions**, and the **landing URL with UTM tags**
+pointing at a real product/category page. Google Ads now requires a credit card just to sign up, so you
+**document the campaign as a written plan** instead of a live draft. Explain what **CPC** means and why you
+send ads to a specific product page (not the homepage). *(Optional live route: if you can access **Meta /
+Facebook Ads Manager** or an existing Google Ads account, build it there as a real draft and screenshot it.)*
 
 **Q15. Analytics (GA4).** Include a screenshot of **GA4 Realtime** with an active user. Where is the GA4
 tracking code placed on your site?

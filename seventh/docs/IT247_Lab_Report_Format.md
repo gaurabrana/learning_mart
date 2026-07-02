@@ -51,7 +51,7 @@ A table: **Question no. · Title · Page no.** — so the examiner can jump to a
 ### 4. Introduction (½ page)
 - What you built (store name, what it sells)
 - The tech stack: PHP, MySQL (PDO), Bootstrap 5, XAMPP (local), InfinityFree (live)
-- The tools used in the marketing part (Search Console, Keyword Planner, Google Ads, GA4, Buffer)
+- The tools used in the marketing part (Search Console, Google Trends, GA4, Buffer)
 
 ### 5. Answers (main body)
 Repeat this block for **each** question, Q1 → Q16:
@@ -89,8 +89,8 @@ solved them.
   live HTTPS padlock in the address bar for Q11).
 - For security (Q10), show the **result** — the injection being rejected, and the `<script>` printed as
   plain text.
-- For marketing (Q12–Q16), show the tool's own screen (verified property, keyword table, draft campaign,
-  GA4 Realtime, the audit).
+- For marketing (Q12–Q16), show the tool's own screen (verified property, Google Trends keyword table,
+  the campaign plan, GA4 Realtime, the audit).
 
 ## Before you print
 1. Answer all 16 questions; check each has code **and** a screenshot **and** an explanation.

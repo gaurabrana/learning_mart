@@ -44,8 +44,8 @@ This is the **step-by-step plan for running the lab**, anchored to the working *
 | 1 | Setup, database, storefront | Products showing from MySQL | Q1–Q4 |
 | 2 | Cart, checkout, payment | Working cart + a sandbox payment | Q5–Q9 |
 | 3 | Security & deployment | A live HTTPS store | Q10–Q11 |
-| 4 | Search Console + Keyword Planner | Keyword report | Q12–Q13 |
-| 5 | Google Ads + Analytics | Ads draft + GA4 tracking | Q14–Q15 |
+| 4 | Search Console + Keyword research (Google Trends) | Keyword report | Q12–Q13 |
+| 5 | Ad campaign plan + Analytics (GA4) | Campaign plan + GA4 tracking | Q14–Q15 |
 | 6 | Social media analysis | A social media audit | Q16 |
 
 **Golden teaching move every session:** *show it in LearningMart first → explain the concept → students build their own version → compare with LearningMart.*
@@ -80,18 +80,18 @@ This is the **step-by-step plan for running the lab**, anchored to the working *
 4. **Watch for:** live site "Connection failed" (creds not changed from localhost/root); free-host quirks.
 5. **Covers:** Q10 (security), Q11 (deployment).
 
-### Session 4 — Search Console & Keyword Planner (Q12–Q13)
-1. **Demo:** open Search Console with the deployed store; show the verified property + URL Inspection; open Keyword Planner and research a term.
-2. **Teach:** why a new site isn't on Google automatically (crawler/indexing); search volume vs competition.
-3. **Students do:** verify their live store (HTML-file method), request indexing, build a **10-keyword report** (model: `MARKETING_SAMPLES.md`).
+### Session 4 — Search Console & Keyword research with Google Trends (Q12–Q13)
+1. **Demo:** open Search Console with the deployed store; show the verified property + URL Inspection; open **Google Trends** (region Nepal) and research a seed term — Top vs Rising queries.
+2. **Teach:** why a new site isn't on Google automatically (crawler/indexing); reading demand from the Trends bar; transactional vs commercial intent. *(Note: Keyword Planner now forces a credit card at signup, so we use Trends — free, no account.)*
+3. **Students do:** verify their live store (HTML-file method), request indexing, build a **10-keyword report** (keyword, demand, intent, where used) and wire one keyword into a product title/description (model: `MARKETING_SAMPLES.md`).
 4. **Covers:** Q12 (Search Console), Q13 (keyword report).
 
-### Session 5 — Google Ads & Analytics (Q14–Q15)
-1. **Demo:** show a **draft** Ads campaign (ad group, keywords, ad copy) and GA4 **Realtime** — open the store and watch the visit appear.
-2. **Teach:** CPC, ad groups; GA4 basics. Show that in the demo you just set `$GA4_ID` in `config.php` and every page is tracked.
-3. **Students do:** build a **draft** Ads campaign (model: `MARKETING_SAMPLES.md`) — *do not publish*. Create a GA4 property, put the `G-XXXX` ID in `config.php`, confirm Realtime. (GA4 works on localhost too, so this needs no deploy.)
-4. **Watch for:** students publishing the campaign (must stay draft); GA4 ID left as placeholder.
-5. **Covers:** Q14 (Ads), Q15 (GA4).
+### Session 5 — Ad campaign plan & Analytics (Q14–Q15)
+1. **Demo:** walk through a **written Search-campaign plan** (goal, ad group, keywords, ad copy, UTM landing URL) and GA4 **Realtime** — open the store and watch the visit appear; open a UTM URL and show it attributed to `google / cpc`.
+2. **Teach:** CPC, ad groups, UTM attribution; GA4 basics. Show that in the demo you just set `$GA4_ID` in `config.php` and every page is tracked (the gtag snippet already lives in `header.php`).
+3. **Students do:** write an **ad campaign plan** (model: `MARKETING_SAMPLES.md`) with a UTM landing URL — *no live account needed* (Google Ads requires a card; optional live route = Meta Ads Manager). Create a GA4 property, put the `G-XXXX` ID in **`config.php`**, confirm Realtime. (GA4 works on localhost too, so this needs no deploy.)
+4. **Watch for:** GA4 ID left as placeholder; students trying to force a live Google Ads account past the card wall (use the plan instead); ad-blockers hiding Realtime (test in clean Chrome).
+5. **Covers:** Q14 (campaign plan), Q15 (GA4).
 
 ### Session 6 — Social Media Analysis (Q16)
 1. **Discuss:** which platforms Nepali e-commerce uses; why social matters (traffic, remarketing).

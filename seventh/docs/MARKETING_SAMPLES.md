@@ -50,25 +50,30 @@ research → on-page SEO.
 
 ---
 
-# Google Ads Campaign — LearningMart (SAMPLE / reference, DRAFT only)
+# Ad Campaign Plan — LearningMart (SAMPLE / reference)
 
-Use this as the model for the Q14 draft campaign. **Save as draft — never publish / never spend.**
+Use this as the model for the **Q14 campaign plan**. Google Ads now requires a credit card at signup, so
+you document this as a **written plan (paper campaign)** — no account needed, no spend. *(Optional: build
+it live in **Meta / Facebook Ads Manager**, or in Google Ads if you already have a billed account.)*
+Everything below is exactly what your plan table should contain.
 
 ## Campaign settings
 - **Goal:** Sales
 - **Campaign type:** Search
-- **Final URL:** your live store URL (e.g. `https://learningmart.infinityfreeapp.com`)
+- **Landing (Final) URL:** a specific **product/category page** on your live store, **with UTM tags** —
+  `https://study.gdev.infinityfreeapp.com/product.php?cat=1&utm_source=google&utm_medium=cpc&utm_campaign=audio`
+  *(send "earbuds" ads to the earbuds page, not the homepage)*
 - **Locations:** Nepal (or Kathmandu Valley)
 - **Language:** English
-- **Daily budget:** Rs. 100 *(only for the estimate — the campaign stays a draft)*
+- **Daily budget:** Rs. 100 *(a planning figure — used to estimate reach; nothing is spent)*
 - **Bidding:** Maximize clicks (simple, good for learning)
 
 ## Ad group: "Audio — Earbuds & Speakers"
 **Keywords (5):**
-1. `buy wireless earbuds nepal`
+1. `wireless earbuds price in nepal`
 2. `"wireless earbuds"` (phrase match)
-3. `bluetooth speaker kathmandu`
-4. `earbuds price nepal`
+3. `best wireless earbuds for calls`
+4. `bluetooth speaker price in nepal`
 5. `portable speaker nepal`
 
 **Responsive search ad copy:**
@@ -80,8 +85,13 @@ Use this as the model for the Q14 draft campaign. **Save as draft — never publ
 
 ## What to explain in your report
 - **CPC (cost per click):** you pay only when someone clicks the ad — not for views.
-- **Why draft:** it saves the whole campaign (so you can show the setup and the estimated impressions/CPC)
-  without ever charging money.
+- **Why a specific product page (not the homepage):** the searcher wants that product; landing them on it
+  loses fewer clicks → higher conversion.
+- **What the UTM tags do:** they let **GA4 attribute the visit** to `source=google / medium=cpc` — so you
+  can prove which channel brings buyers. Test it: open your own UTM URL and watch GA4 **Realtime → by
+  source/medium**.
+- **Why a plan, not a live campaign:** Google Ads requires a credit card at signup; the plan captures the
+  full setup (goal, keywords, ad copy, landing URL) with zero cost.
 
 ---
 

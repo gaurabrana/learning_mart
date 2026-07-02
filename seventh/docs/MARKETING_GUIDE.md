@@ -11,7 +11,7 @@ code**. Model outputs students imitate (keyword report, ad copy, social audit) a
 |------|---------------|-----------|--------------------------------------|
 | Be found (SEO) | On-page SEO + Google Search Console | Bing Webmaster | `<title>`/`<meta>`, `sitemap.php`, `robots.txt`, JSON-LD |
 | Know what people search | Google Trends (no card) | Keyword Planner (needs billing) | keywords go into titles/descriptions + Ads |
-| Paid traffic | Google Ads (Search) | — | landing = live product URLs + UTM tags |
+| Paid traffic | Ad campaign plan (paper) | Meta Ads Manager (live) | landing = live product URLs + UTM tags |
 | Measure | Google Analytics 4 | Matomo | `$GA4_ID` in `config.php`; `purchase` event |
 | Reach / sharing | Facebook/Instagram + Buffer | Hootsuite | Open Graph tags for shareable links |
 
@@ -128,21 +128,31 @@ the site**: use them in product **titles**, **meta descriptions**, and **descrip
 
 ---
 
-## 4. Google Ads — paid acquisition (Session 5, Q14)
+## 4. Paid search — an ad campaign plan (Session 5, Q14)
 
 **Choose it:** **Search** campaigns capture people already searching to buy — highest intent for a store.
 (Display/Social ads are for awareness; start with Search.)
 
-**Use it:** Expert mode → New campaign → Goal **Sales**, Type **Search** → set location Nepal, budget
-Rs. 100 → ad group named after a category → add 5 keywords from §3 → write 3 headlines + 2 descriptions →
-**Save as draft (do NOT publish)**. Template: `MARKETING_SAMPLES.md`.
+> **Why a plan, not a live campaign:** **Google Ads now requires a credit card at signup** — even "set up
+> an account only" asks for a card in Nepal. So for this lab you **document the campaign as a written plan
+> (a "paper campaign")** — no account, no spend, and it's easy to put in a printed report. *(Optional live
+> route: **Meta / Facebook Ads Manager** lets you build a campaign without paying up front, or use Google
+> Ads if you already have a billed account — then screenshot the draft.)*
 
-**Integrate into the project:**
+**Do it (write the plan):** Goal **Sales**, Type **Search**, location Nepal, planning budget Rs. 100 → one
+ad group named after a category → **5 keywords from §3** (prefer transactional) → **3 headlines + 2
+descriptions** → **landing URL = a real product/category page with UTM tags**. Template:
+`MARKETING_SAMPLES.md`.
+
+**Integrate into the project (this is the real, free, testable part):**
 - **Landing page** = your live **product/category URL** (send "earbuds" ads to the earbuds page, not the
   homepage).
 - **UTM tags** on the final URL so GA4 attributes the traffic, e.g.
   `…/product.php?cat=3&utm_source=google&utm_medium=cpc&utm_campaign=audio`.
-- (Advanced) link Google Ads to GA4 so the `purchase` event (§5) counts as a **conversion**.
+- **Prove it works without spending:** open your own UTM landing URL, then check GA4 **Realtime → by
+  source/medium** — you'll see `google / cpc`. That demonstrates the ad→analytics loop with zero cost.
+- (Advanced) if you built a live draft, link Google Ads to GA4 so the `purchase` event (§5) counts as a
+  **conversion**.
 
 ---
 
@@ -201,6 +211,6 @@ event tells you revenue. Then you double down on what converts.
 - [ ] Deployed to a public HTTPS URL
 - [ ] Search Console verified + sitemap submitted + a page indexed
 - [ ] 10-keyword report, keywords used in titles/descriptions
-- [ ] Google Ads draft (5 keywords, ad copy) pointing at a product/category URL with UTM tags
+- [ ] Ad campaign plan (5 keywords, ad copy) with a product/category landing URL + UTM tags; GA4 Realtime shows the UTM source
 - [ ] GA4 installed (`$GA4_ID`), Realtime confirmed, `purchase` event firing
 - [ ] Social audit done; product links share nicely (OG tags)

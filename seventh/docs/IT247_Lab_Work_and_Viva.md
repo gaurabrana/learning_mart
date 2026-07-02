@@ -52,8 +52,8 @@ examiner/instructor).
 | 6 | Checkout, orders & sandbox payment | Session 2 | Unit 2 / Unit 5 (payment) |
 | 7 | Security hardening | Session 3 | Unit 5 (threats & solutions) |
 | 8 | Deployment to a live public host | Session 3 | Unit 4 |
-| 9 | SEO: Search Console & Keyword Planner | Session 4 | Unit 6 (SEO) |
-| 10 | Google Ads (draft) & Analytics (GA4) | Session 5 | Unit 6 (PPC, analytics) |
+| 9 | SEO: Search Console & Keyword research (Google Trends) | Session 4 | Unit 6 (SEO) |
+| 10 | Ad campaign plan & Analytics (GA4) | Session 5 | Unit 6 (PPC, analytics) |
 | 11 | Social media analysis | Session 6 | Unit 6 (social media marketing) |
 
 ---
@@ -261,49 +261,68 @@ drops; a sandbox payment completes and the order is marked paid after verificati
 
 # Phase 2 — Market (Digital Marketing Tools)
 
-## Lab Work 9 — SEO: Search Console & Keyword Planner
+## Lab Work 9 — SEO: Search Console & Keyword research (Google Trends)
 **Objective:** Register the live store with Google and research keywords.
 
 **Tasks:**
-1. Add the store as a property in **Google Search Console**; verify with the HTML meta tag placed in
-   **`layout/header.php`**.
-2. Use **URL Inspection** to request indexing.
-3. Use **Keyword Planner** to research keywords for your store's theme.
-4. Produce a **report of 10 keywords** — keyword, monthly searches, competition, and a one-line reason.
+1. Add the store as a property in **Google Search Console**; verify with the **HTML-file method** — upload
+   the `google<...>.html` file to the **site root** (`htdocs/`). *(File method, not the meta tag — a live
+   HTTPS URL is required for Google to fetch it.)*
+2. Submit `sitemap.php`, then use **URL Inspection** to request indexing of a product page.
+3. Research keywords with **Google Trends** (`trends.google.com`, region = Nepal) — 3–4 seed terms, read
+   the **Top** and **Rising** queries. *(Why Trends, not Keyword Planner: Google now forces a credit card
+   at Ads signup, so Trends is the no-cost default. See `MARKETING_GUIDE.md §3`.)*
+4. Produce a **10-keyword report** — columns **keyword, demand, intent, where used on the site** — and
+   put at least one keyword into a product's `<title>`/`<meta description>`. Model: `MARKETING_SAMPLES.md`.
 
-**Expected output:** A verified Search Console property and a 10-keyword report.
+**Expected output:** A verified Search Console property and a 10-keyword report wired into the site.
 
-**Record in report:** screenshot of the verified property + the keyword table.
+**Record in report:** screenshot of the verified property + the keyword table + the edited product's
+View-Source showing the keyword in the title/description.
 
 **Viva questions:**
 - *Why doesn't a new store appear on Google automatically?* → Google's crawler finds sites via links; a
   brand-new unlinked site may never be found until you tell Search Console.
-- *What do search volume and competition mean?* → Volume = avg monthly searches; competition = how many
-  advertisers bid on that keyword.
-- *Why put the verification tag in `header.php`?* → In a PHP app every page shares that header, so the tag
-  appears site-wide from one place.
+- *How did you read "demand" in Google Trends?* → The length of the Search-interest bar (relative interest,
+  not an exact count) — longer bar = more searches.
+- *Transactional vs commercial intent?* → *price / in nepal / 20000mah* = ready to buy (transactional,
+  target these first); *best / review* = still comparing (commercial).
+- *Why verify with a file at the site root?* → Google fetches it over your live HTTPS URL to prove you
+  control the domain; a local/insecure site can't be verified.
 
 ---
 
-## Lab Work 10 — Google Ads (Draft) & Analytics (GA4)
-**Objective:** Build an ad campaign (no spend) and track live visitors.
+## Lab Work 10 — Ad campaign plan & Analytics (GA4)
+**Objective:** Design a paid-search campaign and track live visitors.
+
+> **Why a plan, not a live draft:** Google Ads now requires a **credit card at signup** (even "set up an
+> account only"), so students document the campaign as a **written plan** instead. Same learning outcome,
+> no cost. *(Optional live route: build a real draft in **Meta / Facebook Ads Manager**, or in Google Ads
+> if the student already has a billed account, and screenshot it.)*
 
 **Tasks:**
-1. Create a **Search campaign** in **draft** in Google Ads (goal Sales, your store URL).
-2. Add one ad group with **5 keywords** (from Lab 9) and write **3 headlines + 2 descriptions**.
-3. **Save as draft** — do not publish.
-4. Create a **GA4** property; paste the tracking snippet into **`layout/header.php`** (real Measurement
-   ID); confirm a visit appears in **Realtime**.
+1. Write a **Search campaign plan**: goal **Sales**, one ad group, **5 keywords** (from Lab 9, prefer
+   transactional), **3 headlines + 2 descriptions**.
+2. Give the **landing URL** = a real **product/category page** on the live store, with **UTM tags**, e.g.
+   `…/product.php?cat=3&utm_source=google&utm_medium=cpc&utm_campaign=audio`.
+3. Create a **GA4** property; set the real Measurement ID in **`config.php`** (`$GA4_ID`) — the snippet is
+   already rendered site-wide from `layout/header.php`. Confirm a visit appears in **Realtime**.
+4. **Test the loop (free & real):** open your own UTM landing URL, then show GA4 **Realtime → by source /
+   medium** attributing you to `google / cpc`. This proves the ad→analytics integration without spending.
 
-**Expected output:** A draft campaign with ad copy + keywords, and GA4 Realtime showing an active user.
+**Expected output:** A written campaign plan (keywords + ad copy + UTM landing URL) and GA4 Realtime
+showing an active user (bonus: attributed to your UTM source).
 
-**Record in report:** screenshots of the draft campaign and the GA4 Realtime report.
+**Record in report:** the campaign-plan table, the UTM landing URL, and the GA4 Realtime screenshot.
 
 **Viva questions:**
-- *What is CPC?* → Cost Per Click — you pay only when someone clicks your ad.
-- *Why keep the campaign as a draft?* → So it never spends money — this is a learning exercise.
-- *What does GA4 track once installed?* → Page views, time on page, device, country, and events for every
-  visitor.
+- *What is CPC?* → Cost Per Click — you pay only when someone clicks your ad, not for views.
+- *Why send ads to a product page, not the homepage?* → The visitor searched for a specific product;
+  landing them on it (not a generic page) means fewer clicks lost → higher conversion.
+- *What do UTM tags do?* → They tag the URL so GA4 can attribute the visit to the campaign/source/medium —
+  that's how you know which channel actually sells.
+- *What does GA4 track once installed?* → Page views, device, country, source/medium, and events like the
+  `purchase` conversion for every visitor.
 
 ---
 
@@ -346,7 +365,7 @@ drops; a sandbox payment completes and the order is marked paid after verificati
 - ☐ Checkout that saves an order in a transaction + a verified sandbox payment
 - ☐ Prepared statements everywhere; output escaped
 - ☐ Store live on a public HTTPS URL
-- ☐ 10-keyword SEO report, GA4 Realtime, a draft Ads campaign, and a social media audit
+- ☐ 10-keyword SEO report (Google Trends), GA4 Realtime, an ad campaign plan (with UTM landing URL), and a social media audit
 
 **Cross-cutting viva questions (whole course):**
 - *Explain the request flow of your store from browser to database and back.*
