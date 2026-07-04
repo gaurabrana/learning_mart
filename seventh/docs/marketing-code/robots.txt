@@ -1,0 +1,7 @@
+# robots.txt — tells crawlers what they may crawl.
+# On a real deploy this must sit at the DOMAIN ROOT (e.g. https://yoursite/robots.txt),
+# and the Sitemap line below must point to your live sitemap URL.
+User-agent: *
+Allow: /
+
+Sitemap: http://localhost:8888/demo/sitemap.php

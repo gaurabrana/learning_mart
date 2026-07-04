@@ -203,6 +203,30 @@ descriptions** → **landing URL = a real product/category page with UTM tags**.
 - (Advanced) if you built a live draft, link Google Ads to GA4 so the `purchase` event (§5) counts as a
   **conversion**.
 
+### Live option — Meta (Facebook/Instagram) Ads Manager (free to build)
+
+Unlike Google Ads, Meta lets you build a **real** campaign **without paying or entering a card up front** —
+you're only charged when it's published and delivering. So a student can go one step past the paper plan
+and screenshot an actual draft at no cost. (It targets Facebook/Instagram audiences by interest/demographic
+— good for **discovery**, whereas Search ads catch **intent**; mention that contrast in the viva.)
+
+**Steps:**
+1. Create a free **Facebook Page** for the store (Meta ads run *from* a Page, not a personal profile).
+2. Open **Meta Business Suite → Ads Manager** → **Create** → objective **Traffic** (or **Sales**).
+3. Set a small audience (e.g. Nepal, 18–45, interests: gadgets/electronics) and a **planning budget** —
+   nothing is spent until you publish.
+4. Write the ad (image + primary text + headline) and set the **destination URL to a live product/category
+   page with UTM tags**, e.g.
+   `https://study.gdev.infinityfreeapp.com/product.php?cat=3&utm_source=facebook&utm_medium=cpc&utm_campaign=audio`.
+5. Stop at **Review/Draft** and **screenshot** it — that's the deliverable. (Publishing needs a payment
+   method; the draft doesn't.)
+
+**Integrate / prove it (free):** the shared link preview already works — Meta reads the **Open Graph tags**
+on `product_detail.php`, so posts/ads show the product image, title and price. Open your own UTM link and
+check GA4 **Realtime → by source/medium** to see `facebook / cpc`. *(Optional/advanced:* add the **Meta
+Pixel** snippet to `layout/header.php` next to the gtag snippet to track a Meta-side `Purchase` conversion
+— the Meta equivalent of the GA4 `purchase` event.)*
+
 ---
 
 ## 5. Google Analytics 4 — measurement (Session 5, Q15)
