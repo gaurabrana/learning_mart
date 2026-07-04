@@ -20,6 +20,43 @@ code**. Model outputs students imitate (keyword report, ad copy, social audit) a
 
 ---
 
+## Start here — the order to do it in (once the website works)
+
+You've finished building your store and it runs locally. Do marketing in **this order** — each step
+unlocks the next. This assumes the standard project structure most of you have (`layout/header.php`,
+`base/connect.php`, `config.php`); if your file layout differs, keep the **goal** and change the **where**
+(see the note under the table).
+
+| # | Do this | Where it lives in the project | Full section |
+|---|---------|-------------------------------|--------------|
+| 1 | **Deploy to a public HTTPS URL** | Upload `demo/` to InfinityFree `htdocs/`, import `schema.sql`, edit **only `config.php`** (`$APP_BASE`, `$DB`). Confirm the padlock. | §0 |
+| 2 | **Point the site at its live URL** (base URL, and the `Sitemap:` line in `robots.txt`) | Set `$APP_BASE` in `config.php`; edit the `Sitemap:` line in `robots.txt`; check `/sitemap.php` returns XML. | §0, §1 |
+| 3 | **Put the GA4 tag in your `<head>` on every page**, then confirm Realtime shows you | Set `$GA4_ID` in `config.php` — the gtag snippet then renders from `layout/header.php` site-wide. | §5 |
+| 4 | **Verify in Search Console + submit your sitemap** + request indexing | Verify via HTML-file at root *or* the GA method; submit `sitemap.php`. | §2 |
+| 5 | **Research keywords** (Google Trends, region = Nepal) → put transactional ones into your page **titles/descriptions** | Edit product `<title>`/`<meta>` in `product_detail.php` etc. | §3, §1 |
+| 6 | **Write the ad campaign plan** (5 keywords + copy; landing = a real page **with UTM tags**) → see `google / cpc` in GA4 Realtime | Landing URL = a live `product.php?cat=…` with UTM params. | §4 |
+| 7 | **Do the social audit** (competitor, engagement rate over 5 posts, 3 recs) + check links share nicely | Open Graph tags already on `product_detail.php`. | §6 |
+
+**Why this order:** you can't verify Search Console or land ad clicks until the site is **live** (steps
+1–2). GA4 (step 3) goes on before Search Console so you can use the easy "Google Analytics" verification
+method and start collecting visits immediately. Keywords (step 5) must exist before the ad plan (step 6),
+because the plan's keywords and the SEO edits both come from that research.
+
+> **What's already built for you:** on-page SEO, `sitemap.php`, `robots.txt`, JSON-LD, Open Graph, the
+> site-wide gtag snippet, and the `purchase` event are **already in the code**. Marketing is mostly
+> *turning these on* (fill in `config.php`) plus the off-site work (Search Console, Trends, the plan, the
+> audit) — not writing new code. Model outputs are in `MARKETING_SAMPLES.md`; worked viva answers grounded
+> in our live store are in `IT247_Marketing_Viva_Answers.md`.
+>
+> **If your setup differs** (you didn't use `config.php`, or your files are laid out differently): the
+> goals don't change — just do the same thing in your own structure. The base URL lives wherever your app
+> keeps it; the **GA4 gtag snippet must sit in the `<head>` of every page** (put it in your shared
+> header/layout so it loads site-wide); `robots.txt` and the sitemap go at your domain root; titles/meta
+> go in your page `<head>`s. The **deliverables** (keyword report, ad plan, social audit) are the same no
+> matter how your site is built.
+
+---
+
 ## 0. Hosting the store — do this FIRST
 
 **Why:** Search Console must reach a public URL to verify ownership; Google Ads sends clicks to a real
@@ -133,11 +170,23 @@ the site**: use them in product **titles**, **meta descriptions**, and **descrip
 **Choose it:** **Search** campaigns capture people already searching to buy — highest intent for a store.
 (Display/Social ads are for awareness; start with Search.)
 
-> **Why a plan, not a live campaign:** **Google Ads now requires a credit card at signup** — even "set up
-> an account only" asks for a card in Nepal. So for this lab you **document the campaign as a written plan
-> (a "paper campaign")** — no account, no spend, and it's easy to put in a printed report. *(Optional live
-> route: **Meta / Facebook Ads Manager** lets you build a campaign without paying up front, or use Google
-> Ads if you already have a billed account — then screenshot the draft.)*
+> **The point of this lab is to *understand how paid search works* — not to spend money.** You document
+> the campaign as a written plan (a "paper campaign") and, above all, be able to explain the mechanism
+> below. **Google Ads now requires a credit card even to set up an account**, so a plan is how we learn it
+> at zero cost. *(Optional live route: **Meta / Facebook Ads Manager** lets you build a campaign without
+> paying up front — screenshot the setup.)*
+
+**How paid search actually works (be able to explain this):**
+1. You pick **keywords**, a **max bid** (the most you'll pay for one click), and write an **ad**.
+2. When someone searches a matching keyword, Google runs an **instant auction** among all advertisers
+   bidding on it.
+3. Your position is decided by **Ad Rank = your bid × Quality Score**, where **Quality Score** measures how
+   relevant your ad *and* landing page are to the search. So a *more relevant* ad can outrank a *higher
+   bidder* — money isn't the only lever.
+4. You pay **per click (CPC)**, not per view — and usually only just enough to beat the advertiser below
+   you, not your full max bid.
+5. **Better relevance → higher Quality Score → better position at lower cost.** That's *why* your keywords,
+   ad copy, and landing page all matter — they're the levers you control in the plan.
 
 **Do it (write the plan):** Goal **Sales**, Type **Search**, location Nepal, planning budget Rs. 100 → one
 ad group named after a category → **5 keywords from §3** (prefer transactional) → **3 headlines + 2

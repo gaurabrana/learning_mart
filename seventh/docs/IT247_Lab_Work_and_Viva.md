@@ -317,8 +317,13 @@ showing an active user (bonus: attributed to your UTM source).
 
 **Viva questions:**
 - *What is CPC?* → Cost Per Click — you pay only when someone clicks your ad, not for views.
+- *How does the ad auction decide placement and cost?* → When someone searches your keyword, Google runs an
+  instant auction; position = **Ad Rank = bid × Quality Score** (relevance of ad + landing page). A more
+  relevant ad can outrank a higher bidder, and you pay only enough to beat the advertiser below you — which
+  is why keywords, ad copy, and landing page all matter.
 - *Why send ads to a product page, not the homepage?* → The visitor searched for a specific product;
-  landing them on it (not a generic page) means fewer clicks lost → higher conversion.
+  landing them on it (not a generic page) means fewer clicks lost → higher conversion (and higher Quality
+  Score).
 - *What do UTM tags do?* → They tag the URL so GA4 can attribute the visit to the campaign/source/medium —
   that's how you know which channel actually sells.
 - *What does GA4 track once installed?* → Page views, device, country, source/medium, and events like the

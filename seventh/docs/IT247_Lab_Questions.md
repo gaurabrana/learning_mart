@@ -71,9 +71,11 @@ product where you put a keyword into the `<title>`/`<meta description>`.
 **Q14. Ad campaign plan.** Present a **Google Search ad campaign plan** for your store: the goal, one ad
 group, **5 keywords** (from Q13), **3 headlines + 2 descriptions**, and the **landing URL with UTM tags**
 pointing at a real product/category page. Google Ads now requires a credit card just to sign up, so you
-**document the campaign as a written plan** instead of a live draft. Explain what **CPC** means and why you
-send ads to a specific product page (not the homepage). *(Optional live route: if you can access **Meta /
-Facebook Ads Manager** or an existing Google Ads account, build it there as a real draft and screenshot it.)*
+**document the campaign as a written plan** instead of a live draft — the goal is to **show you understand
+how paid search works**. Explain what **CPC** means, why you send ads to a specific product page (not the
+homepage), and how the **ad auction** (Ad Rank = bid × Quality Score) decides whose ad shows and what they
+pay. *(Optional live route: if you can access **Meta / Facebook Ads Manager** or an existing Google Ads
+account, build it there as a real draft and screenshot it.)*
 
 **Q15. Analytics (GA4).** Include a screenshot of **GA4 Realtime** with an active user. Where is the GA4
 tracking code placed on your site?
