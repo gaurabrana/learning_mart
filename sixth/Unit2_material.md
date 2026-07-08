@@ -3,7 +3,7 @@
 
 **Program:** BIM, 6th Semester · **Unit weight:** 5 lecture hours
 **Sessions:** S6–S10 (50 min each) · **Local context:** Nepal / South Asia
-**Format:** Markdown (review copy — convert to PPT/PDF after approval)
+**Format:** Markdown — source of truth; the built deck is `IT246_Unit2.pptx` (92 slides), regenerated via `build_unit2_pptx.py` (imports `deckkit.py`).
 
 > **How to read this file.** This is written to **carry a full 50 minutes on its own.** Each
 > session has **minute markers** `[~X min]`, the actual **explanation to deliver** (prose, not just
@@ -86,6 +86,19 @@ By the end of this unit, students will be able to:
 > 🎙️ Speaker note (transition): "We've got six arrows. Let's follow each one and ask: what do you
 > owe the person at the other end? Start with the one that signs your paycheck."
 
+**📊 Depth table — Privileged access — what each role CAN do, and the duty it creates**
+
+| IT role | What they can technically do | The duty their access creates |
+|---|---|---|
+| Database administrator | Read/edit any record — every customer's balance, any citizen's KYC | View only what the job needs; never browse out of curiosity |
+| Developer | Hold the full source code and business logic | Not leak, sell, or reuse the employer's/client's code |
+| System administrator | Root rights — read anyone's email, reset any password | Not snoop on colleagues or executives; act only on authorised tasks |
+| Support technician | Open your files, install software, take remote control | Touch only what fixes the stated problem; keep what they see private |
+| Network administrator | See all traffic, block or log any user | Monitor per policy, not to spy on individuals |
+| Bank IT staffer (Nepal) | Look up any account — a neighbour's, a celebrity's, an ex's | Look only for a work reason; the system permits it, ethics forbids it |
+
+*ℹ️ Nothing on the right column is enforced by the system — the system GRANTS the access. Only trust and ethics stop the abuse.*
+
 #### Concept 2 — Relationship with the Employer `[THEORY]` `[EXAMPLE]` `[~9 min]`
 
 [SLIDE] **Duty of loyalty and honesty**
@@ -121,6 +134,17 @@ By the end of this unit, students will be able to:
 > 🎙️ Speaker note: If a student says "but the boss told me to," connect explicitly to Unit 1's
 > decision traps — obedience to authority does not erase personal accountability.
 
+**📊 Depth table — Four pressure points on the employer relationship**
+
+| Pressure point | What it looks like | Why it's an ethical problem |
+|---|---|---|
+| Conflict of interest | A side interest that competes with the employer (moonlighting for a rival) | Your judgment now serves two masters; the employer can't trust your loyalty |
+| Resume fraud | Claiming a certification or skill you don't have | A breach of honesty before you even start — the employer relied on a lie |
+| Software-license compliance | Using unlicensed/pirated software on the job (see S8) | Legal liability for the firm AND you; 'orders' don't transfer the blame |
+| Whistle-blowing tension | The employer itself is doing wrong; do you stay loyal? | Loyalty has a limit — it never requires covering up harm (Unit 4) |
+
+*ℹ️ Loyalty and honesty are the duties; these four are where they get tested in a real job.*
+
 #### Concept 3 — Relationship with the Client `[THEORY]` `[~8 min]`
 
 [SLIDE] **A professional duty beyond the contract**
@@ -150,6 +174,16 @@ By the end of this unit, students will be able to:
 > 🎙️ Speaker note (transition): "Two arrows down. The remaining four — suppliers, peers, users,
 > society — share a theme: fairness to people who aren't your boss or your client. Let's batch them."
 
+**📊 Depth table — Three duties to the client — and the failure when each is broken**
+
+| Duty to the client | What it means | Failure example (Nepal / IT) |
+|---|---|---|
+| Honest technical advice | Recommend what the client needs, not what pays you most | Selling an over-sized system a small NGO doesn't need |
+| Deliver what was promised | Build the agreed scope to the agreed quality | Marking a half-built e-gov module 'done' to trigger payment |
+| Disclose risks | Tell them what might fail, leak, or not scale | Hiding that the system can't handle election-day load |
+
+*ℹ️ All three exploit information asymmetry — the client literally cannot catch the breach until it's too late. That's what makes it a PROFESSIONAL duty.*
+
 #### Concept 4 — Suppliers, Peers, Users & Society `[THEORY]` `[EXAMPLE]` `[~5 min]`
 
 [SLIDE] **The other four relationships**
@@ -174,6 +208,29 @@ By the end of this unit, students will be able to:
 > 🍿 **Fun analogy (deliver it):** "An IT worker is like a **hospital pharmacist** — trusted with
 > powerful 'medicine' (access and data) that **heals or harms depending on whose hand holds it.** The
 > pharmacist's skill isn't the safeguard; their *ethics* is. Same for you and your admin password."
+
+**📊 Depth table — Gift vs Bribe — the three-question test**
+
+| Test question | A genuine gift | A bribe |
+|---|---|---|
+| Would it survive being made PUBLIC? | Yes — a logo pen at a conference is fine to disclose | No — you'd hide the 'free iPhone' from your boss |
+| Is it TIMED around a decision? | No — unrelated to any pending choice | Yes — arrives the week before the tender |
+| Could it INFLUENCE your judgment? | No — token value, no leverage | Yes — that's the entire point of giving it |
+
+*ℹ️ The iPhone fails all three → bribe. The logo pen passes all three → gift. In Nepal, festival ('Dashain') gifting is cultural — the test is what keeps a normal gift from becoming a bribe.*
+
+**📊 Depth table — The six relationships on one page — duty & a concrete Nepal risk**
+
+| Relationship | Core duty | A concrete ethical risk (Nepal / IT) |
+|---|---|---|
+| Employer | Loyalty + honesty; protect assets/IP | Copying source code to a personal side project |
+| Client | Honest advice; deliver; disclose risk | Hiding a security flaw to hit a deadline |
+| Suppliers | Deal fairly; no bribes/kickbacks | Accepting a vendor's pre-tender 'gift' |
+| Peers | Mutual respect; no poaching/inflation | Blaming a teammate to look better; stealing a rival's trade secrets |
+| Users | Support & train; don't exploit skill gaps | Burying a customer in jargon to overcharge |
+| Society | Build safe systems; don't enable harm | Shipping a system that leaks citizen data |
+
+*ℹ️ None of these risks required hacking — every one came from ordinary access plus a pull on your loyalty.*
 
 #### 🛠 ACTIVITY — "Map your own six arrows" `[ACTIVITY]` `[~5 min]`
 
@@ -279,6 +336,17 @@ what separates a trusted professional from a technically-skilled liability.
 > 🎙️ Speaker note (transition): "IT has codes even without licensing — so let's look at what a code
 > of ethics actually does, because it's the main tool the field *does* have."
 
+**📊 Depth table — The four-part profession test — IT vs medicine/engineering**
+
+| Criterion | Medicine / Engineering | Information Technology |
+|---|---|---|
+| Specialized education | Medical / engineering degree required | ✅ Yes — IT degrees (like this BIM) |
+| Recognized body of knowledge | Established, documented, examined | ✅ Yes — shared, documented expertise |
+| Code of ethics | Yes — enforced by the council | ✅ Yes — ACM, IEEE-CS (voluntary) |
+| Self-regulation (licensing + discipline) | Yes — NMC / NEC can strike you off | ❌ No universal licensing to lose |
+
+*ℹ️ IT scores 3 of 4. The missing self-regulation — no licence, no strike-off — is the whole reason 'is IT a profession?' is a live debate.*
+
 #### Concept 2 — Professional Codes of Ethics `[THEORY]` `[EXAMPLE]` `[~8 min]`
 
 [SLIDE] **The rules members agree to uphold**
@@ -306,6 +374,17 @@ what separates a trusted professional from a technically-skilled liability.
 > 🎙️ Speaker note: Connect to S6 — this is the *employer-vs-society* tension again, now with a code
 > to lean on. "The code gives you language to say 'no' professionally."
 
+**📊 Depth table — The four jobs a code of ethics does**
+
+| Job of the code | What it achieves | Concrete example |
+|---|---|---|
+| Sets expectations | Turns vague 'be good' into specific commitments | ACM: 'avoid harm', 'respect privacy', 'be honest about limitations' |
+| Builds public trust | Outsiders can see the standard the field holds itself to | Clients/outsourcing partners trust a firm that follows ACM norms |
+| Guides decisions | A reference when you're unsure, not just your gut | Asked to build hidden tracking → the code says object/disclose/refuse |
+| Basis for discipline | Membership or employment can be tied to it | Breach → lose membership or your job, even with no state licence |
+
+*ℹ️ A code has 'some teeth' without a government licence — the last row is how the field disciplines its own even though IT lacks NMC/NEC-style regulation.*
+
 #### Concept 3 — Certification `[THEORY]` `[~6 min]`
 
 [SLIDE] **Proof of a specific skill**
@@ -326,6 +405,19 @@ what separates a trusted professional from a technically-skilled liability.
 > ✅ **Correction:** "Certification proves **skill, not integrity.** A certified ethical hacker (CEH)
 > has the *skill* to break into systems — whether they use it ethically is a *separate* question the
 > certificate can't answer."
+
+**📊 Depth table — Common IT certifications — what each proves & who issues it**
+
+| Certification | What it proves | Issued by |
+|---|---|---|
+| CCNA | Cisco networking fundamentals | Cisco (vendor) |
+| CISSP | Information-security management expertise | (ISC)² (industry body) |
+| CEH | Skill in ethical hacking / penetration testing | EC-Council (industry body) |
+| CompTIA A+ | Core IT support / hardware & OS troubleshooting | CompTIA (industry body) |
+| AWS Certified | Building/operating on Amazon Web Services | Amazon (vendor) |
+| CISA / CISM | IT audit / security governance | ISACA (professional body) |
+
+*ℹ️ All are voluntary, expire over time, and prove SKILL — none grants a legal right to practise. CEH proves the skill to break into systems; whether it's used ethically is a separate question.*
 
 #### Concept 4 — Licensing & Professional Organizations `[THEORY]` `[~9 min]`
 
@@ -357,6 +449,28 @@ what separates a trusted professional from a technically-skilled liability.
 > 🍿 **Fun analogy (deliver it):** "A code of ethics is the **'terms of service' you accept** to be
 > trusted as a professional. You don't read every line — but the day you violate it, everyone points
 > to the clause you agreed to."
+
+**📊 Depth table — Certification vs Licence vs Code vs Professional body — the confusable four**
+
+| Mechanism | Who grants it | Legal force? | What it proves / does | Example |
+|---|---|---|---|---|
+| Certification | A vendor or industry body | No — voluntary | You have a specific skill | CCNA, CISSP, AWS |
+| Licence | Government | Yes — legally enforced | Legal right to practise | NMC doctor reg., driving licence |
+| Code of ethics | A professional body | No — but can discipline members | Shared ethical commitments | ACM 'avoid harm' |
+| Professional body | (is itself the organization) | No — sets standards | Publishes codes, runs certs, advocates | ACM, IEEE-CS, ISACA, CAN-Nepal |
+
+*ℹ️ The test that separates them: WHO grants it, and does it have LEGAL FORCE? A driving licence is a licence (government, legal). CAN is a body (may run certs, isn't itself a cert).*
+
+**📊 Depth table — The professional bodies that keep IT professional**
+
+| Body | Focus | What it runs / offers |
+|---|---|---|
+| ACM | Global computing standards & ethics | The ACM Code of Ethics; conferences, digital library |
+| IEEE-CS | Computing/engineering standards | Standards, the software-engineering code (with ACM) |
+| ISACA | Governance, audit & security | The CISA and CISM certifications |
+| CAN (Computer Association of Nepal) | Nepal's IT community | Advocacy, events, training for local professionals |
+
+*ℹ️ Organizations publish the codes and run the certifications; government runs the licensing. That's the whole map of 'who keeps IT professional'.*
 
 #### 🛠 ACTIVITY — "Cert, license, or code?" `[ACTIVITY]` `[~5 min]`
 
@@ -462,6 +576,19 @@ badges — and lets you read what an employer is really asking for.
 > 🎙️ Speaker note (transition): "If users are the risk, how does an organization set expectations for
 > thousands of them at once? With a single document everyone signs — the AUP."
 
+**📊 Depth table — The insider risk — careless (not malicious) acts that cause real harm**
+
+| Everyday user action | The harm it causes | Who is affected |
+|---|---|---|
+| Clicking a phishing link | Credentials stolen, malware installed | The whole organization's network |
+| Reusing one password everywhere | One leak unlocks every account | The user and everyone in shared systems |
+| Plugging in a personal USB | Malware jumps onto work machines | Colleagues, shared servers |
+| Installing a cracked app 'to get work done' | Malware + licence violation | The firm (legal + security) |
+| Installing games on a shared lab PC | Slows the machine, fills it with malware | The next class / every other student |
+| Sharing the Wi-Fi/server password freely | Untraceable misuse (torrents, mining) | The organization that owns the network |
+
+*ℹ️ None of these is a 'hacker' — the damage is 100% insider and usually careless, not malicious. That's why the fix is behaviour, not just tools.*
+
 #### Concept 2 — Acceptable Use Policy (AUP) `[THEORY]` `[EXAMPLE]` `[~8 min]`
 
 [SLIDE] **The rulebook users sign**
@@ -488,6 +615,30 @@ badges — and lets you read what an employer is really asking for.
 > aloud and quickly classify each as permitted / prohibited / monitoring / consequence. Reward rules
 > that name a **consequence** — students almost always forget that an unenforced rule is just a
 > suggestion (echoes Unit 1: enforcement beats the document).
+
+**📊 Depth table — The four things every AUP defines**
+
+| AUP element | What it states | Example clause |
+|---|---|---|
+| Permitted use | What you may do | Work tasks; reasonable limited personal browsing |
+| Prohibited use | What you may not do | No piracy, no personal USBs, no side business on company email |
+| Monitoring | That the org may watch use | 'Your email and web use may be monitored' (makes later monitoring fair) |
+| Consequences | What happens on breach | Warning → suspension → dismissal → legal action |
+
+*ℹ️ The signature is the ethical hinge: it converts a vague expectation into informed, consented agreement — 'I didn't know' stops being available.*
+
+**📊 Depth table — A lab/office AUP — Allowed vs Prohibited**
+
+| Allowed | Prohibited |
+|---|---|
+| Using PCs for coursework and assignments | Installing cracked or unlicensed software |
+| Reasonable, brief personal use on a break | Torrenting movies or games on the network |
+| Saving work to approved storage | Plugging in personal USB drives without scanning |
+| Printing documents you need | Accessing offensive or illegal content |
+| Reporting a fault to IT | Running a side business on company email/resources |
+| Using licensed, provided applications | Crypto-mining or unauthorised background jobs |
+
+*ℹ️ This two-column card IS the AUP for most everyday cases — it draws the line in advance, before anyone can claim ambiguity.*
 
 #### Concept 3 — Software Piracy `[THEORY]` `[EXAMPLE]` `[~9 min]`
 
@@ -520,6 +671,16 @@ badges — and lets you read what an employer is really asking for.
 > film still plays, no one's obviously poorer tonight, it feels victimless. But you were **never
 > entitled to the seat.** The harm is real even though it's invisible at the moment you sit down."
 
+**📊 Depth table — Three forms of software piracy**
+
+| Form | What it is | Example |
+|---|---|---|
+| Counterfeiting | Selling fake copies as if genuine | A shop selling pirated Windows DVDs as 'original' |
+| Unlicensed install | One purchased copy on many machines, or a cracked version | Installing cracked AutoCAD across a whole office |
+| Licence violation | Exceeding what the licence permits | A 5-seat licence actually used by 50 staff |
+
+*ℹ️ All three are piracy even with no sale involved — the harm is USING value you never paid for, not profiting from it.*
+
 #### Concept 4 — Inappropriate Use of IT Resources `[THEORY]` `[~5 min]`
 
 [SLIDE] **Right tools, wrong purpose**
@@ -544,6 +705,19 @@ badges — and lets you read what an employer is really asking for.
 > 🖼️ Visual: an AUP **"Allowed vs Prohibited"** two-column card; a **software-piracy types** diagram
 > (counterfeiting / unlicensed install / license violation); an illustrative **Nepal / South Asia
 > piracy-rate bar.**
+
+**📊 Depth table — Where's the line? — everyday office actions (Nepal AUP)**
+
+| Action | Typical verdict | Why |
+|---|---|---|
+| Charging your phone on the office PC | Depends | Trivial, but some AUPs restrict USB ports |
+| Installing a cracked PDF editor | Prohibited | Software piracy — a clear licence violation |
+| A quick eSewa / Khalti payment on a break | Allowed | Reasonable, brief, no impact on work |
+| Running a weekend freelance project on the work laptop | Prohibited | Resource misuse + IP conflict with the employer |
+| Plugging in a personal USB to print a file | Depends | Malware risk; often needs a scan or is banned outright |
+| Streaming cricket all afternoon | Prohibited | Excessive personal use — impacts work and bandwidth |
+
+*ℹ️ The 'depends' rows are exactly the ones an AUP must spell out in advance — ambiguity is where misuse hides. Test each with reasonableness + AUP + impact.*
 
 #### 🛠 ACTIVITY — "Where's the line?" `[ACTIVITY]` `[~5 min]`
 
@@ -651,6 +825,16 @@ caught powering a side hustle. Knowing the line *before* you cross it is cheap i
 > 🎙️ Speaker note (transition): "Privacy is about *you* controlling your data. The flip side is when
 > someone *systematically watches* — that's surveillance."
 
+**📊 Depth table — The three data-privacy principles — and what breaking each looks like**
+
+| Principle | One-line meaning | Violation example (Nepal / IT) |
+|---|---|---|
+| Consent | Collect data only with informed agreement | A SIM dealer selling your number to loan marketers |
+| Purpose limitation | Use data only for the reason it was collected | Loan-form data reused to target you with ads |
+| Data minimization | Collect only what you actually need | A mall QR form demanding your citizenship number |
+
+*ℹ️ Nepal's Individual Privacy Act 2075 recognises these rights; reported citizen-data leaks show the gap between a law existing and being enforced.*
+
 #### Concept 2 — Surveillance `[THEORY]` `[~8 min]`
 
 [SLIDE] **Systematic monitoring**
@@ -678,6 +862,17 @@ caught powering a side hustle. Knowing the line *before* you cross it is cheap i
 
 > 🎙️ Speaker note: Tie back explicitly — this is why the AUP's "monitoring" clause from S8 exists. A
 > disclosed policy is the difference between *monitoring* and *spying.*
+
+**📊 Depth table — Same technology, different ethics — spying vs legitimate monitoring**
+
+| Question | Secret surveillance (spying) | Legitimate monitoring |
+|---|---|---|
+| Were people told in advance? | No — it's hidden | Yes — stated in a signed AUP (S8) |
+| Did they consent? | No | Yes — acknowledged the policy |
+| Is the scope proportionate? | Often excessive — everything, always | Limited to a stated, work-related purpose |
+| Ethical verdict | Violates privacy / autonomy | Fair — transparency + consent make it legitimate |
+
+*ℹ️ Keystroke logging + screenshots can be either — the SAME technology. Transparency and consent (the S8 AUP clause) are what shift it from spying to monitoring.*
 
 #### Concept 3 — Anonymity Online `[THEORY]` `[~8 min]`
 
@@ -708,6 +903,17 @@ caught powering a side hustle. Knowing the line *before* you cross it is cheap i
 > 🎙️ Speaker note (transition): "If anonymity is fragile, the thing it's protecting — or
 > attacking — is your *identity.* Let's define what that even is online."
 
+**📊 Depth table — Anonymity — the same tool, two opposite edges**
+
+| Anonymity... | Protective edge (good) | Harmful edge (bad) |
+|---|---|---|
+| Who uses it | Whistle-blowers, activists, the vulnerable | Trolls, scammers, harassers |
+| What it enables | Exposing corruption; free speech under pressure | Harassment and fraud without consequence |
+| Nepal example | Pages exposing corruption safely | Pages spreading rumours and harassing people |
+| Why it can't be banned | Silencing the troll also silences the whistle-blower | Allowing it fully shields the criminal too |
+
+*ℹ️ Same tool, opposite uses — which is exactly why real-name registration is so contested (S9 CFU). Note: true anonymity is rare — IP logs, metadata, and device fingerprints leave a trail.*
+
 #### Concept 4 — Identity & Identity Theft `[THEORY]` `[EXAMPLE]` `[~5 min]`
 
 [SLIDE] **You are your data**
@@ -726,6 +932,17 @@ caught powering a side hustle. Knowing the line *before* you cross it is cheap i
 > 🍿 **Fun analogy (deliver it):** "Your personal data is like your **house key** — **easy to copy**,
 > and you usually **don't notice until someone is already inside.** Nobody steals the house; they
 > copy the key and walk in the front door."
+
+**📊 Depth table — How identity gets stolen — method, Nepal example, defence**
+
+| Method | How it works | Everyday defence |
+|---|---|---|
+| Phishing SMS / call | Fake 'eSewa/bank' message tricks you into sharing an OTP | Never share an OTP; banks never ask for it |
+| Fake social profile | Impersonates you or a public figure to defraud contacts | Report it; verify before trusting a request |
+| Stolen credentials | A leaked/reused password unlocks your accounts | Unique passwords + two-factor authentication |
+| Data-leak reuse | Leaked KYC data used to impersonate you elsewhere | Minimise what you share; watch for misuse |
+
+*ℹ️ Phishing is the single most common entry point (full treatment in Unit 7). Nobody 'steals the house' — they copy the key (your data) and walk in the front door.*
 
 #### 🛠 ACTIVITY — "Trace your data trail" `[ACTIVITY]` `[~5 min]`
 
@@ -834,6 +1051,18 @@ expected to build *into* the systems you ship.
 > 🎙️ Speaker note (transition): "Let's take the three biggest harms one at a time — starting with the
 > one aimed at a *person*: harassment."
 
+**📊 Depth table — The four amplifiers — how a small act becomes mass harm**
+
+| Amplifier | What it does | Everyday example |
+|---|---|---|
+| Scale | One post reaches thousands, not a roomful | A rumour shared to a 50k-follower page |
+| Speed | Spreads before anyone can check or correct | A fake 'breaking news' clip trending in minutes |
+| Anonymity | People say what they'd never say to your face | Abusive comments from throwaway accounts |
+| Virality | The algorithm boosts the most emotional content | An outrage post pushed to millions of feeds |
+| Bystander effect | In a huge crowd, everyone assumes someone else will act | Thousands watch a pile-on; no one intervenes |
+
+*ℹ️ These are Unit 1's scale/speed/permanence factors, now personal. The harm grows in the silence — passive bystanders are part of the mechanism.*
+
 #### Concept 2 — Cyberbullying & Online Harassment `[THEORY]` `[EXAMPLE]` `[~8 min]`
 
 [SLIDE] **Repeated targeting with digital tools**
@@ -857,6 +1086,19 @@ expected to build *into* the systems you ship.
 
 > 🎙️ Speaker note: Don't let "I just didn't join in" pass as innocence — the lesson is that passive
 > bystanders are part of the mechanism that makes pile-ons hurt.
+
+**📊 Depth table — Forms of cyberbullying & harassment**
+
+| Form | What it is | Example |
+|---|---|---|
+| Trolling | Deliberately provoking to upset or derail | Posting inflammatory replies to bait a reaction |
+| Doxxing | Publishing private details to expose someone to harm | Leaking a person's home address and phone number |
+| Group pile-on | Many people targeting one, amplified by scale | A comment section swarming one individual |
+| Gendered harassment | Targeting aimed especially at women | Sexualised abuse of women public figures online |
+| Group-chat bullying | Repeated mocking in a shared chat | A class group chat mocking one classmate |
+| Threats / intimidation | Direct threats of harm | Menacing DMs meant to frighten a target |
+
+*ℹ️ The common thread is a REPEATED pattern aimed at a person — and the well-documented, severe mental-health impact (anxiety, withdrawal, self-harm).*
 
 #### Concept 3 — Fake News & Misinformation `[THEORY]` `[~8 min]`
 
@@ -885,6 +1127,17 @@ expected to build *into* the systems you ship.
 > 🍿 **Fun analogy (deliver it):** "A lie online travels like a **forwarded festival greeting** —
 > **cheap to send, impossible to recall.** Once it's out of your hands it copies itself across the
 > country, and your correction never reaches everyone who got the original."
+
+**📊 Depth table — Misinformation vs Disinformation**
+
+| Dimension | Misinformation | Disinformation |
+|---|---|---|
+| Intent | None — believed it, shared carelessly | Deliberate — intent to deceive |
+| Typical source | An ordinary user who didn't check | Propagandists, scammers, coordinated campaigns |
+| Example (Nepal) | Forwarding a fake 'health cure' you trusted | A staged rumour to sway an election or scam money |
+| Are you responsible? | Yes — the share button is an act | Yes — and the intent makes it worse |
+
+*ℹ️ Both spread because they exploit emotion, ride confirmation bias, and are boosted by engagement algorithms — truth is boring, outrage is viral.*
 
 #### Concept 4 — Defamation & Reputation Harm `[THEORY]` `[EXAMPLE]` `[~5 min]`
 
@@ -918,6 +1171,19 @@ expected to build *into* the systems you ship.
 
 > 🖼️ Visual: a **"share / don't share" verification flowchart**; a spectrum graphic
 > **opinion → criticism → defamation**; a **"1 post → thousands"** virality spread diagram.
+
+**📊 Depth table — Opinion vs Criticism vs Defamation — classify the statement**
+
+| Statement | Classification | Why / legal risk |
+|---|---|---|
+| 'I didn't enjoy this café's coffee.' | Opinion | Personal taste — not a factual claim; protected |
+| 'This café's service is slow and overpriced.' | Criticism | Honest evaluation of experience; low risk |
+| 'The owner of this café is a thief.' | Defamation | False statement of fact alleging a crime; high risk |
+| 'I think shop X overcharges.' | Opinion | Framed as a personal view; lower risk |
+| 'Shop X is a fraud that steals money.' | Defamation | False factual accusation of a crime; high risk |
+| Repeatedly posting a classmate's photo with insults | Harassment | Repeated targeting of a person (not defamation) |
+
+*ℹ️ ⚠️ Verify the current legal position (ETA 2063 and later amendments) before teaching specifics. Rule of thumb: state experiences and opinions, not invented facts about people.*
 
 #### 🛠 ACTIVITY — "Verify before you share" `[ACTIVITY]` `[~6 min]`
 
@@ -1024,8 +1290,7 @@ station — which is why "verify before you share" is a professional habit, not 
 ---
 
 ## ✅ Unit 2 complete (full lecturer-ready depth)
-This version is paced to fill a true 50 minutes per session (5 + 35 + 5 + 3 + 2), with prose,
-worked examples, a timed activity, and minute markers. **Review the depth** — if this matches Unit
-1's level, say "generate the PPT" to build the diagram-rich deck (relationship web, certification-vs-
-licensing table, AUP allowed/prohibited card, privacy data-trail, opinion→defamation spectrum), or
-"generate Unit 3" for Intellectual Property (S11–S16). Request any edits to Unit 2 first if needed.
+The deck is built: **IT246_Unit2.pptx** (92 slides) — diagram-rich, self-contained, and PDF-safe,
+carrying all **23 §7A depth tables** (comparison, concrete-example, and scaffolding). This Markdown
+source now includes those same depth tables inline under each concept, so the source of truth and
+the deck stay in sync.

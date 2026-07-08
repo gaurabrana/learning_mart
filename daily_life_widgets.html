@@ -954,20 +954,20 @@ $('#todoInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTodo()});
 renderTodos();
 
 /* ---------- POMODORO ---------- */
-let pomoSecs=25*60, pomoTimer=null, pomoSessions=store.get('pomoSessions',0);
+let pomoSecs=25*60, pomoDur=25*60, pomoTimer=null, pomoSessions=store.get('pomoSessions',0);
 $('#pomoSessions').textContent=pomoSessions;
 function pomoShow(){const m=String(Math.floor(pomoSecs/60)).padStart(2,'0'),s=String(pomoSecs%60).padStart(2,'0');$('#pomoDisplay').textContent=`${m}:${s}`;}
 function pomoStop(){clearInterval(pomoTimer);pomoTimer=null;}
 $('#pomoStart').onclick=()=>{
   if(pomoTimer)return;
   pomoTimer=setInterval(()=>{
-    if(pomoSecs<=0){pomoStop();pomoSessions++;store.set('pomoSessions',pomoSessions);$('#pomoSessions').textContent=pomoSessions;toast('⏰ Session complete!');beep();return;}
+    if(pomoSecs<=0){pomoStop();pomoSessions++;store.set('pomoSessions',pomoSessions);$('#pomoSessions').textContent=pomoSessions;toast('⏰ Session complete!');beep();pomoSecs=pomoDur;pomoShow();return;}
     pomoSecs--;pomoShow();
   },1000);
 };
 $('#pomoPause').onclick=pomoStop;
-$('#pomoReset').onclick=()=>{pomoStop();pomoSecs=25*60;pomoShow();};
-$$('.chip-btn').forEach(b=>b.onclick=()=>{pomoStop();pomoSecs=+b.dataset.min*60;pomoShow();});
+$('#pomoReset').onclick=()=>{pomoStop();pomoSecs=pomoDur;pomoShow();};
+$$('.chip-btn').forEach(b=>b.onclick=()=>{pomoStop();pomoSecs=pomoDur=+b.dataset.min*60;pomoShow();});
 pomoShow();
 
 /* ---------- WATER ---------- */
@@ -1192,7 +1192,6 @@ renderShop();
 /* ---------- PASSWORD ---------- */
 const pwSets={upper:'ABCDEFGHJKLMNPQRSTUVWXYZ',lower:'abcdefghijkmnpqrstuvwxyz',num:'23456789',sym:'!@#$%^&*?-_=+'};
 $('#pwLen').oninput=e=>$('#pwLenVal').textContent=e.target.value;
-$$('#pwGen').forEach;
 $$('.chip[data-set]').forEach(c=>c.onclick=()=>c.classList.toggle('active'));
 $('#pwGen').onclick=()=>{
   let pool='';$$('.chip[data-set].active').forEach(c=>pool+=pwSets[c.dataset.set]);
@@ -1284,7 +1283,7 @@ $('#budgetInput').oninput=e=>{budget=parseFloat(e.target.value)||0;store.set('bu
 renderBudget();
 
 /* ---------- MEDICATION ---------- */
-let meds=store.get('meds',{day:todayKey(),items:[]});
+let meds=store.get('meds',{day:todayKey(),items:[]});if(!meds||typeof meds!=='object'||!Array.isArray(meds.items))meds={day:todayKey(),items:[]};
 function renderMeds(){
   if(meds.day!==todayKey()){meds.day=todayKey();meds.items.forEach(m=>m.done=false);store.set('meds',meds);}
   const ul=$('#medList');ul.innerHTML='';
@@ -1773,7 +1772,7 @@ setInterval(()=>{let ch=false;mtimers.forEach(t=>{if(t.running&&t.rem>0){t.rem--
 renderMT();
 
 /* ---------- DAILY ROUTINE ---------- */
-let routine=store.get('routine',{day:todayKey(),items:[]});
+let routine=store.get('routine',{day:todayKey(),items:[]});if(!routine||typeof routine!=='object'||!Array.isArray(routine.items))routine={day:todayKey(),items:[]};
 function renderRT(){if(routine.day!==todayKey()){routine.day=todayKey();routine.items.forEach(it=>it.done=false);store.set('routine',routine);}const ul=$('#rtList');ul.innerHTML='';routine.items.forEach((it,i)=>{const li=document.createElement('li');if(it.done)li.className='done';li.innerHTML=`<input type="checkbox" ${it.done?'checked':''} style="width:auto"><span class="t">${esc(it.name)}</span><span class="x">✕</span>`;$('input',li).onchange=()=>{routine.items[i].done=!routine.items[i].done;store.set('routine',routine);renderRT();};$('.x',li).onclick=()=>{routine.items.splice(i,1);store.set('routine',routine);renderRT();};ul.appendChild(li);});const done=routine.items.filter(x=>x.done).length;$('#rtBar').style.width=(routine.items.length?done/routine.items.length*100:0)+'%';}
 $('#rtAdd').onclick=()=>{const v=$('#rtInput').value.trim();if(!v)return;routine.items.push({name:v,done:false});$('#rtInput').value='';store.set('routine',routine);renderRT();};
 $('#rtInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('#rtAdd').click()});
@@ -1816,7 +1815,7 @@ $('#eyeStop').onclick=()=>{if(eye){clearInterval(eye);eye=null;}eyeRem=1200;eyeS
 eyeShow();
 
 /* ---------- CALORIE LOG ---------- */
-let calories=store.get('calories',{day:todayKey(),items:[]});
+let calories=store.get('calories',{day:todayKey(),items:[]});if(!calories||typeof calories!=='object'||!Array.isArray(calories.items))calories={day:todayKey(),items:[]};
 let calGoal=store.get('calgoal',2000);$('#calGoal').value=calGoal;
 function renderCal(){if(calories.day!==todayKey()){calories={day:todayKey(),items:[]};store.set('calories',calories);}const ul=$('#calList');ul.innerHTML='';let tot=0;calories.items.forEach((it,i)=>{tot+=it.kcal;const li=document.createElement('li');li.innerHTML=`<span class="t">${esc(it.name)}</span><b class="mono">${it.kcal}</b><span class="x">✕</span>`;$('.x',li).onclick=()=>{calories.items.splice(i,1);store.set('calories',calories);renderCal();};ul.appendChild(li);});$('#calTotal').textContent=tot;const pct=calGoal>0?Math.min(100,tot/calGoal*100):0;$('#calBar').style.width=pct+'%';$('#calBar').style.background=tot>calGoal?'var(--bad)':'linear-gradient(90deg,var(--acc),var(--acc2))';}
 $('#calAdd').onclick=()=>{const n=$('#calName').value.trim(),k=parseInt($('#calKcal').value);if(!n||isNaN(k))return;calories.items.push({name:n,kcal:k});$('#calName').value='';$('#calKcal').value='';store.set('calories',calories);renderCal();};
@@ -2125,7 +2124,7 @@ startQuiz();
     teach:['Flashcards','Random Name Picker','Grade','Attendance','Group Randomizer','Math Practice','Flashcard Quiz']
   };
   const catOf=t=>{for(const c of ['prod','health','money','games','teach'])if(KW[c].some(k=>t.includes(k)))return c;return 'tools';};
-  const buckets={prod:[],health:[],money:[],tools:[],teach:[]};
+  const buckets={prod:[],health:[],money:[],tools:[],games:[],teach:[]};
   cards.forEach(card=>{const title=$('h2',card).textContent.trim();card.dataset.search=title.toLowerCase();buckets[catOf(title)].push(card);});
   grid.style.display='block';grid.innerHTML='';
   order.forEach(([key,label])=>{

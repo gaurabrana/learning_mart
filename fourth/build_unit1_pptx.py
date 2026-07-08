@@ -1,659 +1,626 @@
 #!/usr/bin/env python3
-"""Generate IT220 Unit 1 PowerPoint deck (with native-shape diagrams).
-Run: python3 build_unit1_pptx.py  ->  IT220_Unit1.pptx
+"""IT220 Unit 1 deck — S1–S4 (Database Concepts & Architecture), rebuilt to
+COURSE_MATERIAL_STANDARD.md. Self-contained / PDF-safe two-slide concept pairs;
+real example / trap / exam-answer / key terms on the slide face; notes = timing
+only. Content distilled from Unit1_material.md; diagrams already in images/.
+Run: python3 build_unit1_pptx.py -> IT220_Unit1.pptx
 """
 import os
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
-from pptx.enum.shapes import MSO_SHAPE, MSO_CONNECTOR
+from pptx.enum.shapes import MSO_SHAPE
 
 IMG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "images")
+NAVY=RGBColor(0x0C,0x2B,0x4A); BLUE=RGBColor(0x18,0x5F,0xA5); TEAL=RGBColor(0x0F,0x6E,0x56)
+AMBER=RGBColor(0x85,0x4F,0x0B); CORAL=RGBColor(0x99,0x3C,0x1D); LIGHT=RGBColor(0xF2,0xF5,0xF8)
+PALET=RGBColor(0xE1,0xF5,0xEE); WHITE=RGBColor(0xFF,0xFF,0xFF); DARK=RGBColor(0x1A,0x1A,0x1A)
+GREY=RGBColor(0x55,0x60,0x6B)
+BLUE_T=RGBColor(0xE6,0xF1,0xFB); CORAL_T=RGBColor(0xFA,0xEC,0xE7)
+TEAL_T=RGBColor(0xE1,0xF5,0xEE); AMBER_T=RGBColor(0xFA,0xEE,0xDA)
 
-# Per-concept revision extras, keyed by the slide's image.
-# (memory hook shown on the slide; exam Q + model answer added to speaker notes)
-CONCEPT_EXTRAS = {
- "s1_data_ladder.png": ("Facts → meaning → organized store.",
-   "Differentiate data, information & database with examples.",
-   "Data = raw facts; information = data + context; database = organized, persistent, shared collection. eSewa: raw fields → 'you paid Hari Rs 500' → all transactions stored."),
- "s1_users_dbms.png": ("Data is the books; the DBMS is the librarian.",
-   "What is a DBMS, and how does it differ from a database?",
-   "DBMS = software that manages databases (MySQL, Oracle). Database = the actual data. The DBMS adds concurrency, integrity, querying, security. DB + DBMS + apps = a database system."),
- "s1_db_users.png": ("The DBA is air-traffic control for data.",
-   "List the database users and the role of the DBA.",
-   "Naive/end users, application programmers, sophisticated users, and the DBA. DBA duties: schema design, security/permissions, backup & recovery, performance tuning."),
- "s1_file_vs_dbms.png": ("One source of truth beats many drifting copies.",
-   "State four advantages of a DBMS over a file-based system.",
-   "Controlled redundancy, consistency/integrity, concurrent multi-user sharing, security/access control, backup & recovery (any four, one line each)."),
- "s2_data_models.png": ("Idea → tables → disk.",
-   "What is a data model? Name its categories.",
-   "A set of concepts describing structure + constraints + operations. Categories: conceptual (ER) → representational (relational/tables) → physical (storage)."),
- "s2_schema_instance.png": ("Schema = the mould; instance = what's in it now.",
-   "Differentiate schema and instance with an example.",
-   "Schema = stable design (e.g. Student(roll,name,program)); instance = the actual current rows, volatile. One schema has many instances over time."),
- "s2_three_schema.png": ("View → whole → storage.",
-   "Explain the three-schema architecture.",
-   "External (per-user views), conceptual (whole logical DB), internal (physical storage). Mappings between levels hide detail and give data independence."),
- "s2_data_independence.png": ("Logical = change the design safely; physical = change the storage safely.",
-   "Define logical and physical data independence.",
-   "Logical = change the conceptual schema without changing views/apps. Physical = change storage (indexes/disks) without changing the conceptual schema."),
- "s3_languages.png": ("Define, Manipulate, Control, Transact.",
-   "Name the SQL sub-languages with one command each.",
-   "DDL (CREATE), DML (SELECT/INSERT), DCL (GRANT), TCL (COMMIT). SQL bundles all four."),
- "s3_interfaces.png": ("Same data, many doors.",
-   "List the types of DBMS interfaces.",
-   "Menu-based, form-based, GUI, natural-language, and API/embedded-SQL. Principle: match the interface to the user."),
- "s3_dbms_components.png": ("A DBMS is a kitchen of cooperating roles.",
-   "Name the main components of a DBMS and their roles.",
-   "Query processor/optimizer, storage manager, buffer manager, transaction manager (ACID), and the catalog/data dictionary."),
- "s3_data_dictionary.png": ("Metadata = data about data.",
-   "What is a data dictionary / system catalog?",
-   "The system catalog stores metadata: table names, column types, constraints, users, indexes. It makes the database self-describing."),
- "s4_centralized.png": ("One machine = one point of failure.",
-   "What is centralized architecture and its main drawback?",
-   "Data + DBMS + app on one central machine; terminals only display. Simple, but a single point of failure with poor scalability."),
- "s4_client_server.png": ("Three tiers: face, logic, data.",
-   "Differentiate two-tier and three-tier architecture.",
-   "Two-tier: client (UI+logic) ↔ DB server. Three-tier: client (UI) ↔ application server (business logic) ↔ DB server. Three-tier scales better."),
- "s4_classification.png": ("Model · users · distribution.",
-   "On what bases are DBMSs classified?",
-   "By data model (relational/NoSQL/...), number of users (single vs multi), distribution (centralized vs distributed), and purpose."),
- "s4_synthesis.png": ("User → interface → DBMS → schema → architecture.",
-   "How do the concepts of Unit 1 connect?",
-   "Users reach a DBMS (components + catalog) via interfaces/languages; it manages a database described by a schema at 3 levels (data independence), on a centralized/client-server architecture; classified by model, users, distribution."),
-}
+prs=Presentation(); prs.slide_width=Inches(13.333); prs.slide_height=Inches(7.5)
+BLANK=prs.slide_layouts[6]; SW,SH=prs.slide_width,prs.slide_height
 
-# Short hypothetical ("imagine if…") prompts per concept — added to speaker notes.
-HYPO = {
- "s1_data_ladder.png": "Given a file holding just '84,91,77,88' — is it data, info, or a database? Add context + structure to climb all three.",
- "s1_users_dbms.png": "If the college dropped its DBMS for per-department Excel, predict 3 failures within a month — each is a job the DBMS was doing.",
- "s1_db_users.png": "A startup with no DBA loses a table to a stray query — who notices, who restores it, and who should have set permissions?",
- "s1_file_vs_dbms.png": "A hospital keeps blood group in 3 files; only 1 is corrected before a transfusion — what's the risk, and which feature prevents it?",
- "s2_data_models.png": "Three teams describe one library (boxes / CREATE TABLE / disk files) — which abstraction level is each?",
- "s2_schema_instance.png": "Photograph the attendance register daily; on day 15 you add a column — did the schema or the instance change?",
- "s2_three_schema.png": "Hospital: patient / doctor / billing / DBA views — sort each onto external / conceptual / internal.",
- "s2_data_independence.png": "Add a biometric_id column — does the old portal break (logical)? Move data to SSD — which independence (physical)?",
- "s3_languages.png": "Four statements with keywords hidden (create / fetch / grant access / make permanent) — label each DDL/DML/DCL/TCL.",
- "s3_interfaces.png": "One library, three users (elderly member / busy librarian / developer) — design a fitting interface for each.",
- "s3_dbms_components.png": "A 0.1s query suddenly takes 30s — which component (optimizer / buffer / storage / transaction) do you suspect, and why?",
- "s3_data_dictionary.png": "Unknown database, no docs — list every table WITHOUT reading the data. (Query the catalog — it's self-describing.)",
- "s4_centralized.png": "Whole college on one server; the room loses power at result time — what's the blast radius? Now imagine 3 replicated servers.",
- "s4_client_server.png": "50,000 hit the portal in 5 min — which buckles, two-tier or three-tier, and where do you add machines in each?",
- "s4_classification.png": "Classify a laptop billing app, a bank core, and a social network on model / users / distribution.",
- "s4_synthesis.png": "eSewa's DB servers go down but app servers stay up — what still works, what breaks, and why?",
-}
-
-# ---- palette ----
-NAVY   = RGBColor(0x0C, 0x2B, 0x4A)
-BLUE   = RGBColor(0x18, 0x5F, 0xA5)
-TEAL   = RGBColor(0x0F, 0x6E, 0x56)
-AMBER  = RGBColor(0x85, 0x4F, 0x0B)
-CORAL  = RGBColor(0x99, 0x3C, 0x1D)
-LIGHT  = RGBColor(0xF2, 0xF5, 0xF8)
-PALE   = RGBColor(0xE6, 0xF1, 0xFB)
-PALET  = RGBColor(0xE1, 0xF5, 0xEE)
-WHITE  = RGBColor(0xFF, 0xFF, 0xFF)
-DARK   = RGBColor(0x1A, 0x1A, 0x1A)
-GREY   = RGBColor(0x55, 0x60, 0x6B)
-LGREY  = RGBColor(0xC7, 0xCF, 0xD6)
-
-prs = Presentation()
-prs.slide_width  = Inches(13.333)
-prs.slide_height = Inches(7.5)
-BLANK = prs.slide_layouts[6]
-SW, SH = prs.slide_width, prs.slide_height
-
-
-def _bg(slide, color):
-    slide.background.fill.solid()
-    slide.background.fill.fore_color.rgb = color
-
-
-def _box(slide, l, t, w, h):
-    return slide.shapes.add_textbox(Inches(l), Inches(t), Inches(w), Inches(h)).text_frame
-
-
-def _bar(slide, color, l, t, w, h):
-    sp = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(l), Inches(t), Inches(w), Inches(h))
-    sp.fill.solid(); sp.fill.fore_color.rgb = color
-    sp.line.fill.background(); sp.shadow.inherit = False
+def _bg(s,c): s.background.fill.solid(); s.background.fill.fore_color.rgb=c
+def _box(s,l,t,w,h): return s.shapes.add_textbox(Inches(l),Inches(t),Inches(w),Inches(h)).text_frame
+def _bar(s,c,l,t,w,h):
+    sp=s.shapes.add_shape(MSO_SHAPE.RECTANGLE,Inches(l),Inches(t),Inches(w),Inches(h))
+    sp.fill.solid(); sp.fill.fore_color.rgb=c; sp.line.fill.background(); sp.shadow.inherit=False
+def _notes(s,t):
+    if t: s.notes_slide.notes_text_frame.text=t
+def _header(s,kicker,header,kc=BLUE):
+    _bar(s,kc,0,0,SW.inches,0.18)
+    tk=_box(s,0.7,0.30,12,0.42); r=tk.paragraphs[0].add_run(); r.text=kicker.upper()
+    r.font.size=Pt(12); r.font.bold=True; r.font.color.rgb=kc
+    th=_box(s,0.7,0.66,12,1.0); th.word_wrap=True; r=th.paragraphs[0].add_run(); r.text=header
+    r.font.size=Pt(25); r.font.bold=True; r.font.color.rgb=NAVY
+def _card(s,l,t,w,h,accent,fill,label,body,body_sz=14):
+    sp=s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE,Inches(l),Inches(t),Inches(w),Inches(h))
+    sp.fill.solid(); sp.fill.fore_color.rgb=fill
+    sp.line.color.rgb=accent; sp.line.width=Pt(1); sp.shadow.inherit=False
+    tf=sp.text_frame; tf.word_wrap=True; tf.vertical_anchor=MSO_ANCHOR.TOP
+    tf.margin_left=Inches(0.22); tf.margin_right=Inches(0.20); tf.margin_top=Inches(0.10); tf.margin_bottom=Inches(0.08)
+    p=tf.paragraphs[0]; r=p.add_run(); r.text=label; r.font.size=Pt(12.5); r.font.bold=True; r.font.color.rgb=accent
+    p2=tf.add_paragraph(); p2.space_before=Pt(3); r2=p2.add_run(); r2.text=body; r2.font.size=Pt(body_sz); r2.font.color.rgb=DARK
     return sp
 
+def add_title(title,subtitle,footer):
+    s=prs.slides.add_slide(BLANK); _bg(s,NAVY); _bar(s,AMBER,0.9,3.05,1.6,0.10)
+    tf=_box(s,0.9,2.0,11.5,1.0); tf.word_wrap=True
+    r=tf.paragraphs[0].add_run(); r.text=title; r.font.size=Pt(34); r.font.bold=True; r.font.color.rgb=WHITE
+    t2=_box(s,0.9,3.25,11.5,1.2); t2.word_wrap=True
+    r=t2.paragraphs[0].add_run(); r.text=subtitle; r.font.size=Pt(18); r.font.color.rgb=RGBColor(0xCF,0xDD,0xEA)
+    t3=_box(s,0.9,6.5,11.5,0.7); t3.word_wrap=True; r=t3.paragraphs[0].add_run(); r.text=footer
+    r.font.size=Pt(13); r.font.color.rgb=RGBColor(0x9A,0xB2,0xC6); return s
 
-def _notes(slide, text):
-    slide.notes_slide.notes_text_frame.text = text
-
-
-def _settext(sp, text, font=WHITE, size=14, bold=True, align=PP_ALIGN.CENTER):
-    tf = sp.text_frame; tf.word_wrap = True
-    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
-    for m in ("margin_left", "margin_right"):
-        setattr(tf, m, Inches(0.06))
-    tf.margin_top = Inches(0.03); tf.margin_bottom = Inches(0.03)
-    lines = text.split("\n")
-    p = tf.paragraphs[0]; p.alignment = align
-    r = p.add_run(); r.text = lines[0]
-    r.font.size = Pt(size); r.font.bold = bold; r.font.color.rgb = font
-    for extra in lines[1:]:
-        p2 = tf.add_paragraph(); p2.alignment = align
-        r = p2.add_run(); r.text = extra
-        r.font.size = Pt(size); r.font.bold = bold; r.font.color.rgb = font
-
-
-def shp(slide, kind, l, t, w, h, text="", fill=BLUE, font=WHITE, size=14,
-        bold=True, line=None, align=PP_ALIGN.CENTER):
-    sp = slide.shapes.add_shape(kind, Inches(l), Inches(t), Inches(w), Inches(h))
-    sp.fill.solid(); sp.fill.fore_color.rgb = fill
-    if line is None:
-        sp.line.fill.background()
-    else:
-        sp.line.color.rgb = line; sp.line.width = Pt(1.25)
-    sp.shadow.inherit = False
-    if text:
-        _settext(sp, text, font, size, bold, align)
-    return sp
-
-
-def conn(slide, x1, y1, x2, y2, color=GREY, w=1.75):
-    c = slide.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(x1), Inches(y1), Inches(x2), Inches(y2))
-    c.line.color.rgb = color; c.line.width = Pt(w); c.shadow.inherit = False
-    return c
-
-
-# ---------- standard slide scaffolds ----------
-def add_title(title, subtitle, footer):
-    s = prs.slides.add_slide(BLANK); _bg(s, NAVY)
-    _bar(s, AMBER, 0.9, 3.05, 1.6, 0.10)
-    tf = _box(s, 0.9, 2.0, 11.5, 1.0); tf.word_wrap = True
-    r = tf.paragraphs[0].add_run(); r.text = title
-    r.font.size = Pt(40); r.font.bold = True; r.font.color.rgb = WHITE
-    tf2 = _box(s, 0.9, 3.25, 11.5, 1.2); tf2.word_wrap = True
-    r = tf2.paragraphs[0].add_run(); r.text = subtitle
-    r.font.size = Pt(20); r.font.color.rgb = RGBColor(0xCF, 0xDD, 0xEA)
-    tf3 = _box(s, 0.9, 6.5, 11.5, 0.6)
-    r = tf3.paragraphs[0].add_run(); r.text = footer
-    r.font.size = Pt(13); r.font.color.rgb = RGBColor(0x9A, 0xB2, 0xC6)
+def add_outcomes(header,kicker,intro,items,nxt):
+    s=prs.slides.add_slide(BLANK); _bg(s,WHITE); _header(s,kicker,header)
+    tf=_box(s,0.7,1.75,12.0,4.6); tf.word_wrap=True
+    p=tf.paragraphs[0]; r=p.add_run(); r.text=intro; r.font.size=Pt(16); r.font.bold=True; r.font.color.rgb=NAVY; p.space_after=Pt(8)
+    for it in items:
+        p=tf.add_paragraph(); r=p.add_run(); r.text="•  "+it; r.font.size=Pt(14.5); r.font.color.rgb=DARK; p.space_after=Pt(5)
+    _card(s,0.7,6.35,12.0,0.85,BLUE,BLUE_T,"➡️ Next unit",nxt,body_sz=13)
     return s
 
-
-def add_divider(kicker, title, notes=""):
-    s = prs.slides.add_slide(BLANK); _bg(s, BLUE)
-    tfk = _box(s, 0.9, 2.4, 11.5, 0.6)
-    r = tfk.paragraphs[0].add_run(); r.text = kicker.upper()
-    r.font.size = Pt(15); r.font.bold = True; r.font.color.rgb = RGBColor(0xBF, 0xDC, 0xF2)
-    tft = _box(s, 0.9, 3.0, 11.5, 1.6); tft.word_wrap = True
-    r = tft.paragraphs[0].add_run(); r.text = title
-    r.font.size = Pt(34); r.font.bold = True; r.font.color.rgb = WHITE
-    if notes: _notes(s, notes)
+def add_roadmap(kicker,title,done,todo):
+    s=prs.slides.add_slide(BLANK); _bg(s,WHITE); _header(s,kicker,title)
+    _card(s,0.7,1.8,5.85,4.55,TEAL,TEAL_T,"✅  THIS UNIT  ·  S1–S4","\n".join(done),body_sz=14)
+    _card(s,6.78,1.8,5.85,4.55,GREY,LIGHT,"⏭️  COMING NEXT  ·  Unit 2+","\n".join(todo),body_sz=14)
     return s
 
+def add_divider(kicker,title,hook,timing=""):
+    s=prs.slides.add_slide(BLANK); _bg(s,BLUE)
+    tk=_box(s,0.9,1.9,11.5,0.6); r=tk.paragraphs[0].add_run(); r.text=kicker.upper()
+    r.font.size=Pt(15); r.font.bold=True; r.font.color.rgb=RGBColor(0xBF,0xDC,0xF2)
+    tt=_box(s,0.9,2.5,11.5,1.4); tt.word_wrap=True; r=tt.paragraphs[0].add_run(); r.text=title
+    r.font.size=Pt(31); r.font.bold=True; r.font.color.rgb=WHITE
+    _bar(s,AMBER,0.9,4.05,1.4,0.09)
+    th=_box(s,0.9,4.25,11.5,2.4); th.word_wrap=True; p=th.paragraphs[0]; r=p.add_run(); r.text="🎣  "+hook
+    r.font.size=Pt(18); r.font.color.rgb=RGBColor(0xE8,0xF1,0xF9); r.font.italic=True
+    _notes(s,timing); return s
 
-def _header(s, kicker, header, kicker_color=BLUE):
-    _bar(s, kicker_color, 0, 0, SW.inches, 0.18)
-    tfk = _box(s, 0.7, 0.32, 12.0, 0.45)
-    r = tfk.paragraphs[0].add_run(); r.text = kicker.upper()
-    r.font.size = Pt(12); r.font.bold = True; r.font.color.rgb = kicker_color
-    tfh = _box(s, 0.7, 0.7, 12.0, 1.0); tfh.word_wrap = True
-    r = tfh.paragraphs[0].add_run(); r.text = header
-    r.font.size = Pt(28); r.font.bold = True; r.font.color.rgb = NAVY
-
-
-def add_content(header, kicker, blocks, notes="", kicker_color=BLUE, image=None):
-    s = prs.slides.add_slide(BLANK); _bg(s, WHITE)
-    _header(s, kicker, header, kicker_color)
-    txt_w = 6.0 if image else 11.9
-    fs0, fs1 = (16, 14) if image else (19, 16)
-    tf = _box(s, 0.7, 1.85, txt_w, 5.2); tf.word_wrap = True
-    first = True
-    for text, level in blocks:
-        p = tf.paragraphs[0] if first else tf.add_paragraph(); first = False
-        r = p.add_run(); r.text = text
-        if level == 0:
-            r.font.size = Pt(fs0); r.font.color.rgb = DARK; p.space_after = Pt(7); p.level = 0
-        elif level == 1:
-            r.font.size = Pt(fs1); r.font.color.rgb = GREY; p.space_after = Pt(3); p.level = 1
-        else:
-            r.font.size = Pt(fs1); r.font.color.rgb = TEAL; r.font.italic = True
-            p.space_after = Pt(5); p.level = 1
+def concept_understand(kicker,heading,definition,mechanism,image,hook,timing=""):
+    s=prs.slides.add_slide(BLANK); _bg(s,WHITE); _header(s,kicker+"  ·  understand",heading)
+    tw=6.2 if image else 11.9
+    tf=_box(s,0.7,1.72,tw,5.05); tf.word_wrap=True
+    p=tf.paragraphs[0]; r=p.add_run(); r.text=definition; r.font.size=Pt(15); r.font.bold=True; r.font.color.rgb=NAVY; p.space_after=Pt(10)
+    p=tf.add_paragraph(); r=p.add_run(); r.text="HOW IT WORKS"; r.font.size=Pt(12); r.font.bold=True; r.font.color.rgb=BLUE; p.space_after=Pt(5)
+    for m in mechanism:
+        p=tf.add_paragraph(); r=p.add_run(); r.text="•  "+m; r.font.size=Pt(14); r.font.color.rgb=DARK; p.space_after=Pt(6)
     if image:
-        path = os.path.join(IMG, image)
+        path=os.path.join(IMG,image)
         if os.path.exists(path):
-            pic = s.shapes.add_picture(path, Inches(6.95), Inches(2.0), width=Inches(6.0))
-            band_top, band_h = 1.95, 4.6          # content band (inches; leave room for hook footer)
-            h_in = pic.height / 914400.0          # EMU -> inches (all images are landscape, fits)
-            pic.top = Inches(band_top + max(0.0, (band_h - h_in) / 2.0))
-    # memory-hook footer + exam Q/A in notes (from the per-concept lookup)
-    extra = CONCEPT_EXTRAS.get(image) if image else None
-    if extra:
-        hook, exam_q, exam_a = extra
-        _bar(s, TEAL, 0, 6.95, SW.inches, 0.55)
-        ftf = _box(s, 0.7, 6.99, 11.9, 0.5)
-        p = ftf.paragraphs[0]; p.alignment = PP_ALIGN.CENTER
-        r = p.add_run(); r.text = "💡  Memory hook:  " + hook
-        r.font.size = Pt(13); r.font.bold = True; r.font.color.rgb = WHITE
-        notes = (notes + "\n\n" if notes else "") + "🎯 Likely exam Q: " + exam_q + "\n   Model answer: " + exam_a
-        if image in HYPO:
-            notes += "\n\n🔮 Hypothetical (pose to class): " + HYPO[image]
-    if notes: _notes(s, notes)
+            pic=s.shapes.add_picture(path,Inches(6.95),Inches(1.9),width=Inches(6.05))
+            band_top,band_h=1.9,4.55; h_in=pic.height/914400.0
+            pic.top=Inches(band_top+max(0.0,(band_h-h_in)/2.0))
+    _bar(s,TEAL,0,6.9,SW.inches,0.6)
+    ft=_box(s,0.7,6.96,11.9,0.5); p=ft.paragraphs[0]; p.alignment=PP_ALIGN.CENTER
+    r=p.add_run(); r.text="🧠  Memory hook:  "+hook; r.font.size=Pt(13.5); r.font.bold=True; r.font.color.rgb=WHITE
+    _notes(s,timing); return s
+
+def concept_apply(kicker,heading,example,trap,exam,keyterms):
+    s=prs.slides.add_slide(BLANK); _bg(s,WHITE); _header(s,kicker+"  ·  apply",heading)
+    _card(s,0.7,1.66,12.0,1.48,BLUE ,BLUE_T ,"🌍  Real example",example)
+    _card(s,0.7,3.26,12.0,1.30,CORAL,CORAL_T,"⚠️  Common trap — and the fix",trap)
+    _card(s,0.7,4.68,12.0,1.92,TEAL ,TEAL_T ,"🎯  Exam-ready answer",exam)
+    _card(s,0.7,6.72,12.0,0.60,AMBER,AMBER_T,"🔑  Key terms",keyterms,body_sz=11.5)
     return s
 
+def add_activity(title,steps,expected,timing=""):
+    s=prs.slides.add_slide(BLANK); _bg(s,PALET); _bar(s,TEAL,0,0,SW.inches,0.18)
+    tk=_box(s,0.7,0.30,12,0.42); r=tk.paragraphs[0].add_run(); r.text="🛠  IN-CLASS ACTIVITY  ·  THINK–PAIR–SHARE"
+    r.font.size=Pt(12); r.font.bold=True; r.font.color.rgb=TEAL
+    th=_box(s,0.7,0.66,12,0.9); r=th.paragraphs[0].add_run(); r.text=title; r.font.size=Pt(25); r.font.bold=True; r.font.color.rgb=NAVY
+    tf=_box(s,0.7,1.75,11.9,3.6); tf.word_wrap=True; first=True
+    for text in steps:
+        p=tf.paragraphs[0] if first else tf.add_paragraph(); first=False
+        r=p.add_run(); r.text="•  "+text; r.font.size=Pt(15.5); r.font.color.rgb=DARK; p.space_after=Pt(7)
+    _card(s,0.7,5.5,11.9,1.7,TEAL,WHITE,"✅  Expected answer",expected)
+    _notes(s,timing); return s
 
-def add_quiz(title, items, notes=""):
-    s = prs.slides.add_slide(BLANK); _bg(s, LIGHT)
-    _bar(s, AMBER, 0, 0, SW.inches, 0.18)
-    tfk = _box(s, 0.7, 0.32, 12, 0.45)
-    r = tfk.paragraphs[0].add_run(); r.text = "CHECK FOR UNDERSTANDING"
-    r.font.size = Pt(12); r.font.bold = True; r.font.color.rgb = AMBER
-    tfh = _box(s, 0.7, 0.7, 12, 0.9)
-    r = tfh.paragraphs[0].add_run(); r.text = title
-    r.font.size = Pt(26); r.font.bold = True; r.font.color.rgb = NAVY
-    tf = _box(s, 0.7, 1.8, 11.9, 5.2); tf.word_wrap = True
-    first = True
-    for text, kind in items:
-        p = tf.paragraphs[0] if first else tf.add_paragraph(); first = False
-        r = p.add_run(); r.text = text
-        if kind == "q":
-            r.font.size = Pt(18); r.font.bold = True; r.font.color.rgb = NAVY; p.space_before = Pt(8)
-        elif kind == "a":
-            r.font.size = Pt(16); r.font.color.rgb = TEAL; r.font.bold = True; p.level = 1
-        else:
-            r.font.size = Pt(16); r.font.color.rgb = DARK; p.level = 1
-    if notes: _notes(s, notes)
+def add_quiz(title,items,timing="",compact=False):
+    s=prs.slides.add_slide(BLANK); _bg(s,LIGHT); _bar(s,AMBER,0,0,SW.inches,0.18)
+    tk=_box(s,0.7,0.30,12,0.42); r=tk.paragraphs[0].add_run(); r.text="CHECK FOR UNDERSTANDING"
+    r.font.size=Pt(12); r.font.bold=True; r.font.color.rgb=AMBER
+    th=_box(s,0.7,0.66,12,0.9); r=th.paragraphs[0].add_run(); r.text=title; r.font.size=Pt(25); r.font.bold=True; r.font.color.rgb=NAVY
+    qz,az,sb=(14,12.5,5) if compact else (17,15,9)
+    tf=_box(s,0.7,1.75,11.9,5.3); tf.word_wrap=True; first=True
+    for text,kind in items:
+        p=tf.paragraphs[0] if first else tf.add_paragraph(); first=False
+        r=p.add_run(); r.text=text
+        if kind=="q": r.font.size=Pt(qz); r.font.bold=True; r.font.color.rgb=NAVY; p.space_before=Pt(sb)
+        elif kind=="a": r.font.size=Pt(az); r.font.color.rgb=TEAL; r.font.bold=True; p.level=1
+        else: r.font.size=Pt(az); r.font.color.rgb=DARK; r.font.italic=True; p.level=1; p.space_before=Pt(sb-3)
+    _notes(s,timing); return s
+
+def add_summary(kicker,takeaways,why,nxt,timing=""):
+    s=prs.slides.add_slide(BLANK); _bg(s,WHITE); _header(s,kicker,"Summary & Key Takeaways",kc=NAVY)
+    tf=_box(s,0.7,1.7,12.0,2.7); tf.word_wrap=True; first=True
+    for i,tk in enumerate(takeaways,1):
+        p=tf.paragraphs[0] if first else tf.add_paragraph(); first=False
+        r=p.add_run(); r.text=f"{i}.  "+tk; r.font.size=Pt(15); r.font.color.rgb=DARK; p.space_after=Pt(8)
+    _card(s,0.7,4.55,12.0,1.35,TEAL,TEAL_T,"💡  Why this matters",why,body_sz=13.5)
+    _card(s,0.7,6.02,12.0,1.15,BLUE,BLUE_T,"➡️  Next",nxt,body_sz=13.5)
+    _notes(s,timing); return s
+
+def add_solved_problem(kicker,title,scenario,steps,answer,timing=""):
+    s=prs.slides.add_slide(BLANK); _bg(s,WHITE); _header(s,kicker,title,kc=AMBER)
+    _card(s,0.7,1.58,12.0,1.0,AMBER,AMBER_T,"📋  Problem",scenario,body_sz=13)
+    tf=_box(s,0.85,2.72,11.7,2.95); tf.word_wrap=True; first=True
+    for i,st in enumerate(steps,1):
+        p=tf.paragraphs[0] if first else tf.add_paragraph(); first=False
+        r=p.add_run(); r.text=f"Step {i}.  "; r.font.size=Pt(12.5); r.font.bold=True; r.font.color.rgb=AMBER
+        r2=p.add_run(); r2.text=st; r2.font.size=Pt(12.5); r2.font.color.rgb=DARK; p.space_after=Pt(4)
+    _card(s,0.7,5.72,12.0,1.5,TEAL,TEAL_T,"✅  Worked answer",answer,body_sz=13)
+    _notes(s,timing); return s
+
+def add_cheatsheet(kicker,title,blocks):
+    s=prs.slides.add_slide(BLANK); _bg(s,WHITE); _header(s,kicker,title)
+    xs=[0.7,6.78]; ys=[1.72,3.36,5.0]; hh=1.55
+    for idx,(label,body) in enumerate(blocks[:6]):
+        _card(s,xs[idx%2],ys[idx//2],5.85,hh,BLUE,BLUE_T,label,body,body_sz=12)
     return s
 
-
-def add_activity(title, blocks, notes=""):
-    s = prs.slides.add_slide(BLANK); _bg(s, PALET)
-    _bar(s, TEAL, 0, 0, SW.inches, 0.18)
-    tfk = _box(s, 0.7, 0.32, 12, 0.45)
-    r = tfk.paragraphs[0].add_run(); r.text = "🛠  IN-CLASS ACTIVITY"
-    r.font.size = Pt(12); r.font.bold = True; r.font.color.rgb = TEAL
-    tfh = _box(s, 0.7, 0.7, 12, 0.9)
-    r = tfh.paragraphs[0].add_run(); r.text = title
-    r.font.size = Pt(26); r.font.bold = True; r.font.color.rgb = NAVY
-    tf = _box(s, 0.7, 1.85, 11.9, 5.2); tf.word_wrap = True
-    first = True
-    for text, level in blocks:
-        p = tf.paragraphs[0] if first else tf.add_paragraph(); first = False
-        r = p.add_run(); r.text = text
-        if level == 0:
-            r.font.size = Pt(18); r.font.color.rgb = DARK; p.space_after = Pt(8)
-        else:
-            r.font.size = Pt(15.5); r.font.color.rgb = GREY; p.space_after = Pt(4); p.level = 1
-    if notes: _notes(s, notes)
+def add_glossary(kicker,title,terms):
+    s=prs.slides.add_slide(BLANK); _bg(s,WHITE); _header(s,kicker,title)
+    half=(len(terms)+1)//2
+    for x,group in [(0.7,terms[:half]),(6.78,terms[half:])]:
+        tf=_box(s,x,1.75,5.85,5.3); tf.word_wrap=True; first=True
+        for term,defn in group:
+            p=tf.paragraphs[0] if first else tf.add_paragraph(); first=False
+            r=p.add_run(); r.text=term+" — "; r.font.size=Pt(11.5); r.font.bold=True; r.font.color.rgb=NAVY
+            r2=p.add_run(); r2.text=defn; r2.font.size=Pt(11.5); r2.font.color.rgb=DARK; p.space_after=Pt(6)
     return s
 
+def _add_page_numbers():
+    total=len(prs.slides._sldIdLst)
+    for i,s in enumerate(prs.slides,1):
+        try:
+            h=str(s.background.fill.fore_color.rgb); rr,gg,bb=int(h[0:2],16),int(h[2:4],16),int(h[4:6],16)
+            dark=(0.299*rr+0.587*gg+0.114*bb)<128
+        except Exception: dark=False
+        col=RGBColor(0xE8,0xF0,0xF7) if dark else GREY
+        tb=_box(s,12.35,0.30,0.9,0.35); p=tb.paragraphs[0]; p.alignment=PP_ALIGN.RIGHT
+        r=p.add_run(); r.text=f"{i} / {total}"; r.font.size=Pt(10); r.font.color.rgb=col
 
-def diagram_slide(kicker, header, kicker_color=BLUE):
-    s = prs.slides.add_slide(BLANK); _bg(s, WHITE)
-    _header(s, kicker, header, kicker_color)
-    return s
+# ============================================================
+#                        BUILD
+# ============================================================
+add_title("Unit 1 — Database Concepts & Architecture",
+          "IT 220: Database Management System  ·  BIM 4th Semester",
+          "Sessions S1–S4  ·  50 min each  ·  Nepal / South Asia context  ·  "
+          "Self-contained slides: every concept is complete on the slide face — exports to PDF with no information lost.")
 
+add_outcomes("Unit 1 — Learning Outcomes","overview  ·  s1–s4",
+    "By the end of this unit, you will be able to:",
+    ["Define database, DBMS, and the roles around them, and say why a DBMS beats flat files (S1)",
+     "Distinguish data models, schemas, and instances (S2)",
+     "Explain the three-schema architecture and the two kinds of data independence (S2)",
+     "Identify database languages/interfaces and the components of the DBMS environment (S3)",
+     "Compare centralized vs client/server architectures and classify DBMSs (S4)"],
+    "Unit 2 starts DESIGNING databases — the Entity-Relationship (ER) model and converting it to tables.")
 
-# =================== DIAGRAMS ===================
-def diag_data_ladder():
-    s = diagram_slide("S1 · Concept 1  ·  Diagram", "From Data to a Database")
-    y, h, w = 3.0, 1.7, 4.3
-    xs = [0.7, 4.55, 8.4]
-    specs = [("DATA\nraw facts\n9818000000   'Sita'   78", GREY),
-             ("INFORMATION\ndata + meaning\n'Sita scored 78 in DBMS'", BLUE),
-             ("DATABASE\norganized · persistent · shared\ncollection of related data", TEAL)]
-    for x, (txt, col) in zip(xs, specs):
-        shp(s, MSO_SHAPE.PENTAGON, x, y, w, h, txt, fill=col, size=15)
-    cap = _box(s, 0.7, 5.1, 11.9, 1.0); cap.word_wrap = True
-    r = cap.paragraphs[0].add_run()
-    r.text = "Add organization + storage and raw facts become a database — the asset every app depends on."
-    r.font.size = Pt(15); r.font.italic = True; r.font.color.rgb = GREY
-    _notes(s, "Walk left to right. Stress that the SAME facts gain value at each step. The kirana-notebook is a database too — just a fragile one.")
+add_roadmap("Unit 1 — Roadmap","Where each session fits (S1–S4)",
+    ["S1   Database, DBMS, users, DBA, files vs DBMS",
+     "S2   Data models · schema/instance · three-schema · data independence",
+     "S3   Languages (DDL/DML/DCL/TCL) · interfaces · components · catalog",
+     "S4   Centralized vs client/server · classification · synthesis"],
+    ["Unit 2   ER modelling & mapping to tables",
+     "Unit 3   Relational algebra & calculus",
+     "Unit 4   Normalization",
+     "Unit 5  SQL  ·  Unit 6  Transactions  ·  Unit 7  Advanced"])
 
+# ============================ S1 ============================
+add_divider("Session 1 · Lecture hour 1 (of 4)","Database & DBMS · Users, DBA & Advantages",
+    "Your eSewa balance survives when your phone dies; your exam results are still there after the holidays. None of that lives in the app — it lives in a database. Where does your data actually live?",
+    "OPENING HOOK [~5 min]. Build curiosity; don't define 'database' formally yet. Agenda: data vs database → DBMS → users → DBA → why databases beat files.")
 
-def diag_file_vs_dbms():
-    s = diagram_slide("S1 · Concept 5  ·  Comparison", "File System vs DBMS")
-    rows = [("File-based System", "DBMS"),
-            ("Uncontrolled redundancy", "Controlled redundancy"),
-            ("Data inconsistency", "Integrity constraints"),
-            ("Hard to share safely", "Concurrent multi-user access"),
-            ("Weak / no security", "Access control & permissions"),
-            ("A crash can lose data", "Backup & recovery")]
-    L, T, W, H = 1.4, 2.0, 10.5, 4.6
-    tbl = s.shapes.add_table(len(rows), 2, Inches(L), Inches(T), Inches(W), Inches(H)).table
-    tbl.columns[0].width = Inches(W/2); tbl.columns[1].width = Inches(W/2)
-    for ri, (a, b) in enumerate(rows):
-        for ci, val in enumerate((a, b)):
-            cell = tbl.cell(ri, ci)
-            cell.vertical_anchor = MSO_ANCHOR.MIDDLE
-            cell.margin_left = Inches(0.15); cell.margin_top = Inches(0.04); cell.margin_bottom = Inches(0.04)
-            p = cell.text_frame.paragraphs[0]; p.alignment = PP_ALIGN.LEFT if ri else PP_ALIGN.CENTER
-            r = p.add_run(); r.text = val
-            if ri == 0:
-                cell.fill.solid(); cell.fill.fore_color.rgb = (CORAL if ci == 0 else TEAL)
-                r.font.color.rgb = WHITE; r.font.bold = True; r.font.size = Pt(17)
-            else:
-                cell.fill.solid(); cell.fill.fore_color.rgb = (RGBColor(0xFA, 0xEC, 0xE7) if ci == 0 else PALET)
-                r.font.color.rgb = DARK; r.font.size = Pt(15)
-    _notes(s, "Read each pair: the file-system pain on the left, the DBMS fix on the right. Tie back to the 'address in 5 files' inconsistency example.")
+concept_understand("S1 · Concept 1 · [THEORY]","Data vs Information vs Database",
+    "Data = raw facts with no context. Information = data placed in context so it answers a question. A database = an organized, related collection of data stored so it can be accessed, managed, and updated.",
+    ["'78' alone is data (a mark? an age? a temperature?); 'Sita scored 78 in DBMS' is information.",
+     "A database is organized and related — records link to each other, not a random heap.",
+     "Three defining properties: persistent (survives the program), shared (many users/apps at once), structured.",
+     "A kirana notebook is a fragile 'database': one reader, destroyed by a spill, no fast querying."],
+    "s1_data_ladder.png","Facts → meaning → organized store.",
+    "~7 min. Ask 'is 78 a mark, age, temperature, or house number?' — you can't tell; that's raw data.")
+concept_apply("S1 · Concept 1 · [THEORY]","Data vs Information vs Database",
+    "One eSewa line — 'Rs 500 to Hari · 2081-02-15 · success' — the bare fields are data; shown so you understand 'you paid Hari Rs 500 and it worked' is information; millions of such records, linked to the right accounts and stored so your full history loads in one tap, are the database.",
+    "\"Any stored file is a database.\" Only if it's persistent, shared, and structured. A kirana notebook barely qualifies — one reader at a time, fragile, no efficient querying.",
+    "Data are raw facts with no context (500, 'Hari'). Information is data given meaning by context ('You sent Rs 500 to Hari'). A database is an organized, persistent, shared collection of related data (eSewa's store of all transactions). Data becomes information through context; many related pieces stored systematically become a database.",
+    "data · information · database · persistent · shared · structured")
 
+concept_understand("S1 · Concept 2 · [THEORY]","DBMS: the software that manages the data",
+    "A DBMS (Database Management System) is the software that lets people and applications define, create, query, update, and administer databases. The database is the data; the DBMS is the program that manages it.",
+    ["Database + DBMS + apps/users together = a database system.",
+     "DBMS engines: MySQL, MariaDB, PostgreSQL, Oracle, SQL Server. One engine manages many databases.",
+     "A DBMS provides concurrency control, data integrity, a query language, and security.",
+     "'Back up the database' (copy the data) ≠ 'upgrade the DBMS' (install a newer engine)."],
+    "s1_users_dbms.png","Data is the books; the DBMS is the librarian.",
+    "~7 min. 'MySQL is the DBMS — the engine. The college database is the data it manages.' Say it twice.")
+concept_apply("S1 · Concept 2 · [THEORY]","DBMS: the software that manages the data",
+    "Your result portal doesn't contain your marks — it asks a DBMS (often MySQL) that manages the marks database. On results night thousands log in at once and the DBMS serves everyone the right marks without records clashing; a shared Excel file, by contrast, lets two clerks silently overwrite each other.",
+    "\"Excel is a database.\" No — it lacks real concurrency control, enforced integrity, a query language for millions of rows, and proper security. Fine for 200 rows on a laptop; it breaks exactly at multi-user scale.",
+    "A DBMS is software used to define, create, query, update, and administer databases (MySQL, Oracle, PostgreSQL). The database is the actual stored data; the DBMS is the program that manages it — providing concurrency control, integrity, querying, and security. Together (database + DBMS + applications) they form a database system.",
+    "DBMS · database system · concurrency control · data integrity · query language · security")
 
-def diag_three_schema():
-    s = diagram_slide("S2 · Concept 3  ·  Diagram", "Three-Schema Architecture")
-    # External views (top)
-    vw = 3.3; vy = 1.95; gap = 0.35; total = 3*vw + 2*gap; x0 = (13.333-total)/2
-    views = ["EXTERNAL VIEW\nStudent — own marks",
-             "EXTERNAL VIEW\nTeacher — class marks",
-             "EXTERNAL VIEW\nAdmin — all records"]
-    for i, v in enumerate(views):
-        shp(s, MSO_SHAPE.ROUNDED_RECTANGLE, x0 + i*(vw+gap), vy, vw, 0.95, v, fill=BLUE, size=12.5)
-    lbl1 = _box(s, 1.0, 3.02, 11.3, 0.3)
-    r = lbl1.paragraphs[0].add_run(); r.text = "↕  external / conceptual mapping"
-    r.font.size = Pt(11); r.font.italic = True; r.font.color.rgb = GREY
-    r.font.color.rgb = GREY; lbl1.paragraphs[0].alignment = PP_ALIGN.CENTER
-    # Conceptual band
-    cw = 10.2; cx = (13.333-cw)/2
-    shp(s, MSO_SHAPE.ROUNDED_RECTANGLE, cx, 3.35, cw, 1.0,
-        "CONCEPTUAL SCHEMA\nWhole logical database — all students, subjects & marks", fill=TEAL, size=14)
-    lbl2 = _box(s, 1.0, 4.42, 11.3, 0.3)
-    r = lbl2.paragraphs[0].add_run(); r.text = "↕  conceptual / internal mapping"
-    r.font.size = Pt(11); r.font.italic = True; r.font.color.rgb = GREY
-    lbl2.paragraphs[0].alignment = PP_ALIGN.CENTER
-    # Internal band
-    shp(s, MSO_SHAPE.ROUNDED_RECTANGLE, cx, 4.75, cw, 1.0,
-        "INTERNAL SCHEMA\nPhysical storage — files, blocks & indexes", fill=NAVY, size=14)
-    # Disk
-    shp(s, MSO_SHAPE.CAN, 6.07, 5.95, 1.2, 1.05, "disk", fill=GREY, size=12)
-    _notes(s, "Centrepiece of S2. Top = many user views; middle = one logical whole; bottom = physical storage. The mappings between levels are what give data independence.")
+concept_understand("S1 · Concept 3 · [THEORY]","Database Users & the DBA",
+    "Different people use a database at different depths: naive/end users, application programmers, sophisticated users, and the Database Administrator (DBA) who administers the database itself.",
+    ["Naive/end users — use ready-made screens (a bank teller entering a deposit).",
+     "Application programmers — build the apps that talk to the database.",
+     "Sophisticated users — write their own queries/analyses (an MIS analyst).",
+     "DBA — designs/maintains the schema, controls security & permissions, backup & recovery, performance tuning."],
+    "s1_db_users.png","The DBA is air-traffic control for data.",
+    "~7 min. Use ONE bank to populate all four roles; make the DBA feel high-stakes.")
+concept_apply("S1 · Concept 3 · [THEORY]","Database Users & the DBA",
+    "One day in a Nepali bank: the teller (naive user) enters your deposit via a guided form; the team that built the screen are application programmers; the MIS officer pulling a custom loan report is a sophisticated user; the DBA keeps the core-banking database backed up, secured, and fast — and gets paged when it crawls at month-end.",
+    "\"The DBA just installs the database.\" The DBA is accountable for the whole data layer — schema, security, backups, and performance. Much of this course (normalization, indexing, transactions, recovery) is the DBA's toolkit.",
+    "Users: naive/end users (use ready-made screens), application programmers (build the apps), and sophisticated users (write their own queries). The DBA administers the database itself: designing/maintaining the schema, controlling security and permissions, backup & recovery, and performance tuning — the person accountable for the database.",
+    "naive/end user · application programmer · sophisticated user · DBA · schema · security · backup & recovery · tuning")
 
+concept_understand("S1 · Concept 4 · [THEORY]","Why a Database beats a File System",
+    "Before databases, data lived in separate files owned by different programs — causing redundancy, inconsistency, poor sharing, weak security, and data loss. A DBMS was invented to fix each problem.",
+    ["Uncontrolled redundancy (same fact in many files) → controlled redundancy (store once).",
+     "Inconsistency (copies drift apart) → integrity constraints keep data valid.",
+     "Hard to share safely → concurrent multi-user access.",
+     "Anyone can read/change a file → security & access control. A crash loses data → backup & recovery."],
+    "s1_file_vs_dbms.png","One source of truth beats many drifting copies.",
+    "~6 min. Walk the address-in-5-files example: update 4, forget 1 → inconsistent, can't tell which is right.")
+concept_apply("S1 · Concept 4 · [THEORY]","Why a Database beats a File System",
+    "An address stored in five department files; the student moves, a clerk updates four and forgets the fifth — now four files disagree and nobody knows which is right (uncontrolled redundancy → inconsistency). A DBMS stores the address once, so an update in one place is instantly correct everywhere.",
+    "\"More copies = safer.\" Uncontrolled duplication is dangerous — each copy can drift and contradict. A DBMS keeps controlled, deliberate backups, not scattered loose copies.",
+    "Advantages of a DBMS over a file-based system: (1) controlled redundancy — each fact stored once; (2) consistency & integrity — rules keep data valid; (3) concurrent multi-user access — many users safely at once; (4) security/access control — permissions decide who sees what (also backup & recovery). Each directly fixes a file-system weakness.",
+    "file-based system · controlled vs uncontrolled redundancy · inconsistency · integrity constraints · concurrent access · access control · backup & recovery")
 
-def diag_dbms_components():
-    s = diagram_slide("S3 · Concept 3  ·  Diagram", "Inside the DBMS")
-    cx, cw = 3.7, 4.6
-    shp(s, MSO_SHAPE.ROUNDED_RECTANGLE, cx, 1.95, cw, 0.85, "Users / Applications", fill=BLUE, size=15)
-    shp(s, MSO_SHAPE.DOWN_ARROW, cx+cw/2-0.18, 2.85, 0.36, 0.4, fill=LGREY)
-    shp(s, MSO_SHAPE.ROUNDED_RECTANGLE, cx, 3.3, cw, 0.85, "Query Processor / Optimizer", fill=NAVY, size=15)
-    shp(s, MSO_SHAPE.DOWN_ARROW, cx+cw/2-0.18, 4.2, 0.36, 0.4, fill=LGREY)
-    shp(s, MSO_SHAPE.ROUNDED_RECTANGLE, cx, 4.65, cw, 0.85, "Storage Manager + Buffer Manager", fill=TEAL, size=14)
-    shp(s, MSO_SHAPE.DOWN_ARROW, cx+cw/2-0.18, 5.55, 0.36, 0.4, fill=LGREY)
-    shp(s, MSO_SHAPE.CAN, cx+cw/2-0.7, 6.0, 1.4, 1.0, "Database\non disk", fill=GREY, size=12)
-    # side boxes
-    sx, sw = 9.1, 3.5
-    cat = shp(s, MSO_SHAPE.ROUNDED_RECTANGLE, sx, 3.3, sw, 0.85, "Catalog / Metadata", fill=CORAL, size=14)
-    txn = shp(s, MSO_SHAPE.ROUNDED_RECTANGLE, sx, 4.65, sw, 0.85, "Transaction Manager (ACID)", fill=AMBER, size=14)
-    conn(s, cx+cw, 3.72, sx, 3.72, color=LGREY)
-    conn(s, cx+cw, 5.07, sx, 5.07, color=LGREY)
-    _notes(s, "Restaurant analogy: waiter = query processor, kitchen = storage manager, manager = transaction manager, receipt book = catalog. Transactions detailed in Unit 6.")
+add_activity("File or DBMS?",
+    ["In pairs (2 min): decide file/spreadsheet or DBMS for — a wedding guest list; a bank's accounts; a one-person diary; Daraz's orders.",
+     "For each, name WHICH property decides it — concurrency, integrity, scale, or security.",
+     "Share aloud (4 min); build the file-vs-DBMS table from the class's answers."],
+    "Bank accounts and Daraz orders clearly need a DBMS (many users, strict integrity, huge scale, security); the diary and short guest list don't. That contrast is the lesson — a DBMS is justified by concurrency, integrity, scale, and security needs.",
+    "ACTIVITY [~6 min].")
+add_quiz("S1 — Quick Check",
+    [("Q1.  Which is NOT a function of a DBMS?","q"),
+     ("a) define data   b) ✅ print formatted documents   c) query data   d) control access","a"),
+     ("Q2.  Who is responsible for granting and revoking user permissions?","q"),
+     ("a) naive user   b) app programmer   c) ✅ DBA   d) end user","a"),
+     ("Discussion: name a phone app you use and guess what its database stores about you.","o")],
+    "QUIZ [~5 min].")
+add_summary("S1 · Summary  ·  [~2 min]",
+    ["A database is organized, persistent, shared data; a DBMS is the software that manages it.",
+     "Four user types interact at different depths; the DBA is accountable for the data layer.",
+     "A DBMS beats files through controlled redundancy, integrity, sharing, security, and recovery."],
+    "Every fintech and e-commerce employer in Nepal — eSewa, Khalti, Daraz, IME Pay — runs on a DBMS. 'Understands databases' is a baseline requirement on almost every software, data, or QA job, and this vocabulary is what a first-round interviewer expects you to use correctly.",
+    "S2 — how we DESCRIBE data: data models, schemas, instances, and data independence.",
+    "REAL-LIFE APPLICATION [~3 min] + SUMMARY [~2 min].")
 
+# ============================ S2 ============================
+add_divider("Session 2 · Lecture hour 2 (of 4)","Data Models, Schemas & the Three-Schema Architecture",
+    "Last year your college stored results one way; this year IT moved everything to a faster server with a different internal layout. You — checking marks online — noticed nothing. Why didn't the change break the portal?",
+    "OPENING HOOK [~5 min]. Hold the question until data independence (Concept 4). Agenda: data models → schema vs instance → three-schema → data independence.")
 
-def diag_architectures():
-    s = diagram_slide("S4 · Concept 2  ·  Diagram", "Centralized vs Two-tier vs Three-tier")
-    cols = [
-        (0.7, "Centralized", NAVY, [("Central Machine\nData + DBMS + App", NAVY, 1.4),
-                                     ("Terminal (display only)", GREY, 0.7)]),
-        (4.75, "Two-tier", BLUE, [("Client\nUI + application logic", BLUE, 1.0),
-                                   ("Database Server", TEAL, 0.9)]),
-        (8.9, "Three-tier", TEAL, [("Client (UI)", BLUE, 0.8),
-                                    ("Application Server\n(business logic)", AMBER, 0.95),
-                                    ("Database Server", TEAL, 0.8)]),
-    ]
-    cw = 3.6
-    for x, title, tcol, boxes in cols:
-        cap = _box(s, x, 1.85, cw, 0.5)
-        r = cap.paragraphs[0].add_run(); r.text = title
-        r.font.size = Pt(17); r.font.bold = True; r.font.color.rgb = tcol
-        cap.paragraphs[0].alignment = PP_ALIGN.CENTER
-        y = 2.5
-        for i, (txt, col, h) in enumerate(boxes):
-            if i > 0:
-                shp(s, MSO_SHAPE.DOWN_ARROW, x+cw/2-0.16, y, 0.32, 0.34, fill=LGREY); y += 0.4
-            shp(s, MSO_SHAPE.ROUNDED_RECTANGLE, x, y, cw, h, txt, fill=col, size=13); y += h
-    note = _box(s, 0.7, 6.55, 11.9, 0.6)
-    r = note.paragraphs[0].add_run()
-    r.text = "Daraz ≈ three-tier:  phone app → application servers → database servers."
-    r.font.size = Pt(14); r.font.italic = True; r.font.color.rgb = GREY
-    _notes(s, "Left = simple but single point of failure. Right = the modern scalable standard. Use the 'why your phone doesn't hold the full ledger' case.")
+concept_understand("S2 · Concept 1 · [THEORY]","Data Models",
+    "A data model is a set of concepts describing the structure, constraints, and operations of a database — the 'language' for describing what data looks like and how it behaves. Models exist at levels of abstraction.",
+    ["High-level / conceptual — real-world things & relationships (the ER model, Unit 2).",
+     "Representational / implementation — the relational model (tables of rows & columns); what most business DBMSs use.",
+     "Low-level / physical — how data is actually stored on disk (files, pages, indexes).",
+     "The same system, described at several levels of detail."],
+    "s2_data_models.png","Idea → tables → disk.",
+    "~7 min. Light touch — models are detailed in Unit 2; the point is describing data at different abstraction levels.")
+concept_apply("S2 · Concept 1 · [THEORY]","Data Models",
+    "Before Daraz was built, someone sketched 'a Customer places Orders; each Order contains Products' — a conceptual (ER) model. Engineers turned it into relational tables, and the ops team decided how to store and index those tables on disk. Same shop, described at three levels.",
+    "\"A data model is just the tables.\" Tables are the representational level; above them is the conceptual model (real-world things), below is the physical storage layout.",
+    "A data model is a set of concepts describing the structure, constraints, and operations of a database. By abstraction: high-level/conceptual (the ER model), representational/implementation (the relational/table model), and low-level/physical (storage details) — ranging from human-oriented to machine-oriented.",
+    "data model · conceptual (high-level) · representational/relational · physical (low-level) · structure, constraints, operations")
 
+concept_understand("S2 · Concept 2 · [THEORY]","Schema vs Instance",
+    "A schema is the design/structure of the database (tables, columns, rules) — decided at design time, changes rarely. An instance (database state) is the actual data stored at a given moment — it changes constantly.",
+    ["Schema Student(roll, name, program) says what every row must have.",
+     "The instance is the actual rows right now — 60 today, 59 after a student drops out tomorrow.",
+     "One schema, an endless succession of instances over time.",
+     "Adding a phone column changes the SCHEMA (rare, big); adding a row changes the INSTANCE (constant)."],
+    "s2_schema_instance.png","Schema = the mould; instance = what's in it now.",
+    "~8 min. Write Student(roll, name, program) then 3 fake rows beside it — same schema, many instances.")
+concept_apply("S2 · Concept 2 · [THEORY]","Schema vs Instance",
+    "Your class WhatsApp group: its structure (name, members, admins) is the schema and barely changes; the actual messages and current member list right now are the instance and change every minute. Two members leave tomorrow — same group (schema), new membership (instance).",
+    "\"Schema and instance are the same thing.\" The schema is the stable design; the instance is the volatile data. One schema has many instances over time.",
+    "A schema is the design/structure of a database — the table definitions and constraints; it is stable and changes rarely. An instance (database state) is the actual data stored at a given moment; it changes constantly. One schema has many instances over time. Example: schema Student(roll, name, program); an instance = today's actual rows.",
+    "schema (structure, stable) · instance / database state (current data, volatile) · one schema → many instances")
 
-def diag_mindmap():
-    s = diagram_slide("S4 · Synthesis  ·  Diagram", "Unit 1 — The Whole Picture")
-    center = (5.52, 3.25, 2.3, 1.0); ccx, ccy = 5.52+1.15, 3.25+0.5
-    branches = [
-        (1.1, 1.05, 2.7, 0.85, "Users\n(naive · programmer · DBA)", BLUE),
-        (9.5, 1.05, 2.8, 0.85, "Languages & Interfaces\n(DDL/DML/DCL/TCL)", BLUE),
-        (0.5, 3.3, 2.6, 0.9, "DBMS Components\n(+ catalog)", TEAL),
-        (10.2, 3.3, 2.6, 0.9, "Three-Schema Architecture\n(data independence)", TEAL),
-        (5.3, 5.75, 2.75, 0.9, "Deployment Architecture\n(centralized / client-server)", AMBER),
-    ]
-    for x, y, w, h, _, _c in branches:  # connectors first (behind)
-        conn(s, ccx, ccy, x+w/2, y+h/2, color=LGREY, w=2)
-    for x, y, w, h, txt, col in branches:
-        shp(s, MSO_SHAPE.ROUNDED_RECTANGLE, x, y, w, h, txt, fill=col, size=12.5)
-    shp(s, MSO_SHAPE.OVAL, *center, "DATABASE\nSYSTEM", fill=NAVY, size=16)
-    _notes(s, "Integration moment. Point to each branch and ask which session it came from. This is the slide to photograph for revision.")
+concept_understand("S2 · Concept 3 · [THEORY]","The Three-Schema Architecture",
+    "The three-schema architecture describes the same database at three levels: external (per-user views), conceptual (the whole logical structure), and internal (physical storage). Mappings between the levels hide detail.",
+    ["External level — per-user views (a student sees only their own marks); a database has many views.",
+     "Conceptual level — one complete logical schema: all entities, relationships, constraints, no storage detail.",
+     "Internal level — physical storage: files, pages, indexes.",
+     "Mappings (external/conceptual, conceptual/internal) hide each level from the one above → enable data independence."],
+    "s2_three_schema.png","View → whole → storage.",
+    "~9 min. The centrepiece — walk the college exam DB through all three levels; the mappings give data independence.")
+concept_apply("S2 · Concept 3 · [THEORY]","The Three-Schema Architecture",
+    "The college result system through three pairs of eyes: a student sees only their own marksheet (external view); the exam section's system holds every student, subject, and mark with their relationships (conceptual); the IT team knows it's indexed files on a server (internal). Each level is shielded from the others.",
+    "\"There are many conceptual schemas.\" No — many external views, exactly ONE conceptual schema, one internal schema. The single conceptual schema is the shared source of truth.",
+    "The three-schema architecture separates a database into: external level (per-user views, e.g. a student sees only their own marks), conceptual level (the whole logical database — entities, relationships, constraints), and internal level (physical storage — files and indexes). Mappings between levels hide lower-level detail and enable data independence.",
+    "external schema/view · conceptual schema · internal schema · external/conceptual & conceptual/internal mappings · separation of concerns")
 
+concept_understand("S2 · Concept 4 · [THEORY]","Data Independence",
+    "Data independence is the ability to change the database at one level without changing the levels above. Logical = change the conceptual schema without breaking external views; physical = change storage without changing the conceptual schema.",
+    ["Logical independence — add a column/table without breaking views that don't use it; harder to achieve.",
+     "Physical independence — move to SSDs, add an index, reorganize files without changing the logical schema; easier.",
+     "It is the payoff of the three-schema architecture and its mappings.",
+     "Lets banks, telecoms, and portals upgrade infrastructure without rewriting every app."],
+    "s2_data_independence.png","Logical = change the design safely; physical = change the storage safely.",
+    "~6 min. Resolve the hook: SSD migration + new index overnight, every app works next morning = physical independence.")
+concept_apply("S2 · Concept 4 · [THEORY]","Data Independence",
+    "One night the admin migrates the exam database to faster SSDs and adds an index; the next morning every app and user works exactly as before — nobody noticed. That invisible change is physical data independence, and it's why the college could move servers without breaking the student portal.",
+    "\"Any change to the database breaks the apps.\" With data independence, storage changes (physical) and even design additions (logical) leave dependent views and apps working untouched.",
+    "Logical data independence is the ability to change the conceptual schema (e.g. add a column or table) without changing external views or the applications using them. Physical data independence is the ability to change physical storage (e.g. add an index, move to SSDs) without changing the conceptual schema. The three-schema architecture provides both; logical independence is harder to achieve.",
+    "data independence · logical (change the design safely) · physical (change the storage safely)")
 
-# =================== BUILD DECK ===================
-add_title(
-    "Unit 1 — Database Concepts & Architecture",
-    "IT 220: Database Management System  ·  BIM 4th Semester",
-    "4 lecture hours (S1–S4)  ·  50 min each  ·  Nepal / South Asia context",
-)
-add_content(
-    "Unit 1 — Learning Outcomes", "Overview",
-    [("By the end of this unit, you will be able to:", 0),
-     ("Define database, DBMS, and the roles around them; explain why a DBMS beats flat files", 1),
-     ("Distinguish data models, schemas, and instances", 1),
-     ("Explain the three-schema architecture and the two kinds of data independence", 1),
-     ("Identify database languages/interfaces and DBMS components", 1),
-     ("Compare centralized vs client/server architectures and classify DBMSs", 1)],
-    notes="Set expectations: 4 sessions, one outcome cluster each. This unit is the foundation for the whole course.",
-)
+add_activity("Draw your college's three schemas",
+    ["In pairs (3 min): for the college result system, write what lives at EACH level.",
+     "External — what does a student / teacher / admin each see?   Conceptual — the whole database.   Internal — how it's stored.",
+     "Then name ONE change at the internal level that students would NOT notice — that's physical data independence.",
+     "Share (2 min)."],
+    "External: a student sees only their marks, a teacher their class, admin everything. Conceptual: one logical database of all students/subjects/marks. Internal: indexed files on a server. A change students wouldn't notice: switching to SSDs, adding an index, or compressing old data.",
+    "ACTIVITY [~5 min].")
+add_quiz("S2 — Quick Check",
+    [("Q1.  Adding a column without breaking existing user views demonstrates:","q"),
+     ("a) ✅ logical data independence   b) physical data independence   c) redundancy   d) an instance change","a"),
+     ("Q2.  Which level is closest to physical storage?","q"),
+     ("a) external   b) conceptual   c) ✅ internal   d) view","a"),
+     ("Discussion: give an everyday example of 'changing the inside without changing the outside.'","o")],
+    "QUIZ [~5 min].")
+add_summary("S2 · Summary  ·  [~2 min]",
+    ["Data models describe data at three abstraction levels (conceptual → representational → physical).",
+     "Schema = structure (stable); instance = the current data (always changing).",
+     "The three-schema architecture (external / conceptual / internal) gives logical and physical data independence."],
+    "Data independence is why banks, telecoms (Ntc/Ncell), and government portals can upgrade storage and infrastructure without rewriting every application. Systems built without it become unmaintainable — a real, expensive business risk.",
+    "S3 — the languages and interfaces we use to talk to a DBMS, and what's inside the DBMS box.",
+    "REAL-LIFE APPLICATION [~3 min] + SUMMARY [~2 min].")
 
-# ---------------- S1 (50 min: 5 hook + 35 content + 5 CFU + 3 app + 2 summary) ----------------
-add_divider("Session 1 · Lecture hour 1", "What is a Database & DBMS?",
-            "HOOK [~5 min]: 3 everyday facts — eSewa balance survives a dead phone; exam results survive the holidays; FB feed reloads where you left it. Land: none of it lives 'in the app' — it lives in a DATABASE. Show of hands: 'who checked eSewa/bank balance this week?' That number came out in under a second while thousands read theirs — nobody got the wrong balance. Cold-call: 'reinstall an app — why are you still logged in?' Agenda on board.")
-add_content("Data → Information → Database", "S1 · Concept 1  [THEORY]  ·  ~7 min",
-    [("Data = raw facts with no context yet:  9818000000,  'Sita',  78  (is 78 a mark? age? temp?)", 0),
-     ("Information = data placed in context: 'Sita scored 78 in DBMS' — now 78 means something", 0),
-     ("Database = an organized, RELATED collection of data, stored to be accessed/managed/updated", 0),
-     ("The test — three properties must hold: persistent · shared · structured", 2),
-     ("Global: a bank's account ledger  |  Nepal: TU/PU college exam database", 1)],
-    image="s1_data_ladder.png",
-    notes="Write DATA·INFORMATION·DATABASE on the board. Ask 'is 78 a mark, age, or house number?' to show data is raw. Three properties = persistent (survives shutdown), shared (many users/apps), structured. Mini case (~90s): a kirana shop's paper notebook IS a database — organized, persistent — but fragile (one reader, fire/tea risk, manual search). 'Hold that notebook — it's the problem the DBMS solves.'")
-add_content("DBMS — Database Management System", "S1 · Concept 2  [THEORY]  ·  ~7 min",
-    [("DBMS = the SOFTWARE that lets you define, create, query, update & administer databases", 0),
-     ("Database = the DATA itself.  DBMS = the program that manages it.  Together = a database system", 2),
-     ("'MySQL' is the DBMS (engine); the 'college' database is the data it manages — one engine, many DBs", 1),
-     ("Examples: MySQL, MariaDB, PostgreSQL, Oracle, SQL Server", 1),
-     ("Misconception: 'Excel is a database' — no real concurrency, integrity, querying at scale, or security", 2),
-     ("Analogy: DBMS = librarian, data = books; no librarian = a pile on the floor", 2)],
-    image="s1_users_dbms.png",
-    notes="Separate the two ideas students confuse ALL semester. Deliver the librarian analogy: the librarian doesn't OWN the books, they MANAGE them — exactly the DBMS-vs-database relationship. Repeat the MySQL line twice. Excel is fine for 200 rows; it breaks at the point a DBMS begins.")
-add_content("Database Users & the DBA", "S1 · Concepts 3–4  [EXAMPLE]  ·  ~7 min",
-    [("Naive / end users — use ready-made screens (a bank teller)", 0),
-     ("Application programmers — build the apps that talk to the DB (core-banking dev)", 0),
-     ("Sophisticated users — write their own complex queries (data/MIS analyst)", 0),
-     ("DBA — schema design, security/permissions, backups, performance tuning", 0),
-     ("Case: exam-result server crawls the night before results — who do you call? The DBA.", 2)],
-    image="s1_db_users.png",
-    notes="Use ONE Nepali bank to populate all four roles (teller → naive; app team → programmers; risk/MIS → sophisticated; DBA). The DBA is accountable when the data layer misbehaves — make the role feel real and high-stakes.")
-add_content("Why a Database beats a File System", "S1 · Concept 5  [THEORY]  ·  ~6 min",
-    [("Redundant copies → inconsistency  ⇒  controlled redundancy", 0),
-     ("Files out of sync  ⇒  consistency & integrity constraints", 0),
-     ("Hard to share safely  ⇒  concurrent multi-user access", 0),
-     ("Anyone can open a file  ⇒  security / access control", 0),
-     ("A crash loses data  ⇒  backup & recovery", 0),
-     ("Misconception: 'more copies = safer.' Uncontrolled redundancy breaks consistency.", 2)],
-    image="s1_file_vs_dbms.png",
-    notes="Walk the address-in-5-files example: store a student's address in 5 files, update 4, forget 1 — now the data is inconsistent and you can't tell which is right. This single example motivates 'controlled redundancy'.")
-add_activity("S1 — 'File or DBMS?'  ·  ~6 min",
-    [("Think–Pair–Share (2 min pairs, 4 min sharing)", 0),
-     ("Give pairs 4 scenarios: a wedding guest list in Excel; a bank's accounts; a one-person diary; Daraz orders", 1),
-     ("For each: file/spreadsheet or a DBMS — and WHICH property (concurrency, integrity, scale, security) decides it?", 1),
-     ("Share aloud; build the file-vs-DBMS table from their answers", 1)],
-    notes="Anchors the abstract advantages in concrete choices. The bank accounts + Daraz orders clearly need a DBMS (concurrency, integrity, scale); the diary/guest list don't — that contrast IS the lesson.")
-add_quiz("S1 — Quick Check  ·  ~5 min",
-    [("Q1. Which is NOT a function of a DBMS?", "q"),
-     ("a) define data   b) print documents   c) query   d) control access", "o"),
-     ("✅ b) Print formatted documents", "a"),
-     ("Q2. Who grants/revokes user permissions?", "q"),
-     ("✅ c) Database Administrator (DBA)", "a"),
-     ("Discussion: name a phone app and guess what its database stores about you.", "o")],
-    notes="APPLICATION [~3 min]: every fintech/e-commerce employer in Nepal (eSewa, Khalti, Daraz, IME Pay) runs on a DBMS — 'understands databases' is on almost every software/data/QA job ad. SUMMARY [~2 min]: database = organized shared persistent data; DBMS manages it; beats files on redundancy/integrity/sharing/security/recovery. Next: how we DESCRIBE data — models, schemas, instances.")
+# ============================ S3 ============================
+add_divider("Session 3 · Lecture hour 3 (of 4)","Database Languages, Interfaces & the DBMS Environment",
+    "SQL is several languages wearing one name: one to BUILD a database, another to USE it daily, another to PROTECT it. Which SQL keywords have you already seen?",
+    "OPENING HOOK [~5 min]. Full SQL syntax is Unit 5. Agenda: languages → interfaces → components → data dictionary.")
 
-# ---------------- S2 ----------------
-add_divider("Session 2 · Lecture hour 2", "Models, Schemas & the Three-Schema Architecture",
-            "HOOK [~5 min]: last year the college stored results one way; this year IT moved everything to a faster server with a different internal layout. You — checking marks online — noticed NOTHING. That invisibility has a name: data independence. Ask 'why didn't the change break the student portal?' and hold it. Agenda: models → schema vs instance → three-schema → independence.")
-add_content("Data Models", "S2 · Concept 1  [THEORY]  ·  ~7 min",
-    [("Data model = concepts to describe STRUCTURE + CONSTRAINTS + OPERATIONS of a database", 0),
-     ("High-level / conceptual — close to how humans think (the ER model, Unit 2)", 1),
-     ("Representational — the relational model (tables)", 1),
-     ("Low-level / physical — how data sits on disk (files, indexes)", 1),
-     ("Analogy: conceptual = the architect's blueprint; physical = the built house (bricks, wiring)", 2)],
-    image="s2_data_models.png",
-    notes="Keep it light — models are previewed here, detailed in Unit 2. The takeaway is the IDEA of describing data at different abstraction levels; that sets up the three-schema architecture.")
-add_content("Schema vs Instance", "S2 · Concept 2  [THEORY]  ·  ~8 min",
-    [("Schema = the DESIGN / structure of the database. Defined once, changes RARELY.", 0),
-     ("Instance (state) = the actual DATA at a moment. Changes CONSTANTLY.", 0),
-     ("Schema:  Student(roll, name, program)  —  the definition / the mould", 1),
-     ("Instance: today's actual 60 students with real roll numbers; tomorrow one drops out → new instance", 1),
-     ("Misconception: 'schema and data are the same.' Schema = the mould; instance = what's poured in.", 2)],
-    image="s2_schema_instance.png",
-    notes="Hammer the mould/poured-in metaphor. Write Student(roll,name,program) on the board, then list 3 fake rows beside it — 'same schema, infinitely many instances over time.' The schema barely changes; the instance changes every enrolment.")
-add_content("Three-Schema Architecture", "S2 · Concept 3  [THEORY]  ·  ~9 min",
-    [("External level — per-user VIEWS (a student sees only their own marks)", 0),
-     ("Conceptual level — the WHOLE logical database (all students, subjects, marks)", 0),
-     ("Internal level — how data is PHYSICALLY stored & indexed on disk", 0),
-     ("Mappings connect the levels, so each level HIDES detail from the one above", 2)],
-    image="s2_three_schema.png",
-    notes="This is the centrepiece. Walk the college exam DB through all three: external = student sees own marks; conceptual = the complete exam DB; internal = how it's stored/indexed on disk. The mappings between levels are exactly what give data independence (next concept).")
-add_content("Data Independence — the payoff", "S2 · Concept 4  [THEORY]  ·  ~6 min",
-    [("Logical data independence: change the CONCEPTUAL schema (add a column/table)…", 0),
-     ("   …without changing external views or the apps that use them", 1),
-     ("Physical data independence: change STORAGE (move to SSDs, add an index)…", 0),
-     ("   …without changing the conceptual schema", 1),
-     ("Memory hook: Logical = change the DESIGN safely · Physical = change STORAGE safely", 2)],
-    image="s2_data_independence.png",
-    notes="Resolve the hook here. Mini case: the admin moves the DB to SSDs + adds an index overnight; next morning every app and user works unchanged = PHYSICAL independence. Logical independence (changing the design without breaking views) is the harder one to achieve.")
-add_activity("S2 — 'Draw your college's three schemas'  ·  ~5 min",
-    [("In pairs (3 min), then 2 pairs share (2 min)", 0),
-     ("For the college result system, write what lives at EACH level:", 1),
-     ("External (what does a student see? a teacher? admin?) · Conceptual (the whole DB) · Internal (storage)", 1),
-     ("Then: name one change at the internal level that students would NOT notice (data independence)", 1)],
-    notes="Cements the architecture by making students place real examples at each level. The 'change students wouldn't notice' prompt directly rehearses physical data independence.")
-add_quiz("S2 — Quick Check  ·  ~5 min",
-    [("Q1. Adding a column without breaking user views is…", "q"),
-     ("✅ a) Logical data independence", "a"),
-     ("Q2. Which level is closest to physical storage?", "q"),
-     ("✅ c) Internal", "a"),
-     ("Discussion: an everyday 'change the inside without changing the outside' example.", "o")],
-    notes="APPLICATION [~3 min]: data independence is WHY banks, Ntc/Ncell, and gov portals upgrade storage/infrastructure without rewriting every app — systems lacking it become unmaintainable. SUMMARY [~2 min]: models describe data at 3 levels; schema = structure, instance = current data; three-schema architecture gives logical + physical independence. Next: the languages & interfaces to talk to a DBMS.")
+concept_understand("S3 · Concept 1 · [THEORY]","Database Languages (DDL / DML / DCL / TCL)",
+    "SQL is a family of sub-languages, each with a job: DDL defines structure, DML queries/modifies data, DCL controls permissions, TCL controls transactions.",
+    ["DDL — CREATE, ALTER, DROP (define / change structure).",
+     "DML — SELECT, INSERT, UPDATE, DELETE (query / modify data).",
+     "DCL — GRANT, REVOKE (permissions).",
+     "TCL — COMMIT, ROLLBACK (confirm or undo a group of changes as a unit)."],
+    "s3_languages.png","Define, Manipulate, Control, Transact.",
+    "~8 min. One college example: register a course = DDL; enrol a student = DML; grant a TA access = DCL; commit = TCL.")
+concept_apply("S3 · Concept 1 · [THEORY]","Database Languages (DDL / DML / DCL / TCL)",
+    "Building the result portal: the developer CREATEs the Student and Marks tables (DDL); staff INSERT/UPDATE marks (DML); the admin GRANTs the clerk access then REVOKEs it once published (DCL); each batch is COMMITted, or ROLLBACKed if a mistake is caught (TCL). One workflow, all four, all 'SQL'.",
+    "\"SQL is one single language.\" SQL bundles four sub-languages — CREATE is DDL, SELECT is DML, GRANT is DCL, COMMIT is TCL — all 'SQL' but doing very different jobs.",
+    "DDL (CREATE/ALTER/DROP) defines structure; DML (SELECT/INSERT/UPDATE/DELETE) queries and modifies data; DCL (GRANT/REVOKE) controls permissions; TCL (COMMIT/ROLLBACK) controls transactions. SQL bundles all four sub-languages into one language.",
+    "SQL · DDL (define) · DML (query/modify) · DCL (permissions) · TCL (transactions) · example verbs")
 
-# ---------------- S3 ----------------
-add_divider("Session 3 · Lecture hour 3", "Languages, Interfaces & the DBMS Environment",
-            "HOOK [~5 min]: there's one language to BUILD a database, another to USE it day-to-day, another to PROTECT it. You've heard of SQL — but SQL is actually several languages wearing one name. Ask 'which SQL keywords have you already seen?' Agenda: languages → interfaces → DBMS components → data dictionary.")
-add_content("Database Languages — four jobs", "S3 · Concept 1  [THEORY]  ·  ~8 min",
-    [("DDL (Data Definition) — define/alter STRUCTURE (CREATE a Course table)", 0),
-     ("DML (Data Manipulation) — query & modify DATA (enrol a student, fetch marks)", 0),
-     ("DCL (Data Control) — PERMISSIONS (give a TA read access)", 0),
-     ("TCL (Transaction Control) — COMMIT / ROLLBACK transactions (confirm or undo a transfer)", 0),
-     ("Misconception: 'SQL is one language.' SQL BUNDLES DDL+DML+DCL+TCL.", 2)],
-    image="s3_languages.png",
-    notes="Full SQL syntax is Unit 5 — today just the four categories. Mini case (one college): register a new course = DDL; enrol a student = DML; grant a TA view access = DCL; commit the enrolment = TCL. CREATE/SELECT/GRANT/COMMIT — all 'SQL', different jobs.")
-add_content("Interfaces to a DBMS", "S3 · Concept 2  [EXAMPLE]  ·  ~7 min",
-    [("Menu-based · form-based · GUI · natural language · API / embedded SQL", 0),
-     ("Bank teller → form-based screen (guided, safe, no SQL needed)", 1),
-     ("Developer → talks to the same DB directly via SQL / an API", 1),
-     ("Principle: match the interface to the user", 2)],
-    image="s3_interfaces.png",
-    notes="Same data, many doors. The teller and the developer touch the SAME database through totally different interfaces matched to their skill/role. Sets up the shopkeeper-interface discussion in the quiz.")
-add_content("Inside the DBMS box", "S3 · Concept 3  [THEORY]  ·  ~8 min",
-    [("Query processor / optimizer — finds the CHEAPEST way to run a query", 0),
-     ("Storage manager — reads/writes data to disk", 0),
-     ("Buffer manager — keeps hot data in memory for speed", 0),
-     ("Transaction manager — keeps transactions safe (ACID, Unit 6)", 0),
-     ("Catalog / metadata — info about the database itself", 0)],
-    image="s3_dbms_components.png",
-    notes="Restaurant analogy: waiter (query processor decides how to fulfil the order), kitchen (storage manager), manager (transaction manager ensures no half-done order), receipt book (catalog).")
-add_content("Data Dictionary / Catalog", "S3 · Concept 4  [THEORY]  ·  ~6 min",
-    [("Stores metadata: table names, columns, types, constraints, users, indexes", 0),
-     ("'A database about the database'", 2),
-     ("Nepal: the system table that knows every table in the college DB", 1),
-     ("Line: metadata = data about data (phone book = data; 'sorted by surname' = metadata)", 1)],
-    image="s3_data_dictionary.png",
-    notes="Keep crisp. When you ask 'what columns does Student have?', the answer comes FROM the catalog. Then run the activity.")
-add_activity("S3 — 'Sort the command'  ·  ~6 min",
-    [("Rapid-fire as a class (or in pairs), ~6 min", 0),
-     ("Show commands one at a time: CREATE TABLE · SELECT · GRANT · DROP · UPDATE · COMMIT · REVOKE · INSERT", 1),
-     ("Class calls out DDL / DML / DCL / TCL for each", 1),
-     ("Then: 'enrol a student in a new course and make it permanent' — which languages, in order?", 1)],
-    notes="Fast, high-energy retrieval practice. The last prompt chains DDL (if creating)→DML (enrol)→TCL (commit), reinforcing that one task touches multiple sub-languages.")
-add_quiz("S3 — Quick Check  ·  ~5 min",
-    [("Q1. CREATE TABLE belongs to which sub-language?", "q"),
-     ("✅ a) DDL", "a"),
-     ("Q2. Which component decides the cheapest way to run a query?", "q"),
-     ("✅ c) Query processor / optimizer", "a"),
-     ("Discussion: which interface would you build for a non-technical shopkeeper, and why?", "o")],
-    notes="APPLICATION [~3 min]: knowing DDL/DML/DCL is the literal day-one skill in any backend/data/QA role — 'SQL required' job ads mean exactly these. SUMMARY [~2 min]: DDL/DML/DCL/TCL each have a job (SQL bundles them); many interfaces for many users; a DBMS = cooperating components + a catalog. Next: WHERE the database runs.")
+concept_understand("S3 · Concept 2 · [THEORY]","Interfaces to a DBMS",
+    "A DBMS can be reached through several interfaces, each suited to a different user: menu-based, form-based, graphical (GUI), natural-language, and application-program (API) / embedded SQL. The principle: match the interface to the user.",
+    ["Form-based / GUI — guided, safe, ideal for non-technical staff.",
+     "Menu-based — pick from lists (kiosks, older systems).",
+     "Natural-language — type a request in ordinary words.",
+     "API / embedded SQL — programs talk to the database directly in code (developers)."],
+    "s3_interfaces.png","Same data, many doors.",
+    "~7 min. A teller and a developer touch the SAME database through different interfaces matched to their skill.")
+concept_apply("S3 · Concept 2 · [THEORY]","Interfaces to a DBMS",
+    "eSewa's front doors: your grandmother uses big tap-buttons (a form/GUI); a shopkeeper takes payment via QR; eSewa's developers reach the very same database through APIs and SQL. Force the grandmother to type SQL and she'd never pay a bill; force a developer to tap buttons and the app would never get built.",
+    "\"Everyone should use the same interface.\" No — match the interface to the user's skill and task; the same database is reached through whichever door fits.",
+    "DBMS interfaces include menu-based, form-based, graphical (GUI), natural-language, and application-program (API) / embedded-SQL interfaces. Each suits a different kind of user; the guiding principle is to match the interface to the user's skill and task — the same database is reached through whichever door fits.",
+    "interface · menu-based · form-based · GUI · natural-language · API / embedded SQL · match interface to user")
 
-# ---------------- S4 ----------------
-add_divider("Session 4 · Lecture hour 4 — CLOSES UNIT 1", "Architectures & Classifying DBMSs",
-            "HOOK [~5 min]: results are out, 5,000 students hit refresh in the same 60 seconds. What stops the system collapsing? Architecture — WHERE the database and apps actually run. Agenda: centralized → client/server (2-tier/3-tier) → classification → Unit 1 synthesis.")
-add_content("Centralized Architecture", "S4 · Concept 1  [THEORY]  ·  ~7 min",
-    [("Data + DBMS + app all on ONE central machine; terminals just display results", 0),
-     ("Pro: simple to set up and manage", 1),
-     ("Con: SINGLE POINT OF FAILURE — if that machine dies, everything stops; doesn't scale", 2),
-     ("Nepal: an old standalone office system — one PC in the corner holds everything", 1)],
-    image="s4_centralized.png",
-    notes="Set up the contrast with client/server. Emphasise the single point of failure — it's the weakness that motivates everything that follows.")
-add_content("Client/Server Architecture", "S4 · Concept 2  [EXAMPLE]  ·  ~9 min",
-    [("Two-tier: client (UI + logic) ↔ database server", 0),
-     ("Three-tier: client (UI) ↔ application server (business logic) ↔ database server", 0),
-     ("Daraz app (client) → app servers (logic/cart/login) → DB servers (products/orders)", 1),
-     ("Case: a banking app doesn't store your full ledger on the phone — data lives SERVER-SIDE", 2)],
-    image="s4_client_server.png",
-    notes="Three-tier is the modern web/mobile standard. The 'why your phone doesn't hold the full ledger' case lands the server-side idea: security, consistency, access from any device.")
-add_content("Classification of DBMSs", "S4 · Concept 3  [THEORY]  ·  ~7 min",
-    [("By data model: relational, object, object-relational, legacy hierarchical/network, NoSQL", 0),
-     ("By number of users: single-user vs multi-user", 0),
-     ("By number of sites: centralized vs distributed", 0),
-     ("Misconception: 'NoSQL = no SQL / SQL is dead.' It means 'NOT ONLY SQL.'", 2)],
-    image="s4_classification.png",
-    notes="NoSQL and distributed are previews of Unit 7. Stress that relational still DOMINATES business systems; NoSQL is an additional tool for specific needs (huge scale, flexible schemas).")
-add_content("Unit 1 — The whole picture", "S4 · Synthesis  [THEORY]  ·  ~6 min",
-    [("Users → Languages/Interfaces → DBMS (components + catalog) →", 0),
-     ("…a database described by a schema at 3 levels (data independence) →", 0),
-     ("…running on an architecture (centralized / client-server) →", 0),
-     ("…classified by model, users, and distribution", 0),
-     ("Every branch is one session of this unit — photograph this for revision", 2)],
-    image="s4_synthesis.png",
-    notes="Walk the mind-map slowly; ask students which session each branch came from. This is the integration moment and the slide to photograph for revision.")
-add_activity("S4 — 'Classify a Nepali app'  ·  ~5 min",
-    [("In pairs (3 min), then 2 pairs share (2 min)", 0),
-     ("Pick a Nepali app (eSewa, Daraz, Nagarik App, a bank app)", 1),
-     ("Sketch whether it's two-tier or three-tier and label what lives in each tier", 1),
-     ("Then classify its likely DBMS on the 3 axes (model, users, distribution) with a one-line reason", 1)],
-    notes="Synthesises the whole session AND the unit. Most modern Nepali apps are three-tier, multi-user, relational (often with some NoSQL) — let pairs justify their guess.")
-add_quiz("S4 — Quick Check  ·  ~5 min",
-    [("Q1. Main weakness of a purely centralized system?", "q"),
-     ("✅ b) Single point of failure", "a"),
-     ("Q2. Three-tier adds which layer between client and DB?", "q"),
-     ("✅ c) An application / business-logic server", "a"),
-     ("Discussion: pick a Nepali app — is it two-tier or three-tier, and why?", "o")],
-    notes="APPLICATION [~3 min]: every scalable product (e-commerce, fintech, Nagarik App, gov portals) is client/server, usually three-tier — this frames the rest of the course. SUMMARY [~2 min]: centralized = simple but fragile; client/server (esp. 3-tier) = scalable standard; DBMSs classify by model/users/distribution. Next unit: modelling data with the ER model.")
+concept_understand("S3 · Concept 3 · [THEORY]","Inside the DBMS — the System Environment",
+    "A DBMS is not one monolithic program — it is several cooperating components: query processor/optimizer, storage manager, buffer manager, transaction manager, and the catalog.",
+    ["Query processor / optimizer — plans the cheapest, fastest way to run a query.",
+     "Storage manager — reads/writes data to disk.   Buffer manager — caches hot data in memory.",
+     "Transaction manager — keeps transactions safe and reliable (ACID, Unit 6).",
+     "Catalog / metadata — stores information about the database itself (next concept)."],
+    "s3_dbms_components.png","A DBMS is a kitchen of cooperating roles.",
+    "~8 min. Restaurant analogy: waiter (query processor), kitchen (storage), manager (transactions), receipt book (catalog).")
+concept_apply("S3 · Concept 3 · [THEORY]","Inside the DBMS — the System Environment",
+    "Tap 'View Result': the query processor finds the fastest way to fetch your marks; the buffer manager checks whether they're already in memory; if not, the storage manager reads disk; the transaction manager ensures you never see half-updated marks; the catalog confirms the Marks table exists — five components cooperate in under a second.",
+    "\"The DBMS is one black box.\" It's cooperating components — so 'it's slow' becomes a diagnosable checklist: bad execution plan? starved cache? failing disk? waiting on a lock?",
+    "Main DBMS components: query processor/optimizer (plans the most efficient execution), storage manager (reads/writes data to disk), buffer manager (caches frequently used data in memory), transaction manager (ensures safe, reliable transactions — ACID), and the catalog/data dictionary (stores metadata). They cooperate to answer queries quickly and safely.",
+    "query processor/optimizer · storage manager · buffer manager · transaction manager · catalog/metadata")
 
-# ---------------- End-of-unit ----------------
-add_divider("Assessment", "Unit 1 — End-of-Unit Quiz",
-            "12 MCQ + 5 short answer + 3 applied/diagramming + 1 discussion. Full questions and answer key are in Unit1_material.md.")
-add_content("Exam pointers — what to master", "Unit 1 · Review",
-    [("Database vs DBMS vs database system — never confuse them", 0),
-     ("Schema vs instance; the three-schema architecture (be able to draw it)", 0),
-     ("Logical vs physical data independence", 0),
-     ("DDL / DML / DCL / TCL with one example command each", 0),
-     ("Centralized vs two-tier vs three-tier; the three classification axes", 0)],
-    notes="These five lines map to the most common exam questions.")
-add_title("End of Unit 1",
-          "Next: Unit 2 — Data Modelling with the Entity-Relationship (ER) Model",
-          "Generated for IT 220 · diagrams are native shapes (editable) · speaker notes in each slide's Notes pane")
+concept_understand("S3 · Concept 4 · [THEORY]","Data Dictionary / Catalog",
+    "The data dictionary (system catalog) stores metadata — data about the data: table names, columns and their types, constraints, users and permissions, and indexes. It makes the DBMS self-describing.",
+    ["When the DBMS checks 'does Student exist and what columns?', it reads the catalog.",
+     "Metadata = data that describes other data (a phone book's 'sorted by surname' note).",
+     "Tools like MySQL Workbench / phpMyAdmin list your tables by reading the catalog.",
+     "Self-describing → the DBMS can validate a query (does this column exist?) before running it."],
+    "s3_data_dictionary.png","Metadata = data about data.",
+    "~6 min. When you ask 'what columns does Student have?', the answer comes FROM the catalog.")
+concept_apply("S3 · Concept 4 · [THEORY]","Data Dictionary / Catalog",
+    "Open the college database in MySQL Workbench or phpMyAdmin and it instantly lists every table and each table's columns — read straight from the system catalog, the database's own metadata. Delete a column and the catalog updates; every tool then reflects the change automatically.",
+    "\"The catalog holds the actual data.\" No — it holds metadata (structure, types, constraints, permissions, indexes): data ABOUT the data, not the rows themselves.",
+    "The data dictionary / system catalog is the part of the DBMS that stores metadata — data about the database: table names, column names and types, constraints, registered users and permissions, and indexes. The DBMS uses it to validate and process queries, making the database self-describing.",
+    "data dictionary / system catalog · metadata · table names, column types, constraints, users, indexes · self-describing")
 
-out = "/Users/inventechg1/Desktop/2083_SEM/fourth/IT220_Unit1.pptx"
+add_activity("Sort the command",
+    ["Rapid-fire (class or pairs): classify each as DDL / DML / DCL / TCL —",
+     "CREATE TABLE · SELECT · GRANT · DROP · UPDATE · COMMIT · REVOKE · INSERT.",
+     "Then: 'enrol a student in a brand-new course and make it permanent' — which sub-languages, in order?",
+     "Discuss any disagreements."],
+    "DDL: CREATE TABLE, DROP. DML: SELECT, UPDATE, INSERT. DCL: GRANT, REVOKE. TCL: COMMIT. The chained task = DDL (create the course) → DML (enrol) → TCL (commit) — one real task touches several sub-languages.",
+    "ACTIVITY [~6 min].")
+add_quiz("S3 — Quick Check",
+    [("Q1.  CREATE TABLE belongs to which sub-language?","q"),
+     ("a) ✅ DDL   b) DML   c) DCL   d) TCL","a"),
+     ("Q2.  Which component decides the cheapest way to execute a query?","q"),
+     ("a) storage manager   b) buffer manager   c) ✅ query processor / optimizer   d) catalog","a"),
+     ("Discussion: which DBMS interface would you build for a non-technical shopkeeper, and why?","o")],
+    "QUIZ [~5 min].")
+add_summary("S3 · Summary  ·  [~2 min]",
+    ["DDL / DML / DCL / TCL each have a distinct job; SQL bundles all four.",
+     "A DBMS offers many interface styles for many kinds of users — match the interface to the user.",
+     "A DBMS is several cooperating components (query processor, storage/buffer/transaction managers) plus a catalog of metadata."],
+    "Knowing DDL / DML / DCL is the literal day-one skill in any backend, data, or QA role. When a job ad says 'SQL required', it is asking for exactly these sub-languages — and saying which command does which job marks you as someone who understands databases, not just syntax.",
+    "S4 — WHERE the database runs: centralized vs client/server, and how we classify DBMSs.",
+    "REAL-LIFE APPLICATION [~3 min] + SUMMARY [~2 min].")
+
+# ============================ S4 ============================
+add_divider("Session 4 · Lecture hour 4 (of 4) · closes Unit 1","Centralized vs Client/Server · Classifying DBMSs",
+    "Results are out; 5,000 students hit refresh in the same minute. What stops the system collapsing? Architecture — WHERE the database and apps actually run.",
+    "OPENING HOOK [~5 min]. Agenda: centralized → client/server (2-tier/3-tier) → classification → Unit 1 synthesis.")
+
+concept_understand("S4 · Concept 1 · [THEORY]","Centralized Architecture",
+    "In a centralized architecture the data, the DBMS, and the application all run on one central machine; users connect through simple terminals that mostly just display results.",
+    ["All the real work happens in one place.",
+     "Advantage: simple to set up, manage, and secure — only one machine to look after.",
+     "Disadvantage: a single point of failure — if it goes down, everything stops.",
+     "It also struggles to scale to large numbers of simultaneous users."],
+    "s4_centralized.png","One machine = one point of failure.",
+    "~7 min. Emphasise the single point of failure — the weakness that motivates everything that follows.")
+concept_apply("S4 · Concept 1 · [THEORY]","Centralized Architecture",
+    "A Kathmandu trading firm ran its entire inventory and billing on one back-office PC; during the Dashain rush its disk failed with no backup, and the whole business stopped for two days. That is the defining weakness of a centralized architecture: everything on one machine, so that machine is a single point of failure.",
+    "\"Centralized is safest because it's all in one place.\" That one place is a single point of failure and can't scale — its simplicity is exactly its fragility.",
+    "In a centralized architecture, the data, DBMS, and application all run on one central machine, with terminals only displaying results. It is simple to set up and manage, but its main drawback is being a single point of failure (if the central machine fails, everything stops) together with poor scalability.",
+    "centralized architecture · single point of failure · scalability · terminal")
+
+concept_understand("S4 · Concept 2 · [THEORY]","Client/Server Architecture",
+    "In a client/server architecture the work is split across machines over a network. Two-tier: client ↔ database server. Three-tier: client (UI) ↔ application server (business logic) ↔ database server.",
+    ["Two-tier: the client (UI + application logic) talks directly to a database server.",
+     "Three-tier: an application server (rules, processing, security) sits in the middle — the modern web/mobile standard.",
+     "Each tier can be scaled, secured, and updated independently.",
+     "Real data lives server-side: for security, one authoritative copy, and access from any device."],
+    "s4_client_server.png","Three tiers: face, logic, data.",
+    "~9 min. Three-tier is the modern standard; 'why your phone doesn't hold the full ledger' lands the server-side idea.")
+concept_apply("S4 · Concept 2 · [THEORY]","Client/Server Architecture",
+    "On Daraz your phone runs the client (screens); application servers handle logins, cart, and orders; database servers store products, orders, and accounts. During a Dashain sale Daraz adds more application servers without touching the database design — three tiers scaling independently.",
+    "\"Your phone stores your full bank ledger.\" No — the real data lives server-side (security if the phone is lost, one authoritative copy, access from any new device); the phone is just a client showing a view.",
+    "Two-tier: the client (UI + application logic) communicates directly with a database server. Three-tier: an application server holding the business logic sits between the client (UI only) and the database server. Three-tier scales better, is easier to secure, and is the standard for modern web and mobile applications.",
+    "client/server · two-tier · three-tier · application server / business logic · server-side")
+
+concept_understand("S4 · Concept 3 · [THEORY]","Classification of DBMSs",
+    "A DBMS can be classified along several independent axes: by data model, by number of users, by number of sites/distribution, and by purpose.",
+    ["Data model: relational (dominant), object-oriented, object-relational, legacy hierarchical/network, NoSQL.",
+     "Number of users: single-user vs multi-user (almost all business systems).",
+     "Distribution: centralized (one site) vs distributed (data across many sites).",
+     "Purpose: general-purpose vs special-purpose."],
+    "s4_classification.png","Model · users · distribution.",
+    "~7 min. Relational still DOMINATES business systems; NoSQL is an additional tool for specific needs.")
+concept_apply("S4 · Concept 3 · [THEORY]","Classification of DBMSs",
+    "Classify the apps in your pocket: a bank app's DBMS is relational, multi-user, and distributed; a small offline note app is relational, single-user, centralized; Facebook mixes relational + NoSQL, is massively multi-user, and heavily distributed. The same three axes describe any system.",
+    "\"NoSQL means SQL is dead.\" It means 'not only SQL.' Relational databases still dominate business systems; NoSQL is an additional family for huge scale or flexible, changing data — it complements relational, not replaces it.",
+    "DBMSs are classified by data model (relational, object, object-relational, NoSQL, legacy hierarchical/network), by number of users (single-user vs multi-user), by number of sites/distribution (centralized vs distributed), and by purpose (general- vs special-purpose). Note: 'NoSQL' means 'not only SQL', not 'no SQL'.",
+    "classification axes · data model · number of users · distribution · purpose · relational · NoSQL ('not only SQL')")
+
+concept_understand("S4 · Concept 4 · [THEORY]","Unit 1 Synthesis — the whole unit in one picture",
+    "Users reach a DBMS through interfaces & languages; the DBMS (cooperating components + catalog) manages a database described by a schema at three levels (giving data independence), running on a centralized or client/server architecture.",
+    ["Users (naive, programmers, sophisticated, DBA) + interfaces/languages (DDL/DML/DCL/TCL; forms, GUIs, APIs).",
+     "DBMS components: query processor, storage & buffer managers, transaction manager, catalog.",
+     "Database structure = the three-schema architecture → data independence.",
+     "Deployment = centralized or (usually) client/server; classify by model, users, distribution."],
+    "s4_synthesis.png","User → interface → DBMS → schema → architecture.",
+    "~6 min. Walk the mind-map; ask which session each branch came from. This is the slide to photograph for revision.")
+concept_apply("S4 · Concept 4 · [THEORY]","Unit 1 Synthesis — the whole unit in one picture",
+    "One eSewa tap: you (a user) tap a button (an interface) that sends a query (DML) to eSewa's DBMS (its components + catalog); it reads your balance from a database whose design is a schema at three levels — which is why eSewa can upgrade storage without breaking your app (data independence) — all on a three-tier client/server, relational, multi-user, distributed DBMS. One tap exercises the whole unit.",
+    "\"These are five unrelated topics.\" They're one system: users → interface → DBMS → schema/architecture → classification. Each session is one branch of the same picture.",
+    "Users reach a DBMS through interfaces and languages; the DBMS (built of cooperating components plus a catalog) manages a database described by a schema at three levels (giving data independence) and runs on a centralized or client/server architecture; any such system can be classified by its data model, number of users, and distribution.",
+    "database · DBMS · users · DBA · schema · instance · three-schema · data independence · DDL/DML/DCL/TCL · components · catalog · centralized vs client/server · classification")
+
+add_activity("Classify a Nepali app",
+    ["In pairs (3 min): pick a Nepali app — eSewa, Daraz, Nagarik App, a bank app.",
+     "Sketch whether it's two-tier or three-tier, and label what lives in each tier.",
+     "Classify its likely DBMS on the three axes (data model, number of users, distribution) with a one-line reason each.",
+     "Share (2 min)."],
+    "Most modern Nepali apps are three-tier (client app · application servers · database servers), multi-user, and relational (sometimes with some NoSQL), and larger ones are distributed. The reasoning matters more than being 'right'.",
+    "ACTIVITY [~5 min].")
+add_quiz("S4 — Quick Check",
+    [("Q1.  The main weakness of a purely centralized architecture is:","q"),
+     ("a) too many servers   b) ✅ single point of failure   c) too secure   d) no data storage","a"),
+     ("Q2.  A three-tier architecture adds which layer between the client and the database?","q"),
+     ("a) a second client   b) a backup disk   c) ✅ an application / business-logic server   d) a second database","a"),
+     ("Discussion: pick a Nepali app and sketch whether it's two-tier or three-tier, and why.","o")],
+    "QUIZ [~5 min].")
+add_summary("S4 · Summary  ·  [~2 min]",
+    ["Centralized = simple but fragile (a single point of failure).",
+     "Client/server (especially three-tier) is the scalable modern standard: client · application server · database server.",
+     "DBMSs are classified by data model, number of users, and distribution."],
+    "Every scalable product you use — e-commerce, fintech, the Nagarik App, government portals — is built client/server, usually three-tier. Architecture is the map; the rest of IT 220 (ER modelling, normalization, SQL) fills in how the database layer is designed and queried.",
+    "Unit 2 — DESIGNING databases: the Entity-Relationship (ER) model and converting it to tables.",
+    "REAL-LIFE APPLICATION [~3 min] + SUMMARY [~2 min].")
+
+# ============= CAPSTONE SOLVED PROBLEM (synthesises Unit 1) =============
+add_solved_problem("Unit 1 · Capstone Solved Problem","Classify & architect a nationwide banking system",
+    "A nationwide bank asks you to describe its database system: classify its DBMS on the standard axes and "
+    "choose a deployment architecture, justifying each decision from Unit 1's concepts.",
+    ["Data model → relational: banking needs strict integrity and safe transactions (ACID), which the relational model + SQL provide.",
+     "Number of users → multi-user: thousands of tellers, apps, and customers access it at the same time.",
+     "Distribution → distributed: data replicated across data centres for scale and disaster recovery.",
+     "Architecture → three-tier client/server: client (teller/app screen) · application server (business logic, security) · database server (the data).",
+     "Reject centralized: one machine would be a single point of failure and couldn't scale to the load.",
+     "Data independence → storage can be upgraded (SSDs, indexes) without rewriting apps (physical independence)."],
+    "The system is relational, multi-user, and distributed, deployed as a three-tier client/server; centralized is "
+    "rejected because of the single-point-of-failure risk. There is one authoritative server-side copy of the data, "
+    "and data independence keeps future storage upgrades cheap — no application rewrites.",
+    "Pause and let students justify each axis before revealing. This ties S1–S4 into one exam-style answer.")
+
+# ============= END-OF-UNIT REVISION AIDS =============
+add_cheatsheet("Unit 1 · Cheat Sheet","One-page revision reference",
+    [("Data · Information · Database","Raw facts → +context → an organized, persistent, shared, structured collection of related data."),
+     ("DBMS vs database","DBMS = the software (MySQL). Database = the data. A DBMS adds concurrency, integrity, querying, security."),
+     ("Users & DBA","Naive user · application programmer · sophisticated user. DBA = schema, security, backup & recovery, tuning."),
+     ("Schema / instance / three-schema","Schema = design (stable); instance = data (volatile). External · conceptual · internal → data independence."),
+     ("SQL sub-languages","DDL (define) · DML (query/modify) · DCL (permissions) · TCL (transactions). SQL bundles all four."),
+     ("Architecture & classification","Centralized (single point of failure) vs client/server (2- / 3-tier). Classify by model · users · distribution.")])
+
+add_glossary("Unit 1 · Glossary","Key terms — quick reference",
+    [("Data / information","raw facts / data given meaning by context."),
+     ("Database","organized, persistent, shared collection of related data."),
+     ("DBMS","software that defines, creates, queries, and administers databases."),
+     ("Database system","database + DBMS + applications and users."),
+     ("DBA","administers the database: schema, security, backup, tuning."),
+     ("Data model","concepts describing structure, constraints, operations."),
+     ("Schema / instance","the design (stable) / the current data (volatile)."),
+     ("Three-schema architecture","external (views) · conceptual · internal (storage)."),
+     ("Data independence","change one level without changing the level above."),
+     ("DDL / DML","define structure / query & modify data."),
+     ("DCL / TCL","control permissions / control transactions."),
+     ("Interface","menu, form, GUI, natural-language, API — matched to the user."),
+     ("Query processor","plans the cheapest way to run a query."),
+     ("Buffer / storage manager","cache hot data in memory / read & write disk."),
+     ("Catalog / metadata","data about the data; makes the DBMS self-describing."),
+     ("Centralized / client-server","one machine (SPOF) / work split across tiers.")])
+
+# ============= CONSOLIDATED END-OF-UNIT QUIZ =============
+add_divider("Unit 1 · Revision","End-of-unit quiz (S1–S4)",
+    "Twelve MCQs across the whole unit (answers shown), then short-answer, applied, and discussion questions to work from the concept slides.",
+    "Use as a 15–20 min in-class quiz or take-home review.")
+add_quiz("Section A — Multiple choice (answers shown)",
+    [("1.  A database is best described as   →  ✅ an organized, persistent, shared collection of related data","a"),
+     ("2.  The software that manages a database is the   →  ✅ DBMS","a"),
+     ("3.  A file-system problem a DBMS solves   →  ✅ uncontrolled redundancy / inconsistency","a"),
+     ("4.  Granting permissions is the responsibility of the   →  ✅ DBA","a"),
+     ("5.  The actual data at a given moment is the   →  ✅ instance","a"),
+     ("6.  Changing storage without affecting the conceptual schema is   →  ✅ physical data independence","a"),
+     ("7.  The external level refers to   →  ✅ per-user views","a"),
+     ("8.  CREATE TABLE is part of   →  ✅ DDL","a"),
+     ("9.  Finds the most efficient way to run a query   →  ✅ query processor / optimizer","a"),
+     ("10.  Main weakness of centralized architecture   →  ✅ single point of failure","a"),
+     ("11.  The middle tier in three-tier is the   →  ✅ application / business-logic server","a"),
+     ("12.  'NoSQL' most accurately means   →  ✅ not only SQL","a")],
+    "Consolidated quiz Section A.",compact=True)
+add_quiz("Sections B–D — short answer, applied & discussion",
+    [("Section B — Short answer","q"),
+     ("13. Define schema & instance (example each for Student).   14. Four advantages of a DBMS over files.","o"),
+     ("15. Logical vs physical data independence (one sentence each).   16. Name DDL/DML/DCL/TCL + one command each.   17. What is metadata, and where is it stored?","o"),
+     ("Section C — Applied / diagramming","q"),
+     ("18. Draw & label the three-schema architecture; say what each level hides from the one above.","o"),
+     ("19. Sketch a three-tier architecture for Daraz; label each tier.   20. Classify an online banking system on three axes with a one-line reason each.","o"),
+     ("Section D — Discussion","q"),
+     ("21. 'A kirana shop's paper notebook is technically a database.' Argue for and against, then say what a DBMS would add.","o")],
+    "Consolidated quiz Sections B–D. Model answers live in the concept slides and Unit1_material.md.",compact=True)
+
+# ---- close ----
+add_title("End of Unit 1  ·  IT 220",
+          "S1–S4 complete: database & DBMS · users & DBA · data models, schema/instance, three-schema & data independence · languages, interfaces & components · architectures & classification",
+          "Built to COURSE_MATERIAL_STANDARD.md · self-contained slides · exports cleanly to PDF · "
+          "Next unit (Unit 2): the Entity-Relationship (ER) model.")
+
+_add_page_numbers()
+out=os.path.join(os.path.dirname(os.path.abspath(__file__)),"IT220_Unit1.pptx")
 prs.save(out)
-print("Saved", out, "with", len(prs.slides._sldIdLst), "slides")
+print("Saved",out,"with",len(prs.slides._sldIdLst),"slides")

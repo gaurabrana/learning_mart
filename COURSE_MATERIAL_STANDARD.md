@@ -226,6 +226,50 @@ Rules:
 
 ---
 
+## 7A. Depth through tables — MANDATORY (the "no abstraction without instances" rule)
+
+> Learned from a real gap: a generated IT 246 deck stated each idea as 4–6 abstract bullets and
+> stopped; the lecturer had to hand-add 10 tables (~89 example rows) to make Session 1 teachable.
+> See `sixth/GAP_ANALYSIS_Unit1.md`. That work is now a rule, not an option.
+
+**Abstraction alone is a defect. Every concept must be grounded in concrete, contrasted,
+localised instances — and the correct form for that is almost always a table.** A student reading
+the flat PDF must see enough real cases to *recognise the concept in the wild*, not just recite its
+definition. When you write a concept, ask "what table makes this concrete?" and build it.
+
+The four required table types (use whichever fit the concept; most concepts need at least one):
+
+1. **Comparison table** — REQUIRED whenever ≥3 related/confusable terms are taught by contrast
+   (ethics/morals/law/etiquette; 1NF/2NF/3NF/BCNF; theta/equi/natural join; centralized vs
+   client/server). Put the terms as rows and the **shared dimensions as columns** (e.g. meaning ·
+   source · who decides · consequence · example). **Never** teach a confusable set as parallel
+   bullet lists — that is the exact anti-pattern this rule bans.
+2. **Concrete-example table** — REQUIRED for every "X vs not-X" idea (ethical vs unethical, legal vs
+   illegal, lossless vs lossy). Give **≥6 rows** of real instances, **localised to Nepal / IT** where
+   possible, and add a **consequence/benefit column** where it adds meaning (law → penalty,
+   etiquette → social cost, ethical practice → business benefit).
+3. **Scaffolding table** — any claim of the form "involves many parties / two forces / several
+   parts" gets a table that enumerates them (stakeholders → what they want; short-term profit vs
+   long-term trust). Don't assert a breakdown in prose — show it.
+4. **Payoff table** — where a concept motivates behaviour, show the concrete return
+   (practice → benefit; good design → anomaly avoided).
+
+Rules for tables:
+- Tables are **generated, never hand-pasted.** Author them in `build_unitX_images.py` (rendered PNG)
+  or via the shared pptx table helper in `deckkit.py` — one engine, `add_table_slide()`, with the
+  semantic aliases `add_comparison_table()` / `add_examples_table()` (use whichever reads clearest at
+  the call site; both auto-paginate onto their own slides). So they live in the build and can be
+  regenerated. A deck that needed manual table-pasting has failed this standard.
+- Tables live **on the slide face** (they are load-bearing study content — never notes-only).
+- Long example tables may span two slides or scroll; keep body text ≥ 12 pt (§3) — split rather than shrink.
+- **Label concepts to match the material's concept list** — never collapse a distinct concept into a
+  bare "Diagram" slide (that hides that a concept is being taught).
+
+**Depth test (run per concept):** *If a student who skipped the lecture can't point to concrete
+examples of this concept after reading the slide, it is too abstract — add the table.*
+
+---
+
 ## 8. Teaching techniques — rotate, don't default to bullets
 
 Do not teach every concept the same "definition + 3 bullets" way. Pick the technique that fits
@@ -287,6 +331,10 @@ element (§2) ended up notes-only.
 - [ ] **Golden rule:** mentally delete all speaker notes — slides still teach the full concept?
 - [ ] Every concept has: definition, mechanism, real example, misconception, 🎯 exam answer, 🧠 hook — **on the face**.
 - [ ] Visuals have on-image labels; comparisons/processes/hierarchies are drawn, not just described.
+- [ ] **Depth (§7A):** every confusable set is a comparison table; every "X vs not-X" concept has a
+      concrete-example table (≥6 localised rows, + consequence/benefit column); claims have scaffolding
+      tables; tables are generated (not hand-pasted) and on the slide face.
+- [ ] **Depth test:** no concept is left abstract — a student can point to concrete examples from the face.
 - [ ] All body text ≥ 14 pt; nothing crammed below the legibility floor (else split into a pair).
 - [ ] Each session has a visible **summary slide** and a visible **hook**.
 - [ ] Quiz slides show the **answers**.
@@ -323,4 +371,32 @@ The **S9–S12 batch** (`fourth/build_unit2b_pptx.py` → `IT220_Unit2b.pptx`, f
 
 ---
 
-*Last updated: 2026-07-01. Keep this file current — it governs every future deck.*
+## 14. Rollout & scope (what is done, what still needs depth)
+
+The depth rule (§7A) and the self-contained standard apply to **every deck in this repo — IT 220
+(fourth) and IT 246 (sixth)**. Status and marching orders:
+
+### IT 220 (fourth)
+- **Units 1–4 are DONE and FROZEN — do not touch them.** They were rebuilt to the self-contained
+  standard (`IT220_Unit1.pptx`, `IT220_Unit2.pptx`, `IT220_Unit2b.pptx`, `IT220_Unit3.pptx`,
+  `IT220_Unit4.pptx`). Leave these decks, their `build_*` scripts, and their `images/` as they are
+  unless the user explicitly asks for a change.
+- **Units 5–7 (and anything built from here on) MUST include the §7A depth tables** in addition to
+  everything else in this standard.
+
+### IT 246 (sixth)
+- **Rebuild from the start (Unit 1 onward).** The existing sixth decks predate this standard
+  (terse bullets, notes-heavy, zero tables). Every unit is to be regenerated to the full standard
+  **including §7A depth tables**, using the same pipeline and helpers as the rebuilt IT 220 units.
+- Unit 1 is the reference rebuild for sixth; then Units 2–9 one at a time.
+
+### Everywhere, going forward
+- New material is not "done" until it passes the §11 checklist, **including the two depth lines.**
+- Import the shared toolkit `deckkit.py` (`from deckkit import *`) rather than copy-pasting helpers,
+  and reuse its generated table helpers (`add_table_slide()` / its aliases `add_comparison_table()` /
+  `add_examples_table()`) so depth tables are never hand-pasted again (the failure documented in
+  `sixth/GAP_ANALYSIS_Unit1.md`).
+
+---
+
+*Last updated: 2026-07-08. Keep this file current — it governs every future deck.*

@@ -3,7 +3,7 @@
 
 **Program:** BIM, 6th Semester · **Unit weight:** 5 lecture hours
 **Sessions:** S1–S5 (50 min each) · **Local context:** Nepal / South Asia
-**Format:** Markdown (review copy — convert to PPT/PDF after approval)
+**Format:** Markdown — source of truth; the built deck is `IT246_Unit1.pptx` (87 slides), regenerated via `build_unit1_pptx.py` (imports `deckkit.py`).
 
 > **How to read this file.** This is written to **carry a full 50 minutes on its own.** Each
 > session has **minute markers** `[~X min]`, the actual **explanation to deliver** (prose, not just
@@ -85,6 +85,86 @@ By the end of this unit, students will be able to:
 > 🎙️ Speaker note (transition): "If legal and ethical aren't the same, we need a way to *see* the
 > difference. That's the grid on the next slide."
 
+**📊 Depth table — Ethics vs Morals vs Law vs Etiquette — at a glance**
+
+| Concept | Meaning | Source | Who decides | If broken | Example |
+|---|---|---|---|---|---|
+| Ethics | Shared standards of right/wrong for a group, profession, or society | Professional codes, organizations, society | Professional bodies / organizations / society | Loss of trust, disciplinary action, suspension, lost reputation | A doctor shares a patient's confidential records → disciplinary action, possible loss of licence |
+| Morals | An individual's personal beliefs about right and wrong | Family, religion, culture, upbringing, personal values | The individual | Personal guilt, regret, conflict with one's conscience | Returning a lost wallet because keeping it feels wrong, even if no one would know |
+| Law | Official rules created and enforced by the government | Constitution, legislation, regulations, courts | Government (legislature and courts) | Fines, imprisonment, community service, legal penalties | Driving under the influence is illegal → arrest, fine, licence suspension |
+| Etiquette | Social rules of politeness and good manners | Social customs, traditions, cultural norms | Society and culture | Seen as rude/impolite; usually no legal or professional penalty | Using your phone during a formal meeting is considered poor manners |
+
+*ℹ️ Same situation can sit in several columns: a bribe is illegal AND unethical; queue-jumping is unethical but legal; left-hand at a feast is only etiquette.*
+
+**📊 Depth table — Ethical vs Unethical behaviour — by situation**
+
+| Situation | Ethical behaviour | Unethical behaviour |
+|---|---|---|
+| Patient confidentiality | A doctor keeps a patient's records private | A doctor shares patient information without permission |
+| Academic research | A researcher reports accurate results | A researcher fabricates or falsifies data |
+| Engineering | An engineer reports a safety flaw in a design | An engineer hides the flaw to save money or time |
+| Accounting | An accountant reports records honestly | An accountant manipulates financial statements |
+| Business | A company advertises products truthfully | A company uses misleading ads to deceive customers |
+| Software development | A developer protects users' personal data | A developer secretly sells user data for profit |
+| Artificial intelligence | A developer works to reduce bias in AI | A developer knowingly ships a discriminatory system |
+| Procurement | A purchasing officer selects suppliers fairly | A purchasing officer accepts bribes to award contracts |
+| Public service | An officer serves citizens impartially | An officer demands a bribe for faster service |
+| Recruitment | An HR manager hires on qualifications | An HR manager hires relatives regardless of merit (nepotism) |
+
+**📊 Depth table — Moral vs Immoral behaviour (personal beliefs)**
+
+| Situation | Moral behaviour | Immoral behaviour |
+|---|---|---|
+| Finding a lost wallet | Return it with the money inside | Keep it because no one is watching |
+| Telling the truth | Admit a mistake even if punished | Lie to avoid trouble |
+| Cheating in an exam | Study honestly and earn your grade | Cheat to get higher marks |
+| Returning extra change | Give back money handed to you by mistake | Keep it knowing it was an error |
+| Standing up for others | Defend someone being bullied | Stay silent because it's easier |
+| Keeping promises | Fulfil a promise to a friend | Break it for personal convenience |
+| Helping others | Help an elderly person cross the road | Ignore someone who clearly needs help |
+| Environmental care | Avoid littering because nature matters | Litter because you don't think it matters |
+
+*ℹ️ Morals are personal — driven by individual values, not by a group's code or the state's law.*
+
+**📊 Depth table — Lawful vs Illegal behaviour — and the consequence**
+
+| Situation | Lawful | Illegal | Possible consequence |
+|---|---|---|---|
+| Traffic | Stop at a red light | Drive through a red light | Fine, licence points/suspension |
+| Taxation | Pay taxes as required | Evade taxes / file false returns | Fines, penalties, imprisonment |
+| Theft | Respect others' property | Steal money or belongings | Arrest, fine, imprisonment |
+| Copyright | Use content with a licence | Distribute pirated media/software | Fines, lawsuits, criminal penalties |
+| Cybercrime | Access only authorized systems | Hack an account or network | Criminal charges, fines, imprisonment |
+| Environment | Dispose of hazardous waste legally | Dump toxic waste into rivers | Heavy fines, cleanup costs, jail |
+| Fraud | Provide truthful information | Use deception for financial gain | Prosecution and imprisonment |
+| Employment | Pay at least the legal minimum wage | Refuse legally required wages | Government penalties, legal action |
+
+*ℹ️ Law adds a distinctive feature the other three lack: state-enforced penalties.*
+
+**📊 Depth table — Good vs Poor Etiquette — and the social cost**
+
+| Situation | Good etiquette | Poor etiquette | Possible cost |
+|---|---|---|---|
+| Greeting | Greet people politely | Ignore someone who greets you | Seen as rude/unfriendly |
+| Queueing | Wait your turn | Cut in front of others | Annoyance, embarrassment |
+| Phone use | Silence it in meetings/class | Take loud calls during a lecture | Disturbs others, appears disrespectful |
+| Interrupting | Let people finish speaking | Cut people off mid-sentence | Others feel disrespected |
+| Punctuality | Arrive on time | Arrive late without informing | Seen as unreliable |
+| Public transport | Offer your seat to those in need | Refuse when someone clearly needs it | Seen as inconsiderate |
+| Online | Be respectful in comments | Use insults, offensive language, spam | Others block or report you |
+| Workplace | Respect others' space/belongings | Borrow things without asking | Tension, loss of trust |
+
+*ℹ️ Breaking etiquette is rude, not deeply wrong — usually no legal or professional penalty, only a social one.*
+
+**📊 Depth table — The four concepts — one-line recall table**
+
+| Concept | Main focus | Example question it answers |
+|---|---|---|
+| Ethics | What should members of this profession/group do? | Is this professionally acceptable? |
+| Morals | What do I personally believe is right or wrong? | Does this align with my values? |
+| Law | What does the government require or prohibit? | Is this legal? |
+| Etiquette | What is considered polite and socially appropriate? | Is this good manners? |
+
 #### Concept 2 — The Legal/Ethical Grid (worked example) `[EXAMPLE]` `[~6 min]`
 
 [SLIDE] **Two axes, four quadrants**
@@ -130,6 +210,43 @@ By the end of this unit, students will be able to:
 > ignoring?" Draw out: the client (safety), the agency (reputation/lawsuits), and the *whole Nepali
 > tourism sector* (one accident scares off thousands of future tourists). One agency's shortcut is
 > an industry's loss.
+
+**📊 Depth table — A business serves many stakeholders — who wants what**
+
+| Stakeholder | What they want from the business |
+|---|---|
+| Customers | Quality products, fair prices, safety, honesty |
+| Employees | Fair wages, safe working conditions, respect |
+| Owners / shareholders | Profit, business growth, return on investment |
+| Suppliers | Fair contracts and timely payments |
+| Government | Compliance with laws and payment of taxes |
+| Society & community | Environmental responsibility, ethical behaviour, contribution |
+
+*ℹ️ These wants conflict — maximising this quarter's profit can harm customers or staff. Business ethics is managing that conflict.*
+
+**📊 Depth table — The central tension: short-term profit vs long-term trust**
+
+| Short-term profit | Long-term trust |
+|---|---|
+| Increase revenue quickly | Build lasting customer relationships |
+| Maximise immediate gains | Earn customer loyalty and reputation |
+| May involve ethical shortcuts | Requires honesty and fairness |
+
+*ℹ️ Shop A vs Shop B: the price-gouger wins the festival; the fair shop wins the decade.*
+
+**📊 Depth table — Why ethics pays — practice → business benefit**
+
+| Ethical practice | Business benefit |
+|---|---|
+| Honest advertising | Builds customer confidence |
+| Fair pricing | Encourages customer loyalty |
+| Paying employees fairly | Increases motivation and retention |
+| Protecting customer data | Strengthens trust and privacy |
+| Selling safe, quality products | Improves reputation |
+| Environmental responsibility | Supports sustainable growth |
+| Transparent communication | Reduces disputes, builds credibility |
+
+*ℹ️ Good ethics is not a cost centre — each practice buys a concrete, compounding return.*
 
 #### Concept 4 — Why Good People & Businesses Still Go Wrong `[THEORY]` `[~7 min]`
 
@@ -259,6 +376,17 @@ behavioral interviews ("tell me about a time you faced an ethical dilemma").
 > production, honest marketing, safe products. Donations are only the *visible tip*; the base is
 > how you run the business every day.
 
+**📊 Depth table — Carroll's four levels — meaning, example, Nepal**
+
+| Level | What it means | Example | Nepal context |
+|---|---|---|---|
+| Economic (base) | Be profitable and viable | Earn enough to pay staff and reinvest | A bank must be solvent before it can fund anything |
+| Legal | Obey all laws and regulations | Follow labour, tax, environmental law | Comply with Nepal Rastra Bank / government rules |
+| Ethical | Do what's right beyond the law | Fair wages, honest marketing, safe products | Not exploiting a legal loophole that harms customers |
+| Philanthropic (top) | Give back to the community | Donations, scholarships, relief, tree-planting | Telecom rural-coverage & education programs |
+
+*ℹ️ Nepal Rastra Bank directs commercial banks to allocate part of profit to CSR — so here, CSR is partly built into regulation, not just goodwill.*
+
 #### Concept 3 — Stakeholder Theory `[THEORY]` `[~8 min]`
 
 [SLIDE] **Who is a business accountable to?**
@@ -277,6 +405,17 @@ behavioral interviews ("tell me about a time you faced an ethical dilemma").
 >   hidden, not absent (health costs, future lawsuits, lost social license to operate).
 > Land it: "Ethics fails when we count only the stakeholders who show up on the balance sheet."
 
+**📊 Depth table — One decision, two lenses — the polluting factory**
+
+| Question | Shareholder lens | Stakeholder lens |
+|---|---|---|
+| Who counts? | The owners | Everyone materially affected |
+| Factory is profitable but pollutes a village's water | Success — profits are up | Failure — the village is harmed |
+| Are the costs real? | Ignored — off the balance sheet | Real but hidden: health costs, lawsuits, lost licence |
+| Verdict | Great result | Ethical failure |
+
+*ℹ️ Same facts, opposite conclusions — which is why 'whose interests count?' is the first ethical question in business.*
+
 #### Concept 4 — Fostering CSR & an Ethical Culture `[THEORY]` `[~7 min]`
 
 [SLIDE] **How good ethics gets built (not wished)**
@@ -292,6 +431,17 @@ behavioral interviews ("tell me about a time you faced an ethical dilemma").
 > 🍿 **Fun element:** "Good ethics is good business — and trust **compounds like interest.** Small,
 > consistent honest acts build a reputation that pays returns for years; one scandal is a withdrawal
 > that can empty the account."
+
+**📊 Depth table — Genuine CSR vs Greenwashing — apply the test**
+
+| Test question | Genuine CSR | Greenwashing |
+|---|---|---|
+| Does daily operation match the message? | Yes — the ad reflects how they actually run | No — the ad contradicts the behaviour |
+| Where does the responsibility live? | Embedded in wages, production, products | Only in the marketing / a one-off donation |
+| Bank: 'we care about farmers' | Loan terms are genuinely fair to farmers | Loan terms quietly crush the same farmers |
+| What survives scrutiny? | Consistent record over years | A campaign that falls apart on a closer look |
+
+*ℹ️ The one-line test: does the company's everyday operation match its CSR message, or does the ad contradict the behaviour?*
 
 #### 🛠 ACTIVITY — "Genuine or greenwashing?" `[ACTIVITY]` `[~6 min]`
 
@@ -365,6 +515,18 @@ real rather than decorative.
 > violations have consequences; in the other, leaders quietly break it. **Same document, opposite
 > cultures.** The document was never the cause; the system around it was.
 
+**📊 Depth table — Same code, opposite outcomes — values written vs practised**
+
+| Aspect | Company A (values practised) | Company B (values on the wall) |
+|---|---|---|
+| The code | Specific and enforced | Glossy but ignored |
+| Leaders | Visibly follow it | Quietly break it |
+| Violations | Have real consequences | Overlooked, especially at the top |
+| Reporting a concern | Safe and rewarded | Risky — you stay quiet |
+| Result | Ethical behaviour is the default | The code is decoration; people ignore it |
+
+*ℹ️ An unenforced code can be WORSE than none — it signals the rules are for show, teaching everyone to ignore them.*
+
 #### Concept 2 — Components of an Effective Program `[THEORY]` `[~9 min]`
 
 [SLIDE] **The machinery that works**
@@ -391,6 +553,19 @@ real rather than decorative.
 > code can be **worse than none** — it signals that the rules are for show, which teaches everyone
 > to ignore them.
 
+**📊 Depth table — Ethics-program components — part → purpose → Nepal example**
+
+| Component | What it does | Nepal example |
+|---|---|---|
+| Ethics officer / committee | Gives ethics a real owner with authority | A compliance officer at a commercial bank |
+| Board-level oversight | Reports ethics to the top so it can't be buried | Board audit/compliance committee |
+| Specific code of conduct | Turns 'be good' into concrete rules | 'No gifts over Rs X; report conflicts of interest' |
+| Ongoing training | Keeps rules alive with real scenarios | AML / anti-money-laundering staff training |
+| Safe reporting channel | Lets staff report without fear | Anonymous whistle-blower / grievance hotline |
+| Periodic audits | Checks rules are followed, not just posted | Internal compliance audit |
+
+*ℹ️ Nepali banks are regulated to have AML training and a grievance/whistle-blower hotline — the concrete machinery of 'we value integrity'.*
+
 #### Concept 3 — Measuring & Sustaining Ethics `[THEORY]` `[~7 min]`
 
 [SLIDE] **Keeping it real over time**
@@ -407,6 +582,17 @@ real rather than decorative.
 > quietly let off**; the **junior is publicly punished.** Ask: "What does *everyone watching* now
 > believe about this company's ethics?" Draw out: that the code is **power-dependent** — which
 > destroys trust *faster than having no code at all*, because now there's visible hypocrisy.
+
+**📊 Depth table — Consistent vs selective enforcement — what everyone learns**
+
+| Situation | Consistent enforcement | Selective enforcement |
+|---|---|---|
+| Two staff break the same rule | Both face the same consequence | Senior excused, junior punished |
+| What the code signals | Rules apply to everyone | The code is power-dependent |
+| Effect on trust | Trust is reinforced | Trust collapses — visible hypocrisy |
+| Net result | Ethical culture strengthens | Worse than having no code at all |
+
+*ℹ️ Consistency is the make-or-break factor — a code applied only to the powerless teaches everyone that ethics is negotiable.*
 
 #### 🛠 ACTIVITY — "Design one enforceable rule" `[ACTIVITY]` `[~5 min]`
 
@@ -485,6 +671,18 @@ later, to build a good one.
 >
 > Stress: steps 1 and 2 are the ones people skip, and that's where most bad decisions are born.
 
+**📊 Depth table — The 5 steps on the leaked-exam-answers dilemma**
+
+| Step | What it involves | On this dilemma |
+|---|---|---|
+| 1. Get the facts | Establish what's actually true | Are these really tomorrow's answers? How did I get them? |
+| 2. Stakeholders & options | Who's affected; realistic choices | You, honest classmates, the teacher, the institution; options beyond just use/ignore |
+| 3. Evaluate | Test options through the four lenses | Fairness: using them cheats honest students |
+| 4. Choose & act | Decide and own it | Report the leak / delete without looking |
+| 5. Reflect | Review outcome; improve judgment | What pressure made it tempting? What next time? |
+
+*ℹ️ The method matters more than instant agreement — everyone should be able to defend their choice.*
+
 #### Concept 2 — Four Ethical Lenses `[THEORY]` `[~9 min]`
 
 [SLIDE] **Four ways to test an option**
@@ -509,6 +707,17 @@ later, to build a good one.
 > the lenses can disagree — but they can *explain and compare* their reasoning. That's the opposite
 > of "just opinion."
 
+**📊 Depth table — The four lenses — test question & the ambulance-jumps-the-fuel-queue case**
+
+| Lens | Its test question | Verdict on the ambulance |
+|---|---|---|
+| Utilitarian | Which option does the most good for the most people? | Let it pass — a life outweighs everyone's wait |
+| Rights / duty | Does this respect basic rights and duties, regardless of outcome? | The patient's right to life takes priority |
+| Fairness / justice | Am I treating similar cases alike? Is it fair? | A medical emergency is a genuinely different case — not unfair |
+| Virtue / common good | What would a person of good character do? | A decent person waves them through |
+
+*ℹ️ All four CONVERGE here — which is why it feels obviously right. The hard cases are where the lenses disagree.*
+
 #### Concept 3 — Common Decision Traps `[THEORY]` `[~7 min]`
 
 [SLIDE] **What derails good people**
@@ -522,6 +731,17 @@ later, to build a good one.
 > **Mini case (≈2 min):** Your manager says, *"Just fudge this one report — only this once."* Ask
 > the class to (a) run it through the 5 steps and (b) **name which trap** is being used to pressure
 > them (obedience + slippery slope). This rehearses recognizing pressure in the moment.
+
+**📊 Depth table — Decision traps — how it sounds & how to counter it**
+
+| Trap | How it sounds in real life | Counter |
+|---|---|---|
+| Rationalization | 'It's not really cheating — everyone uses these notes' | Name the act plainly; would you defend it openly? |
+| Groupthink | 'The whole team agreed, so it must be fine' | Ask for one dissenting view; decide on merits |
+| Slippery slope | 'Just this once, it won't happen again' | Set the bright line before the pressure, not during |
+| Blind obedience | 'My manager told me to, so it's on them' | You remain responsible — run it through the 5 steps |
+
+*ℹ️ 'Just fudge this one report' uses TWO traps at once — blind obedience + slippery slope.*
 
 #### 🛠 ACTIVITY — "Run the dilemma" `[ACTIVITY]` `[~6 min]`
 
@@ -604,6 +824,18 @@ through a hard decision you made."
 > Tie back to S1: this is why "the law is the floor" matters *most* in IT — the floor is often
 > missing entirely, so your own ethics is all that's holding.
 
+**📊 Depth table — What makes IT ethics distinct — offline vs at IT scale**
+
+| Factor | Offline | At IT scale | Consequence |
+|---|---|---|---|
+| Scale | One person at a time | Millions at once (one setting/algorithm) | A single choice harms a whole population |
+| Speed | Slow to spread | Seconds | Harm is done before anyone can react |
+| Anonymity | Wrongdoer is visible | Wrongdoer can hide, across borders | Hard to catch or hold accountable |
+| Permanence | A rumour fades | A screenshot is forever | Leaked data can't be fully erased |
+| Regulation | Law usually exists | Capability outruns the law | 'Is it legal?' often has no answer yet |
+
+*ℹ️ Because the legal 'floor' is often missing in IT, your own ethics is frequently the only thing holding.*
+
 #### Concept 2 — The Four Pillars: "PAPA" `[THEORY]` `[~9 min]`
 
 [SLIDE] **Privacy · Accuracy · Property · Access**
@@ -628,6 +860,17 @@ through a hard decision you made."
 > collect, and *how* an algorithm decides all **encode human values — and human bias.** A hiring
 > algorithm trained on biased data will discriminate, automatically and at scale.
 
+**📊 Depth table — PAPA — the four pillars mapped to examples & course units**
+
+| Pillar | The question it raises | Example | Where in this course |
+|---|---|---|---|
+| Privacy | Who can collect and see your data? | An app sells your location data | Unit 2 (privacy), Unit 9 (law) |
+| Accuracy | Who's responsible when data/an algorithm is wrong? | A biased loan algorithm wrongly rejects you | This unit; cybersecurity units |
+| Property | Who owns information and software? | Pirating software; stealing a code repo | Unit 3 (intellectual property) |
+| Access | Who gets to use tech — and who's left out? | The rural digital divide | Course-wide; policy |
+
+*ℹ️ Security threads through all four pillars (Units 5–8) — so this single table is a map of the entire IT 246 course.*
+
 #### Concept 3 — The IT Professional's Responsibility `[THEORY]` `[~7 min]`
 
 [SLIDE] **"Can" vs "Should"**
@@ -643,6 +886,18 @@ through a hard decision you made."
 > process** quickly as a class: facts (is "public" the same as "consented"?), stakeholders (the
 > 100,000 people), lenses (rights/duty: did they agree to *this* use?), act, reflect. Show that
 > "can" and "should" give different answers.
+
+**📊 Depth table — 'Can' vs 'Should' — scraping 100,000 public posts**
+
+| Question | 'Can' (engineering) | 'Should' (ethics) |
+|---|---|---|
+| Is it possible? | Yes — technically easy | Not the right question |
+| Is the data 'public'? | Yes, visible to anyone | Public ≠ consented to THIS use |
+| Who's affected? | (ignored) | The 100,000 people whose posts they are |
+| Rights/duty lens | (ignored) | Did they agree to be scraped for this? |
+| Verdict | 'We can, so let's' | Often: don't — or seek consent / anonymise |
+
+*ℹ️ 'Can' and 'should' give different answers — professional codes (ACM, IEEE) exist to keep 'should' in front.*
 
 #### 🛠 ACTIVITY — "Can vs Should audit" `[ACTIVITY]` `[~6 min]`
 
@@ -739,7 +994,7 @@ wrong. Every later unit of this course — IP, cybersecurity, social engineering
 
 ---
 
-## ✅ Unit 1 complete (full lecturer-ready depth)
+## ✅ Unit 1 complete (full lecturer-ready depth) — includes all 21 depth tables (§7A), synced with the deck.
 This version is paced to fill a true 50 minutes per session (5 + 35 + 5 + 3 + 2), with prose,
 worked examples, a timed activity, and minute markers. **Review the depth** — if this is the right
 level, I'll roll it out to the other units and courses, and the matching deck is regenerated to
