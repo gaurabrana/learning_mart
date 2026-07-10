@@ -1,0 +1,46 @@
+IT 250: Digital Economy
+BIM 8
+th Semester
+Nature of course: Information Technology and Computing
+Credit hours: 3
+Lecture hours: 48
+Course Objectives
+The course aims to enhance students’ cognitive knowledge and practical skills in digital
+technologies in the field of economics and management.
+Course Description
+This course deals with the introduction to digital economy, fundamentals of digital economy,
+digital markets, strategy and innovation, digital transformation, economics of information, and
+digitalization from a Nepalese perspective.
+Couse Details
+Unit 1: Introduction 8 LHs
+Digital economics: concepts, drivers, and ecosystem; K-economy: concepts and drivers;
+Differences between digital economy and k-economy; The fourth industrial revolution:
+drivers, opportunities, and challenges; and Influence of digital economy: sustainability,
+privacy, regularity, and strategies.
+Unit 2: Fundamentals of Digital Economy 7 LHs
+Multi-sided platforms: Network effects and positive feedback; Lock-in and switching
+costs; Formulation of monopolies in the digital economy; and Digital adoption index and
+OECD digital adoption government index.
+Unit 3: Digital Markets, Strategy and Innovation 10 LHs
+Competition, cooperation, and competition; The layered internet model; Digital
+innovation; Digital business models; Value creation models; and Modeling of digital
+markets.
+Unit 4: Digital Transformation 8 LHs
+Digital transformation: concepts and drivers; Accelerating SDGs through digital
+transformation; Role of technological revolution in the world economy; Globalization
+and economic growth in the digital age; and Digital currencies: concepts and types.
+Unit 5: Economics of Information 8 LHs
+Asymmetric information: concepts and determinants; Asymmetric information and
+digitalization; Online search engines; Artificial intelligence; Strategy and the new
+economics of information; Effects of digitalization on consumer choice and labor
+markets; and Intellectual property and digitalization.
+Unit 6: Digitalization in Nepalese Perspective 7 LHs
+E-governance: concepts, process, and structure; E-governance practices in Nepal; Digital
+financial inclusion in Nepalese financial markets; Opportunities and challenges for digital
+transformation in the public sector; Digital transformation and the economic performance
+in trade, tourism, agriculture, and SMEs.
+Suggested Reading
+Øverby, H., & Audestad, J. A. (2021). Introduction to digital economics: Foundations, business
+models and case studies (2nd ed.). Springer.
+Maheshwari, A. (2019). Digital transformation: Building intelligent enterprises. Wiley.
+Adhikari, G. M. (n.d.). Digital economics (Recent ed.). Kathmandu.
