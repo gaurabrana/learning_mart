@@ -1,7 +1,8 @@
 # IT 246: IT Ethics and Cybersecurity — Session Plan
 
 **Program:** BIM, 6th Semester · **Lecture Hours:** 48
-**Session length:** 50 min · **Cadence:** 3 sessions/week → **16 teaching weeks**
+**Session length:** 50 min · **Cadence:** 3 lecture sessions/week **+ 1 practical session/week** → **16 teaching weeks**
+*(The weekly practical is a separate 4th session; it does not consume the 48 lecture hours.)*
 **Local-example context:** Nepal / South Asia
 
 > Planning document only — no slide content yet. Once we approve this structure, we generate
@@ -121,19 +122,41 @@ After completing this course, students will be able to:
 
 ---
 
-## Laboratory track (defensive / educational — runs in parallel with Units 5–8)
+## Laboratory track — weekly practical (16 sessions, one per week)
 
-> All labs are conducted in an isolated lab environment for **defensive and educational**
-> purposes only — to recognize attacks and build protections. Pair every offensive demo with
-> its countermeasure.
+> **This is a separate 4th session each week**, on top of the three 50-min lecture sessions — it
+> does **not** consume the 48 lecture hours.
+>
+> **Defensive & educational only.** Every technical lab runs in an **isolated lab environment**
+> (host-only VMs, no internet, no real targets), and every offensive demo is paired with its
+> countermeasure. The goal is to recognize attacks and build protections — never to attack real
+> systems.
+>
+> **The lab is a self-contained *technical* track — the real cybersecurity lab starts in Week 1.**
+> Ethics/IP (Units 1–4) is taught and assessed as **lecture classwork, not lab practicals** — it has
+> no hands-on lab component, so we don't fake one. Instead the lab uses Weeks 1–7 to build the
+> foundations the security tools actually need (Linux → networking → the isolated lab), then runs the
+> cybersecurity/forensics tools in Weeks 8–16. The lab track therefore runs on its own schedule,
+> independent of which ethics unit the lectures are on. All cases use a Nepal/South-Asia context.
 
-| Phase | Aligns with | Lab focus |
-|-------|-------------|-----------|
-| Lab 1 | Week 8–9 (U5) | Network scanning & sniffing — mapping a network, reading traffic (Nmap, Wireshark) |
-| Lab 2 | Week 9 (U5) | Identifying common web vulnerabilities: SQL Injection & XSS — and how to fix them |
-| Lab 3 | Week 11–12 (U7) | Phishing awareness using a social-engineering toolkit lab — recognizing & preventing |
-| Lab 4 | Week 10 (U6) | Password strength & cracking demonstration; firewall configuration & analysis |
-| Lab 5 | Week 13–15 (U8) | Incident response; basic digital-forensics evidence handling & data recovery |
+| Week | Practical (L#) | Tools |
+|------|----------------|-------|
+| 1 | **L1 — First Linux VM:** install VirtualBox; boot & log in to Kali; open a terminal; take a snapshot | VirtualBox, Kali |
+| 2 | **L2 — Linux command line:** navigate the filesystem; create/read/move/delete files; get help (`ls`,`cd`,`cat`,`nano`,`man`) | Kali terminal |
+| 3 | **L3 — Users, permissions & packages:** `sudo`, users, file permissions (`chmod`/`chown`), install tools (`apt`), processes | Kali terminal |
+| 4 | **L4 — Networking fundamentals I:** IP & MAC addresses, ports, client/server; `ip a`, `ping` between machines | Kali terminal |
+| 5 | **L5 — Networking fundamentals II:** TCP/IP, DNS, HTTP; ports↔services; `traceroute`, `curl`, `netstat` | Kali terminal |
+| 6 | **L6 — Complete the isolated lab:** add a vulnerable target VM (DVWA/Metasploitable); host-only network; verify VMs ping each other but not the internet; Golden Rules; CIA triad & vuln/threat/attack | VirtualBox, Kali, DVWA |
+| 7 | **L7 — Security concepts & first reconnaissance:** attack surface; a ping sweep to find the target; read what's exposed — bridge into scanning | Kali, `ping`/`arp` |
+| 8 | **L8 — Reconnaissance & scanning:** host discovery, port/service/version scan on the isolated target; countermeasures (close ports) | Nmap |
+| 9 | **L9 — Traffic sniffing:** capture lab traffic; spot plaintext vs encrypted; why HTTPS/encryption matters | Wireshark |
+| 10 | **L10 — Web vulnerabilities:** SQL Injection & XSS on DVWA, then fix them (parameterized queries, output encoding) | DVWA / OWASP Juice Shop |
+| 11 | **L11 — Passwords & accounts:** password-strength & cracking demo on self-made hashes; MFA + password manager | hashcat/John, password manager |
+| 12 | **L12 — Firewall & WFH defense:** configure and test host-firewall rules; secure-accounts & work-from-home checklist | ufw / Windows Firewall |
+| 13 | **L13 — Phishing awareness:** SET phishing-page demo in isolation; recognize & prevent; anti-phishing checklist | Social-Engineering Toolkit |
+| 14 | **L14 — Forensics I — imaging & recovery:** create a disk image, recover deleted files, document chain of custody — **lab practical** | FTK Imager / Autopsy, foremost |
+| 15 | **L15 — Forensics II + incident response:** artifact analysis; mobile-forensics overview; IR tabletop (detect→contain→eradicate→recover) | Autopsy, IR playbook |
+| 16 | **L16 — Cyber-law mapping + presentations:** map a real Nepali cybercrime case to the Electronic Transaction Act; investigation capstone & lab demos | ETA text, case pack |
 
 ---
 

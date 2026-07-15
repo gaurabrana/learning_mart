@@ -1,7 +1,8 @@
 # IT 220: Database Management System — Session Plan
 
 **Program:** BIM, 4th Semester · **Credits:** 3 · **Lecture Hours:** 48
-**Session length:** 50 min · **Cadence:** 3 sessions/week → **16 teaching weeks**
+**Session length:** 50 min · **Cadence:** 3 lecture sessions/week **+ 1 practical session/week** → **16 teaching weeks**
+*(The weekly practical is a separate 4th session; it does not consume the 48 lecture hours.)*
 **Local-example context:** Nepal / South Asia
 
 > Planning document only — no slide content yet. Once we approve this structure, we generate
@@ -110,15 +111,40 @@
 
 ---
 
-## Laboratory & project track (runs in parallel)
+## Laboratory & project track — weekly practical (16 sessions, one per week)
 
-| Phase | Aligns with | Lab focus |
-|-------|-------------|-----------|
-| Lab 1 | Weeks 8–9 | `CREATE DATABASE`/`TABLE`, data types, constraints, `INSERT` |
-| Lab 2 | Week 10 | `SELECT` queries: filtering, ordering, aggregates, `NULL` handling |
-| Lab 3 | Week 11 | Subqueries, views, `UPDATE`/`DELETE` |
-| Lab 4 | Week 12 | Joins, stored procedures, triggers, indexing |
-| **Project** | Weeks 5–16 | Design (ER → relational → normalized schema) then implement in SQL. Individual or groups of ≤4. Present in S48. |
+> **This is a separate 4th session each week**, on top of the three 50-min lecture sessions — it
+> does **not** consume the 48 lecture hours. Per the syllabus, the lab requires writing SQL
+> (create/insert/update/delete/select) plus a project (individual or groups of ≤4).
+>
+> **Design rule — a practical runs every week from Week 1, even before the theory it needs is
+> taught.** Early weeks are therefore front-loaded with environment setup, tool familiarization,
+> and design/modeling practicals (run *given* queries, draw ER diagrams, normalize on paper);
+> topic-specific SQL labs begin in Week 8 once Unit 5 starts. All datasets use a Nepal/South-Asia
+> context (e.g., an eSewa-style wallet, a Kathmandu college, a local library).
+
+| Week | Theory so far | Practical (L#) | Tools |
+|------|---------------|----------------|-------|
+| 1 | U1 intro | **L1 — Lab setup & first look:** install MySQL/MariaDB + a client; connect; tour a pre-loaded sample DB; run *given* `SELECT`s to see live data | MySQL/MariaDB, DBeaver / Workbench (or XAMPP + phpMyAdmin) |
+| 2 | U1 (architecture) | **L2 — Inside the DBMS:** database vs schema vs table; the catalog/data dictionary; create a user & `GRANT`/`REVOKE`; see logical vs physical vs view layers (three-schema) | same client |
+| 3 | U2 (ER) | **L3 — ER modeling:** draw an ER diagram for a Nepali domain — entities, attributes, keys, relationships, cardinality | dbdiagram.io / draw.io / Workbench EER |
+| 4 | U2 (ER→tables) | **L4 — ER → relational schema:** map the L3 diagram to tables with PK/FK; handle weak entities & M:N junctions | dbdiagram.io / draw.io |
+| 5 | U3 (rel. algebra) | **L5 — Relational algebra:** run SELECT/PROJECT/JOIN/set operations on sample relations and verify results | RelaX (online algebra calculator) |
+| 6 | U3 → U4 | **L6 — Calculus & spotting FDs:** express queries in tuple/domain calculus; find functional dependencies in a messy sample table | RelaX, worksheet |
+| 7 | U4 (normalization) | **L7 — Normalization:** take an unnormalized Nepali dataset and decompose 1NF→2NF→3NF→BCNF, documenting FDs | spreadsheet + worksheet |
+| 8 | U5 (DDL) | **L8 — DDL & INSERT:** `CREATE DATABASE`/`TABLE`, data types, constraints (PK/FK/CHECK/UNIQUE/NOT NULL); implement the L4/L7 schema; `INSERT` data | SQL client |
+| 9 | U5 (SELECT) | **L9 — Querying:** `SELECT`+`WHERE`, `ORDER BY`, `DISTINCT`, aggregates, `GROUP BY`/`HAVING`, `NULL` handling | SQL client |
+| 10 | U5 (subqueries/views) | **L10 — Subqueries & views:** nested subqueries (IN/EXISTS/comparison), derived tables, `CREATE VIEW` | SQL client |
+| 11 | U5 (modify/joins) | **L11 — Modification & joins:** `INSERT`/`UPDATE`/`DELETE`, updatable views, all join types incl. self-join | SQL client |
+| 12 | U5 close | **L12 — Procedures, triggers, indexing:** a stored procedure, a DML audit trigger, indexes + `EXPLAIN` — **SQL practical test** | SQL client |
+| 13 | U6 (transactions) | **L13 — Transactions:** `START TRANSACTION`/`COMMIT`/`ROLLBACK`; demo ACID with a failed eSewa-style transfer | SQL client |
+| 14 | U6 (concurrency) | **L14 — Concurrency:** two sessions → lost update / dirty read; isolation levels; observe a deadlock | SQL client (2 sessions) |
+| 15 | U6 close / U7 | **L15 — Backup, recovery & security:** `mysqldump` backup → drop → restore; users, roles, `GRANT`/`REVOKE` | mysqldump, SQL client |
+| 16 | U7 + wrap-up | **L16 — Project demos + NoSQL taste:** teams present ER→normalized→implemented DB; quick MongoDB document vs SQL table comparison | project DBs, MongoDB (demo) |
+
+**Project (Weeks 3–16):** carry one domain end-to-end — ER design (L3) → relational mapping (L4) →
+normalization (L7) → SQL implementation (L8–L12) → transactions/backup (L13–L15) → demo (L16).
+Individual or groups of ≤4; presented in S48.
 
 ---
 
