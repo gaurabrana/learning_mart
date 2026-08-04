@@ -99,6 +99,19 @@ By the end of this unit, students will be able to:
 
 *ℹ️ Nothing on the right column is enforced by the system — the system GRANTS the access. Only trust and ethics stop the abuse.*
 
+**📊 Depth table — Access abused — real 'can' vs 'should' cases (Nepal / IT)**
+
+| Scenario | What the access let them do | Verdict — can vs should |
+|---|---|---|
+| Bank staffer checks an ex's balance | System permits the lookup instantly | Can ✓ — should ✗: no work reason, betrayal of trust |
+| Sysadmin reads the CEO's private email | Root rights make every inbox readable | Can ✓ — should ✗: snooping, not an authorised task |
+| Support tech copies a customer's photos | Remote control opens all their files | Can ✓ — should ✗: touch only what fixes the fault |
+| Developer keeps a copy of employer's source | Already holds the full codebase | Can ✓ — should ✗: reusing it elsewhere is IP theft |
+| Telco engineer pulls a celebrity's call records | Network logs expose everyone's metadata | Can ✓ — should ✗: curiosity is not authorisation |
+| Hospital IT clerk browses a neighbour's records | Database shows any patient's history | Can ✓ — should ✗: the privacy duty forbids it |
+
+*ℹ️ Every row is technically permitted and ethically forbidden — the system grants the 'can', only ethics supplies the 'should'.*
+
 #### Concept 2 — Relationship with the Employer `[THEORY]` `[EXAMPLE]` `[~9 min]`
 
 [SLIDE] **Duty of loyalty and honesty**
@@ -145,6 +158,19 @@ By the end of this unit, students will be able to:
 
 *ℹ️ Loyalty and honesty are the duties; these four are where they get tested in a real job.*
 
+**📊 Depth table — Loyalty & honesty to the employer — breaches and their fallout**
+
+| What the worker did | Duty broken | Consequence |
+|---|---|---|
+| Copied client source code for a weekend side gig | Loyalty (IP protection) | IP theft; betrays employer AND client |
+| Listed a CCNA on the CV without holding it | Honesty (qualifications) | Resume fraud — grounds for dismissal |
+| Installed pirated AutoCAD 'to cut costs' on orders | Loyalty (license compliance) | Legal liability for the firm AND the installer |
+| Moonlighted for the employer's direct rival | Loyalty (conflict of interest) | Judgment serves two masters — trust lost |
+| Leaked the internal client list to a friend's startup | Loyalty (protect assets) | Confidential asset gone; possible legal action |
+| Inflated hours on a project timesheet | Honesty (truthful work) | Billing fraud; erodes the employer's trust |
+
+*ℹ️ Loyalty and honesty are the two duties; each row shows one being broken — and 'the boss ordered it' never transfers the blame off you.*
+
 #### Concept 3 — Relationship with the Client `[THEORY]` `[~8 min]`
 
 [SLIDE] **A professional duty beyond the contract**
@@ -183,6 +209,19 @@ By the end of this unit, students will be able to:
 | Disclose risks | Tell them what might fail, leak, or not scale | Hiding that the system can't handle election-day load |
 
 *ℹ️ All three exploit information asymmetry — the client literally cannot catch the breach until it's too late. That's what makes it a PROFESSIONAL duty.*
+
+**📊 Depth table — When the client can't check — asymmetry exploited (Nepal / IT)**
+
+| What the vendor did | Duty broken | Why the client couldn't catch it |
+|---|---|---|
+| Sold an NGO an over-sized ERP it didn't need | Honest advice | They can't judge what capacity they actually need |
+| Marked a half-built e-gov module 'done' | Deliver as promised | No technical staff to test the code before paying |
+| Hid that the portal can't handle election-day load | Disclose risks | Load only shows up in production, months later |
+| Used cheap unlicensed libraries without saying | Disclose risks | Client can't read the dependency list |
+| Left no documentation, to lock in future work | Honest advice | They don't know documentation was owed |
+| Quietly stored client data on a free foreign host | Disclose risks | Invisible unless a leak exposes it |
+
+*ℹ️ Every breach survives only because of information asymmetry — the client cannot verify until it's too late. That is why the duty is professional, not just contractual.*
 
 #### Concept 4 — Suppliers, Peers, Users & Society `[THEORY]` `[EXAMPLE]` `[~5 min]`
 
@@ -347,6 +386,19 @@ what separates a trusted professional from a technically-skilled liability.
 
 *ℹ️ IT scores 3 of 4. The missing self-regulation — no licence, no strike-off — is the whole reason 'is IT a profession?' is a live debate.*
 
+**📊 Depth table — Profession or not? — fields against the four-part test (Nepal)**
+
+| Field | Licensed / self-regulated? | Profession verdict |
+|---|---|---|
+| Doctor (Nepal, NMC) | Yes — NMC licenses and can strike off | Full profession — all four marks |
+| Civil engineer (Nepal, NEC) | Yes — NEC registration required | Full profession — all four marks |
+| Lawyer (Nepal Bar Council) | Yes — must be enrolled to practise | Full profession |
+| Chartered accountant (ICAN) | Yes — licensed and disciplined | Full profession |
+| Software developer | No licence to build banking software | Partial — has knowledge + codes, no licensing |
+| Freelance 'computer technician' | No credential required at all | Not a profession — anyone can claim the title |
+
+*ℹ️ The single differentiator is self-regulation — a licence you can lose. IT has education, knowledge and codes but no strike-off, so it is a partial profession.*
+
 #### Concept 2 — Professional Codes of Ethics `[THEORY]` `[EXAMPLE]` `[~8 min]`
 
 [SLIDE] **The rules members agree to uphold**
@@ -384,6 +436,19 @@ what separates a trusted professional from a technically-skilled liability.
 | Basis for discipline | Membership or employment can be tied to it | Breach → lose membership or your job, even with no state licence |
 
 *ℹ️ A code has 'some teeth' without a government licence — the last row is how the field disciplines its own even though IT lacks NMC/NEC-style regulation.*
+
+**📊 Depth table — Applying the code — an ask, the principle, the answer**
+
+| The ask at work | Principle invoked | What the code says to do |
+|---|---|---|
+| Build hidden user tracking without consent | Avoid harm; respect privacy | Object, disclose, or refuse |
+| Ship now with a known security hole | Avoid harm; be honest about limits | Disclose the risk; don't hide it |
+| Claim a system is more secure than it is | Be honest about limitations | State the real capabilities to the client |
+| Reuse a rival's leaked source code | Respect property / IP | Refuse — it isn't yours to use |
+| Quietly weaken data protection to cut cost | Respect privacy | Push back; protect the user's data |
+| Blame a junior for your own bug | Be honest; give fair credit | Own the error; don't scapegoat |
+
+*ℹ️ A code is only useful when applied to a concrete ask — and it hands you professional language to say no, even without a government licence behind it.*
 
 #### Concept 3 — Certification `[THEORY]` `[~6 min]`
 
@@ -471,6 +536,19 @@ what separates a trusted professional from a technically-skilled liability.
 | CAN (Computer Association of Nepal) | Nepal's IT community | Advocacy, events, training for local professionals |
 
 *ℹ️ Organizations publish the codes and run the certifications; government runs the licensing. That's the whole map of 'who keeps IT professional'.*
+
+**📊 Depth table — Who grants it? — real credentials & bodies classified**
+
+| Item | What it is | Legal force? |
+|---|---|---|
+| NMC doctor registration | A licence (government) | Yes — can't practise without it |
+| Nepal driving licence | A licence (government) | Yes — legally required to drive |
+| CCNA | A certification (Cisco, a vendor) | No — voluntary skill proof |
+| CISA / CISM | Certifications run by ISACA (a body) | No — voluntary |
+| ACM Code of Ethics | A code (professional body) | No — but can discipline members |
+| CAN (Computer Association of Nepal) | A professional body | No — advocacy, events, training |
+
+*ℹ️ The test that sorts every row: WHO grants it, and does it carry LEGAL FORCE? Only government-granted items are licences.*
 
 #### 🛠 ACTIVITY — "Cert, license, or code?" `[ACTIVITY]` `[~5 min]`
 
@@ -681,6 +759,19 @@ badges — and lets you read what an employer is really asking for.
 
 *ℹ️ All three are piracy even with no sale involved — the harm is USING value you never paid for, not profiting from it.*
 
+**📊 Depth table — Is it piracy? — everyday cases (Nepal / IT)**
+
+| The act | Form of piracy | Verdict |
+|---|---|---|
+| Office runs cracked Windows on every PC | Unlicensed install | Piracy — no valid licence, even unsold |
+| Shop sells 'original' Windows DVDs that are fake | Counterfeiting | Piracy — passing fakes as genuine |
+| A 5-seat design licence used by 50 staff | Licence violation | Piracy — exceeds what was purchased |
+| Installing one cracked Photoshop for yourself | Unlicensed install | Piracy — no sale needed to violate |
+| Downloading a 'nulled' paid plugin to save money | Unlicensed install | Piracy — using value you never paid for |
+| Buying one Windows key, reusing it on 10 laptops | Licence violation | Piracy — one licence, many machines |
+
+*ℹ️ None of these require a sale — the wrong is USING value you never paid for. 'Everyone does it' is the Unit 1 normalization trap, not a defence.*
+
 #### Concept 4 — Inappropriate Use of IT Resources `[THEORY]` `[~5 min]`
 
 [SLIDE] **Right tools, wrong purpose**
@@ -835,6 +926,19 @@ caught powering a side hustle. Knowing the line *before* you cross it is cheap i
 
 *ℹ️ Nepal's Individual Privacy Act 2075 recognises these rights; reported citizen-data leaks show the gap between a law existing and being enforced.*
 
+**📊 Depth table — Privacy principle broken — everyday data grabs (Nepal)**
+
+| What happened | Principle violated | The harm |
+|---|---|---|
+| SIM dealer sells your number to loan marketers | Consent | A flood of unsolicited loan calls |
+| Loan-form data reused to target you with ads | Purpose limitation | Profiling you never agreed to |
+| Mall QR form demands your citizenship number | Data minimization | Over-collection you can't take back |
+| Bank KYC records leak to a data broker | Consent + minimization | Fraud and impersonation risk |
+| An app asks for contacts it doesn't need | Data minimization | Your friends' data exposed too |
+| Clinic shares its patient list with a pharmacy | Purpose limitation | Sensitive health data misused |
+
+*ℹ️ Nepal's Individual Privacy Act 2075 recognises these rights; the gap is enforcement. Privacy is control, not secrecy — each row is control taken away.*
+
 #### Concept 2 — Surveillance `[THEORY]` `[~8 min]`
 
 [SLIDE] **Systematic monitoring**
@@ -873,6 +977,19 @@ caught powering a side hustle. Knowing the line *before* you cross it is cheap i
 | Ethical verdict | Violates privacy / autonomy | Fair — transparency + consent make it legitimate |
 
 *ℹ️ Keystroke logging + screenshots can be either — the SAME technology. Transparency and consent (the S8 AUP clause) are what shift it from spying to monitoring.*
+
+**📊 Depth table — Monitoring or spying? — same tech, disclosure decides**
+
+| The monitoring | Disclosed & consented? | Verdict |
+|---|---|---|
+| Employer logs email, stated in a signed AUP | Yes — in the AUP | Legitimate monitoring |
+| Boss secretly installs a keylogger on your PC | No — hidden | Spying — violates privacy |
+| CCTV at a bank entrance with visible signage | Yes — signposted | Legitimate, proportionate |
+| Hidden camera in a staff changing room | No — and disproportionate | Spying — a clear violation |
+| ISP logs traffic per a disclosed policy | Yes — stated policy | Legitimate if proportionate |
+| Manager reads staff personal DMs 'to be safe' | No — undisclosed, excessive | Spying — no consent, over-broad |
+
+*ℹ️ The technology is identical row to row — transparency and consent (the S8 AUP clause) plus proportionality are what shift it from spying to monitoring.*
 
 #### Concept 3 — Anonymity Online `[THEORY]` `[~8 min]`
 
@@ -913,6 +1030,19 @@ caught powering a side hustle. Knowing the line *before* you cross it is cheap i
 | Why it can't be banned | Silencing the troll also silences the whistle-blower | Allowing it fully shields the criminal too |
 
 *ℹ️ Same tool, opposite uses — which is exactly why real-name registration is so contested (S9 CFU). Note: true anonymity is rare — IP logs, metadata, and device fingerprints leave a trail.*
+
+**📊 Depth table — Anonymity's two edges — the same cover, opposite uses**
+
+| Who is behind the mask | How anonymity is used | Edge |
+|---|---|---|
+| Whistle-blower leaking proof of corruption | Exposes wrongdoing without being fired | Protective — good |
+| Activist under political pressure | Speaks freely without reprisal | Protective — good |
+| Domestic-abuse survivor seeking help | Asks for support without being traced | Protective — good |
+| Troll on a throwaway account | Harasses a public figure consequence-free | Harmful — bad |
+| Scammer running a fake profile | Defrauds contacts while hiding identity | Harmful — bad |
+| Rumour page spreading fake news | Panics the public with no accountability | Harmful — bad |
+
+*ℹ️ Any rule that silences the bottom three also silences the top three — which is why real-name registration is contested. And true anonymity is rare: logs and metadata leave a trail.*
 
 #### Concept 4 — Identity & Identity Theft `[THEORY]` `[EXAMPLE]` `[~5 min]`
 
@@ -1063,6 +1193,19 @@ expected to build *into* the systems you ship.
 
 *ℹ️ These are Unit 1's scale/speed/permanence factors, now personal. The harm grows in the silence — passive bystanders are part of the mechanism.*
 
+**📊 Depth table — Amplifiers in action — small act, mass harm (Nepal)**
+
+| Ordinary act | Amplifier at work | The outsized harm |
+|---|---|---|
+| A doctored celebrity screenshot posted once | Scale + virality | Seen by thousands before lunch |
+| A fake 'bank X is collapsing' clip | Speed | Panic withdrawals before it's corrected |
+| Abusive comments from throwaway accounts | Anonymity | Said what they'd never say face-to-face |
+| An outrage post the algorithm boosts | Virality | Pushed into millions of feeds |
+| Thousands watch a pile-on, no one steps in | Bystander effect | Silence reads as approval; harm grows |
+| A false earthquake rumour forwarded 'to warn' | Speed + scale | Public panic in minutes |
+
+*ℹ️ These are Unit 1's scale/speed/permanence factors made personal — and online harm carries real legal, social and psychological consequences.*
+
 #### Concept 2 — Cyberbullying & Online Harassment `[THEORY]` `[EXAMPLE]` `[~8 min]`
 
 [SLIDE] **Repeated targeting with digital tools**
@@ -1138,6 +1281,19 @@ expected to build *into* the systems you ship.
 | Are you responsible? | Yes — the share button is an act | Yes — and the intent makes it worse |
 
 *ℹ️ Both spread because they exploit emotion, ride confirmation bias, and are boosted by engagement algorithms — truth is boring, outrage is viral.*
+
+**📊 Depth table — Mis- or dis-information? — classify the share (Nepal)**
+
+| The content | Intent | Mis- or dis-? |
+|---|---|---|
+| Forwarding a fake health cure you believed | None — shared carelessly | Misinformation |
+| A staged rumour planted to sway an election | Deliberate deception | Disinformation |
+| Sharing an old photo as 'today's flood' | None — didn't check the date | Misinformation |
+| A scam page inventing a fake lottery win | Deliberate — to defraud | Disinformation |
+| Resharing a 'breaking news' clip unverified | None — but still harmful | Misinformation |
+| Coordinated fake reviews to destroy a rival | Deliberate — to mislead | Disinformation |
+
+*ℹ️ The only difference is intent — but you are responsible either way, because the share button is an act that scales the lie.*
 
 #### Concept 4 — Defamation & Reputation Harm `[THEORY]` `[EXAMPLE]` `[~5 min]`
 

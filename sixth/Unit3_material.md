@@ -101,6 +101,19 @@ By the end of this unit, students will be able to:
 
 *ℹ️ Each protects a DIFFERENT thing and is acquired differently — the full master comparison (what/how/how-long) closes the unit in S16.*
 
+**📊 Depth table — Which IP family? — classify each creation**
+
+| The creation | Which IP family? | Why |
+|---|---|---|
+| Your college app's source code | Copyright | Original expression, automatic on creation |
+| Wai Wai / CG Foods' exact masala ratio | Trade secret | Confidential info kept secret, never filed |
+| The 'Goldstar' name & shoe logo | Trademark | A source identifier for the brand |
+| A DoI-filed herbal-extraction machine | Patent | New, useful, non-obvious invention |
+| A bank's fraud-scoring algorithm (server-side) | Trade secret | Never shipped; protected by secrecy |
+| eSewa's app name & green logo | Trademark | Brand identity customers recognise |
+
+*ℹ️ One question sorts almost any IP case: is it expression (copyright), an invention (patent), a kept secret (trade secret), or a brand sign (trademark)?*
+
 #### Concept 2 — Copyright: What It Protects `[THEORY]` `[EXAMPLE]` `[~10 min]`
 
 [SLIDE] **Expression, not the idea**
@@ -319,6 +332,20 @@ travels with you.
 
 *ℹ️ All three must pass. 'Being popular' or 'being clever' is not enough — and pure ideas/discoveries fail the third test outright.*
 
+**📊 Depth table — Is it patentable? — applying the three tests**
+
+| Claimed 'invention' | Patentable? | Why / which test it fails |
+|---|---|---|
+| A new herbal water-filter mechanism | Yes | Novel, non-obvious, industrially useful |
+| 'The idea of paying by mobile phone' | No | A pure idea — fails industrial applicability |
+| A genuinely new, faster momo-steamer design | Yes | Passes all three tests |
+| Adding an obvious 'share' button to an app | No | Fails inventiveness — obvious to an expert |
+| A law of nature / gravity formula | No | A discovery, not an invention |
+| A machine already sold in India last year | No | Fails novelty — prior art exists |
+| A novel agricultural threshing device | Yes | New, useful, makeable — DoI-filable |
+
+*ℹ️ Popularity or cleverness is irrelevant — an invention must be new, non-obvious, AND useful/makeable. Pure ideas, discoveries, and laws of nature fail outright.*
+
 #### Concept 2 — Software Patents: The Debate `[THEORY]` `[EXAMPLE]` `[~10 min]`
 
 [SLIDE] **Copyright covers the code; a patent would cover the method**
@@ -366,6 +393,19 @@ travels with you.
 
 *ℹ️ This is why 'just copyright it' is usually the realistic answer for Nepali software — patents on pure software are contested and largely unavailable locally.*
 
+**📊 Depth table — How Nepali software actually gets protected (not by patent)**
+
+| Software asset | Realistic protection | Why not a patent |
+|---|---|---|
+| A Kathmandu startup's app source code | Copyright | Automatic; code is copyrightable already |
+| A clever server-side load-balancing algorithm | Trade secret | Never shipped; a patent would disclose it |
+| A framework the team wants widely adopted | Open-source licence | Adoption matters more than a monopoly |
+| A fintech app's fraud-detection logic | Copyright + trade secret | The standard Nepali software combo |
+| 'One-click checkout' style method | (hard to protect) | Pure-software patents restricted/unavailable here |
+| A UI layout / look-and-feel | Copyright | Software patents contested, costly, and rare |
+
+*ℹ️ For pure software in Nepal the realistic toolkit is copyright + trade secret (sometimes open source) — patents are contested, costly, and largely unavailable locally.*
+
 #### Concept 3 — The Patent Process `[THEORY]` `[~10 min]`
 
 [SLIDE] **Slow, costly, public, and territorial**
@@ -412,6 +452,19 @@ travels with you.
 | Territorial | A Nepal patent protects only in Nepal | Global cover needs a filing per country |
 
 *ℹ️ These four traits together explain why patents suit visible, high-value, reverse-engineerable inventions — and why software teams often prefer trade secrets (S13).*
+
+**📊 Depth table — The process's traits, as real filing consequences**
+
+| A patent filing decision | What happens | Because… |
+|---|---|---|
+| Files only in Nepal, but exports to India | No protection in India — rivals copy freely there | Patents are territorial |
+| Rushes a fast-moving app feature to patent | Examination drags on for years; feature is stale | The process is slow |
+| Small startup tries to patent globally | Fees per country drain the budget | Costly, one country at a time |
+| Patents a device; a rival reads the claims | Rival learns exactly how it works | Grant requires full public disclosure |
+| Skips the prior-art search | Application rejected — someone filed first | Novelty fails against existing prior art |
+| Keeps a recipe secret instead of filing | Protection can last forever, undisclosed | No disclosure bargain if never patented |
+
+*ℹ️ The four traits — slow, costly, public, territorial — turn into real consequences. They're why many Nepali startups file abroad or skip patents for trade secrets.*
 
 #### 🛠 ACTIVITY — "Patent, secret, or open?" `[ACTIVITY]` `[~5 min]`
 
@@ -529,6 +582,20 @@ you either burn money on a patent you can't enforce or leak the very thing that 
 
 *ℹ️ Same invention, opposite strategies: a patent trades secrecy for a strong-but-temporary monopoly; a trade secret trades that monopoly for potentially-forever secrecy — but with no protection if independently found.*
 
+**📊 Depth table — Is it a trade secret? — what qualifies and what doesn't**
+
+| The information | A trade secret? | Why |
+|---|---|---|
+| Wai Wai / CG Foods' exact masala ratio | Yes | Confidential, valuable, kept secret |
+| A remittance firm's internal pricing model | Yes | Secret info giving a competitive edge |
+| A company's phone number on its website | No | Already public — no secrecy |
+| A restaurant's signature sauce recipe | Yes | Kept in-house, never disclosed |
+| A published, patented machine design | No | The patent disclosed it — no longer secret |
+| A software house's private source-code repo | Yes | Confidential and access-controlled |
+| Coca-Cola's formula | Yes | Secret for over a century, never filed |
+
+*ℹ️ It's a trade secret only if it's genuinely confidential AND kept secret by reasonable effort. Anything already public — or disclosed by a patent — cannot be one.*
+
 #### Concept 2 — How Trade Secrets Are Protected `[THEORY]` `[~10 min]`
 
 [SLIDE] **You only own it if you tried to keep it**
@@ -575,6 +642,20 @@ you either burn money on a patent you can't enforce or leak the very thing that 
 | Legal remedy (misappropriation) | Sue only if the secret was stolen | No remedy if a rival independently invents it |
 
 *ℹ️ 'Reasonable effort' is a legal requirement — a company that didn't lock down its secret may lose the right to call it one. Independent discovery is never misappropriation.*
+
+**📊 Depth table — Misappropriation or not? — where the law gives a remedy**
+
+| What happened | Misappropriation? | Why |
+|---|---|---|
+| Developer emails the company's source code to a rival | Yes | Theft of confidential info — breach of confidence |
+| Ex-employee reuses general skills learned on the job | No | General know-how is theirs to reuse |
+| A rival independently invents the same algorithm | No | Independent discovery is never misappropriation |
+| Staffer leaks the masala ratio despite an NDA | Yes | Breach of the NDA / confidentiality clause |
+| Competitor legally reverse-engineers a shipped product | No | Legitimate reverse engineering breaks no law |
+| Bribing an insider for a customer list | Yes | Theft of a trade secret via bribery |
+| Firm never locked down the 'secret'; it leaks | No remedy | No reasonable effort — may not count as a secret |
+
+*ℹ️ The law protects against misappropriation (theft/breach), not independent discovery or legal reverse engineering — and only if the owner made reasonable efforts to keep it secret.*
 
 #### Concept 3 — Trade Secret vs Patent: Choosing `[THEORY]` `[~10 min]`
 
@@ -923,6 +1004,19 @@ all.
 
 *ℹ️ Both are real copyright licences with enforceable obligations — 'open' means 'licensed on conditions', not 'do whatever you like'.*
 
+**📊 Depth table — Is it a licence violation? — MIT/Apache vs GPL in practice**
+
+| What the team did | Licence violation? | Why |
+|---|---|---|
+| Ships GPL code inside a closed proprietary app | Yes | Copyleft requires derivatives be open too |
+| Uses React (MIT) in a closed product, keeps the notice | No | Permissive; only attribution required |
+| Drops the MIT attribution / licence notice | Yes | Attribution is the one MIT obligation |
+| Modifies GPL code, releases the source under GPL | No | Share-alike obligation honoured |
+| Builds a gov site on WordPress, keeps its licence | No | Compliant open-source use |
+| Removes GPL notices and sells it as their own | Yes | Copyright infringement of the licensed code |
+
+*ℹ️ Open source is copyright + a licence. Permissive (MIT/Apache) needs attribution; copyleft (GPL) needs derivatives kept open. Breaking either is copyright infringement.*
+
 #### Concept 2 — Competitive Intelligence: Ethical vs Espionage `[THEORY]` `[EXAMPLE]` `[~15 min]`
 
 [SLIDE] **The method defines the line**
@@ -1185,6 +1279,20 @@ normal business task into a lawsuit.
 | Nepal example | A pirated Kabaddi film | A DoI-registered device | Wai Wai's masala ratio | Fake Goldstar logo |
 
 *ℹ️ Capstone table for Unit 3: the four IP types differ by WHAT they protect, HOW you acquire them, and HOW LONG they last. Master this and you can classify any IP question.*
+
+**📊 Depth table — Classify the asset — and the common wrong answer**
+
+| Nepali asset | Correct IP type | Common wrong answer |
+|---|---|---|
+| A brand name like 'eSewa' | Trademark | 'Copyright the name' — names aren't copyrighted |
+| The source code of the eSewa app | Copyright | 'Patent the code' — code is copyrighted |
+| Wai Wai's masala ratio | Trade secret | 'Patent it' — that would disclose & expire it |
+| A pirated Kabaddi film copy | Copyright | 'A trademark issue' — it's the film's expression |
+| A DoI-registered herbal machine | Patent | 'Trade-secret it' — a visible product is copyable |
+| A momo shop's registered logo | Trademark | 'Company registration covers it' — separate filing |
+| A daraz.com.np domain grabbed in bad faith | Trademark (cybersquatting) | 'First to register owns it fairly' |
+
+*ℹ️ Classify by what's at stake — expression→copyright, invention→patent, secret→trade secret, brand→trademark. The right-hand column shows the mix-ups that give wrong answers.*
 
 #### 🛠 ACTIVITY — "Name it and protect it" `[ACTIVITY]` `[~5 min]`
 

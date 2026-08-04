@@ -60,6 +60,20 @@
 
 > **🔑 Key terms:** singular-noun entity · verb relationship · reads-as-a-sentence · meaningful/consistent naming.
 
+**📊 Depth table — Poor name vs good name — and why it matters**
+
+| Concept in the diagram | Poor name (avoid) | Good name (use) | Why the good name wins |
+|---|---|---|---|
+| Entity of course-takers | STUDENTS / TBL1 | STUDENT | singular noun = the type (one specimen of the kind) |
+| Entity for shops on Daraz | E2 / tbl_m | MERCHANT | reader knows what it is; clean table name after mapping |
+| Student ↔ course link | REL1 | ENROLLS | STUDENT — ENROLLS — COURSE reads as a sentence |
+| Teacher ↔ course link | R3 | TEACHES | verb; a registrar can confirm or correct it on the spot |
+| Customer ↔ order link (Daraz) | LINK2 | PLACES | CUSTOMER — PLACES — ORDER reads left-to-right |
+| Customer ↔ account link (bank) | R7 | OWNS | CUSTOMER — OWNS — ACCOUNT is plain English |
+| Rider ↔ delivery link (Foodmandu) | REL9 | DELIVERS | stakeholders verify the model by reading it aloud |
+
+*ℹ️ Singular-noun entities + verb relationships make the diagram self-explanatory and become clean table/column names after mapping.*
+
 ---
 
 #### Concept 3 — Design Issues: Attribute vs Entity vs Relationship `[THEORY]` `[~13 min]`
@@ -76,6 +90,21 @@
 > **🧠 Analogy & hook.** Is "colour" a sticker on a box (attribute) or a whole filing cabinet with its own contents (entity)? **Hook: "Own attributes/relationships → entity; plain value → attribute."**
 
 > **🔑 Key terms:** attribute-vs-entity decision · attribute-vs-relationship · over-modelling · "has its own attributes/relationships" test.
+
+**📊 Depth table — Attribute or its own entity? — the 'own data/relationships' test**
+
+| Concept | Attribute or Entity? | Why (the test) | If modelled the wrong way… |
+|---|---|---|---|
+| Product colour (Daraz) | Attribute | a plain value with no data of its own | a needless, almost-empty table (over-modelling) |
+| Category (Daraz) | Entity | has name, parent, icon; groups many products | nowhere to store category data if kept as text |
+| Merchant (eSewa) | Entity | has PAN, settlement account, many transactions | merchant details and links are lost |
+| Order status (pending/paid) | Attribute | just one value per order | over-modelling — an entity adds needless complexity |
+| Restaurant (Foodmandu) | Entity | has name, location, menu, relationships | can't relate its dishes or ratings |
+| Delivery address | Entity / multivalued composite | a customer has many; it has parts | can't store a customer's several addresses |
+| Cuisine label (Foodmandu) | Attribute | usually just a tag on a restaurant | an extra table for no benefit |
+| Rating value | Attribute of a review | a single numeric value | over-modelling if promoted to an entity |
+
+*ℹ️ Model a concept as its own entity ONLY when it has its own attributes and/or relationships; otherwise an attribute is enough. Don't over-model.*
 
 ---
 
@@ -123,6 +152,20 @@ Clean, well-named ER diagrams are the shared language between analysts, develope
 
 > **🔑 Key terms:** degree · binary (2) · ternary (3) · n-ary · one diamond, three rectangles.
 
+**📊 Depth table — Real relationships classified by degree**
+
+| Relationship (example) | Degree | Entity types it connects | Why that degree |
+|---|---|---|---|
+| STUDENT — ENROLLS — COURSE | Binary (2) | STUDENT, COURSE | one fact links exactly two types |
+| CUSTOMER — PLACES — ORDER (Daraz) | Binary (2) | CUSTOMER, ORDER | a two-way fact — most designs are binary |
+| EMPLOYEE — MANAGES — EMPLOYEE | Recursive (2) | EMPLOYEE with itself | same entity type plays two roles |
+| SUPPLIES(SUPPLIER, PART, PROJECT) | Ternary (3) | SUPPLIER, PART, PROJECT | one fact ties three things together |
+| TEACHES(TEACHER, COURSE, ROOM) | Ternary (3) | TEACHER, COURSE, ROOM | a timetable fact of three at once |
+| PRESCRIBES(DOCTOR, PATIENT, DRUG) | Ternary (3) | DOCTOR, PATIENT, DRUG | three-way fact in one instance |
+| DELIVERS(RIDER, ORDER, ADDRESS) | Ternary (3) | RIDER, ORDER, ADDRESS | one delivery ties three entities |
+
+*ℹ️ Degree = how many entity types the diamond touches. Binary (2) is by far the most common; ternary (3) is occasional; n > 3 is rare.*
+
 ---
 
 #### Concept 2 — Why a Ternary Is NOT Three Binaries `[THEORY]` `[EXAMPLE]` `[~13 min]`
@@ -140,6 +183,19 @@ Clean, well-named ER diagrams are the shared language between analysts, develope
 
 > **🔑 Key terms:** ternary ≠ three binaries · loss of the combined fact · pairwise vs three-way association.
 
+**📊 Depth table — The combined fact three binaries silently lose**
+
+| Scenario | The three binaries record… | The combined fact they LOSE | Correct model |
+|---|---|---|---|
+| Procurement | S–P, P–J, S–J | that S supplied P specifically TO project J | ternary SUPPLIES(S, P, J) |
+| Foodmandu delivery | customer–restaurant, restaurant–rider, rider–customer | which rider carried which order from which restaurant to which customer | ternary / associative DELIVERY |
+| Pathao ride | rider–passenger, rider–route, passenger–route | which passenger rode which route with which rider on one trip | associative RIDE entity |
+| Hospital | doctor–patient, doctor–drug, patient–drug | which doctor gave which drug to which patient | ternary PRESCRIBES |
+| Timetable | teacher–course, course–room, teacher–room | which teacher teaches which course in which room | ternary TEACHES |
+| Project staffing | employee–project, employee–role, project–role | which employee holds which role on which project | ternary WORKS_ON |
+
+*ℹ️ Pairwise facts can't capture that three entities were associated together in one instance. When the meaning is in the combination, use a ternary or an associative entity.*
+
 ---
 
 #### Concept 3 — Constraints & the Associative Entity `[THEORY]` `[~12 min]`
@@ -154,6 +210,20 @@ Clean, well-named ER diagrams are the shared language between analysts, develope
 > **🧠 Analogy & hook.** When a "meeting" between three people needs its own agenda and minutes, it becomes a thing in its own right. **Hook: "Ternary + its own attributes → make it an associative entity."**
 
 > **🔑 Key terms:** associative/intermediate entity · n-ary cardinality · "prefer binary" · relationship with its own attributes.
+
+**📊 Depth table — When a relationship should become an associative entity**
+
+| Relationship | Its own attributes | Model it as… | Why |
+|---|---|---|---|
+| DELIVERY (CUSTOMER, RESTAURANT, RIDER) | time, fee, status | associative entity DELIVERY | relationship carries its own data |
+| RIDE (RIDER, PASSENGER, ROUTE) — Pathao | fare, distance, rating | associative entity RIDE | own attributes make a diamond awkward |
+| STUDENT — ENROLLS — COURSE | grade, semester | associative / junction ENROLLS | the attribute 'grade' lives on the link |
+| ORDER — contains — PRODUCT (Daraz) | quantity, price | associative ORDER_ITEM | per-item data belongs on the link |
+| SUPPLIES(SUPPLIER, PART, PROJECT) | quantity, delivery date | associative SUPPLY | clarifies the ternary and holds its data |
+| CUSTOMER — OWNS — ACCOUNT (bank) | none (maybe open date) | keep as a plain binary relationship | no own data → don't over-model |
+| STUDENT — ADVISES — TEACHER | none | plain binary relationship | a simple diamond is enough |
+
+*ℹ️ Prefer binary. Promote a relationship to an associative (intermediate) entity when it needs its own attributes/relationships, or to make a higher-degree association clearer.*
 
 ---
 
@@ -203,6 +273,20 @@ Logistics, delivery, and booking systems (common in Nepal's startup scene) frequ
 
 > **🔑 Key terms:** superclass/subclass · specialization (top-down) · generalization (bottom-up) · is-a · attribute inheritance · EER.
 
+**📊 Depth table — Is-a hierarchies — and the direction of thinking**
+
+| Superclass | Subclasses | Specific attribute each adds | Direction |
+|---|---|---|---|
+| ACCOUNT (bank) | SAVINGS, CURRENT | interest_rate / overdraft_limit | specialization (top-down) |
+| EMPLOYEE | ENGINEER, SECRETARY, TECHNICIAN | licence_no / typing_speed / skill_grade | specialization (top-down) |
+| USER (Daraz) | CUSTOMER, SELLER | default_address / store_name, PAN | specialization (top-down) |
+| USER (Nagarik App) | CITIZEN, GOVT_EMPLOYEE, BUSINESS_OWNER | citizenship_no / office_id / PAN | specialization (top-down) |
+| PERSON (college) | STUDENT, STAFF | roll_no / staff_id | specialization (top-down) |
+| VEHICLE | CAR, TRUCK | seat_count / load_capacity | generalization (bottom-up) |
+| PAYMENT (eSewa) | WALLET_PAY, BANK_PAY, CARD_PAY | wallet_id / bank_ref / card_no | generalization (bottom-up) |
+
+*ℹ️ Specialization splits a superclass down; generalization combines similar entities up. Both produce an is-a hierarchy with attribute inheritance — inverse directions of one idea.*
+
 ---
 
 #### Concept 2 — Constraints: Disjoint/Overlap × Total/Partial `[THEORY]` `[~13 min]`
@@ -220,6 +304,21 @@ Logistics, delivery, and booking systems (common in Nepal's startup scene) frequ
 
 > **🔑 Key terms:** disjoint (d) · overlap (o) · total (double line) · partial · completeness vs disjointness · four combinations.
 
+**📊 Depth table — One example per constraint combination**
+
+| Specialization example | Disjoint or Overlap? | Total or Partial? | Why |
+|---|---|---|---|
+| Bank ACCOUNT → SAVINGS / CURRENT | Disjoint (d) | Total | one type only; every account has one |
+| EMPLOYEE → PERMANENT / CONTRACT | Disjoint (d) | Total | exactly one; every employee is one of them |
+| VEHICLE → CAR / TRUCK / BIKE | Disjoint (d) | Total | a vehicle is exactly one kind |
+| College PERSON → STUDENT / STAFF | Overlap (o) | Partial | a TA is both; a visitor is neither |
+| Daraz USER → CUSTOMER / SELLER | Overlap (o) | Partial | can both buy & sell; a new user may be neither yet |
+| Nagarik USER → CITIZEN / GOVT_EMP / BUSINESS | Overlap (o) | Partial | a govt employee is also a citizen |
+| Hospital PERSON → PATIENT / DOCTOR | Overlap (o) | Partial | a doctor can also be a patient; a visitor neither |
+| ACCOUNT → SAVINGS / CURRENT / LOAN | Disjoint (d) | Partial | one type, but some accounts fit none of these |
+
+*ℹ️ Disjoint/overlap = how many subclasses an entity may join; total/partial = whether it must join one. The two are independent → four combinations.*
+
 ---
 
 #### Concept 3 — Attribute Inheritance & Specific Attributes `[THEORY]` `[~10 min]`
@@ -234,6 +333,21 @@ Logistics, delivery, and booking systems (common in Nepal's startup scene) frequ
 > **🧠 Analogy & hook.** A child inherits family traits and adds personal ones. **Hook: "Inherit the shared, add the specific."**
 
 > **🔑 Key terms:** attribute inheritance · specific/local attribute · inherited relationships · factoring shared attributes upward.
+
+**📊 Depth table — Inherit the shared, add the specific**
+
+| Superclass | Subclass | Inherits (shared attributes) | Adds (specific attribute) |
+|---|---|---|---|
+| ACCOUNT | SAVINGS | acc_no, holder, balance | interest_rate |
+| ACCOUNT | CURRENT | acc_no, holder, balance | overdraft_limit |
+| EMPLOYEE | ENGINEER | id, name, salary | engineering licence_no |
+| EMPLOYEE | SECRETARY | id, name, salary | typing_speed |
+| USER (Daraz) | CUSTOMER | user_id, name, phone | default_address |
+| USER (Daraz) | SELLER | user_id, name, phone | store_name, PAN |
+| VEHICLE | CAR | vehicle_id, brand, price | seat_count |
+| VEHICLE | TRUCK | vehicle_id, brand, price | load_capacity |
+
+*ℹ️ Shared attributes (and relationships) live once in the superclass and are inherited by every subclass; each subclass adds only its own local attributes.*
 
 ---
 
@@ -289,6 +403,21 @@ Also: **composite** attributes are flattened into their component columns; **der
 
 > **🔑 Key terms:** mapping algorithm · foreign key · junction table · composite→flatten · derived→omit.
 
+**📊 Depth table — Each ER construct → its relational result**
+
+| ER construct | Maps to… | Worked example |
+|---|---|---|
+| Strong entity | a table + primary key | STUDENT → STUDENT(roll_no PK, name) |
+| Weak entity | table with owner PK + partial key | DEPENDENT → DEPENDENT(emp_id FK, dep_name); PK=(emp_id, dep_name) |
+| 1:1 relationship | FK on one (total) side | EMPLOYEE—HEADS—DEPARTMENT → head_id in DEPARTMENT |
+| 1:N relationship | FK on the N (many) side | DEPARTMENT 1:N EMPLOYEE → dept_id in EMPLOYEE |
+| M:N relationship | new junction table (both PKs) | STUDENT M:N COURSE → ENROLLS(roll_no, course_id) |
+| Multivalued attribute | a separate table | student phones → STUDENT_PHONE(roll_no, phone) |
+| n-ary relationship | table with all participants' keys | SUPPLIES(supplier_id, part_id, project_id) |
+| Composite / derived attr | flatten into columns / not stored | address → street, city; age is computed, never stored |
+
+*ℹ️ The algorithm is mechanical: learn the seven cases (plus composite→flatten, derived→omit) and any ER diagram converts to tables the same way every time.*
+
 ---
 
 #### Concept 2 — Mapping 1:N (Foreign Key on the N Side) `[THEORY]` `[EXAMPLE]` `[~9 min]`
@@ -305,6 +434,20 @@ Also: **composite** attributes are flattened into their component columns; **der
 > **🧠 Analogy & hook.** Many students each carry one class ID card; the class doesn't carry every student. **Hook: "1:N → FK on the many side."**
 
 > **🔑 Key terms:** 1:N mapping · foreign key placement · N-side FK · atomic column (1NF preview).
+
+**📊 Depth table — Where the foreign key lives in a 1:N relationship**
+
+| 1:N relationship | One side | Many (N) side — gets the FK | Resulting FK column |
+|---|---|---|---|
+| DEPARTMENT — has — EMPLOYEE | DEPARTMENT | EMPLOYEE | EMPLOYEE.dept_id |
+| CUSTOMER — places — ORDER (Daraz) | CUSTOMER | ORDER | ORDER.customer_id |
+| DEPARTMENT — offers — COURSE | DEPARTMENT | COURSE | COURSE.dept_id |
+| USER — makes — TRANSACTION (eSewa) | USER | TRANSACTION | TRANSACTION.user_id |
+| CITY — has — BRANCH (bank) | CITY | BRANCH | BRANCH.city_id |
+| RESTAURANT — has — DISH (Foodmandu) | RESTAURANT | DISH | DISH.restaurant_id |
+| PUBLISHER — prints — BOOK (library) | PUBLISHER | BOOK | BOOK.publisher_id |
+
+*ℹ️ The FK always goes on the N side, because each many-side row relates to exactly one partner — one FK column suffices. On the '1' side it would need a non-atomic multi-valued column (breaks 1NF).*
 
 ---
 
@@ -323,6 +466,20 @@ Also: **composite** attributes are flattened into their component columns; **der
 
 > **🔑 Key terms:** junction/relationship table · composite primary key · relationship attributes → junction · one row per pair.
 
+**📊 Depth table — Every M:N relationship becomes a junction table**
+
+| M:N relationship | Junction table | Composite PK (both FKs) | Relationship attributes inside |
+|---|---|---|---|
+| STUDENT — ENROLLS — COURSE | ENROLLS | (roll_no, course_id) | grade, semester |
+| ORDER — contains — PRODUCT (Daraz) | ORDER_ITEM | (order_id, product_id) | quantity, price |
+| MEMBER — borrows — BOOK (library) | BORROWS | (member_id, book_id) | borrow_date, due_date |
+| DOCTOR — treats — PATIENT (hospital) | TREATS | (doctor_id, patient_id) | visit_date, notes |
+| STUDENT — joins — CLUB (college) | MEMBERSHIP | (roll_no, club_id) | join_date, role |
+| USER — follows — SHOP (Daraz) | FOLLOWS | (user_id, shop_id) | followed_on |
+| ACCOUNT — signs — SCHEME (bank) | SUBSCRIPTION | (acc_no, scheme_id) | start_date |
+
+*ℹ️ One row per pair; the two PKs together form the composite primary key (each half a FK). Any attribute of the relationship (grade, quantity, date) lives in the junction table — never in either entity.*
+
 ---
 
 #### Concept 4 — Common Mapping Mistakes `[THEORY]` `[~6 min]`
@@ -335,6 +492,20 @@ Also: **composite** attributes are flattened into their component columns; **der
 > **🧠 Hook:** "No lists in a column; FK on the N side; never store derived."
 
 > **🔑 Key terms:** non-atomic column · FK-placement error · storing-derived error · subclass mapping options.
+
+**📊 Depth table — The recurring mistakes — and their fixes**
+
+| Mistake | Why it's wrong | Correct fix | Symptom months later |
+|---|---|---|---|
+| M:N as a comma-list of ids in a column | non-atomic, breaks 1NF, unqueryable | a junction table | can't aggregate one product; slow, buggy reports |
+| 1:N foreign key on the '1' side | one row must hold many ids | FK on the N (many) side | multi-valued column; unreliable updates |
+| Storing a derived value (age, order total) | it drifts out of date | compute it on read | totals no longer match the line items |
+| Multivalued attr kept as one field ('phones') | non-atomic value | a separate table | can't search or index one phone number |
+| Weak entity without the owner's PK | rows aren't uniquely identifiable | owner PK + partial key | duplicate or orphan rows |
+| Composite attr kept as one field ('address') | components can't be queried | flatten into street, city, … | can't filter customers by city |
+| No primary key chosen for a table | duplicate rows allowed | always pick a primary key | data integrity silently lost |
+
+*ℹ️ All feel convenient at the keyboard and cost dearly later. Follow the algorithm: junction table for M:N, FK on the N side, omit derived data, separate table for multivalued/weak.*
 
 ---
 

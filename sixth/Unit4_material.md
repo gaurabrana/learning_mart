@@ -94,6 +94,20 @@ By the end of this unit, students will be able to:
 
 *ℹ️ Quality is the WHOLE set, not just 'no visible bug'. A correct app that's insecure or unusable still fails its users.*
 
+**📊 Depth table — Real Nepali apps — which quality attribute failed**
+
+| Real case (Nepal / IT) | Attribute that failed | Why it's a quality failure (verdict) |
+|---|---|---|
+| eSewa/Khalti wallet crashes in the Dashain rush | Reliability | Passed the demo but can't hold real festival load → users abandon it |
+| Tax/PAN portal times out on filing-deadline day | Performance | Logic is correct, but too slow under peak → citizens miss deadlines |
+| Govt e-service no ordinary citizen can navigate | Usability | Works for the developer, not the real user → fails fitness-for-use |
+| Mobile-banking app leaks KYC data | Security | Functionally 'works' yet exposes data → still low quality |
+| Wallet miscalculates a balance by a paisa | Correctness | Doesn't meet the spec at all → the most basic failure |
+| Each bug fix quietly breaks two other features | Maintainability | Spaghetti code → cannot be changed safely |
+
+*ℹ️ First column is a real instance, not an abstract attribute: quality is judged in production. A correct app that is insecure, slow, or unusable still fails its users.*
+
+
 #### Concept 2 — The Cost of Poor Quality `[THEORY]` `[EXAMPLE]` `[~10 min]`
 
 [SLIDE] **The iceberg — visible fix, hidden cost**
@@ -311,6 +325,20 @@ reputation for shipping breakage.
 
 *ℹ️ Automate the base (many fast unit tests); reserve slow manual effort for higher levels. 'It works on my machine' is not any of these levels.*
 
+**📊 Depth table — Testing levels in practice — real Nepali test scenarios**
+
+| Concrete test scenario | Testing level | What it catches (verdict) |
+|---|---|---|
+| Check one interest-calc function returns the right paisa | Unit | Catches math bugs early; automated on every commit |
+| Verify wallet + bank API talk correctly during a top-up | Integration | Catches broken hand-offs between modules |
+| Run the full eSewa payment flow end-to-end pre-release | System | Catches whole-journey failures the QA team runs before release |
+| NRB/bank signs off a digital-banking go-live | Acceptance (UAT) | Confirms it meets the client's real need |
+| Re-run old tests after a Dashain hotfix | Regression | Ensures the fix didn't silently break paid features |
+| Enter a negative amount / retry on a weak network | Edge-case (black-box) | Hunts the failures real users hit, not the happy path |
+
+*ℹ️ Ad-hoc clicking is none of these. Testing shows the presence of bugs, not their absence — so it must be structured across levels, with edge cases and regression coverage.*
+
+
 #### Concept 2 — Quality Assurance (QA) vs Quality Control (QC) `[THEORY]` `[~7 min]`
 
 [SLIDE] **Process vs product — prevent vs catch**
@@ -351,6 +379,20 @@ reputation for shipping breakage.
 | Analogy | Designing a clean kitchen & recipes | Tasting each dish before it leaves |
 
 *ℹ️ They are complementary, not alternatives: QA shrinks the defect stream; QC filters what's left. A team with only QC (a heroic end-of-line tester) has no prevention and no safety net.*
+
+**📊 Depth table — QA or QC? — activities in a Kathmandu software house**
+
+| Activity | QA or QC? | Why (prevents vs catches) |
+|---|---|---|
+| Writing a coding-standards + code-review policy | QA | Prevents defects being created (shapes the process) |
+| A senior reviews every merge request | QA | Stops bad code entering — proactive |
+| Running the system test suite before release | QC | Catches defects in the finished product |
+| A tester logs bugs from a release candidate | QC | Finds defects that slipped through |
+| Maintaining an ISO/CMMI-aligned checklist | QA | Makes quality repeatable, not person-dependent |
+| Inspecting a generated report for wrong totals | QC | Reactive check on the actual output |
+
+*ℹ️ QA and QC are complementary: QA shrinks the defect stream (process), QC filters what's left (product). A team with only QC — one heroic end-of-line tester — has no prevention and no safety net.*
+
 
 #### Concept 3 — Software Development Standards & Process Models `[THEORY]` `[~8 min]`
 
@@ -394,6 +436,20 @@ reputation for shipping breakage.
 | Agile / Scrum | Short iterations, continuous feedback | Suits changing requirements; still needs quality practices |
 
 *ℹ️ For Nepali IT-outsourcing firms, ISO/CMMI certification is how you win and keep international contracts — quality becomes a business requirement, not just an ethical one.*
+
+**📊 Depth table — Which standard/model fits — real Nepali IT scenarios**
+
+| Nepali IT scenario | Standard / model that fits | Why (verdict) |
+|---|---|---|
+| BPO bidding for a US bank contract | CMMI level + ISO 9001 | Client won't sign without a maturity rating |
+| Measuring a product's security & usability | ISO/IEC 25010 | Defines the quality attributes to score against |
+| Govt project with fixed, well-known requirements | Waterfall | Stable scope suits plan-everything-up-front |
+| Startup MVP with fast-changing requirements | Agile / Scrum | Short iterations absorb constant change (still tests + reviews) |
+| Team wants a shared engineering baseline | IEEE standards | Common professional practices & documentation |
+| Firm signalling overall disciplined quality mgmt | ISO 9001 | General QMS badge that reassures clients |
+
+*ℹ️ For Nepali outsourcing firms certification is a business requirement, not just an ethical one. Agile changes HOW quality is built in — it never removes tests, reviews, or documentation.*
+
 
 #### Concept 4 — Risk Management `[THEORY]` `[~7 min]`
 
@@ -443,6 +499,20 @@ reputation for shipping breakage.
 | Security defect ships to production | Low × Critical | Security review + pen-test gate before release |
 
 *ℹ️ Prioritise by likelihood × impact, but let safety-critical/high-impact risks jump the queue. Every high risk needs BOTH a mitigation and a contingency (rollback).*
+
+**📊 Depth table — Real release-risk decisions — score, then act**
+
+| Real decision (Nepal) | Likelihood × impact | Action taken (verdict) |
+|---|---|---|
+| Core-banking migration on a remittance-peak day | Low × Critical | Deferred off-peak + tested rollback ready → good call |
+| Nagarik App update shipped with no rollback plan | Medium × High | Bad call — prepare a rollback BEFORE shipping |
+| One developer holds all deployment knowledge | Medium × High | Document + pair to remove the single point of failure |
+| Payment gateway may go down on Dashain | Medium × High | Retry queue + a secondary provider mitigates it |
+| Skipping the security review to hit a deadline | Low × Critical | Hold a security gate — the impact is too severe |
+| Festival-day traffic spike left untested | High × High | Load-test early + auto-scale before the rush |
+
+*ℹ️ Every high risk needs BOTH a mitigation and a contingency (rollback). Safety-critical/high-impact risks jump the queue even at low likelihood — decide before release, not after a live failure.*
+
 
 #### 🛠 ACTIVITY — "Skip testing to hit the deadline?" `[ACTIVITY]` `[~5 min]`
 
@@ -568,6 +638,20 @@ survives the six-month cliff from the hook while the "click-around" team loses i
 
 *ℹ️ The model shifts risk from the firm to the worker. That shift is the ethical heart of the debate — flexibility for the firm, insecurity for the person.*
 
+**📊 Depth table — Contingent-work situations Nepali developers actually face**
+
+| Situation (Nepal) | What the worker gains / loses | Verdict |
+|---|---|---|
+| Kathmandu dev on Upwork paid per project | Good hourly rate, zero job security | The risk sits entirely on the worker |
+| 3-month renewable contract, no benefits | Flexible, but no paid leave or insurance | Firm's flexibility = worker's insecurity |
+| Fiverr freelancer whose client vanishes mid-job | Fast income, no protection if unpaid | No safety net when the client disappears |
+| Foreign firm's contractor, no onboarding invested | Rare-skill pay, little training | Firm under-invests in the temporary worker |
+| Consultant hired for a one-off migration | Scarce skill on demand | Institutional knowledge walks out when it ends |
+| Gig developer juggling several small clients | Autonomy, but unstable monthly income | Income volatility is the hidden cost |
+
+*ℹ️ The model shifts risk from the firm to the person. 'Cheaper per hour' is not 'cheaper overall' — lost knowledge, low commitment, and constant re-hiring bite, alongside an ethical duty to treat contingent workers fairly.*
+
+
 #### Concept 2 — Outsourcing & Offshore Outsourcing `[THEORY]` `[EXAMPLE]` `[~12 min]`
 
 [SLIDE] **Trades cost for control — and sends data across a border**
@@ -616,6 +700,20 @@ survives the six-month cliff from the hook while the "click-around" team loses i
 
 *ℹ️ Every benefit has a matching risk. The cross-border DATA risk is the sharpest: obligations to protect customer data don't stop at the border, even if the destination's law is weaker.*
 
+**📊 Depth table — Offshore-outsourcing cases — what crosses the border with the work**
+
+| Offshore-outsourcing case | What crosses the border with it | Verdict / duty |
+|---|---|---|
+| US client sends KYC data to a Kathmandu BPO | Customer data + the duty of care | Client stays liable; the BPO must protect the data |
+| Follow-the-sun support across NP/US time zones | 24/7 coverage + coordination gaps | Gain in speed, but a risk to quality control |
+| Back-end built by a small Lalitpur firm | Cost saving + distance to oversight | Harder to control quality at a distance |
+| A BPO leaks a foreign client's records | Reputational + legal fallout | Outsourcing the work never outsourced the duty |
+| Client depends on one Nepali vendor | Low cost + dependency risk | Single-vendor reliance is itself a business risk |
+| Data sent to a weaker-data-law jurisdiction | Legal exposure for the client | The obligation to protect data doesn't stop at the border |
+
+*ℹ️ Nepal is a major outsourcing destination (IT/BPO/KPO export). Every benefit has a matching risk — and the sharpest is cross-border data: the duty of care travels with the data, whatever the local law requires.*
+
+
 #### Concept 3 — The Ethical Balance — both sides `[THEORY]` `[~6 min]`
 
 [SLIDE] **Good for whom, at what cost — and is it fair?**
@@ -662,6 +760,20 @@ survives the six-month cliff from the hook while the "click-around" team loses i
 | Developing economy | Growth, forex, IT-export industry | Race-to-the-bottom wage pressure |
 
 *ℹ️ A stakeholder view (Unit 1) shows there's no single verdict — outsourcing genuinely helps some and harms others. The ethics is making the trade fair, not pretending there's no cost.*
+
+**📊 Depth table — Outsourcing situations — who gains, who pays, is it fair?**
+
+| Concrete situation | Who gains / who pays | Is it fair? (verdict) |
+|---|---|---|
+| Kathmandu BPO runs night shifts for US hours | Worker: forex & a job / burnout & lost sleep | Fair only if pay + rest match the strain |
+| Nepali dev paid one-third of the US rate | Client saves / worker underpaid vs peers | Race-to-the-bottom risk — check the fairness |
+| US roles cut and moved to Nepal | Nepal gains jobs / US worker loses one | Good for one economy, harm to another |
+| A high-value IT-export contract lands in KTM | Economy: forex, skills, careers | A genuine development good |
+| End-users get a cheaper app | Users save / their data crosses borders | The benefit carries a hidden data cost |
+| Firm scales a team up, then drops it fast | Firm: flexibility / workers: sudden job loss | Flexibility externalised onto people |
+
+*ℹ️ A stakeholder view (Unit 1) shows no single verdict: outsourcing genuinely helps some and harms others at once. The ethical task is 'good for whom, at what cost, and is it fair?' — not a one-word slogan.*
+
 
 #### 🛠 ACTIVITY — "Net good or exploitative?" `[ACTIVITY]` `[~5 min]`
 
@@ -778,6 +890,20 @@ them, and understanding the model is how you negotiate it instead of just absorb
 
 *ℹ️ A whistle-blower is not a disloyal 'snitch' — ethical whistle-blowing protects the public and stakeholders precisely when internal channels have failed.*
 
+**📊 Depth table — Whistle-blowing cases — internal, external, or neither**
+
+| Case | Internal / external? | Verdict (loyalty vs public) |
+|---|---|---|
+| Report a data-leak bug to your ethics officer | Internal | Gives the org a chance to fix it — not disloyal |
+| Snowden exposes NSA mass surveillance | External | Public interest over loyalty; huge personal cost |
+| Frances Haugen leaks Meta's harm research | External | Insider judged the public's right to know won |
+| Tell internal audit KYC data is being sold | Internal | Protects the org too — the first step |
+| Go to the press after management ignores you | External | Justified when internal channels are complicit |
+| Stay silent to 'stay loyal' while harm ships | Neither | Loyalty has a limit — silence enables the harm |
+
+*ℹ️ A whistle-blower is not a disloyal 'snitch': ethical whistle-blowing protects the public and stakeholders precisely when internal channels have failed. Loyalty never requires covering up serious harm.*
+
+
 #### Concept 2 — When and How to Blow the Whistle — responsibly `[THEORY]` `[~10 min]`
 
 [SLIDE] **Evidence-first, internal-first — external is the last step**
@@ -826,6 +952,20 @@ them, and understanding the model is how you negotiate it instead of just absorb
 | 5. Go public | Press / public — last resort | Highest risk; use only when all else fails |
 
 *ℹ️ Following the order protects both the public AND you — a documented, internal-first attempt is what distinguishes a responsible whistle-blower from a reckless leaker.*
+
+**📊 Depth table — One case (data being sold) — right vs wrong moves, in order**
+
+| Action on the case | Right or wrong move? | Why |
+|---|---|---|
+| Immediately tweet the accusation | Wrong | Unprovable, legally risky, and tips off the wrongdoer |
+| Gather dated evidence and keep records | Right — step 1 | Reason on evidence, not suspicion |
+| Confirm the harm is serious, not a gripe | Right — step 2 | Whistle-blowing is for real, serious harm |
+| Report to your manager, then ethics/compliance | Right — step 3 | Internal-first gives a chance to fix it + builds your record |
+| Escalate to the CIAA when ignored | Right — step 4 | A regulator, when internal routes fail or are complicit |
+| Go to the press only as a last resort | Right — step 5 | Highest risk — use only when all else fails |
+
+*ℹ️ Following the order protects both the public AND you. A documented, internal-first attempt is what distinguishes a responsible whistle-blower from a reckless leaker — external disclosure is the final step, not the first.*
+
 
 #### Concept 3 — Risks, Protections & Famous Cases `[THEORY]` `[EXAMPLE]` `[~10 min]`
 
@@ -877,6 +1017,20 @@ them, and understanding the model is how you negotiate it instead of just absorb
 | Severe personal stress | Support networks; documented internal-first record |
 
 *ℹ️ Nepal's protections are limited (anti-corruption/CIAA mechanisms) versus stronger US/EU statutes — so the personal risk is real. Evidence + an internal-first record are your best practical shield.*
+
+**📊 Depth table — Retaliation vs protection — concrete situations**
+
+| Concrete situation | Risk faced / protection available | Verdict |
+|---|---|---|
+| Nepali employee exposes an employer's wrongdoing | Firing + blacklisting in a small market | Real risk — the legal net is thin |
+| Whistle-blower sued for defamation | Solid evidence + prior legal advice | Documentation is the practical shield |
+| Anonymous hotline used to report internally | Some protection of identity | Lowers, but does not remove, retaliation risk |
+| CIAA / anti-corruption route in Nepal | Limited statutory protection | A thinner net than US/EU statutes |
+| US/EU worker under a whistle-blower statute | Stronger legal protection | Same act, far less personal risk |
+| A documented internal-first attempt on record | Best defensible position | Distinguishes responsible from reckless |
+
+*ℹ️ Protection varies hugely by country and is weak in Nepal, so retaliation is a genuine risk. Evidence and an internal-first record are the most reliable practical safeguard — courage AND care.*
+
 
 #### 🛠 ACTIVITY — "Would weak protection change your choice?" `[ACTIVITY]` `[~5 min]`
 
@@ -999,6 +1153,20 @@ lets you **act well later**, when the stakes are your job and someone else's dat
 
 *ℹ️ Green computing addresses ALL stages, not just energy in use. Ignoring manufacture and disposal just hides the footprint elsewhere.*
 
+**📊 Depth table — Is this action actually green? — across the lifecycle**
+
+| Claim / action | Really green? | Why (lifecycle verdict) |
+|---|---|---|
+| 'It's in the cloud, so it has no footprint' | No | The cloud = physical data centres burning power & water |
+| Hydro-powered data centre in Nepal | Yes — if consistent | Clean power, but only if no diesel backup kicks in |
+| Diesel generator running during load-shedding | No | Erases the hydro gain — measure the real energy mix |
+| Buying a brand-new laptop every year | No | Ignores the manufacture + disposal footprint |
+| ENERGY STAR / EPEAT-rated device | Partly | Cuts use-phase energy — only one of three stages |
+| Recycling old servers responsibly | Yes | Closes the disposal loop and recovers materials |
+
+*ℹ️ Green computing spans the WHOLE lifecycle (make → use → dispose). 'Digital' relocates the footprint; it never removes it — so green must be measured across the real, full lifecycle, not claimed on paper.*
+
+
 #### Concept 2 — Energy Use & Sustainable IT `[THEORY]` `[~8 min]`
 
 [SLIDE] **Consolidate, sleep, clean power, efficient code**
@@ -1051,6 +1219,20 @@ lets you **act well later**, when the stakes are your job and someone else's dat
 | Cooling efficiency | Less energy spent removing heat | Better airflow / free-cooling design |
 
 *ℹ️ Nepal's hydropower is a real advantage — but only if backup diesel generators during outages don't erase the gain. Measure the whole picture.*
+
+**📊 Depth table — Energy waste and the fix — real Nepali office cases**
+
+| IT energy situation | Fix applied | Energy verdict |
+|---|---|---|
+| 50 desktops left on overnight 'for convenience' | Enable auto-sleep / shutdown | Cuts a needless yearly power bill |
+| 10 physical servers barely used | Consolidate to VMs on 1–2 hosts | Big drop in power + cooling |
+| A slow, unoptimised hot query at scale | Optimise the code | Less compute = less energy per task |
+| Old power-hungry PCs due for refresh | Buy ENERGY STAR / EPEAT devices | Less power per unit of work |
+| Data centre on grid + diesel | Shift to hydro / renewable supply | Cleaner energy for the same use |
+| Server room over-cooled 24/7 | Improve airflow / free-cooling | Less energy spent removing heat |
+
+*ℹ️ Small defaults scale: idle machines multiplied across every office are real power and real emissions. As the IT decision-maker, your defaults shape the whole organization's energy footprint.*
+
 
 #### Concept 3 — E-Waste & Responsible Disposal `[THEORY]` `[EXAMPLE]` `[~8 min]`
 
@@ -1146,6 +1328,20 @@ lets you **act well later**, when the stakes are your job and someone else's dat
 | Renewable-powered facilities | Cleaner energy for operations | Solar/hydro-powered data centres |
 
 *ℹ️ This closes the loop to Unit 1: managing the IT footprint IS corporate social responsibility, made real through policy and public reporting rather than one-off gestures.*
+
+**📊 Depth table — Real green IT or greenwashing? — organizational actions**
+
+| Action (Nepal) | Real green IT or greenwashing? | Why (verdict) |
+|---|---|---|
+| Bank adopts a solar-powered data centre | Real green IT | Embedded in operations, not a gesture |
+| Telecom runs a device take-back scheme | Real green IT | Responsible end-of-life, at policy level |
+| One tree-planting photo op, nothing changes | Greenwashing | No changed defaults, no reporting |
+| Govt IT tender favours efficient hardware | Real green IT | Green procurement as a default policy |
+| Publishing energy/e-waste in a CSR report | Real green IT | Public accountability you can't quietly walk back |
+| 'Eco-friendly' label, servers still over-provisioned | Greenwashing | Marketing without right-sizing the infrastructure |
+
+*ℹ️ This closes the loop to Unit 1: managing the IT footprint IS corporate social responsibility — genuine only when embedded in procurement policy, take-back, right-sizing, and public reporting, not a one-off gesture.*
+
 
 #### 🛠 ACTIVITY — "Trace one device" `[ACTIVITY]` `[~5 min]`
 

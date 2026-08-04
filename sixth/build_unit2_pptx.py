@@ -64,6 +64,17 @@ concept_apply("S6 · Concept 1 · [THEORY]","Why IT Workers Face Special Pressur
     "\"IT is just a back-office technical job — ethics is for managers.\" Access IS power: the more you can technically do, the more responsibility you carry, whether or not you hold a manager's title. A junior with admin rights holds more trust than a senior manager without them.",
     "IT workers are ethically distinct because of privileged access to systems and data. Since access is power and power is responsibility, technical ability ('can') never settles what is right ('should'). Every relationship an IT worker has therefore carries a duty of care — a duty not to abuse the trust that access represents.",
     "IT worker · privileged access · duty of care · can vs should · access = power = responsibility")
+add_table_slide("S6 · Concept 1 · examples","Access abused — real 'can' vs 'should' cases (Nepal / IT)",
+    ["Scenario", "What the access let them do", "Verdict — can vs should"],
+    [
+     ["Bank staffer checks an ex's balance", "System permits the lookup instantly", "Can ✓ — should ✗: no work reason, betrayal of trust"],
+     ["Sysadmin reads the CEO's private email", "Root rights make every inbox readable", "Can ✓ — should ✗: snooping, not an authorised task"],
+     ["Support tech copies a customer's photos", "Remote control opens all their files", "Can ✓ — should ✗: touch only what fixes the fault"],
+     ["Developer keeps a copy of employer's source", "Already holds the full codebase", "Can ✓ — should ✗: reusing it elsewhere is IP theft"],
+     ["Telco engineer pulls a celebrity's call records", "Network logs expose everyone's metadata", "Can ✓ — should ✗: curiosity is not authorisation"],
+     ["Hospital IT clerk browses a neighbour's records", "Database shows any patient's history", "Can ✓ — should ✗: the privacy duty forbids it"],
+    ],
+    per_page=6,widths=[2.4, 2.8, 2.9],note="Every row is technically permitted and ethically forbidden — the system grants the 'can', only ethics supplies the 'should'.",fs=11)
 
 concept_understand("S6 · Concept 2 · [THEORY] [EXAMPLE]","Relationship 1 — the Employer: loyalty & honesty",
     "The first arrow points to your employer. Two core duties: LOYALTY — protect the employer's assets and IP (source code, client lists, internal data); and HONESTY — be truthful about your work and your qualifications (this is where resume fraud lives).",
@@ -86,6 +97,17 @@ concept_apply("S6 · Concept 2 · [THEORY] [EXAMPLE]","Relationship 1 — the Em
     "\"If the boss orders it, it's on them.\" Your employer asks you to install pirated Office/AutoCAD on all machines to cut costs. Liability can fall on the company AND the individual who installed it — 'I was just following orders' is the blind-obedience trap and does not transfer responsibility off you.",
     "The IT worker owes the employer loyalty (protect assets and IP) and honesty (truthful work and qualifications). This is strained by conflicts of interest, resume fraud, license non-compliance, and the whistle-blowing tension. Loyalty is real but limited: it never extends to concealing harm, and obeying an order does not erase personal accountability.",
     "loyalty · honesty · IP protection · conflict of interest · resume fraud · loyalty has a limit")
+add_table_slide("S6 · Concept 2 · examples","Loyalty & honesty to the employer — breaches and their fallout",
+    ["What the worker did", "Duty broken", "Consequence"],
+    [
+     ["Copied client source code for a weekend side gig", "Loyalty (IP protection)", "IP theft; betrays employer AND client"],
+     ["Listed a CCNA on the CV without holding it", "Honesty (qualifications)", "Resume fraud — grounds for dismissal"],
+     ["Installed pirated AutoCAD 'to cut costs' on orders", "Loyalty (license compliance)", "Legal liability for the firm AND the installer"],
+     ["Moonlighted for the employer's direct rival", "Loyalty (conflict of interest)", "Judgment serves two masters — trust lost"],
+     ["Leaked the internal client list to a friend's startup", "Loyalty (protect assets)", "Confidential asset gone; possible legal action"],
+     ["Inflated hours on a project timesheet", "Honesty (truthful work)", "Billing fraud; erodes the employer's trust"],
+    ],
+    per_page=6,widths=[3.0, 2.2, 2.6],note="Loyalty and honesty are the two duties; each row shows one being broken — and 'the boss ordered it' never transfers the blame off you.",fs=11)
 
 concept_understand("S6 · Concept 3 · [THEORY]","Relationship 2 — the Client: duty beyond the contract",
     "The client is who you build for. Three professional duties: give HONEST technical advice, DELIVER what was promised, and DISCLOSE risks (don't hide that a system might fail, leak, or not scale). What makes this relationship ethically loaded is information asymmetry.",
@@ -107,6 +129,17 @@ concept_apply("S6 · Concept 3 · [THEORY]","Relationship 2 — the Client",
     "\"If the contract doesn't ban it, it's fine.\" Professional duty goes beyond the contract's letter. The contract is a floor, not the limit of your responsibility (the Unit 1 'floor, not ceiling' idea). A loophole in the contract is not an ethical permission slip.",
     "The IT worker owes the client honest technical advice, delivery of what was promised, and disclosure of risks. Because of information asymmetry — the client usually cannot verify technical quality — the worker holds a professional duty like a doctor's, extending beyond the contract's letter. Ethics is the only protection the weaker party has.",
     "honest advice · deliver as promised · disclose risk · information asymmetry · contract is a floor")
+add_table_slide("S6 · Concept 3 · examples","When the client can't check — asymmetry exploited (Nepal / IT)",
+    ["What the vendor did", "Duty broken", "Why the client couldn't catch it"],
+    [
+     ["Sold an NGO an over-sized ERP it didn't need", "Honest advice", "They can't judge what capacity they actually need"],
+     ["Marked a half-built e-gov module 'done'", "Deliver as promised", "No technical staff to test the code before paying"],
+     ["Hid that the portal can't handle election-day load", "Disclose risks", "Load only shows up in production, months later"],
+     ["Used cheap unlicensed libraries without saying", "Disclose risks", "Client can't read the dependency list"],
+     ["Left no documentation, to lock in future work", "Honest advice", "They don't know documentation was owed"],
+     ["Quietly stored client data on a free foreign host", "Disclose risks", "Invisible unless a leak exposes it"],
+    ],
+    per_page=6,widths=[2.9, 1.9, 3.0],note="Every breach survives only because of information asymmetry — the client cannot verify until it's too late. That is why the duty is professional, not just contractual.",fs=11)
 
 concept_understand("S6 · Concept 4 · [THEORY] [EXAMPLE]","Relationships 3–6 — Suppliers, Peers, Users & Society",
     "The remaining four arrows share a theme: fairness to people who aren't your boss or your client. Suppliers — deal fairly, no bribery/kickbacks. Peers — mutual respect, no resume inflation or poaching trade secrets. Users — support and train them, don't exploit their lack of skill. Society — build safe systems, don't enable harm.",
@@ -189,6 +222,17 @@ concept_apply("S7 · Concept 1 · [THEORY]","Is IT a 'Profession'?",
     "\"Anyone who fixes computers is an IT professional.\" Professionalism is about standards and accountability, not just technical skill. A brilliant coder who hides bugs and pads invoices is skilled, not professional — the title is earned by how you're held to account, not by what you can build.",
     "A profession has four marks: specialized education, a recognized body of knowledge, a code of ethics, and self-regulation (licensing + discipline). IT has the first three but lacks universal licensing, so it is a partial profession — which is precisely why its status is debated. Professionalism is defined by standards and accountability, not skill alone.",
     "four-part test · self-regulation · licensing · partial profession · standards over skill")
+add_table_slide("S7 · Concept 1 · examples","Profession or not? — fields against the four-part test (Nepal)",
+    ["Field", "Licensed / self-regulated?", "Profession verdict"],
+    [
+     ["Doctor (Nepal, NMC)", "Yes — NMC licenses and can strike off", "Full profession — all four marks"],
+     ["Civil engineer (Nepal, NEC)", "Yes — NEC registration required", "Full profession — all four marks"],
+     ["Lawyer (Nepal Bar Council)", "Yes — must be enrolled to practise", "Full profession"],
+     ["Chartered accountant (ICAN)", "Yes — licensed and disciplined", "Full profession"],
+     ["Software developer", "No licence to build banking software", "Partial — has knowledge + codes, no licensing"],
+     ["Freelance 'computer technician'", "No credential required at all", "Not a profession — anyone can claim the title"],
+    ],
+    per_page=6,widths=[2.4, 3.0, 2.5],note="The single differentiator is self-regulation — a licence you can lose. IT has education, knowledge and codes but no strike-off, so it is a partial profession.",fs=11)
 
 concept_understand("S7 · Concept 2 · [THEORY] [EXAMPLE]","Professional Codes of Ethics",
     "A code of ethics is a published set of principles members commit to upholding. The big two in IT are the ACM Code of Ethics and IEEE-CS. A code does four jobs: sets expectations, builds public trust, guides decisions, and provides a basis for discipline.",
@@ -211,6 +255,17 @@ concept_apply("S7 · Concept 2 · [THEORY] [EXAMPLE]","Professional Codes of Eth
     "\"A code of ethics is just words on a website.\" A code is only useful if you can APPLY it to a concrete ask — and it gives you professional language to refuse. Voluntary firms import ACM standards precisely because clients and outsourcing partners demand them; the code has real market teeth.",
     "A code of ethics is a published set of principles members commit to (ACM, IEEE-CS). It sets expectations, builds public trust, guides decisions, and provides a basis for discipline — giving the field some accountability even without government licensing. Its value shows when applied to a concrete ask, such as refusing to build undisclosed user tracking.",
     "code of ethics · ACM · IEEE-CS · avoid harm · CAN-Nepal · apply the code")
+add_table_slide("S7 · Concept 2 · examples","Applying the code — an ask, the principle, the answer",
+    ["The ask at work", "Principle invoked", "What the code says to do"],
+    [
+     ["Build hidden user tracking without consent", "Avoid harm; respect privacy", "Object, disclose, or refuse"],
+     ["Ship now with a known security hole", "Avoid harm; be honest about limits", "Disclose the risk; don't hide it"],
+     ["Claim a system is more secure than it is", "Be honest about limitations", "State the real capabilities to the client"],
+     ["Reuse a rival's leaked source code", "Respect property / IP", "Refuse — it isn't yours to use"],
+     ["Quietly weaken data protection to cut cost", "Respect privacy", "Push back; protect the user's data"],
+     ["Blame a junior for your own bug", "Be honest; give fair credit", "Own the error; don't scapegoat"],
+    ],
+    per_page=6,widths=[3.0, 2.3, 2.5],note="A code is only useful when applied to a concrete ask — and it hands you professional language to say no, even without a government licence behind it.",fs=11)
 
 concept_understand("S7 · Concept 3 · [THEORY]","Certification — proof of a specific skill",
     "A certification is a vendor or industry credential proving a specific skill — CCNA, CISSP, CompTIA, AWS, PMP. Four defining traits, because students routinely over-trust certs: it signals competence, it is voluntary, it can become outdated, and it is NOT a licence.",
@@ -265,6 +320,17 @@ concept_apply("S7 · Concept 4 · [THEORY]","Licensing & Professional Organizati
     "\"Certification and licence are basically the same thing.\" They're not: a certification is voluntary and issued by a vendor/body to prove a skill; a licence is government-granted, legally enforced, and confers the right to practise. Ask 'who grants it, and does it have legal force?' to tell them apart every time.",
     "A licence is government-granted, legally enforced permission to practise, used to protect the public in high-stakes fields — but it adds gatekeeping and cost, which is why IT has resisted it. Professional organizations (ACM, IEEE-CS, ISACA, CAN-Nepal) set standards, publish codes, and run certifications. The map: bodies write codes and run certs; only government licenses.",
     "licence · legal force · protect the public · ACM/IEEE-CS/ISACA/CAN · bodies vs government")
+add_table_slide("S7 · Concept 4 · examples","Who grants it? — real credentials & bodies classified",
+    ["Item", "What it is", "Legal force?"],
+    [
+     ["NMC doctor registration", "A licence (government)", "Yes — can't practise without it"],
+     ["Nepal driving licence", "A licence (government)", "Yes — legally required to drive"],
+     ["CCNA", "A certification (Cisco, a vendor)", "No — voluntary skill proof"],
+     ["CISA / CISM", "Certifications run by ISACA (a body)", "No — voluntary"],
+     ["ACM Code of Ethics", "A code (professional body)", "No — but can discipline members"],
+     ["CAN (Computer Association of Nepal)", "A professional body", "No — advocacy, events, training"],
+    ],
+    per_page=6,widths=[2.5, 3.0, 2.3],note="The test that sorts every row: WHO grants it, and does it carry LEGAL FORCE? Only government-granted items are licences.",fs=11)
 
 add_activity("S7 — 'Cert, licence, or code?'  ·  ~5 min",
     ["In pairs (2 min): label each of six items as Certification / Licence / Code of Ethics / Professional Body.",
@@ -371,6 +437,17 @@ concept_apply("S8 · Concept 3 · [THEORY] [EXAMPLE]","Software Piracy",
     "\"It's only piracy if I sell it.\" Using an unlicensed copy is already a violation — no sale required. The wrong isn't profiting; it's using value you never paid for. Installing one cracked copy for yourself already crosses the line — like sneaking into a movie hall, you were never entitled to the seat.",
     "Software piracy is using, copying, or distributing software without a valid licence, in forms including counterfeiting, unlicensed installs, and licence violation. It is both a legal harm (copyright infringement — Unit 3) and an ethical one (taking the value of someone's work without paying). 'Everyone does it' is normalization, a decision trap, not a justification.",
     "software piracy · counterfeiting · unlicensed install · licence violation · legal + ethical harm · normalization")
+add_table_slide("S8 · Concept 3 · examples","Is it piracy? — everyday cases (Nepal / IT)",
+    ["The act", "Form of piracy", "Verdict"],
+    [
+     ["Office runs cracked Windows on every PC", "Unlicensed install", "Piracy — no valid licence, even unsold"],
+     ["Shop sells 'original' Windows DVDs that are fake", "Counterfeiting", "Piracy — passing fakes as genuine"],
+     ["A 5-seat design licence used by 50 staff", "Licence violation", "Piracy — exceeds what was purchased"],
+     ["Installing one cracked Photoshop for yourself", "Unlicensed install", "Piracy — no sale needed to violate"],
+     ["Downloading a 'nulled' paid plugin to save money", "Unlicensed install", "Piracy — using value you never paid for"],
+     ["Buying one Windows key, reusing it on 10 laptops", "Licence violation", "Piracy — one licence, many machines"],
+    ],
+    per_page=6,widths=[3.0, 1.9, 2.6],note="None of these require a sale — the wrong is USING value you never paid for. 'Everyone does it' is the Unit 1 normalization trap, not a defence.",fs=11)
 
 concept_understand("S8 · Concept 4 · [THEORY]","Inappropriate Use of IT Resources",
     "Inappropriate use is using organizational resources for unauthorized, personal, or harmful purposes. Unlike piracy, the software may be perfectly licensed — the problem is the PURPOSE. The common thread: resources provided for work, diverted to non-work or harmful ends.",
@@ -445,6 +522,17 @@ concept_apply("S9 · Concept 1 · [THEORY] [EXAMPLE]","Data Privacy",
     "\"I have nothing to hide, so privacy doesn't matter to me.\" Privacy is about control and power, not hiding wrongdoing. You lock your door not because you're doing something wrong inside, but because it's yours to control who enters. 'Nothing to hide' confuses secrecy with control — you still close the curtains.",
     "Data privacy is the right to control how your personal data is collected, used, and shared — control, not secrecy. It rests on consent (informed agreement), purpose limitation (use only for the collected reason), and data minimization (collect only what's needed). When these fail, the harms are profiling and fraud. Nepal's Individual Privacy Act 2075 gives legal backing, unevenly enforced.",
     "data privacy · control not secrecy · consent · purpose limitation · minimization · Individual Privacy Act 2075")
+add_table_slide("S9 · Concept 1 · examples","Privacy principle broken — everyday data grabs (Nepal)",
+    ["What happened", "Principle violated", "The harm"],
+    [
+     ["SIM dealer sells your number to loan marketers", "Consent", "A flood of unsolicited loan calls"],
+     ["Loan-form data reused to target you with ads", "Purpose limitation", "Profiling you never agreed to"],
+     ["Mall QR form demands your citizenship number", "Data minimization", "Over-collection you can't take back"],
+     ["Bank KYC records leak to a data broker", "Consent + minimization", "Fraud and impersonation risk"],
+     ["An app asks for contacts it doesn't need", "Data minimization", "Your friends' data exposed too"],
+     ["Clinic shares its patient list with a pharmacy", "Purpose limitation", "Sensitive health data misused"],
+    ],
+    per_page=6,widths=[3.0, 2.2, 2.3],note="Nepal's Individual Privacy Act 2075 recognises these rights; the gap is enforcement. Privacy is control, not secrecy — each row is control taken away.",fs=11)
 
 concept_understand("S9 · Concept 2 · [THEORY]","Surveillance — systematic monitoring",
     "Surveillance is the systematic monitoring of people's activities, communications, or location. 'Systematic' matters — a one-off glance isn't surveillance; a system that logs everyone, always, is. Its forms: workplace monitoring, CCTV, government surveillance, and app/location tracking.",
@@ -467,6 +555,17 @@ concept_apply("S9 · Concept 2 · [THEORY]","Surveillance",
     "\"If it improves security, more monitoring is always good.\" Every increment of monitoring costs privacy — there's no free lunch. The ethical test is proportionality (is this much watching justified by the actual risk?) and disclosure (were people told?). A disclosed policy is the difference between monitoring and spying.",
     "Surveillance is the systematic monitoring of activities, communications, or location (workplace, CCTV, government, app tracking). It sits on a security-vs-privacy trade-off: every gain in security costs privacy. What makes monitoring legitimate rather than spying is proportionality to the real risk plus transparency and consent — exactly why the AUP declares monitoring in advance.",
     "surveillance · systematic monitoring · security vs privacy · proportionality · transparency + consent")
+add_table_slide("S9 · Concept 2 · examples","Monitoring or spying? — same tech, disclosure decides",
+    ["The monitoring", "Disclosed & consented?", "Verdict"],
+    [
+     ["Employer logs email, stated in a signed AUP", "Yes — in the AUP", "Legitimate monitoring"],
+     ["Boss secretly installs a keylogger on your PC", "No — hidden", "Spying — violates privacy"],
+     ["CCTV at a bank entrance with visible signage", "Yes — signposted", "Legitimate, proportionate"],
+     ["Hidden camera in a staff changing room", "No — and disproportionate", "Spying — a clear violation"],
+     ["ISP logs traffic per a disclosed policy", "Yes — stated policy", "Legitimate if proportionate"],
+     ["Manager reads staff personal DMs 'to be safe'", "No — undisclosed, excessive", "Spying — no consent, over-broad"],
+    ],
+    per_page=6,widths=[3.0, 2.4, 2.1],note="The technology is identical row to row — transparency and consent (the S8 AUP clause) plus proportionality are what shift it from spying to monitoring.",fs=11)
 
 concept_understand("S9 · Concept 3 · [THEORY]","Anonymity Online — a double-edged tool",
     "Anonymity is acting online without revealing your real identity. The whole point: it is neither good nor bad — it's a tool with two edges, and the same feature does both jobs.",
@@ -489,6 +588,17 @@ concept_apply("S9 · Concept 3 · [THEORY]","Anonymity Online",
     "\"Online, I'm completely anonymous.\" IP logs, metadata, and device fingerprints make true anonymity rare — you almost always leave a trail, which is why people do get traced and arrested for anonymous posts. Feeling anonymous is not the same as being anonymous.",
     "Anonymity is acting online without revealing your real identity — a double-edged tool. The same feature protects whistle-blowers, activists, and free speech while shielding trolls, scammers, and criminals. It can be neither fully banned nor fully allowed, because any rule that silences the troll also silences the whistle-blower. And true anonymity is rare: logs and metadata leave a trail.",
     "anonymity · double-edged tool · whistle-blower vs troll · real-name debate · true anonymity is rare")
+add_table_slide("S9 · Concept 3 · examples","Anonymity's two edges — the same cover, opposite uses",
+    ["Who is behind the mask", "How anonymity is used", "Edge"],
+    [
+     ["Whistle-blower leaking proof of corruption", "Exposes wrongdoing without being fired", "Protective — good"],
+     ["Activist under political pressure", "Speaks freely without reprisal", "Protective — good"],
+     ["Domestic-abuse survivor seeking help", "Asks for support without being traced", "Protective — good"],
+     ["Troll on a throwaway account", "Harasses a public figure consequence-free", "Harmful — bad"],
+     ["Scammer running a fake profile", "Defrauds contacts while hiding identity", "Harmful — bad"],
+     ["Rumour page spreading fake news", "Panics the public with no accountability", "Harmful — bad"],
+    ],
+    per_page=6,widths=[2.6, 3.0, 1.9],note="Any rule that silences the bottom three also silences the top three — which is why real-name registration is contested. And true anonymity is rare: logs and metadata leave a trail.",fs=11)
 
 concept_understand("S9 · Concept 4 · [THEORY] [EXAMPLE]","Identity & Identity Theft — you are your data",
     "Online, your identity is the data that represents you — your name, citizenship number, bank/eSewa logins, biometrics. To a system you are not a person but a bundle of data fields, and whoever controls those fields can BE you. That's identity theft: fake profiles and stolen credentials.",
@@ -563,6 +673,17 @@ concept_apply("S10 · Concept 1 · [THEORY]","Why Social Networking Is an Ethics
     "\"It's just online — it isn't real / it doesn't count.\" Online harm has real legal, social, and psychological consequences — lost jobs, depression, arrests under the ETA. The screen is not a shield between the act and the harm; the amplifiers make the harm bigger, not less real.",
     "Social networking is an ethics hotspot because four amplifiers — scale, speed, anonymity, and virality — turn ordinary behaviour into outsized harm, compounded by the online bystander effect where everyone assumes someone else will intervene. These are Unit 1's IT factors made personal; online harm carries real legal, social, and psychological consequences.",
     "social networking · scale · speed · anonymity · virality · bystander effect · online harm is real")
+add_table_slide("S10 · Concept 1 · examples","Amplifiers in action — small act, mass harm (Nepal)",
+    ["Ordinary act", "Amplifier at work", "The outsized harm"],
+    [
+     ["A doctored celebrity screenshot posted once", "Scale + virality", "Seen by thousands before lunch"],
+     ["A fake 'bank X is collapsing' clip", "Speed", "Panic withdrawals before it's corrected"],
+     ["Abusive comments from throwaway accounts", "Anonymity", "Said what they'd never say face-to-face"],
+     ["An outrage post the algorithm boosts", "Virality", "Pushed into millions of feeds"],
+     ["Thousands watch a pile-on, no one steps in", "Bystander effect", "Silence reads as approval; harm grows"],
+     ["A false earthquake rumour forwarded 'to warn'", "Speed + scale", "Public panic in minutes"],
+    ],
+    per_page=6,widths=[2.8, 2.2, 2.7],note="These are Unit 1's scale/speed/permanence factors made personal — and online harm carries real legal, social and psychological consequences.",fs=11)
 
 concept_understand("S10 · Concept 2 · [THEORY] [EXAMPLE]","Cyberbullying & Online Harassment",
     "Cyberbullying/harassment is using digital tools to REPEATEDLY threaten, humiliate, or target a person. The word 'repeatedly' matters — a single rude comment is unkind; a pattern aimed at someone is harassment. Its forms: trolling, doxxing, group pile-ons, and gendered harassment.",
@@ -609,6 +730,17 @@ concept_apply("S10 · Concept 3 · [THEORY]","Fake News & Misinformation",
     "\"Sharing isn't creating it, so I'm not responsible.\" Forwarding unverified content spreads the harm — the share button is an act. You become a link in the chain that delivers the lie to a thousand more people. 'I only forwarded it' is not a defence; it's a description of how the harm scaled. A lie online is cheap to send, impossible to recall.",
     "Misinformation is false information shared carelessly (no intent to deceive); disinformation is false information spread deliberately to mislead — the difference is intent. Both outrun the truth because they exploit emotion, ride confirmation bias, and are boosted by engagement algorithms. Forwarding unverified content makes you a link in the chain: the share button is an ethical act.",
     "misinformation · disinformation · intent to deceive · confirmation bias · engagement algorithms · share button is an act")
+add_table_slide("S10 · Concept 3 · examples","Mis- or dis-information? — classify the share (Nepal)",
+    ["The content", "Intent", "Mis- or dis-?"],
+    [
+     ["Forwarding a fake health cure you believed", "None — shared carelessly", "Misinformation"],
+     ["A staged rumour planted to sway an election", "Deliberate deception", "Disinformation"],
+     ["Sharing an old photo as 'today's flood'", "None — didn't check the date", "Misinformation"],
+     ["A scam page inventing a fake lottery win", "Deliberate — to defraud", "Disinformation"],
+     ["Resharing a 'breaking news' clip unverified", "None — but still harmful", "Misinformation"],
+     ["Coordinated fake reviews to destroy a rival", "Deliberate — to mislead", "Disinformation"],
+    ],
+    per_page=6,widths=[3.0, 2.3, 2.2],note="The only difference is intent — but you are responsible either way, because the share button is an act that scales the lie.",fs=11)
 
 concept_understand("S10 · Concept 4 · [THEORY] [EXAMPLE]","Defamation & Reputation Harm",
     "Defamation is a false statement, presented as fact, that damages someone's reputation. The dividing line: opinion/criticism is NOT defamation. 'I didn't like this café' is opinion; 'this café's owner is a thief' is a false statement of fact — that's what crosses into defamation. The test: fact vs opinion, and true vs false.",

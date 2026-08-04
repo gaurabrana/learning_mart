@@ -62,6 +62,17 @@ concept_apply("S11 · Concept 1 · [THEORY]","Intellectual Property",
     "\"If it's on the internet, it's free to use.\" Publication is not permission — most online content is still owned by someone. Being able to right-click and save a photo, or copy a paragraph, gives you access, not rights. The default is 'owned', not 'free'.",
     "Intellectual property is the set of legal rights over creations of the mind, in four families: copyright (expression), patent (invention), trade secret (secret info), and trademark (brand identity). It protects expression and invention rather than abstract ideas, balancing creator reward against public access. In Nepal it is administered by the DoI and the Copyright Registrar's Office.",
     "intellectual property · copyright · patent · trade secret · trademark · DoI · publication ≠ permission")
+add_table_slide("S11 · Concept 1 · examples","Which IP family? — classify each creation",
+    ["The creation", "Which IP family?", "Why"],
+    [
+     ["Your college app's source code", "Copyright", "Original expression, automatic on creation"],
+     ["Wai Wai / CG Foods' exact masala ratio", "Trade secret", "Confidential info kept secret, never filed"],
+     ["The 'Goldstar' name & shoe logo", "Trademark", "A source identifier for the brand"],
+     ["A DoI-filed herbal-extraction machine", "Patent", "New, useful, non-obvious invention"],
+     ["A bank's fraud-scoring algorithm (server-side)", "Trade secret", "Never shipped; protected by secrecy"],
+     ["eSewa's app name & green logo", "Trademark", "Brand identity customers recognise"],
+    ],
+    per_page=6,widths=[3.0, 1.6, 2.5],note="One question sorts almost any IP case: is it expression (copyright), an invention (patent), a kept secret (trade secret), or a brand sign (trademark)?",fs=11)
 
 concept_understand("S11 · Concept 2 · [THEORY]","Copyright — what it protects",
     "Copyright protects original EXPRESSION fixed in a tangible form — text, music, film, software code, art. It protects the expression, NOT the underlying idea, fact, or method. It arises automatically the instant the work is fixed; no registration is needed (though registration helps in a dispute).",
@@ -160,6 +171,18 @@ concept_apply("S12 · Concept 1 · [THEORY]","Patent — what is patentable",
     "\"You can patent any good idea.\" Pure ideas, discoveries, and laws of nature are not patentable — only a concrete, novel, non-obvious, useful invention is. 'I thought of mobile payments first' patents nothing; a specific new mechanism for doing it might.",
     "A patent is an exclusive right over a new, useful, non-obvious invention, granted in exchange for public disclosure and lasting about 20 years. It protects the functional idea (unlike copyright's expression) and must pass three tests: novelty, inventiveness, and industrial applicability. Abstract ideas, discoveries, and laws of nature cannot be patented.",
     "patent · novelty · non-obviousness · industrial applicability · disclosure · ~20 years · protects the method")
+add_table_slide("S12 · Concept 1 · examples","Is it patentable? — applying the three tests",
+    ["Claimed 'invention'", "Patentable?", "Why / which test it fails"],
+    [
+     ["A new herbal water-filter mechanism", "Yes", "Novel, non-obvious, industrially useful"],
+     ["'The idea of paying by mobile phone'", "No", "A pure idea — fails industrial applicability"],
+     ["A genuinely new, faster momo-steamer design", "Yes", "Passes all three tests"],
+     ["Adding an obvious 'share' button to an app", "No", "Fails inventiveness — obvious to an expert"],
+     ["A law of nature / gravity formula", "No", "A discovery, not an invention"],
+     ["A machine already sold in India last year", "No", "Fails novelty — prior art exists"],
+     ["A novel agricultural threshing device", "Yes", "New, useful, makeable — DoI-filable"],
+    ],
+    per_page=7,widths=[3.1, 1.4, 2.6],note="Popularity or cleverness is irrelevant — an invention must be new, non-obvious, AND useful/makeable. Pure ideas, discoveries, and laws of nature fail outright.",fs=11)
 
 concept_understand("S12 · Concept 2 · [THEORY] [EXAMPLE]","Software Patents — the debate",
     "Software patents cover software-implemented methods or algorithms — and are controversial worldwide. Copyright already covers the CODE; a patent would cover the METHOD/function. Many jurisdictions (and Nepal in practice) restrict or disallow pure-software patents, partly because of the 'patent troll' problem.",
@@ -183,6 +206,17 @@ concept_apply("S12 · Concept 2 · [THEORY] [EXAMPLE]","Software Patents",
     "\"We should patent our software to protect it.\" For pure software this is often impossible or impractical — copyright already protects the code, and patents on software are restricted (including in Nepal) and expensive. The realistic tools are copyright + trade secret, sometimes open source.",
     "Software patents cover the method or algorithm, not the code (which copyright already protects); they are controversial and, in many jurisdictions and Nepal in practice, restricted or disallowed, partly due to patent trolls who sue rather than build. A Nepali software innovation is usually protected by copyright plus trade secret rather than patent.",
     "software patent · code vs method · patent troll · restricted for software · copyright + trade secret")
+add_table_slide("S12 · Concept 2 · examples","How Nepali software actually gets protected (not by patent)",
+    ["Software asset", "Realistic protection", "Why not a patent"],
+    [
+     ["A Kathmandu startup's app source code", "Copyright", "Automatic; code is copyrightable already"],
+     ["A clever server-side load-balancing algorithm", "Trade secret", "Never shipped; a patent would disclose it"],
+     ["A framework the team wants widely adopted", "Open-source licence", "Adoption matters more than a monopoly"],
+     ["A fintech app's fraud-detection logic", "Copyright + trade secret", "The standard Nepali software combo"],
+     ["'One-click checkout' style method", "(hard to protect)", "Pure-software patents restricted/unavailable here"],
+     ["A UI layout / look-and-feel", "Copyright", "Software patents contested, costly, and rare"],
+    ],
+    per_page=6,widths=[3.0, 2.2, 2.3],note="For pure software in Nepal the realistic toolkit is copyright + trade secret (sometimes open source) — patents are contested, costly, and largely unavailable locally.",fs=11)
 
 concept_understand("S12 · Concept 3 · [THEORY]","The Patent Process",
     "Getting a patent is a defined sequence: prior-art search → file an application with claims → examination → grant → maintenance/renewal fees. It is slow, costly, public, and TERRITORIAL — a Nepal patent gives no protection in India or the US.",
@@ -205,6 +239,17 @@ concept_apply("S12 · Concept 3 · [THEORY]","The Patent Process",
     "\"Once I have a patent, I'm protected everywhere.\" Patents are territorial — a Nepal patent means nothing in India, the US, or the EU. Worldwide protection means filing and paying in each jurisdiction separately, which is why global patents are a big-company game.",
     "The patent process runs prior-art search → file claims → examination → grant → renewal fees, and is slow, costly, public, and territorial. The claims define the monopoly's boundaries; disclosure is the public's payoff; and territoriality means protection stops at the border. These costs are why many Nepali startups file abroad or forgo patents.",
     "prior-art search · claims · examination · grant · renewal · territorial · public disclosure")
+add_table_slide("S12 · Concept 3 · examples","The process's traits, as real filing consequences",
+    ["A patent filing decision", "What happens", "Because…"],
+    [
+     ["Files only in Nepal, but exports to India", "No protection in India — rivals copy freely there", "Patents are territorial"],
+     ["Rushes a fast-moving app feature to patent", "Examination drags on for years; feature is stale", "The process is slow"],
+     ["Small startup tries to patent globally", "Fees per country drain the budget", "Costly, one country at a time"],
+     ["Patents a device; a rival reads the claims", "Rival learns exactly how it works", "Grant requires full public disclosure"],
+     ["Skips the prior-art search", "Application rejected — someone filed first", "Novelty fails against existing prior art"],
+     ["Keeps a recipe secret instead of filing", "Protection can last forever, undisclosed", "No disclosure bargain if never patented"],
+    ],
+    per_page=6,widths=[3.0, 2.6, 1.9],note="The four traits — slow, costly, public, territorial — turn into real consequences. They're why many Nepali startups file abroad or skip patents for trade secrets.",fs=11)
 
 add_activity("S12 — 'Patent, secret, or open?'  ·  ~5 min",
     ["In pairs (2 min): a Kathmandu startup has a clever new algorithm. Recommend patent / trade secret / open source.",
@@ -257,6 +302,18 @@ concept_apply("S13 · Concept 1 · [THEORY]","Trade Secret — definition",
     "\"A trade secret is basically the same as a patent.\" Opposite, in fact: a patent is public and time-limited; a trade secret is private and unlimited — but a patent protects you even if a rival independently invents the same thing, while a trade secret gives you nothing against independent discovery or legitimate reverse engineering.",
     "A trade secret is confidential business information (formula, recipe, process, customer list, algorithm, code) that provides a competitive edge and is protected by reasonable secrecy efforts, with no registration and potentially unlimited duration. Unlike a patent, it is private and can last forever, but offers no protection against independent discovery or legitimate reverse engineering.",
     "trade secret · confidential · reasonable effort · unlimited but fragile · no registration · no protection vs independent discovery")
+add_table_slide("S13 · Concept 1 · examples","Is it a trade secret? — what qualifies and what doesn't",
+    ["The information", "A trade secret?", "Why"],
+    [
+     ["Wai Wai / CG Foods' exact masala ratio", "Yes", "Confidential, valuable, kept secret"],
+     ["A remittance firm's internal pricing model", "Yes", "Secret info giving a competitive edge"],
+     ["A company's phone number on its website", "No", "Already public — no secrecy"],
+     ["A restaurant's signature sauce recipe", "Yes", "Kept in-house, never disclosed"],
+     ["A published, patented machine design", "No", "The patent disclosed it — no longer secret"],
+     ["A software house's private source-code repo", "Yes", "Confidential and access-controlled"],
+     ["Coca-Cola's formula", "Yes", "Secret for over a century, never filed"],
+    ],
+    per_page=7,widths=[3.0, 1.6, 2.5],note="It's a trade secret only if it's genuinely confidential AND kept secret by reasonable effort. Anything already public — or disclosed by a patent — cannot be one.",fs=11)
 
 concept_understand("S13 · Concept 2 · [THEORY]","How Trade Secrets Are Protected",
     "Trade secrets are protected by secrecy MEASURES, not a government grant. The toolkit: NDAs, confidentiality clauses in employment contracts, access controls, 'need-to-know' limits, and non-compete agreements. The law gives a remedy only if the secret was MISAPPROPRIATED — stolen, not independently discovered.",
@@ -280,6 +337,18 @@ concept_apply("S13 · Concept 2 · [THEORY]","How Trade Secrets Are Protected",
     "\"If I didn't copy any files, I can't have stolen a trade secret.\" Misappropriation covers taking confidential information, not just files — rebuilding a protected proprietary process from memory can still breach an NDA. But genuinely general skill you learned is yours; the hard cases sit exactly on that boundary.",
     "Trade secrets are protected by secrecy measures rather than registration: NDAs, confidentiality clauses, access controls, need-to-know limits, and non-competes. The law provides a remedy only for misappropriation (theft or breach of confidence), not for independent discovery or legitimate reverse engineering — and only if the owner made reasonable efforts to keep it secret.",
     "NDA · confidentiality clause · access control · need-to-know · non-compete · misappropriation · reasonable effort")
+add_table_slide("S13 · Concept 2 · examples","Misappropriation or not? — where the law gives a remedy",
+    ["What happened", "Misappropriation?", "Why"],
+    [
+     ["Developer emails the company's source code to a rival", "Yes", "Theft of confidential info — breach of confidence"],
+     ["Ex-employee reuses general skills learned on the job", "No", "General know-how is theirs to reuse"],
+     ["A rival independently invents the same algorithm", "No", "Independent discovery is never misappropriation"],
+     ["Staffer leaks the masala ratio despite an NDA", "Yes", "Breach of the NDA / confidentiality clause"],
+     ["Competitor legally reverse-engineers a shipped product", "No", "Legitimate reverse engineering breaks no law"],
+     ["Bribing an insider for a customer list", "Yes", "Theft of a trade secret via bribery"],
+     ["Firm never locked down the 'secret'; it leaks", "No remedy", "No reasonable effort — may not count as a secret"],
+    ],
+    per_page=7,widths=[3.1, 1.7, 2.4],note="The law protects against misappropriation (theft/breach), not independent discovery or legal reverse engineering — and only if the owner made reasonable efforts to keep it secret.",fs=11)
 
 concept_understand("S13 · Concept 3 · [THEORY]","Trade Secret vs Patent — choosing",
     "Choosing how to protect an invention is a strategic call. Rule of thumb: use a TRADE SECRET if it's hard to reverse-engineer and its value is long-term (recipes, internal algorithms); use a PATENT if it will be sold or visible and is reverse-engineerable (a machine, a device mechanism).",
@@ -433,6 +502,17 @@ concept_apply("S15 · Concept 1 · [THEORY]","Open Source Code",
     "\"Open source means free with no rules — I can use it however I like.\" Open source is copyright plus a licence, and the licence imposes real obligations (attribution, share-alike). Ignoring them is infringement — companies have been sued for shipping GPL code inside closed products.",
     "Open source software is licensed, not un-owned: it is copyright plus a licence granting rights to use, study, modify, and share. Permissive licences (MIT, Apache) require little beyond attribution; copyleft licences (GPL) require derivatives to be released open too. Violating either — dropping attribution, or closing GPL-derived code — is copyright infringement.",
     "open source · copyright + licence · permissive (MIT/Apache) · copyleft (GPL) · attribution · share-alike")
+add_table_slide("S15 · Concept 1 · examples","Is it a licence violation? — MIT/Apache vs GPL in practice",
+    ["What the team did", "Licence violation?", "Why"],
+    [
+     ["Ships GPL code inside a closed proprietary app", "Yes", "Copyleft requires derivatives be open too"],
+     ["Uses React (MIT) in a closed product, keeps the notice", "No", "Permissive; only attribution required"],
+     ["Drops the MIT attribution / licence notice", "Yes", "Attribution is the one MIT obligation"],
+     ["Modifies GPL code, releases the source under GPL", "No", "Share-alike obligation honoured"],
+     ["Builds a gov site on WordPress, keeps its licence", "No", "Compliant open-source use"],
+     ["Removes GPL notices and sells it as their own", "Yes", "Copyright infringement of the licensed code"],
+    ],
+    per_page=6,widths=[3.1, 1.7, 2.4],note="Open source is copyright + a licence. Permissive (MIT/Apache) needs attribution; copyleft (GPL) needs derivatives kept open. Breaking either is copyright infringement.",fs=11)
 
 concept_understand("S15 · Concept 2 · [THEORY] [EXAMPLE]","Competitive Intelligence — ethical vs espionage",
     "Competitive intelligence (CI) is legally and ethically gathering PUBLIC information about competitors to inform strategy. It uses public, legal sources — websites, ads, public filings, job posts, trade shows. It becomes industrial ESPIONAGE when it involves theft, bribery, hacking, misrepresentation, or stealing trade secrets.",
@@ -557,6 +637,18 @@ concept_apply("S16 · Concept 3 · [THEORY]","Pulling It Together — the four I
     "\"IP is basically all one thing.\" The four types protect different things, are acquired differently, and last different lengths of time — mixing them up gives wrong answers (e.g. 'patent your logo' or 'copyright your brand name'). Ask what is at stake: expression → copyright, invention → patent, secret → trade secret, brand → trademark.",
     "The four IP types are best understood side by side: copyright (expression, automatic, life + 50 yrs), patent (invention, applied-for + disclosed, ~20 yrs), trade secret (secret info, kept confidential, unlimited but fragile), and trademark (brand identity, registered + renewed, potentially forever). They differ by what they protect, how they're acquired, and how long they last — the unit's core differentiator.",
     "copyright (expression) · patent (invention) · trade secret (secret) · trademark (brand) · what/how/how-long")
+add_table_slide("S16 · Concept 3 · examples","Classify the asset — and the common wrong answer",
+    ["Nepali asset", "Correct IP type", "Common wrong answer"],
+    [
+     ["A brand name like 'eSewa'", "Trademark", "'Copyright the name' — names aren't copyrighted"],
+     ["The source code of the eSewa app", "Copyright", "'Patent the code' — code is copyrighted"],
+     ["Wai Wai's masala ratio", "Trade secret", "'Patent it' — that would disclose & expire it"],
+     ["A pirated Kabaddi film copy", "Copyright", "'A trademark issue' — it's the film's expression"],
+     ["A DoI-registered herbal machine", "Patent", "'Trade-secret it' — a visible product is copyable"],
+     ["A momo shop's registered logo", "Trademark", "'Company registration covers it' — separate filing"],
+     ["A daraz.com.np domain grabbed in bad faith", "Trademark (cybersquatting)", "'First to register owns it fairly'"],
+    ],
+    per_page=7,widths=[2.7, 1.9, 3.0],note="Classify by what's at stake — expression→copyright, invention→patent, secret→trade secret, brand→trademark. The right-hand column shows the mix-ups that give wrong answers.",fs=11)
 
 add_activity("S16 — 'Name it and protect it'  ·  ~6 min",
     ["In pairs (2 min): you're launching a Nepali startup. For your product, name what each IP type covers.",

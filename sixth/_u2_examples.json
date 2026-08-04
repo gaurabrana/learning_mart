@@ -1,0 +1,218 @@
+[
+  {
+    "heading": "Why IT Workers Face Special Pressure",
+    "kicker": "S6 · Concept 1 · examples",
+    "title": "Access abused — real 'can' vs 'should' cases (Nepal / IT)",
+    "headers": ["Scenario", "What the access let them do", "Verdict — can vs should"],
+    "rows": [
+      ["Bank staffer checks an ex's balance", "System permits the lookup instantly", "Can ✓ — should ✗: no work reason, betrayal of trust"],
+      ["Sysadmin reads the CEO's private email", "Root rights make every inbox readable", "Can ✓ — should ✗: snooping, not an authorised task"],
+      ["Support tech copies a customer's photos", "Remote control opens all their files", "Can ✓ — should ✗: touch only what fixes the fault"],
+      ["Developer keeps a copy of employer's source", "Already holds the full codebase", "Can ✓ — should ✗: reusing it elsewhere is IP theft"],
+      ["Telco engineer pulls a celebrity's call records", "Network logs expose everyone's metadata", "Can ✓ — should ✗: curiosity is not authorisation"],
+      ["Hospital IT clerk browses a neighbour's records", "Database shows any patient's history", "Can ✓ — should ✗: the privacy duty forbids it"]
+    ],
+    "per_page": 6,
+    "widths": [2.4, 2.8, 2.9],
+    "note": "Every row is technically permitted and ethically forbidden — the system grants the 'can', only ethics supplies the 'should'.",
+    "fs": 11
+  },
+  {
+    "heading": "Relationship 1 — the Employer",
+    "kicker": "S6 · Concept 2 · examples",
+    "title": "Loyalty & honesty to the employer — breaches and their fallout",
+    "headers": ["What the worker did", "Duty broken", "Consequence"],
+    "rows": [
+      ["Copied client source code for a weekend side gig", "Loyalty (IP protection)", "IP theft; betrays employer AND client"],
+      ["Listed a CCNA on the CV without holding it", "Honesty (qualifications)", "Resume fraud — grounds for dismissal"],
+      ["Installed pirated AutoCAD 'to cut costs' on orders", "Loyalty (license compliance)", "Legal liability for the firm AND the installer"],
+      ["Moonlighted for the employer's direct rival", "Loyalty (conflict of interest)", "Judgment serves two masters — trust lost"],
+      ["Leaked the internal client list to a friend's startup", "Loyalty (protect assets)", "Confidential asset gone; possible legal action"],
+      ["Inflated hours on a project timesheet", "Honesty (truthful work)", "Billing fraud; erodes the employer's trust"]
+    ],
+    "per_page": 6,
+    "widths": [3.0, 2.2, 2.6],
+    "note": "Loyalty and honesty are the two duties; each row shows one being broken — and 'the boss ordered it' never transfers the blame off you.",
+    "fs": 11
+  },
+  {
+    "heading": "Relationship 2 — the Client",
+    "kicker": "S6 · Concept 3 · examples",
+    "title": "When the client can't check — asymmetry exploited (Nepal / IT)",
+    "headers": ["What the vendor did", "Duty broken", "Why the client couldn't catch it"],
+    "rows": [
+      ["Sold an NGO an over-sized ERP it didn't need", "Honest advice", "They can't judge what capacity they actually need"],
+      ["Marked a half-built e-gov module 'done'", "Deliver as promised", "No technical staff to test the code before paying"],
+      ["Hid that the portal can't handle election-day load", "Disclose risks", "Load only shows up in production, months later"],
+      ["Used cheap unlicensed libraries without saying", "Disclose risks", "Client can't read the dependency list"],
+      ["Left no documentation, to lock in future work", "Honest advice", "They don't know documentation was owed"],
+      ["Quietly stored client data on a free foreign host", "Disclose risks", "Invisible unless a leak exposes it"]
+    ],
+    "per_page": 6,
+    "widths": [2.9, 1.9, 3.0],
+    "note": "Every breach survives only because of information asymmetry — the client cannot verify until it's too late. That is why the duty is professional, not just contractual.",
+    "fs": 11
+  },
+  {
+    "heading": "Is IT a 'Profession'?",
+    "kicker": "S7 · Concept 1 · examples",
+    "title": "Profession or not? — fields against the four-part test (Nepal)",
+    "headers": ["Field", "Licensed / self-regulated?", "Profession verdict"],
+    "rows": [
+      ["Doctor (Nepal, NMC)", "Yes — NMC licenses and can strike off", "Full profession — all four marks"],
+      ["Civil engineer (Nepal, NEC)", "Yes — NEC registration required", "Full profession — all four marks"],
+      ["Lawyer (Nepal Bar Council)", "Yes — must be enrolled to practise", "Full profession"],
+      ["Chartered accountant (ICAN)", "Yes — licensed and disciplined", "Full profession"],
+      ["Software developer", "No licence to build banking software", "Partial — has knowledge + codes, no licensing"],
+      ["Freelance 'computer technician'", "No credential required at all", "Not a profession — anyone can claim the title"]
+    ],
+    "per_page": 6,
+    "widths": [2.4, 3.0, 2.5],
+    "note": "The single differentiator is self-regulation — a licence you can lose. IT has education, knowledge and codes but no strike-off, so it is a partial profession.",
+    "fs": 11
+  },
+  {
+    "heading": "Professional Codes of Ethics",
+    "kicker": "S7 · Concept 2 · examples",
+    "title": "Applying the code — an ask, the principle, the answer",
+    "headers": ["The ask at work", "Principle invoked", "What the code says to do"],
+    "rows": [
+      ["Build hidden user tracking without consent", "Avoid harm; respect privacy", "Object, disclose, or refuse"],
+      ["Ship now with a known security hole", "Avoid harm; be honest about limits", "Disclose the risk; don't hide it"],
+      ["Claim a system is more secure than it is", "Be honest about limitations", "State the real capabilities to the client"],
+      ["Reuse a rival's leaked source code", "Respect property / IP", "Refuse — it isn't yours to use"],
+      ["Quietly weaken data protection to cut cost", "Respect privacy", "Push back; protect the user's data"],
+      ["Blame a junior for your own bug", "Be honest; give fair credit", "Own the error; don't scapegoat"]
+    ],
+    "per_page": 6,
+    "widths": [3.0, 2.3, 2.5],
+    "note": "A code is only useful when applied to a concrete ask — and it hands you professional language to say no, even without a government licence behind it.",
+    "fs": 11
+  },
+  {
+    "heading": "Licensing & Professional Organizations",
+    "kicker": "S7 · Concept 4 · examples",
+    "title": "Who grants it? — real credentials & bodies classified",
+    "headers": ["Item", "What it is", "Legal force?"],
+    "rows": [
+      ["NMC doctor registration", "A licence (government)", "Yes — can't practise without it"],
+      ["Nepal driving licence", "A licence (government)", "Yes — legally required to drive"],
+      ["CCNA", "A certification (Cisco, a vendor)", "No — voluntary skill proof"],
+      ["CISA / CISM", "Certifications run by ISACA (a body)", "No — voluntary"],
+      ["ACM Code of Ethics", "A code (professional body)", "No — but can discipline members"],
+      ["CAN (Computer Association of Nepal)", "A professional body", "No — advocacy, events, training"]
+    ],
+    "per_page": 6,
+    "widths": [2.5, 3.0, 2.3],
+    "note": "The test that sorts every row: WHO grants it, and does it carry LEGAL FORCE? Only government-granted items are licences.",
+    "fs": 11
+  },
+  {
+    "heading": "Software Piracy",
+    "kicker": "S8 · Concept 3 · examples",
+    "title": "Is it piracy? — everyday cases (Nepal / IT)",
+    "headers": ["The act", "Form of piracy", "Verdict"],
+    "rows": [
+      ["Office runs cracked Windows on every PC", "Unlicensed install", "Piracy — no valid licence, even unsold"],
+      ["Shop sells 'original' Windows DVDs that are fake", "Counterfeiting", "Piracy — passing fakes as genuine"],
+      ["A 5-seat design licence used by 50 staff", "Licence violation", "Piracy — exceeds what was purchased"],
+      ["Installing one cracked Photoshop for yourself", "Unlicensed install", "Piracy — no sale needed to violate"],
+      ["Downloading a 'nulled' paid plugin to save money", "Unlicensed install", "Piracy — using value you never paid for"],
+      ["Buying one Windows key, reusing it on 10 laptops", "Licence violation", "Piracy — one licence, many machines"]
+    ],
+    "per_page": 6,
+    "widths": [3.0, 1.9, 2.6],
+    "note": "None of these require a sale — the wrong is USING value you never paid for. 'Everyone does it' is the Unit 1 normalization trap, not a defence.",
+    "fs": 11
+  },
+  {
+    "heading": "Data Privacy",
+    "kicker": "S9 · Concept 1 · examples",
+    "title": "Privacy principle broken — everyday data grabs (Nepal)",
+    "headers": ["What happened", "Principle violated", "The harm"],
+    "rows": [
+      ["SIM dealer sells your number to loan marketers", "Consent", "A flood of unsolicited loan calls"],
+      ["Loan-form data reused to target you with ads", "Purpose limitation", "Profiling you never agreed to"],
+      ["Mall QR form demands your citizenship number", "Data minimization", "Over-collection you can't take back"],
+      ["Bank KYC records leak to a data broker", "Consent + minimization", "Fraud and impersonation risk"],
+      ["An app asks for contacts it doesn't need", "Data minimization", "Your friends' data exposed too"],
+      ["Clinic shares its patient list with a pharmacy", "Purpose limitation", "Sensitive health data misused"]
+    ],
+    "per_page": 6,
+    "widths": [3.0, 2.2, 2.3],
+    "note": "Nepal's Individual Privacy Act 2075 recognises these rights; the gap is enforcement. Privacy is control, not secrecy — each row is control taken away.",
+    "fs": 11
+  },
+  {
+    "heading": "Surveillance",
+    "kicker": "S9 · Concept 2 · examples",
+    "title": "Monitoring or spying? — same tech, disclosure decides",
+    "headers": ["The monitoring", "Disclosed & consented?", "Verdict"],
+    "rows": [
+      ["Employer logs email, stated in a signed AUP", "Yes — in the AUP", "Legitimate monitoring"],
+      ["Boss secretly installs a keylogger on your PC", "No — hidden", "Spying — violates privacy"],
+      ["CCTV at a bank entrance with visible signage", "Yes — signposted", "Legitimate, proportionate"],
+      ["Hidden camera in a staff changing room", "No — and disproportionate", "Spying — a clear violation"],
+      ["ISP logs traffic per a disclosed policy", "Yes — stated policy", "Legitimate if proportionate"],
+      ["Manager reads staff personal DMs 'to be safe'", "No — undisclosed, excessive", "Spying — no consent, over-broad"]
+    ],
+    "per_page": 6,
+    "widths": [3.0, 2.4, 2.1],
+    "note": "The technology is identical row to row — transparency and consent (the S8 AUP clause) plus proportionality are what shift it from spying to monitoring.",
+    "fs": 11
+  },
+  {
+    "heading": "Anonymity Online",
+    "kicker": "S9 · Concept 3 · examples",
+    "title": "Anonymity's two edges — the same cover, opposite uses",
+    "headers": ["Who is behind the mask", "How anonymity is used", "Edge"],
+    "rows": [
+      ["Whistle-blower leaking proof of corruption", "Exposes wrongdoing without being fired", "Protective — good"],
+      ["Activist under political pressure", "Speaks freely without reprisal", "Protective — good"],
+      ["Domestic-abuse survivor seeking help", "Asks for support without being traced", "Protective — good"],
+      ["Troll on a throwaway account", "Harasses a public figure consequence-free", "Harmful — bad"],
+      ["Scammer running a fake profile", "Defrauds contacts while hiding identity", "Harmful — bad"],
+      ["Rumour page spreading fake news", "Panics the public with no accountability", "Harmful — bad"]
+    ],
+    "per_page": 6,
+    "widths": [2.6, 3.0, 1.9],
+    "note": "Any rule that silences the bottom three also silences the top three — which is why real-name registration is contested. And true anonymity is rare: logs and metadata leave a trail.",
+    "fs": 11
+  },
+  {
+    "heading": "Why Social Networking Is an Ethics Hotspot",
+    "kicker": "S10 · Concept 1 · examples",
+    "title": "Amplifiers in action — small act, mass harm (Nepal)",
+    "headers": ["Ordinary act", "Amplifier at work", "The outsized harm"],
+    "rows": [
+      ["A doctored celebrity screenshot posted once", "Scale + virality", "Seen by thousands before lunch"],
+      ["A fake 'bank X is collapsing' clip", "Speed", "Panic withdrawals before it's corrected"],
+      ["Abusive comments from throwaway accounts", "Anonymity", "Said what they'd never say face-to-face"],
+      ["An outrage post the algorithm boosts", "Virality", "Pushed into millions of feeds"],
+      ["Thousands watch a pile-on, no one steps in", "Bystander effect", "Silence reads as approval; harm grows"],
+      ["A false earthquake rumour forwarded 'to warn'", "Speed + scale", "Public panic in minutes"]
+    ],
+    "per_page": 6,
+    "widths": [2.8, 2.2, 2.7],
+    "note": "These are Unit 1's scale/speed/permanence factors made personal — and online harm carries real legal, social and psychological consequences.",
+    "fs": 11
+  },
+  {
+    "heading": "Fake News & Misinformation",
+    "kicker": "S10 · Concept 3 · examples",
+    "title": "Mis- or dis-information? — classify the share (Nepal)",
+    "headers": ["The content", "Intent", "Mis- or dis-?"],
+    "rows": [
+      ["Forwarding a fake health cure you believed", "None — shared carelessly", "Misinformation"],
+      ["A staged rumour planted to sway an election", "Deliberate deception", "Disinformation"],
+      ["Sharing an old photo as 'today's flood'", "None — didn't check the date", "Misinformation"],
+      ["A scam page inventing a fake lottery win", "Deliberate — to defraud", "Disinformation"],
+      ["Resharing a 'breaking news' clip unverified", "None — but still harmful", "Misinformation"],
+      ["Coordinated fake reviews to destroy a rival", "Deliberate — to mislead", "Disinformation"]
+    ],
+    "per_page": 6,
+    "widths": [3.0, 2.3, 2.2],
+    "note": "The only difference is intent — but you are responsible either way, because the share button is an act that scales the lie.",
+    "fs": 11
+  }
+]

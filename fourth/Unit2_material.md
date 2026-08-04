@@ -116,6 +116,20 @@ Why bother with a model *above* the tables at all? Because a conceptual model is
 
 ---
 
+**📊 Depth table — Real-world things → their ER element (not tables yet)**
+
+| Everyday thing (Nepali app) | ER element | Chen symbol | What it is NOT yet |
+|---|---|---|---|
+| A Daraz customer | entity | rectangle | not a `customer` row yet |
+| That customer's email | attribute | oval | not a VARCHAR column yet |
+| 'places an order' | relationship | diamond | not a foreign key yet |
+| The customer's ID | key attribute | underlined oval | not a PRIMARY KEY clause yet |
+| CUSTOMER as a category | entity type | rectangle (design-time) | not MySQL, not a table |
+| The whole Daraz shop design | conceptual data model | full ER diagram | not CREATE TABLE code |
+
+*ℹ️ The conceptual (ER) model captures WHAT data exists using real-world things and symbols — tables, columns and foreign keys (the HOW) come later in S12. It is technology-neutral, so a registrar or finance manager can verify it.*
+
+
 #### Concept 2 — The Database Design Process (the Full Pipeline) `[THEORY]` `[EXAMPLE]` `[~12 min]`
 
 [SLIDE] **Four stages: Requirements → Conceptual → Logical → Physical**
@@ -178,6 +192,18 @@ The crucial idea is **flow**: the output of each stage is the input to the next.
 
 ---
 
+**📊 Depth table — The four design stages (RCLP) worked on eSewa**
+
+| Stage | What it produces | eSewa worked example | Skip it and… |
+|---|---|---|---|
+| 1. Requirements | the data + operations needed | store users & transactions; must send money, show statement | 'top-up source' never captured → painful live migration |
+| 2. Conceptual (ER) | a DBMS-independent ER diagram | USER —MAKES— TRANSACTION drawn as a diamond | jump to tables → rewrite when 'one user, many wallets' appears |
+| 3. Logical | ER mapped to relational tables + keys | User & Transaction tables + a user_id foreign key | wrong keys → duplicate or orphaned rows |
+| 4. Physical | storage, indexes, tuning | an index on transaction date so the statement loads in a tap | the statement screen crawls at month-end |
+
+*ℹ️ Each stage feeds the next; ER sits at the conceptual stage, ER→tables is the logical stage. Every stage you skip, a later stage pays for — with interest. Mirrors Unit 1's conceptual → logical → internal schema levels.*
+
+
 #### Concept 3 — Data Requirements vs Functional Requirements `[THEORY]` `[~11 min]`
 
 [SLIDE] **Two kinds of requirement: what to *store* vs what to *do***
@@ -237,6 +263,20 @@ Both are essential, and they are **captured together but serve different purpose
 > **🔑 Key terms:** *data requirements* (what to store — nouns → entities/attributes) · *functional requirements* (what operations to support — verbs → transactions) · *requirements collection & analysis* · the rule: *capture both nouns and verbs*.
 
 ---
+
+**📊 Depth table — Sort each Khalti requirement: data (noun) or functional (verb)?**
+
+| Requirement (Khalti) | Data or functional? | What it shapes in the design |
+|---|---|---|
+| Store each user's name, number, KYC | data (noun) | entity + attributes (USER) |
+| Record every transaction's amount, date, status | data (noun) | entity + attributes (TRANSACTION) |
+| Send money to another user | functional (verb) | an operation the design must serve |
+| Top up from a linked bank | functional (verb) | operation → needs a BANK link |
+| View statement for a date range | functional (verb) | operation → drives an index on date |
+| Pay an electricity bill | functional (verb) | operation → needs a BILLER entity |
+
+*ℹ️ Data requirements (nouns) become entities & attributes; functional requirements (verbs) are the operations the design must serve. Capture BOTH — store the right data yet miss the verbs and you ship a correct but painfully slow system.*
+
 
 #### 🛠 ACTIVITY — "Nouns and Verbs of a Nepali app" `[ACTIVITY]` `[~5 min]`
 
@@ -363,6 +403,20 @@ The cleanest way to lock this in is to **connect it to Unit 1's schema-vs-instan
 
 ---
 
+**📊 Depth table — Entity vs entity type vs entity set across Nepali systems**
+
+| System | Entity type (category) | One entity | Entity set (right now) |
+|---|---|---|---|
+| Daraz | CUSTOMER | you — ID 4412, Sita | all registered customers this moment |
+| Nagarik App | CITIZEN | one citizen, Hari | all citizens enrolled today |
+| A college | STUDENT | Sita, roll 21 | all students enrolled this semester |
+| NIC Asia bank | ACCOUNT | your savings a/c #001 | all open accounts now |
+| eSewa | TRANSACTION | txn #88921 | all transactions logged today |
+| Foodmandu | RESTAURANT | Bajeko Sekuwa | all listed restaurants now |
+
+*ℹ️ The TYPE is the stable category (design-time, a rectangle); the SET changes every second as things come and go; an ENTITY is one member. One type → many sets, exactly like one schema → many instances (S2).*
+
+
 #### Concept 2 — Attributes and Their Types `[THEORY]` `[EXAMPLE]` `[~13 min]`
 
 [SLIDE] **Four flavours of attribute: simple, composite, derived, multivalued**
@@ -430,6 +484,19 @@ That single STUDENT entity, drawn in Chen notation, shows a plain oval, a branch
 
 ---
 
+**📊 Depth table — The four attribute types (+ key) with Chen symbol and mapping**
+
+| Attribute type | Chen symbol | Nepali example | How it maps to tables later (S12) |
+|---|---|---|---|
+| Simple (atomic) | plain oval | roll_no, citizenship_no | one plain column |
+| Composite | branching oval | full_name = first+middle+last; address = district/municipality/ward | flattened into separate columns |
+| Derived | dashed oval | age from DOB; order total; loan balance | NOT stored — computed on demand |
+| Multivalued | double oval | a customer's phone numbers; Daraz saved addresses | breaks out into its OWN table |
+| Key | underlined oval | customer_id, national ID | becomes the PRIMARY KEY |
+
+*ℹ️ Classify attributes now and table design falls out later: multivalued → own table, composite → split columns, derived → never stored, key → primary key. Storing a derived value (e.g. age) causes update anomalies — it rots every birthday.*
+
+
 #### Concept 3 — Keys `[THEORY]` `[~11 min]`
 
 [SLIDE] **How do you tell one entity from another?**
@@ -488,6 +555,20 @@ The essential property of any key is **uniqueness**: no two entities in the enti
 > **🔑 Key terms:** *key / uniqueness constraint* · *candidate key* · *primary key* (chosen identifier, underlined in Chen) · *composite key* (multiple attributes together) · *key attribute* · the test: *unique, stable, minimal*.
 
 ---
+
+**📊 Depth table — Good keys vs bad 'keys' — and why they fail**
+
+| Entity | Good key (why it works) | A bad 'key' (why it fails) | Type of key |
+|---|---|---|---|
+| CITIZEN (Nagarik) | citizenship / national ID — designed unique | full name — two 'Sita Sharma's collide | primary key |
+| STUDENT (college) | roll_no — unique within college | name + DOB — may still clash | primary / candidate |
+| Course result | roll_no + program together | roll_no alone — repeats across programs | composite key |
+| CUSTOMER (Daraz) | customer_id — system-generated | email — changes, can be reused | primary; email = candidate |
+| ACCOUNT (bank) | account_number | phone number — can change / transfer | primary key |
+| Khalti user | user_id | mobile_number — can be re-issued | primary vs candidate |
+
+*ℹ️ Test any proposed key: could two different real things ever share this value, or could it change? Names, emails and phones fail — national IDs, roll numbers and system IDs are designed to be unique, stable and minimal.*
+
 
 #### 🛠 ACTIVITY — "Label the attributes of a Khalti account" `[ACTIVITY]` `[~5 min]`
 
@@ -610,6 +691,20 @@ Entities rarely stand alone; the interesting part of a model is how they **conne
 
 ---
 
+**📊 Depth table — Relationships across Nepali systems: type, degree, one pair**
+
+| Relationship (verb) | Entity types joined | Degree | A pair in its set right now |
+|---|---|---|---|
+| PLACES (Daraz) | CUSTOMER, ORDER | 2 (binary) | (Sita, order #88921) |
+| ENROLLS (college) | STUDENT, COURSE | 2 (binary) | (Hari, DBMS) |
+| MAKES (eSewa) | USER, TRANSACTION | 2 (binary) | (you, txn #4412) |
+| SUPERVISES (Ntc) | EMPLOYEE, EMPLOYEE | 2 (recursive) | (Ram supervises Gita) |
+| PRESCRIBES (hospital) | DOCTOR, PATIENT, DRUG | 3 (ternary) | (Dr Rai, patient #7, Amoxicillin) |
+| WORKS_ON | EMPLOYEE, PROJECT | 2 (binary) | (Sita, 'Dashain sale') |
+
+*ℹ️ A relationship is a real-world association (a diamond), not a foreign key. Its TYPE is the named verb, its SET is today's pairings, its DEGREE is how many entity types the verb joins (2 = binary, the common case).*
+
+
 #### Concept 2 — Roles and Recursive (Self) Relationships `[THEORY]` `[EXAMPLE]` `[~8 min]`
 
 [SLIDE] **When an entity type relates to itself**
@@ -661,6 +756,20 @@ This is *the* reason role names exist as a named concept. In ordinary binary rel
 > **🔑 Key terms:** *role name* (the part an entity plays) · *recursive / self relationship* (same entity type participates twice) · why roles are *mandatory* for recursive relationships (to distinguish the two identical ends).
 
 ---
+
+**📊 Depth table — Recursive relationships — the two roles you must name**
+
+| Recursive relationship | Entity type | Role A / Role B | Lost without roles |
+|---|---|---|---|
+| MENTORS (college scheme) | STUDENT | mentor / mentee | who mentors whom (Sita ↔ Gita) |
+| SUPERVISES (Ntc) | EMPLOYEE | supervisor / supervisee | who reports to whom |
+| MANAGES (bank branch) | EMPLOYEE | manager / subordinate | direction of the reporting line |
+| REFERS (Daraz referral) | CUSTOMER | referrer / referred | who invited whom |
+| REPLIES_TO (Facebook) | COMMENT | parent / reply | which comment answers which |
+| PREREQUISITE_OF (courses) | COURSE | prerequisite / dependent | which course must come first |
+
+*ℹ️ In a recursive (self) relationship the same entity type sits on both ends, so role names are MANDATORY — without them the direction (who supervises / mentors / invited whom) is simply lost.*
+
 
 #### Concept 3 — Cardinality Ratio (1:1, 1:N, M:N) `[THEORY]` `[~10 min]`
 
@@ -718,6 +827,20 @@ The **cardinality ratio** of a binary relationship specifies the **maximum numbe
 
 ---
 
+**📊 Depth table — 1:1, 1:N, M:N — read both ways, then map**
+
+| Ratio | Nepali example | Read it both ways | Maps to (S12) |
+|---|---|---|---|
+| 1:1 | CITIZEN – PASSPORT | one citizen ↔ at most one passport, and back | foreign key on either side |
+| 1:1 | USER – KYC_PROFILE (Khalti) | one user ↔ one KYC record | foreign key (often merged) |
+| 1:N | DEPARTMENT – EMPLOYEE | one dept has many staff; each staff one dept | department_id on EMPLOYEE |
+| 1:N | USER – TRANSACTION (eSewa) | one user many txns; each txn one user | user_id on TRANSACTION |
+| M:N | STUDENT – COURSE | many students ↔ many courses | junction table ENROLLMENT |
+| M:N | ORDER – PRODUCT (Daraz) | many products per order; many orders per product | junction table ORDER_ITEM |
+
+*ℹ️ Find the ratio by checking the MAXIMUM on each side (read it both ways). 1:N becomes a foreign key on the 'many' side; every M:N must break out into a junction table when mapped — it has no single 'other side' to point to.*
+
+
 #### Concept 4 — Participation (Total vs Partial) `[THEORY]` `[~8 min]`
 
 [SLIDE] **Must every entity take part? — total vs partial**
@@ -774,6 +897,20 @@ The classic phrasing: total participation is a relationship an entity *cannot ex
 > **🔑 Key terms:** *participation constraint* · *total participation* (mandatory, double line) · *partial participation* (optional, single line) · *structural constraints* (cardinality = max, participation = min) · effect on nullable foreign keys later.
 
 ---
+
+**📊 Depth table — Total vs partial participation — each side, each line**
+
+| Relationship & side | Total or partial? | Chen line | What the DB enforces |
+|---|---|---|---|
+| LOAN → CUSTOMER (loan side) | total | double line | no loan may exist without a customer |
+| CUSTOMER → LOAN (customer side) | partial | single line | a customer may have zero loans |
+| TRANSACTION → USER (txn side) | total | double line | every transaction belongs to a user |
+| USER → TRANSACTION (user side) | partial | single line | a brand-new user may have zero txns |
+| ORDER → CUSTOMER (order side) | total | double line | no ownerless orders on Daraz |
+| INSTALLMENT → LOAN (installment side) | total | double line | every installment is tied to a loan |
+
+*ℹ️ Participation is the MINIMUM (whether at all); cardinality is the maximum (how many) — they are independent. Total = double line = must participate; partial = single line = optional. Making a mandatory side partial allows orphan records — an audit disaster.*
+
 
 #### 🛠 ACTIVITY — "Cardinality and participation on eSewa" `[ACTIVITY]` `[~6 min]`
 
@@ -898,6 +1035,21 @@ The defining property is **identity dependence**: a weak entity cannot be told a
 
 ---
 
+**📊 Depth table — Strong vs weak entities — own key or borrowed identity?**
+
+| Entity | Strong or weak? | Own key? | Owner it depends on | Why |
+|---|---|---|---|---|
+| EMPLOYEE | strong | employee_id | — | identified on its own |
+| STUDENT | strong | roll_no | — | has its own unique key |
+| ORDER_ITEM (Daraz) | weak | no | ORDER | 'item 2' means nothing without the order |
+| INSTALLMENT | weak | no | LOAN | 'installment 3' of which loan? |
+| DEPENDENT | weak | no | EMPLOYEE | two staff can each have a child 'Ram' |
+| ROOM (hotel) | weak | no | HOTEL | room '101' exists in many hotels |
+| COMMENT (Facebook) | weak | no | POST | a reply has no identity without its post |
+
+*ℹ️ 'Weak' means IDENTITY-DEPENDENT (no key of its own), never unimportant — order items, loan installments and exam answer-sheets are business-critical. A strong entity is a single rectangle; a weak entity a double rectangle.*
+
+
 #### Concept 2 — The Identifying (Owner) Relationship `[THEORY]` `[EXAMPLE]` `[~11 min]`
 
 [SLIDE] **The double diamond that ties a weak entity to its owner**
@@ -953,6 +1105,20 @@ So a weak-entity fragment in Chen notation has a recognisable signature: a **dou
 
 ---
 
+**📊 Depth table — Weak entity + owner + identifying (double-diamond) link**
+
+| Weak entity | Owner | Identifying relationship (double diamond) | Weak side is always total… |
+|---|---|---|---|
+| INSTALLMENT | LOAN | LOAN —HAS— INSTALLMENT | no installment without a loan |
+| ORDER_ITEM | ORDER | ORDER —CONTAINS— ITEM | no order-item without an order |
+| ROOM | HOTEL | HOTEL —HAS— ROOM | no room without a hotel |
+| DEPENDENT | EMPLOYEE | EMPLOYEE —HAS_DEPENDENT— DEPENDENT | no dependent without an employee |
+| COMMENT | POST | POST —HAS— COMMENT | no comment without a post |
+| ANSWER_SHEET | EXAM | EXAM —HAS— ANSWER_SHEET | no answer-sheet without an exam |
+
+*ℹ️ The identifying relationship (a DOUBLE diamond) supplies the identity a weak entity lacks, and the weak side is ALWAYS total participation (double line). Examiners look for the 'three doubles': double rectangle + double diamond + double line.*
+
+
 #### Concept 3 — The Partial Key (Discriminator) `[THEORY]` `[~7 min]`
 
 [SLIDE] **How to tell two weak entities of the *same* owner apart**
@@ -1005,6 +1171,20 @@ A weak entity has no key of its own — but usually it *does* have some attribut
 > **🔑 Key terms:** *partial key / discriminator* (dashed underline in Chen) · *unique only within one owner* · *full identifier = owner's primary key + partial key* · link to the S6 *composite key* idea · the correction: *a partial key alone is not unique*.
 
 ---
+
+**📊 Depth table — Partial key + owner key = the full identifier**
+
+| Weak entity | Partial key (dashed underline) | Owner's PK | Full identifier | Partial key alone collides… |
+|---|---|---|---|---|
+| INSTALLMENT | installment_no | loan_id | loan_id + installment_no | inst. 3 of loan 4521 vs 6002 |
+| ROOM (hotel) | room_no (101) | hotel_id | hotel_id + room_no | Pokhara 101 vs Kathmandu 101 |
+| ORDER_ITEM | line_no | order_id | order_id + line_no | 'line 2' matches thousands of orders |
+| DEPENDENT | dependent_name | employee_id | employee_id + name | two staff's child 'Ram' merge |
+| COMMENT | comment_seq | post_id | post_id + comment_seq | same seq exists on other posts |
+| ANSWER_SHEET | question_no | exam_id | exam_id + question_no | Q1 exists for every exam |
+
+*ℹ️ A partial key is unique only WITHIN one owner (dashed underline). Full identity = owner's primary key + partial key — exactly the S6 composite-key idea. The partial key alone always collides across owners.*
+
 
 #### 🛠 ACTIVITY — "Find the weak entity in a Nepali app" `[ACTIVITY]` `[~5 min]`
 

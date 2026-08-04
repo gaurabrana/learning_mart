@@ -105,6 +105,19 @@ Not every pile of stored data deserves to be called a database. Three properties
 
 > **🔑 Key terms:** *data* (raw facts) · *information* (data + context) · *database* (organized, related, stored collection) · *persistent · shared · structured* (the three defining properties).
 
+**📊 Depth table — Raw data → information → where the database fits**
+
+| Raw data (no context) | Becomes information when… | In the database it lives as… |
+|---|---|---|
+| 78 | 'Sita scored 78 in DBMS' | a row in Marks(roll, subject, score) |
+| 500 | 'You sent Rs 500 to Hari' | a row in Transaction(id, payer, payee, amount) |
+| 'Hari' | 'Hari is the payee of txn #4412' | a linked Account record |
+| 2081-02-15 | 'the date you paid' | a DATE column on the transaction |
+| 9843… | 'a customer's mobile number' | a field in Customer(id, name, phone) |
+| 'success' | 'the payment went through' | a status column, queryable across millions of rows |
+
+*ℹ️ Data alone answers nothing; context turns it into information; storing millions of related, queryable records is the database.*
+
 ---
 
 #### Concept 2 — DBMS: Database Management System `[THEORY]` `[~7 min]`
@@ -159,6 +172,19 @@ Make it concrete with names. **MySQL, MariaDB, PostgreSQL, Oracle, and Microsoft
 
 > **🔑 Key terms:** *DBMS* (software that manages databases) · *database system* (data + DBMS + apps/users) · *concurrency control · data integrity · query language · security* (four things a DBMS provides that a spreadsheet does not).
 
+**📊 Depth table — When a file/Excel breaks but a DBMS copes**
+
+| Situation | Excel / flat file | A DBMS handles it by… |
+|---|---|---|
+| 5,000 students check results at once | two clerks silently overwrite each other | concurrency control (locking) |
+| A mark must be 0–100 | nothing stops '780' being typed | integrity constraints reject bad data |
+| Find every student who failed | manual scroll and filter, slow | a SELECT query in milliseconds |
+| Only exam staff may edit marks | the file is open to anyone with access | GRANT/REVOKE permissions (security) |
+| Power cut mid-update | the file corrupts, data is lost | transactions + backup & recovery |
+| Millions of rows | Excel slows down or crashes | indexes + a storage engine built for scale |
+
+*ℹ️ Excel is fine for ~200 rows on one laptop; it breaks exactly at multi-user, high-integrity, large-scale work — which is what a DBMS is for.*
+
 ---
 
 #### Concept 3 & 4 — Database Users and the DBA `[THEORY]` `[EXAMPLE]` `[~7 min]`
@@ -210,6 +236,19 @@ Different people interact with a database at very different levels of technical 
 > exactly the gap a DBA is hired to close.
 
 > **🔑 Key terms:** *naive/end user · application programmer · sophisticated user · DBA* · the DBA's four duties: *schema design, security/permissions, backup & recovery, performance tuning.*
+
+**📊 Depth table — The database users in one Nepali bank**
+
+| User type | Who / example | What they do | What they can't do |
+|---|---|---|---|
+| Naive / end user | Front-desk teller | Enters deposits via a guided screen | Change the schema or run raw SQL |
+| Naive / end user | You, on the bank app | Check balance, transfer funds | See other customers' data |
+| Application programmer | The app-dev team | Build the screens & APIs | Run the live database day-to-day |
+| Sophisticated user | MIS / risk analyst | Write their own ad-hoc SQL reports | Manage security or backups |
+| DBA | Database administrator | Schema, permissions, backup, tuning | (is accountable for all of it) |
+| Auditor (special) | NRB / compliance audit | Read-only, to verify records | Modify any data |
+
+*ℹ️ Same database, four depths of access. Only the DBA is accountable for the data layer itself — and gets paged when it's slow at month-end.*
 
 ---
 
@@ -266,6 +305,19 @@ Before databases, organizations kept data in separate **files**, each owned by a
 > **inconsistency**; storing the blood group **once** as a single source of truth removes the risk.)
 
 > **🔑 Key terms:** *file-based system* · *redundancy* (controlled vs uncontrolled) · *inconsistency* · *integrity constraints* · *concurrent access* · *access control* · *backup & recovery*.
+
+**📊 Depth table — Each file-system problem → the DBMS fix → the payoff**
+
+| File-system problem | What goes wrong | DBMS mechanism | Benefit |
+|---|---|---|---|
+| Uncontrolled redundancy | the address kept in 5 files | store the fact once | no duplicate copies to drift |
+| Inconsistency | 4 files updated, 1 forgotten | integrity + a single copy | data always agrees |
+| Poor sharing | one clerk locks the whole file | concurrent multi-user access | thousands work at once, safely |
+| Weak security | anyone can open the file | GRANT/REVOKE access control | only the right people see data |
+| Data loss on crash | file corrupts, no copy | backup & recovery + transactions | data survives failures |
+| No easy querying | manual search through files | the SQL query language | answers in milliseconds |
+
+*ℹ️ Each DBMS advantage exists to cure a specific, painful file-system disease — this is WHY the DBMS was invented.*
 
 ---
 
@@ -371,6 +423,17 @@ Data models exist at different **levels of abstraction**, from close-to-humans d
 
 > **🔑 Key terms:** *data model* · *conceptual (high-level) model* · *representational/relational model* · *physical (low-level) model* · *structure, constraints, operations*.
 
+**📊 Depth table — One system described at three model levels**
+
+| System | Conceptual (ER — real world) | Representational (tables) | Physical (on disk) |
+|---|---|---|---|
+| Daraz shop | Customer places Order; Order has Products | Customer, Order, Product, OrderItem | indexed files + B-tree on order date |
+| College exams | Student enrols in Course; Course has Marks | Student, Course, Enrolment, Marks | pages on SSD, index on roll number |
+| eSewa | User makes a Transaction to another User | User, Account, Transaction | files replicated across servers |
+| Library | Member borrows a Book | Member, Book, Loan | heap file + index on ISBN |
+
+*ℹ️ The same reality is described human-first (conceptual), then as tables (representational), then as bytes on disk (physical). Unit 2 lives at the conceptual level.*
+
 ---
 
 #### Concept 2 — Schema vs Instance `[THEORY]` `[~8 min]`
@@ -430,6 +493,19 @@ The left side is the design (the mould); the right side is one moment's data (on
 
 > **🔑 Key terms:** *schema* (structure/design, stable) · *instance / database state* (current data, volatile) · the relationship: *one schema → many instances over time*.
 
+**📊 Depth table — Is it a schema change or an instance change?**
+
+| Action | Schema or instance? | How often | Impact |
+|---|---|---|---|
+| Enrol a new student (add a row) | Instance | constantly | tiny — just more data |
+| A student drops out (delete a row) | Instance | daily | tiny |
+| Update a student's marks | Instance | constantly | tiny |
+| Add a 'phone' column to Student | Schema | rarely | big — design change, apps may need updating |
+| Create a new Scholarship table | Schema | rarely | big — new structure |
+| Widen the roll-number type | Schema | very rarely | big — a migration |
+
+*ℹ️ One stable schema (the design) carries an endless succession of instances (the data). Row changes = instance; structure changes = schema.*
+
 ---
 
 #### Concept 3 — The Three-Schema Architecture `[THEORY]` `[~9 min]`
@@ -486,6 +562,18 @@ The power of this arrangement is **separation of concerns**: students don't need
 
 > **🔑 Key terms:** *external schema / view* · *conceptual schema* · *internal schema* · *external/conceptual* and *conceptual/internal* **mappings** · *separation of concerns*.
 
+**📊 Depth table — The college result system at all three levels**
+
+| Level | Who / what | What they see |
+|---|---|---|
+| External (view) | A student | only their own marksheet |
+| External (view) | A teacher | only their class's marks |
+| External (view) | The public portal | results by symbol number |
+| Conceptual | The exam-section system | every student, subject, mark + relationships |
+| Internal | The IT team | indexed files & pages on a server |
+
+*ℹ️ Many external views, exactly ONE conceptual schema (the shared source of truth), one internal schema. The mappings between levels give data independence.*
+
 ---
 
 #### Concept 4 — Data Independence `[THEORY]` `[~6 min]`
@@ -539,6 +627,19 @@ The power of this arrangement is **separation of concerns**: students don't need
 > apart by *what* actually changed: the design, or the storage.
 
 > **🔑 Key terms:** *data independence* · *logical data independence* (change the conceptual schema safely) · *physical data independence* (change storage safely).
+
+**📊 Depth table — A change → which independence → who notices**
+
+| Change made | Type | Do apps / views break? |
+|---|---|---|
+| Move the database to faster SSDs | Physical | No — nobody notices |
+| Add an index to speed a query | Physical | No |
+| Reorganize or compress old data files | Physical | No |
+| Add a 'phone' column to Student | Logical | No — views not using it keep working |
+| Add a new Scholarship table | Logical | No — existing views unaffected |
+| Remove a column a view depends on | (breaks independence) | Yes — that view must change |
+
+*ℹ️ Physical independence (storage) is easy; logical independence (design additions) is harder. Removing something a view depends on is exactly where independence ends.*
 
 ---
 
@@ -640,6 +741,20 @@ When we "talk to" a database we use a database language. **SQL (Structured Query
 
 > **🔑 Key terms:** *SQL* · *DDL* (define structure) · *DML* (query/modify data) · *DCL* (permissions) · *TCL* (transactions) · example verbs for each.
 
+**📊 Depth table — Every SQL command sorted into its sub-language**
+
+| Command | Sub-language | What it does | College example |
+|---|---|---|---|
+| CREATE TABLE | DDL | define a new structure | create the Marks table |
+| ALTER TABLE | DDL | change a structure | add a 'grade' column |
+| DROP TABLE | DDL | delete a structure | remove an old table |
+| SELECT | DML | query data | fetch a student's marks |
+| INSERT / UPDATE / DELETE | DML | modify data | enter or fix a mark |
+| GRANT / REVOKE | DCL | control permissions | give a clerk edit access, then remove it |
+| COMMIT / ROLLBACK | TCL | confirm or undo a transaction | save a batch of marks, or undo a mistake |
+
+*ℹ️ All of these are 'SQL', yet they do four different jobs. Publishing results is one task that touches DDL → DML → DCL → TCL in order.*
+
 ---
 
 #### Concept 2 — Interfaces to a DBMS `[THEORY]` `[EXAMPLE]` `[~7 min]`
@@ -690,6 +805,19 @@ A DBMS can be reached through several kinds of **interface**, each suited to a d
 
 > **🔑 Key terms:** *interface* · *menu-based · form-based · GUI · natural-language · API / embedded SQL* · the principle: *match the interface to the user*.
 
+**📊 Depth table — Match the interface to the user**
+
+| User | Best interface | Why |
+|---|---|---|
+| Grandmother paying a bill | form / big-button GUI | guided and safe; no commands to type |
+| Bank teller | form-based screen | fast, constrained, hard to mis-enter |
+| Shopkeeper taking payment | QR / menu-based | one tap, task-specific |
+| MIS analyst | SQL console | full power for ad-hoc queries |
+| App developer | API / embedded SQL | programs talk to the DB in code |
+| Kiosk user | menu-based | pick from a fixed list of options |
+
+*ℹ️ The same database is reached through whichever door fits the user's skill and task — force the wrong door and the grandmother can't pay or the developer can't build.*
+
 ---
 
 #### Concept 3 — Inside the DBMS: The Database System Environment `[THEORY]` `[~8 min]`
@@ -739,6 +867,18 @@ A DBMS is not one monolithic blob of code — it is several cooperating **compon
 
 > **🔑 Key terms:** *query processor/optimizer · storage manager · buffer manager · transaction manager · catalog/metadata* · the idea that a DBMS is *cooperating components*, not one block.
 
+**📊 Depth table — What each DBMS component does on one 'View Result' tap**
+
+| Component | Its job | On 'View Result' | Restaurant analogy |
+|---|---|---|---|
+| Query processor / optimizer | plan the fastest execution | find the quickest way to fetch your marks | the waiter routing the order |
+| Buffer manager | cache hot data in memory | check if your marks are already in RAM | the counter of ready dishes |
+| Storage manager | read / write disk | read the marks from disk if not cached | the kitchen cooking from stock |
+| Transaction manager | keep transactions safe (ACID) | ensure you never see half-updated marks | the manager checking the order is complete |
+| Catalog | store metadata | confirm the Marks table & columns exist | the recipe / receipt book |
+
+*ℹ️ A DBMS is cooperating parts, not a black box — so 'it's slow' becomes a checklist: bad plan? cold cache? slow disk? lock wait?*
+
 ---
 
 #### Concept 4 — Data Dictionary / Catalog `[THEORY]` `[~6 min]`
@@ -782,6 +922,19 @@ The catalog keeps track of things like: the names of all tables, the columns in 
 > a DBMS is **self-describing**, because it stores data *about* its own structure.
 
 > **🔑 Key terms:** *data dictionary / system catalog* · *metadata* (data about data) · what it stores: *table names, column types, constraints, users, indexes*.
+
+**📊 Depth table — What the catalog stores (metadata) — and what it doesn't**
+
+| Catalog stores (metadata) | Example | NOT in the catalog |
+|---|---|---|
+| Table names | 'Student', 'Marks' | the actual rows of data |
+| Column names & types | roll INT, name VARCHAR(50) | Sita's actual name |
+| Constraints | score must be 0–100 | the actual score 78 |
+| Users & permissions | clerk may edit Marks | the marks themselves |
+| Indexes | index on roll number | the indexed values |
+| Keys / relationships | Marks.roll → Student.roll | the linked rows |
+
+*ℹ️ Metadata = data ABOUT the data. Tools like phpMyAdmin / MySQL Workbench list your tables by reading the catalog — which makes the DBMS self-describing.*
 
 ---
 
@@ -880,6 +1033,17 @@ This weakness — one fragile centre — is exactly what the client/server archi
 
 > **🔑 Key terms:** *centralized architecture* · *single point of failure* · *scalability* · *terminal*.
 
+**📊 Depth table — Centralized setups — and the single point of failure**
+
+| Centralized setup | If the one machine fails… |
+|---|---|
+| A shop's billing on one back-office PC | the whole business stops (a Dashain disk crash, 2 days down) |
+| A clinic's records on a single computer | no patient records until it's fixed |
+| A school's results on one server, no backup | results inaccessible; possible permanent loss |
+| A cyber café's accounts on one till | no billing while it's down |
+
+*ℹ️ Centralized is simple to set up and secure (one machine) — but that one machine is a single point of failure and can't scale to many simultaneous users.*
+
 ---
 
 #### Concept 2 — Client/Server Architecture `[THEORY]` `[EXAMPLE]` `[~9 min]`
@@ -928,6 +1092,18 @@ In a **client/server architecture**, the work is **split across machines** that 
 
 > **🔑 Key terms:** *client/server architecture* · *two-tier* (client ↔ database server) · *three-tier* (client ↔ application server ↔ database server) · *business logic* · *server-side*.
 
+**📊 Depth table — Centralized vs two-tier vs three-tier**
+
+| Dimension | Centralized | Two-tier | Three-tier |
+|---|---|---|---|
+| Where logic runs | one machine | client + DB server | client · app server · DB server |
+| Scalability | poor | limited | high (scale each tier) |
+| Single point of failure | yes | partly | reduced (redundancy per tier) |
+| Security | simple but exposed | DB reachable by clients | app server shields the DB |
+| Typical use | legacy / one office | small LAN apps | modern web/mobile (Daraz, banks) |
+
+*ℹ️ Three-tier (client → application server → database server) is the modern standard because each tier scales, secures, and updates independently.*
+
 ---
 
 #### Concept 3 — Classification of DBMSs `[THEORY]` `[~7 min]`
@@ -975,6 +1151,19 @@ DBMSs come in many varieties, and we can **classify** any DBMS along several ind
 
 > **🔑 Key terms:** *classification axes* — *data model · number of users · distribution · purpose* · *relational · NoSQL ("not only SQL") · single- vs multi-user · centralized vs distributed*.
 
+**📊 Depth table — Classify real apps on the three axes**
+
+| App | Data model | Number of users | Distribution |
+|---|---|---|---|
+| A bank's core system | relational | multi-user | distributed (data centres) |
+| eSewa / Khalti | relational (+ some NoSQL) | massively multi-user | distributed |
+| Daraz | relational + NoSQL | multi-user | distributed |
+| An offline note app | relational (SQLite) | single-user | centralized (on device) |
+| Nagarik App backend | relational | multi-user | distributed |
+| Facebook | relational + NoSQL | massively multi-user | heavily distributed |
+
+*ℹ️ The three axes (model · users · distribution) describe ANY system. 'NoSQL' means 'not only SQL' — relational still dominates business data.*
+
 ---
 
 #### Concept 4 — Unit 1 Synthesis `[THEORY]` `[~6 min]`
@@ -1018,6 +1207,19 @@ Every branch of that picture is one of the sessions you just studied: users and 
 > stack rehearses every concept in the unit at once.
 
 > **🔑 Key terms (unit-wide):** *database · DBMS · users · DBA · data model · schema · instance · three-schema architecture · data independence · DDL/DML/DCL/TCL · DBMS components · catalog · centralized vs client/server · DBMS classification*.
+
+**📊 Depth table — One eSewa tap → every Unit 1 concept it exercises**
+
+| Step in one eSewa tap | Unit 1 concept | From |
+|---|---|---|
+| You tap a button | user + interface (form / GUI) | S1, S3 |
+| It sends a query | language (DML: SELECT/UPDATE) | S3 |
+| eSewa's engine handles it | DBMS + components + catalog | S1, S3 |
+| It reads your balance | database (organized, persistent, shared) | S1 |
+| The design is layered | three-schema → data independence | S2 |
+| It runs across servers | three-tier client/server, distributed | S4 |
+
+*ℹ️ Five 'unrelated' topics are one system: user → interface → DBMS → schema/architecture → classification. This table is the whole unit on one slide.*
 
 ---
 

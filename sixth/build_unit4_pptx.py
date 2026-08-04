@@ -62,6 +62,17 @@ concept_apply("S17 · Concept 1 · [THEORY]","What Is Software Quality",
     "\"Quality just means no bugs / it passed the demo.\" Quality includes reliability over time, security, usability, and maintainability — fitness for the user's real context, not a one-off green demo. An app that works once for the developer can still be low-quality for thousands of users on weak networks.",
     "Software quality is the degree to which software meets its stated requirements and users' real expectations, reliably and safely — captured as conformance to requirements plus fitness for use. It spans functional correctness and non-functional attributes (reliability, usability, security, maintainability, performance), and is judged in real production use, not in a demo.",
     "software quality · conformance + fitness for use · functional vs non-functional · reliability · fitness for context")
+add_table_slide("S17 · Concept 1 · concrete examples","Real Nepali apps — which quality attribute failed",
+    ["Real case (Nepal / IT)", "Attribute that failed", "Why it's a quality failure (verdict)"],
+    [
+     ["eSewa/Khalti wallet crashes in the Dashain rush", "Reliability", "Passed the demo but can't hold real festival load → users abandon it"],
+     ["Tax/PAN portal times out on filing-deadline day", "Performance", "Logic is correct, but too slow under peak → citizens miss deadlines"],
+     ["Govt e-service no ordinary citizen can navigate", "Usability", "Works for the developer, not the real user → fails fitness-for-use"],
+     ["Mobile-banking app leaks KYC data", "Security", "Functionally 'works' yet exposes data → still low quality"],
+     ["Wallet miscalculates a balance by a paisa", "Correctness", "Doesn't meet the spec at all → the most basic failure"],
+     ["Each bug fix quietly breaks two other features", "Maintainability", "Spaghetti code → cannot be changed safely"],
+    ],
+    per_page=6,widths=[2.6, 1.9, 3.0],note="First column is a real instance, not an abstract attribute: quality is judged in production. A correct app that is insecure, slow, or unusable still fails its users.",fs=11)
 
 concept_understand("S17 · Concept 2 · [THEORY]","The Cost of Poor Quality",
     "The cost of poor quality is every cost caused by defects — rework, downtime, lost customers, lawsuits, and reputation damage. The key rule: the cost to fix a defect rises roughly 10× at each later stage (requirements → design → code → release → post-release). Prevention is far cheaper than cure.",
@@ -160,6 +171,17 @@ concept_apply("S18 · Concept 1 · [THEORY]","Testing",
     "\"If it works on my machine / passed the demo, it's tested.\" Ad-hoc clicking is not testing: you need defined test cases, edge cases, and regression coverage. A demo exercises the happy path once; real testing hunts the failures users will hit — and proves you looked.",
     "Testing is systematically running software to find defects before users do, across levels (unit, integration, system, acceptance), manual or automated, black-box or white-box, with regression testing guarding old features. Because testing shows the presence of bugs (never proves their absence), it must be structured — defined cases and edge cases — not ad-hoc clicking.",
     "testing · unit/integration/system/acceptance · automated · regression · presence not absence of bugs")
+add_table_slide("S18 · Concept 1 · concrete examples","Testing levels in practice — real Nepali test scenarios",
+    ["Concrete test scenario", "Testing level", "What it catches (verdict)"],
+    [
+     ["Check one interest-calc function returns the right paisa", "Unit", "Catches math bugs early; automated on every commit"],
+     ["Verify wallet + bank API talk correctly during a top-up", "Integration", "Catches broken hand-offs between modules"],
+     ["Run the full eSewa payment flow end-to-end pre-release", "System", "Catches whole-journey failures the QA team runs before release"],
+     ["NRB/bank signs off a digital-banking go-live", "Acceptance (UAT)", "Confirms it meets the client's real need"],
+     ["Re-run old tests after a Dashain hotfix", "Regression", "Ensures the fix didn't silently break paid features"],
+     ["Enter a negative amount / retry on a weak network", "Edge-case (black-box)", "Hunts the failures real users hit, not the happy path"],
+    ],
+    per_page=6,widths=[3.0, 1.8, 2.7],note="Ad-hoc clicking is none of these. Testing shows the presence of bugs, not their absence — so it must be structured across levels, with edge cases and regression coverage.",fs=11)
 
 concept_understand("S18 · Concept 2 · [THEORY]","Quality Assurance (QA) vs Quality Control (QC)",
     "QA and QC are different jobs. QA builds the PROCESS that prevents defects (proactive: standards, reviews, audits). QC inspects the PRODUCT to catch defects (reactive: testing, inspection). You need both — one stops defects being made, the other stops them shipping.",
@@ -183,6 +205,17 @@ concept_apply("S18 · Concept 2 · [THEORY]","Quality Assurance vs Quality Contr
     "\"We have a great tester, so we have quality covered.\" That's QC only — catching defects, not preventing them. Without QA (standards, reviews, repeatable process), quality is a lottery dependent on one person. Real quality is engineered into the process so it survives any single person leaving.",
     "Quality Assurance (QA) is the proactive process that prevents defects — standards, reviews, audits, checklists — while Quality Control (QC) is the reactive inspection of the product to catch defects through testing and inspection. Both are needed: QA reduces defects created, QC stops those that slip through from reaching users. Relying on QC alone is fragile.",
     "QA (process, preventive) · QC (product, reactive) · both needed · repeatable not heroic")
+add_table_slide("S18 · Concept 2 · concrete examples","QA or QC? — activities in a Kathmandu software house",
+    ["Activity", "QA or QC?", "Why (prevents vs catches)"],
+    [
+     ["Writing a coding-standards + code-review policy", "QA", "Prevents defects being created (shapes the process)"],
+     ["A senior reviews every merge request", "QA", "Stops bad code entering — proactive"],
+     ["Running the system test suite before release", "QC", "Catches defects in the finished product"],
+     ["A tester logs bugs from a release candidate", "QC", "Finds defects that slipped through"],
+     ["Maintaining an ISO/CMMI-aligned checklist", "QA", "Makes quality repeatable, not person-dependent"],
+     ["Inspecting a generated report for wrong totals", "QC", "Reactive check on the actual output"],
+    ],
+    per_page=6,widths=[3.0, 1.3, 3.0],note="QA and QC are complementary: QA shrinks the defect stream (process), QC filters what's left (product). A team with only QC — one heroic end-of-line tester — has no prevention and no safety net.",fs=11)
 
 concept_understand("S18 · Concept 3 · [THEORY]","Software Development Standards & Process Models",
     "Standards and process models are agreed frameworks guiding how software is built and assessed. Quality standards: ISO 9001, ISO/IEC 25010 (a quality model), CMMI maturity levels, IEEE standards. Process models: Waterfall vs Agile/Scrum. Code reviews and documentation run through all of them.",
@@ -207,6 +240,17 @@ concept_apply("S18 · Concept 3 · [THEORY]","Standards & Process Models",
     "\"Agile means no documentation and no standards.\" Agile changes HOW quality is built in (short iterations, continuous feedback) but does not remove the need for it — Agile teams still write tests, review code, and document. 'Move fast' is not 'skip quality'; the best Agile teams are rigorous.",
     "Software standards and process models are agreed frameworks for building and assessing software: quality standards (ISO 9001, ISO/IEC 25010, CMMI, IEEE) and process models (Waterfall vs Agile/Scrum), with code reviews and documentation throughout. They make quality repeatable, and for Nepali outsourcing firms ISO/CMMI certification is a business requirement to win international work.",
     "ISO 9001 · ISO/IEC 25010 · CMMI · Waterfall vs Agile · certification as a business asset")
+add_table_slide("S18 · Concept 3 · concrete examples","Which standard/model fits — real Nepali IT scenarios",
+    ["Nepali IT scenario", "Standard / model that fits", "Why (verdict)"],
+    [
+     ["BPO bidding for a US bank contract", "CMMI level + ISO 9001", "Client won't sign without a maturity rating"],
+     ["Measuring a product's security & usability", "ISO/IEC 25010", "Defines the quality attributes to score against"],
+     ["Govt project with fixed, well-known requirements", "Waterfall", "Stable scope suits plan-everything-up-front"],
+     ["Startup MVP with fast-changing requirements", "Agile / Scrum", "Short iterations absorb constant change (still tests + reviews)"],
+     ["Team wants a shared engineering baseline", "IEEE standards", "Common professional practices & documentation"],
+     ["Firm signalling overall disciplined quality mgmt", "ISO 9001", "General QMS badge that reassures clients"],
+    ],
+    per_page=6,widths=[2.6, 2.2, 2.7],note="For Nepali outsourcing firms certification is a business requirement, not just an ethical one. Agile changes HOW quality is built in — it never removes tests, reviews, or documentation.",fs=11)
 
 concept_understand("S18 · Concept 4 · [THEORY]","Risk Management",
     "Risk management is identifying, assessing, and mitigating things that could cause failure. Risk is assessed as likelihood × impact; you keep a risk register, plan mitigation and contingency, and prioritise safety-critical risks. It forces the honest ethical question: 'how good is good enough?'",
@@ -230,6 +274,17 @@ concept_apply("S18 · Concept 4 · [THEORY]","Risk Management",
     "\"We'll deal with problems if they come up.\" Risk management is deciding what could fail BEFORE it does — scoring likelihood × impact, mitigating the worst, and planning rollback in advance. Reacting after a live failure (during the festival rush) is exactly the expensive, dangerous position it exists to avoid.",
     "Risk management identifies, assesses (likelihood × impact), and mitigates things that could cause failure, using a risk register with mitigation and contingency plans and prioritising safety-critical risks. It answers the ethical question 'how good is good enough?' deliberately, before release — for example deferring a risky migration off peak days and preparing a rollback.",
     "risk management · likelihood × impact · risk register · mitigation + contingency · rollback · plan before, not after")
+add_table_slide("S18 · Concept 4 · concrete examples","Real release-risk decisions — score, then act",
+    ["Real decision (Nepal)", "Likelihood × impact", "Action taken (verdict)"],
+    [
+     ["Core-banking migration on a remittance-peak day", "Low × Critical", "Deferred off-peak + tested rollback ready → good call"],
+     ["Nagarik App update shipped with no rollback plan", "Medium × High", "Bad call — prepare a rollback BEFORE shipping"],
+     ["One developer holds all deployment knowledge", "Medium × High", "Document + pair to remove the single point of failure"],
+     ["Payment gateway may go down on Dashain", "Medium × High", "Retry queue + a secondary provider mitigates it"],
+     ["Skipping the security review to hit a deadline", "Low × Critical", "Hold a security gate — the impact is too severe"],
+     ["Festival-day traffic spike left untested", "High × High", "Load-test early + auto-scale before the rush"],
+    ],
+    per_page=6,widths=[2.8, 1.7, 3.0],note="Every high risk needs BOTH a mitigation and a contingency (rollback). Safety-critical/high-impact risks jump the queue even at low likelihood — decide before release, not after a live failure.",fs=11)
 
 add_activity("S18 — 'Skip testing to hit the deadline?'  ·  ~5 min",
     ["In pairs (2 min): your client demands you skip testing to hit a deadline. Decide the three things you do.",
@@ -283,6 +338,17 @@ concept_apply("S19 · Concept 1 · [THEORY]","Contingent Workers",
     "\"Contractors are cheaper, so a firm should always use them.\" The hidden costs bite: lost institutional knowledge, lower commitment, constant re-hiring/onboarding, and an ethical duty to treat contingent workers fairly. 'Cheaper per hour' is not 'cheaper overall', and it externalises risk onto people.",
     "Contingent workers are hired non-permanently (contractors, temps, consultants, gig/freelance, visa-based). Firms use them for flexibility, cost, and scarce skills, but the model shifts risk to the worker (weak security, few benefits) and costs the firm loyalty and institutional knowledge. There is an ethical duty to treat them fairly, not merely as a cheaper input.",
     "contingent workers · flexibility vs security · hidden costs · lost institutional knowledge · fair treatment")
+add_table_slide("S19 · Concept 1 · concrete examples","Contingent-work situations Nepali developers actually face",
+    ["Situation (Nepal)", "What the worker gains / loses", "Verdict"],
+    [
+     ["Kathmandu dev on Upwork paid per project", "Good hourly rate, zero job security", "The risk sits entirely on the worker"],
+     ["3-month renewable contract, no benefits", "Flexible, but no paid leave or insurance", "Firm's flexibility = worker's insecurity"],
+     ["Fiverr freelancer whose client vanishes mid-job", "Fast income, no protection if unpaid", "No safety net when the client disappears"],
+     ["Foreign firm's contractor, no onboarding invested", "Rare-skill pay, little training", "Firm under-invests in the temporary worker"],
+     ["Consultant hired for a one-off migration", "Scarce skill on demand", "Institutional knowledge walks out when it ends"],
+     ["Gig developer juggling several small clients", "Autonomy, but unstable monthly income", "Income volatility is the hidden cost"],
+    ],
+    per_page=6,widths=[2.7, 2.6, 2.2],note="The model shifts risk from the firm to the person. 'Cheaper per hour' is not 'cheaper overall' — lost knowledge, low commitment, and constant re-hiring bite, alongside an ethical duty to treat contingent workers fairly.",fs=11)
 
 concept_understand("S19 · Concept 2 · [THEORY] [EXAMPLE]","Outsourcing & Offshore Outsourcing",
     "Outsourcing is contracting work to an outside firm; offshoring is doing so in another (often lower-cost) country. Benefits: cost savings, 24/7 follow-the-sun work, access to talent. Risks: quality control, communication/timezone gaps, data-security and confidentiality across borders, and dependency.",
@@ -306,6 +372,17 @@ concept_apply("S19 · Concept 2 · [THEORY] [EXAMPLE]","Outsourcing & Offshore O
     "\"Once we offshore it, the risk and responsibility are the vendor's problem.\" Responsibility travels with the data. If a Kathmandu BPO leaks a Western client's customer data, the client's name and liability are on the line too — outsourcing the work does not outsource the duty of care (echoing S6's client relationship).",
     "Outsourcing contracts work to an outside firm; offshoring does so in another country for cost, follow-the-sun coverage, and talent — with risks of weaker quality control, timezone/communication gaps, cross-border data-security exposure, and dependency. Nepal is a major destination (IT/BPO/KPO export). Crucially, obligations to protect data cross the border with it.",
     "outsourcing · offshoring · follow-the-sun · cross-border data risk · Nepal as destination · duty travels with data")
+add_table_slide("S19 · Concept 2 · concrete examples","Offshore-outsourcing cases — what crosses the border with the work",
+    ["Offshore-outsourcing case", "What crosses the border with it", "Verdict / duty"],
+    [
+     ["US client sends KYC data to a Kathmandu BPO", "Customer data + the duty of care", "Client stays liable; the BPO must protect the data"],
+     ["Follow-the-sun support across NP/US time zones", "24/7 coverage + coordination gaps", "Gain in speed, but a risk to quality control"],
+     ["Back-end built by a small Lalitpur firm", "Cost saving + distance to oversight", "Harder to control quality at a distance"],
+     ["A BPO leaks a foreign client's records", "Reputational + legal fallout", "Outsourcing the work never outsourced the duty"],
+     ["Client depends on one Nepali vendor", "Low cost + dependency risk", "Single-vendor reliance is itself a business risk"],
+     ["Data sent to a weaker-data-law jurisdiction", "Legal exposure for the client", "The obligation to protect data doesn't stop at the border"],
+    ],
+    per_page=6,widths=[2.6, 2.4, 2.6],note="Nepal is a major outsourcing destination (IT/BPO/KPO export). Every benefit has a matching risk — and the sharpest is cross-border data: the duty of care travels with the data, whatever the local law requires.",fs=11)
 
 concept_understand("S19 · Concept 3 · [THEORY]","The Ethical Balance — both sides",
     "The ethics of outsourcing means weighing benefits and harms to ALL stakeholders — home-country workers, offshore workers, clients, and end-users. Pros: jobs and income for developing economies like Nepal, lower prices, efficiency. Cons: home-country job loss, worker exploitation, race-to-the-bottom wages, accountability gaps.",
@@ -329,6 +406,17 @@ concept_apply("S19 · Concept 3 · [THEORY]","The Ethical Balance",
     "\"Outsourcing is simply exploitation\" OR \"outsourcing is simply opportunity.\" Neither is the whole truth. A stakeholder analysis shows it helps some (Nepali developers, clients, the economy) and can harm others (home-country workers, over-worked BPO staff). The ethical task is to make the arrangement fair, not to pick one slogan.",
     "The ethics of outsourcing requires weighing all stakeholders: it brings jobs, income, and forex to developing economies like Nepal and lower prices to clients, while risking home-country job loss, worker exploitation, race-to-the-bottom wages, and accountability gaps. The honest question is not 'good or bad?' but 'good for whom, at what cost, and is it fair?'",
     "ethical balance · stakeholders · jobs + forex vs exploitation · race to the bottom · fairness to all sides")
+add_table_slide("S19 · Concept 3 · concrete examples","Outsourcing situations — who gains, who pays, is it fair?",
+    ["Concrete situation", "Who gains / who pays", "Is it fair? (verdict)"],
+    [
+     ["Kathmandu BPO runs night shifts for US hours", "Worker: forex & a job / burnout & lost sleep", "Fair only if pay + rest match the strain"],
+     ["Nepali dev paid one-third of the US rate", "Client saves / worker underpaid vs peers", "Race-to-the-bottom risk — check the fairness"],
+     ["US roles cut and moved to Nepal", "Nepal gains jobs / US worker loses one", "Good for one economy, harm to another"],
+     ["A high-value IT-export contract lands in KTM", "Economy: forex, skills, careers", "A genuine development good"],
+     ["End-users get a cheaper app", "Users save / their data crosses borders", "The benefit carries a hidden data cost"],
+     ["Firm scales a team up, then drops it fast", "Firm: flexibility / workers: sudden job loss", "Flexibility externalised onto people"],
+    ],
+    per_page=6,widths=[2.6, 2.7, 2.3],note="A stakeholder view (Unit 1) shows no single verdict: outsourcing genuinely helps some and harms others at once. The ethical task is 'good for whom, at what cost, and is it fair?' — not a one-word slogan.",fs=11)
 
 add_activity("S19 — 'Net good or exploitative?'  ·  ~5 min",
     ["In pairs (2 min): is Nepal being an IT-outsourcing hub mostly good or mostly exploitative for Nepali workers?",
@@ -380,6 +468,17 @@ concept_apply("S20 · Concept 1 · [THEORY]","What Whistle-Blowing Is",
     "\"A whistle-blower is just a disloyal snitch.\" Ethical whistle-blowing protects the public and stakeholders when internal channels have failed — it's an act of responsibility, not betrayal. Loyalty to an employer never extends to helping it conceal serious harm (the Unit 2 'loyalty has a limit' idea).",
     "Whistle-blowing is an insider revealing illegal, unethical, or dangerous conduct within an organization — internally (up the chain or to an ethics officer) or externally (regulator, press, public). It resolves the clash between loyalty to the employer and duty to the public: loyalty has a limit and never requires covering up harm, so responsible whistle-blowing is protection, not betrayal.",
     "whistle-blowing · internal vs external · loyalty vs public interest · not a 'snitch' · Snowden · Haugen")
+add_table_slide("S20 · Concept 1 · concrete examples","Whistle-blowing cases — internal, external, or neither",
+    ["Case", "Internal / external?", "Verdict (loyalty vs public)"],
+    [
+     ["Report a data-leak bug to your ethics officer", "Internal", "Gives the org a chance to fix it — not disloyal"],
+     ["Snowden exposes NSA mass surveillance", "External", "Public interest over loyalty; huge personal cost"],
+     ["Frances Haugen leaks Meta's harm research", "External", "Insider judged the public's right to know won"],
+     ["Tell internal audit KYC data is being sold", "Internal", "Protects the org too — the first step"],
+     ["Go to the press after management ignores you", "External", "Justified when internal channels are complicit"],
+     ["Stay silent to 'stay loyal' while harm ships", "Neither", "Loyalty has a limit — silence enables the harm"],
+    ],
+    per_page=6,widths=[3.0, 1.7, 2.6],note="A whistle-blower is not a disloyal 'snitch': ethical whistle-blowing protects the public and stakeholders precisely when internal channels have failed. Loyalty never requires covering up serious harm.",fs=11)
 
 concept_understand("S20 · Concept 2 · [THEORY]","When and How to Blow the Whistle — responsibly",
     "Responsible whistle-blowing is a disciplined, last-resort process — not an impulsive leak. The steps: be sure of the facts and have evidence; confirm the harm is serious; exhaust internal channels first; keep records; seek advice; and go external only when internal routes fail.",
@@ -403,6 +502,17 @@ concept_apply("S20 · Concept 2 · [THEORY]","When and How to Blow the Whistle",
     "\"If something's wrong, I should immediately post it online / tell the media.\" An impulsive public leak can be legally dangerous, unprovable, and can let the wrongdoer escape on a technicality. Evidence-first and internal-first is both more effective and more defensible — external disclosure is the final step, not the first.",
     "Responsible whistle-blowing is a disciplined, last-resort process: be sure of the facts with evidence, confirm the harm is serious, exhaust internal channels (manager, ethics officer, audit) first, keep records and seek advice, and go external (regulator, then press) only when internal routes fail. The order protects the public and the whistle-blower alike.",
     "responsible process · evidence-first · internal-first · escalate · CIAA · external as last resort")
+add_table_slide("S20 · Concept 2 · concrete examples","One case (data being sold) — right vs wrong moves, in order",
+    ["Action on the case", "Right or wrong move?", "Why"],
+    [
+     ["Immediately tweet the accusation", "Wrong", "Unprovable, legally risky, and tips off the wrongdoer"],
+     ["Gather dated evidence and keep records", "Right — step 1", "Reason on evidence, not suspicion"],
+     ["Confirm the harm is serious, not a gripe", "Right — step 2", "Whistle-blowing is for real, serious harm"],
+     ["Report to your manager, then ethics/compliance", "Right — step 3", "Internal-first gives a chance to fix it + builds your record"],
+     ["Escalate to the CIAA when ignored", "Right — step 4", "A regulator, when internal routes fail or are complicit"],
+     ["Go to the press only as a last resort", "Right — step 5", "Highest risk — use only when all else fails"],
+    ],
+    per_page=6,widths=[3.0, 1.8, 2.5],note="Following the order protects both the public AND you. A documented, internal-first attempt is what distinguishes a responsible whistle-blower from a reckless leaker — external disclosure is the final step, not the first.",fs=11)
 
 concept_understand("S20 · Concept 3 · [THEORY] [EXAMPLE]","Risks, Protections & Famous Cases",
     "Whistle-blowing carries real personal cost, and legal shields are limited. Risks: retaliation, firing, blacklisting, lawsuits, and severe stress. Protections: whistle-blower laws/policies, anonymous hotlines, and regulators — but their strength varies hugely by country.",
@@ -426,6 +536,17 @@ concept_apply("S20 · Concept 3 · [THEORY] [EXAMPLE]","Risks, Protections & Fam
     "\"Whistle-blowers are always protected by law.\" Protection is limited and varies by country — in Nepal it is weak, so retaliation (firing, blacklisting) is a genuine risk. Knowing this lets you act with both courage AND care: strong evidence, an internal-first record, and advice reduce (not eliminate) the danger.",
     "Whistle-blowing carries real risks — retaliation, firing, blacklisting, lawsuits, stress — against limited protections (whistle-blower laws, anonymous hotlines, regulators) whose strength varies by country. Nepal's protections are weaker than US/EU statutes, so the personal risk is significant; evidence and a documented internal-first process are the most reliable practical safeguards.",
     "retaliation · blacklisting · whistle-blower laws · anonymous hotline · weak Nepal protection · courage + care")
+add_table_slide("S20 · Concept 3 · concrete examples","Retaliation vs protection — concrete situations",
+    ["Concrete situation", "Risk faced / protection available", "Verdict"],
+    [
+     ["Nepali employee exposes an employer's wrongdoing", "Firing + blacklisting in a small market", "Real risk — the legal net is thin"],
+     ["Whistle-blower sued for defamation", "Solid evidence + prior legal advice", "Documentation is the practical shield"],
+     ["Anonymous hotline used to report internally", "Some protection of identity", "Lowers, but does not remove, retaliation risk"],
+     ["CIAA / anti-corruption route in Nepal", "Limited statutory protection", "A thinner net than US/EU statutes"],
+     ["US/EU worker under a whistle-blower statute", "Stronger legal protection", "Same act, far less personal risk"],
+     ["A documented internal-first attempt on record", "Best defensible position", "Distinguishes responsible from reckless"],
+    ],
+    per_page=6,widths=[2.7, 2.7, 2.2],note="Protection varies hugely by country and is weak in Nepal, so retaliation is a genuine risk. Evidence and an internal-first record are the most reliable practical safeguard — courage AND care.",fs=11)
 
 add_activity("S20 — 'Would weak protection change your choice?'  ·  ~5 min",
     ["In pairs (2 min): if you found serious wrongdoing at a Nepali employer, would weak legal protection change what you'd do? Be honest.",
@@ -477,6 +598,17 @@ concept_apply("S21 · Concept 1 · [THEORY]","What Green Computing Is",
     "\"Software / digital has no environmental footprint — it's 'in the cloud'.\" The cloud is physical data centres burning real electricity and water somewhere. A crypto transaction or an always-on server has a measurable energy and carbon cost. 'Digital' relocates the footprint; it doesn't remove it.",
     "Green computing is designing, using, and disposing of IT in environmentally responsible, energy-efficient ways across the full lifecycle — manufacture, use, and disposal — aiming for lower energy, emissions, and waste. Its foundational point is that IT (including 'the cloud') has a real physical footprint, so responsibility spans making, running, and retiring every device.",
     "green computing · full lifecycle · manufacture/use/disposal · the cloud is physical · lower energy/emissions/waste")
+add_table_slide("S21 · Concept 1 · concrete examples","Is this action actually green? — across the lifecycle",
+    ["Claim / action", "Really green?", "Why (lifecycle verdict)"],
+    [
+     ["'It's in the cloud, so it has no footprint'", "No", "The cloud = physical data centres burning power & water"],
+     ["Hydro-powered data centre in Nepal", "Yes — if consistent", "Clean power, but only if no diesel backup kicks in"],
+     ["Diesel generator running during load-shedding", "No", "Erases the hydro gain — measure the real energy mix"],
+     ["Buying a brand-new laptop every year", "No", "Ignores the manufacture + disposal footprint"],
+     ["ENERGY STAR / EPEAT-rated device", "Partly", "Cuts use-phase energy — only one of three stages"],
+     ["Recycling old servers responsibly", "Yes", "Closes the disposal loop and recovers materials"],
+    ],
+    per_page=6,widths=[2.7, 1.7, 2.9],note="Green computing spans the WHOLE lifecycle (make → use → dispose). 'Digital' relocates the footprint; it never removes it — so green must be measured across the real, full lifecycle, not claimed on paper.",fs=11)
 
 concept_understand("S21 · Concept 2 · [THEORY]","Energy Use & Sustainable IT",
     "Sustainable IT means reducing the power consumed by devices, servers, and data centres. The levers: energy-efficient hardware, virtualization/consolidation, sleep/power management, efficient code, renewable energy, and cooling efficiency.",
@@ -501,6 +633,17 @@ concept_apply("S21 · Concept 2 · [THEORY]","Energy Use & Sustainable IT",
     "\"One office's computers can't matter to the environment.\" At scale, defaults matter enormously — 50 idle machines overnight, multiplied across every office, is real power and real emissions. As the IT decision-maker, your default settings (sleep, consolidation, efficient hardware) shape an organization's whole energy footprint.",
     "Sustainable IT reduces the power consumed by devices, servers, and data centres through efficient hardware, virtualization/consolidation, power management, efficient code, renewable energy, and cooling efficiency. Small defaults scale: idle machines and unoptimised systems waste measurable energy, so an IT decision-maker's choices materially shape an organization's energy and emissions.",
     "sustainable IT · efficient hardware · virtualization · power management · efficient code · renewables · defaults scale")
+add_table_slide("S21 · Concept 2 · concrete examples","Energy waste and the fix — real Nepali office cases",
+    ["IT energy situation", "Fix applied", "Energy verdict"],
+    [
+     ["50 desktops left on overnight 'for convenience'", "Enable auto-sleep / shutdown", "Cuts a needless yearly power bill"],
+     ["10 physical servers barely used", "Consolidate to VMs on 1–2 hosts", "Big drop in power + cooling"],
+     ["A slow, unoptimised hot query at scale", "Optimise the code", "Less compute = less energy per task"],
+     ["Old power-hungry PCs due for refresh", "Buy ENERGY STAR / EPEAT devices", "Less power per unit of work"],
+     ["Data centre on grid + diesel", "Shift to hydro / renewable supply", "Cleaner energy for the same use"],
+     ["Server room over-cooled 24/7", "Improve airflow / free-cooling", "Less energy spent removing heat"],
+    ],
+    per_page=6,widths=[2.7, 2.3, 2.5],note="Small defaults scale: idle machines multiplied across every office are real power and real emissions. As the IT decision-maker, your defaults shape the whole organization's energy footprint.",fs=11)
 
 concept_understand("S21 · Concept 3 · [THEORY] [EXAMPLE]","E-Waste & Responsible Disposal",
     "E-waste is discarded electronics containing toxic materials — lead, mercury, cadmium — that harm health and the environment. Responsible handling follows a ladder: reduce → reuse → refurbish → recycle, plus safe disposal, extended producer responsibility, and data-wiping before disposal.",
@@ -549,6 +692,17 @@ concept_apply("S21 · Concept 4 · [THEORY]","Corporate Responsibility & the IT 
     "\"Going green is just marketing / a one-off gesture.\" Real green IT is embedded in operations — procurement policy, take-back programs, sustainability reporting, right-sized infrastructure — exactly the genuine-vs-greenwashing test from Unit 1. A single tree-planting photo op isn't green computing; changed defaults and public reporting are.",
     "An IT organization's environmental duty is part of its corporate social responsibility (Unit 1), enacted through green procurement policies, take-back/recycling programs, sustainability reporting, telecommuting, cloud right-sizing, and renewable-powered facilities. Like all CSR, it must be embedded in operations and reported publicly to be genuine rather than greenwashing.",
     "corporate responsibility · CSR · green procurement · take-back · sustainability reporting · embedded not gesture")
+add_table_slide("S21 · Concept 4 · concrete examples","Real green IT or greenwashing? — organizational actions",
+    ["Action (Nepal)", "Real green IT or greenwashing?", "Why (verdict)"],
+    [
+     ["Bank adopts a solar-powered data centre", "Real green IT", "Embedded in operations, not a gesture"],
+     ["Telecom runs a device take-back scheme", "Real green IT", "Responsible end-of-life, at policy level"],
+     ["One tree-planting photo op, nothing changes", "Greenwashing", "No changed defaults, no reporting"],
+     ["Govt IT tender favours efficient hardware", "Real green IT", "Green procurement as a default policy"],
+     ["Publishing energy/e-waste in a CSR report", "Real green IT", "Public accountability you can't quietly walk back"],
+     ["'Eco-friendly' label, servers still over-provisioned", "Greenwashing", "Marketing without right-sizing the infrastructure"],
+    ],
+    per_page=6,widths=[2.8, 2.4, 2.5],note="This closes the loop to Unit 1: managing the IT footprint IS corporate social responsibility — genuine only when embedded in procurement policy, take-back, right-sizing, and public reporting, not a one-off gesture.",fs=11)
 
 add_activity("S21 — 'Trace one device'  ·  ~5 min",
     ["In pairs (2 min): where do your old phones and laptops go right now? Trace one device's likely end-of-life in Nepal.",

@@ -201,6 +201,40 @@ def _add_page_numbers():
         tb=_box(s,12.35,0.30,0.9,0.35); p=tb.paragraphs[0]; p.alignment=PP_ALIGN.RIGHT
         r=p.add_run(); r.text=f"{i} / {total}"; r.font.size=Pt(10); r.font.color.rgb=col
 
+ROWALT=RGBColor(0xEE,0xF3,0xF8)
+def add_table_slide(kicker,title,headers,rows,per_page=8,widths=None,note="",fs=11):
+    """Native PPTX table on its OWN slide; auto-paginates so nothing is squeezed. (§7A depth tables.)"""
+    pages=[rows[i:i+per_page] for i in range(0,len(rows),per_page)] or [[]]
+    ncols=len(headers)
+    if widths is None: widths=[1]*ncols
+    tot=sum(widths); ws=[12.5*w/tot for w in widths]
+    for pi,chunk in enumerate(pages):
+        s=prs.slides.add_slide(BLANK); _bg(s,WHITE)
+        _header(s,kicker,title+("  (cont.)" if pi else ""))
+        nrows=len(chunk)+1
+        top=1.72; avail=(6.55 if note else 6.95)-top
+        gt=s.shapes.add_table(nrows,ncols,Inches(0.42),Inches(top),Inches(12.5),Inches(avail))
+        table=gt.table; table.first_row=False; table.horz_banding=False
+        for j,w in enumerate(ws): table.columns[j].width=Inches(w)
+        for j,h in enumerate(headers):
+            c=table.cell(0,j); c.fill.solid(); c.fill.fore_color.rgb=NAVY
+            c.vertical_anchor=MSO_ANCHOR.MIDDLE
+            c.margin_left=Inches(0.08); c.margin_right=Inches(0.06); c.margin_top=Inches(0.03); c.margin_bottom=Inches(0.03)
+            tf=c.text_frame; tf.word_wrap=True; p=tf.paragraphs[0]; r=p.add_run(); r.text=h
+            r.font.size=Pt(fs+0.5); r.font.bold=True; r.font.color.rgb=WHITE
+        for i,row in enumerate(chunk,1):
+            for j,val in enumerate(row):
+                c=table.cell(i,j); c.fill.solid(); c.fill.fore_color.rgb=(WHITE if i%2 else ROWALT)
+                c.vertical_anchor=MSO_ANCHOR.MIDDLE
+                c.margin_left=Inches(0.08); c.margin_right=Inches(0.06); c.margin_top=Inches(0.03); c.margin_bottom=Inches(0.03)
+                tf=c.text_frame; tf.word_wrap=True; p=tf.paragraphs[0]; r=p.add_run(); r.text=str(val)
+                r.font.size=Pt(fs); r.font.color.rgb=DARK
+                if j==0: r.font.bold=True; r.font.color.rgb=NAVY
+        if note:
+            nb=_box(s,0.42,6.62,12.5,0.5); p=nb.paragraphs[0]; r=p.add_run(); r.text="ℹ️  "+note
+            r.font.size=Pt(11.5); r.font.italic=True; r.font.color.rgb=GREY
+    return
+
 # ============================================================
 #                        BUILD
 # ============================================================
@@ -250,6 +284,18 @@ concept_apply("S9 · Concept 2 · [THEORY]","Naming Conventions",
     "\"Naming doesn't matter, it's just a diagram.\" Wrong — meaningless names (E1, R3) hide what each construct is, so mapping errors go unnoticed. Singular-noun entities + verb relationships make errors visible.",
     "Entity types are singular nouns (STUDENT); relationship types are verbs (ENROLLS) so the diagram reads as a sentence; names must be consistent and meaningful (never TBL1/REL2). Good names let stakeholders verify the model and become clean table/column names after mapping.",
     "singular-noun entity  ·  verb relationship  ·  reads-as-a-sentence  ·  meaningful / consistent naming")
+add_table_slide("S9 · Concept 2 · examples","Poor name vs good name — and why it matters",
+    ["Concept in the diagram", "Poor name (avoid)", "Good name (use)", "Why the good name wins"],
+    [
+     ["Entity of course-takers", "STUDENTS / TBL1", "STUDENT", "singular noun = the type (one specimen of the kind)"],
+     ["Entity for shops on Daraz", "E2 / tbl_m", "MERCHANT", "reader knows what it is; clean table name after mapping"],
+     ["Student ↔ course link", "REL1", "ENROLLS", "STUDENT — ENROLLS — COURSE reads as a sentence"],
+     ["Teacher ↔ course link", "R3", "TEACHES", "verb; a registrar can confirm or correct it on the spot"],
+     ["Customer ↔ order link (Daraz)", "LINK2", "PLACES", "CUSTOMER — PLACES — ORDER reads left-to-right"],
+     ["Customer ↔ account link (bank)", "R7", "OWNS", "CUSTOMER — OWNS — ACCOUNT is plain English"],
+     ["Rider ↔ delivery link (Foodmandu)", "REL9", "DELIVERS", "stakeholders verify the model by reading it aloud"],
+    ],
+    per_page=7,widths=[2.2, 1.6, 1.5, 2.7],note="Singular-noun entities + verb relationships make the diagram self-explanatory and become clean table/column names after mapping.",fs=11)
 
 concept_understand("S9 · Concept 3 · [THEORY]","Design Issue: Attribute vs Entity",
     "The hard modelling choices are about WHAT should be WHAT. Key rule: if a concept has its own attributes or its own relationships, model it as an entity; otherwise an attribute is enough.",
@@ -264,6 +310,19 @@ concept_apply("S9 · Concept 3 · [THEORY]","Design Issue: Attribute vs Entity",
     "\"More entities = better design.\" No — over-modelling adds needless complexity. Model something as its own entity only when it genuinely carries its own attributes or relationships.",
     "Model a concept as its own entity when it has its own attributes and/or participates in its own relationships (e.g. CATEGORY, MERCHANT); keep it as an attribute when it is a plain value with no data of its own (e.g. colour, status). Avoid over-modelling.",
     "attribute-vs-entity decision  ·  attribute-vs-relationship  ·  over-modelling  ·  'has its own attributes/relationships' test")
+add_table_slide("S9 · Concept 3 · examples","Attribute or its own entity? — the 'own data/relationships' test",
+    ["Concept", "Attribute or Entity?", "Why (the test)", "If modelled the wrong way…"],
+    [
+     ["Product colour (Daraz)", "Attribute", "a plain value with no data of its own", "a needless, almost-empty table (over-modelling)"],
+     ["Category (Daraz)", "Entity", "has name, parent, icon; groups many products", "nowhere to store category data if kept as text"],
+     ["Merchant (eSewa)", "Entity", "has PAN, settlement account, many transactions", "merchant details and links are lost"],
+     ["Order status (pending/paid)", "Attribute", "just one value per order", "over-modelling — an entity adds needless complexity"],
+     ["Restaurant (Foodmandu)", "Entity", "has name, location, menu, relationships", "can't relate its dishes or ratings"],
+     ["Delivery address", "Entity / multivalued composite", "a customer has many; it has parts", "can't store a customer's several addresses"],
+     ["Cuisine label (Foodmandu)", "Attribute", "usually just a tag on a restaurant", "an extra table for no benefit"],
+     ["Rating value", "Attribute of a review", "a single numeric value", "over-modelling if promoted to an entity"],
+    ],
+    per_page=8,widths=[1.9, 1.9, 2.7, 2.5],note="Model a concept as its own entity ONLY when it has its own attributes and/or relationships; otherwise an attribute is enough. Don't over-model.",fs=11)
 
 add_activity("Attribute or entity?",
     ["In pairs (3 min): for a Foodmandu-style app, classify each of — cuisine, restaurant, delivery-address, rating.",
@@ -305,6 +364,18 @@ concept_apply("S10 · Concept 1 · [THEORY]","Degree Revisited: Binary, Ternary,
     "\"Higher-degree relationships are everywhere.\" Actually most designs are binary; reach for ternary only when a fact genuinely ties three entity types together in one instance.",
     "The degree of a relationship is the number of entity types participating. Binary = 2, ternary = 3, n-ary = n. A ternary (e.g. SUPPLIES(SUPPLIER, PART, PROJECT)) associates three entity types in one fact, drawn as one diamond connected to three rectangles.",
     "degree  ·  binary (2)  ·  ternary (3)  ·  n-ary  ·  one diamond, three rectangles")
+add_table_slide("S10 · Concept 1 · examples","Real relationships classified by degree",
+    ["Relationship (example)", "Degree", "Entity types it connects", "Why that degree"],
+    [
+     ["STUDENT — ENROLLS — COURSE", "Binary (2)", "STUDENT, COURSE", "one fact links exactly two types"],
+     ["CUSTOMER — PLACES — ORDER (Daraz)", "Binary (2)", "CUSTOMER, ORDER", "a two-way fact — most designs are binary"],
+     ["EMPLOYEE — MANAGES — EMPLOYEE", "Recursive (2)", "EMPLOYEE with itself", "same entity type plays two roles"],
+     ["SUPPLIES(SUPPLIER, PART, PROJECT)", "Ternary (3)", "SUPPLIER, PART, PROJECT", "one fact ties three things together"],
+     ["TEACHES(TEACHER, COURSE, ROOM)", "Ternary (3)", "TEACHER, COURSE, ROOM", "a timetable fact of three at once"],
+     ["PRESCRIBES(DOCTOR, PATIENT, DRUG)", "Ternary (3)", "DOCTOR, PATIENT, DRUG", "three-way fact in one instance"],
+     ["DELIVERS(RIDER, ORDER, ADDRESS)", "Ternary (3)", "RIDER, ORDER, ADDRESS", "one delivery ties three entities"],
+    ],
+    per_page=7,widths=[3.0, 1.4, 2.5, 2.4],note="Degree = how many entity types the diamond touches. Binary (2) is by far the most common; ternary (3) is occasional; n > 3 is rare.",fs=11)
 
 concept_understand("S10 · Concept 2 · [THEORY]","Why a Ternary Is NOT Three Binaries",
     "Replacing a ternary with three binary relationships often LOSES information, because the binaries record pairwise facts but not the combination of all three.",
@@ -319,6 +390,17 @@ concept_apply("S10 · Concept 2 · [THEORY]","Why a Ternary Is NOT Three Binarie
     "\"Any ternary can be split into three binaries without loss.\" False — pairwise facts can't capture that three entities were associated together in one instance. Use a ternary (or an associative entity).",
     "Three binary relationships record only pairwise facts; they cannot capture that the three entities were associated together in one instance (S–P, P–J, S–J do not imply S supplied P to J). When the meaning is in the combination, a single ternary or an associative entity is required.",
     "ternary ≠ three binaries  ·  loss of the combined fact  ·  pairwise vs three-way association")
+add_table_slide("S10 · Concept 2 · examples","The combined fact three binaries silently lose",
+    ["Scenario", "The three binaries record…", "The combined fact they LOSE", "Correct model"],
+    [
+     ["Procurement", "S–P, P–J, S–J", "that S supplied P specifically TO project J", "ternary SUPPLIES(S, P, J)"],
+     ["Foodmandu delivery", "customer–restaurant, restaurant–rider, rider–customer", "which rider carried which order from which restaurant to which customer", "ternary / associative DELIVERY"],
+     ["Pathao ride", "rider–passenger, rider–route, passenger–route", "which passenger rode which route with which rider on one trip", "associative RIDE entity"],
+     ["Hospital", "doctor–patient, doctor–drug, patient–drug", "which doctor gave which drug to which patient", "ternary PRESCRIBES"],
+     ["Timetable", "teacher–course, course–room, teacher–room", "which teacher teaches which course in which room", "ternary TEACHES"],
+     ["Project staffing", "employee–project, employee–role, project–role", "which employee holds which role on which project", "ternary WORKS_ON"],
+    ],
+    per_page=6,widths=[1.4, 2.6, 3.0, 2.0],note="Pairwise facts can't capture that three entities were associated together in one instance. When the meaning is in the combination, use a ternary or an associative entity.",fs=11)
 
 concept_understand("S10 · Concept 3 · [THEORY]","Constraints & the Associative Entity",
     "A cleaner alternative to a bare n-ary diamond is the associative (intermediate) entity: replace the diamond with a rectangle linked to each participant — especially when the relationship has its own attributes.",
@@ -333,6 +415,18 @@ concept_apply("S10 · Concept 3 · [THEORY]","Constraints & the Associative Enti
     "Forcing a relationship-with-its-own-attributes to stay a diamond makes the model awkward and hard to map. When it has its own data, promote it to an associative entity.",
     "An associative (intermediate) entity replaces a relationship (often ternary/n-ary) with a rectangle linked to each participant. Use it when the relationship needs its own attributes or relationships, or to make a higher-degree association clearer — e.g. DELIVERY linking CUSTOMER, RESTAURANT, RIDER with time/fee/status.",
     "associative / intermediate entity  ·  n-ary cardinality  ·  'prefer binary'  ·  relationship with its own attributes")
+add_table_slide("S10 · Concept 3 · examples","When a relationship should become an associative entity",
+    ["Relationship", "Its own attributes", "Model it as…", "Why"],
+    [
+     ["DELIVERY (CUSTOMER, RESTAURANT, RIDER)", "time, fee, status", "associative entity DELIVERY", "relationship carries its own data"],
+     ["RIDE (RIDER, PASSENGER, ROUTE) — Pathao", "fare, distance, rating", "associative entity RIDE", "own attributes make a diamond awkward"],
+     ["STUDENT — ENROLLS — COURSE", "grade, semester", "associative / junction ENROLLS", "the attribute 'grade' lives on the link"],
+     ["ORDER — contains — PRODUCT (Daraz)", "quantity, price", "associative ORDER_ITEM", "per-item data belongs on the link"],
+     ["SUPPLIES(SUPPLIER, PART, PROJECT)", "quantity, delivery date", "associative SUPPLY", "clarifies the ternary and holds its data"],
+     ["CUSTOMER — OWNS — ACCOUNT (bank)", "none (maybe open date)", "keep as a plain binary relationship", "no own data → don't over-model"],
+     ["STUDENT — ADVISES — TEACHER", "none", "plain binary relationship", "a simple diamond is enough"],
+    ],
+    per_page=7,widths=[2.7, 2.0, 2.5, 2.3],note="Prefer binary. Promote a relationship to an associative (intermediate) entity when it needs its own attributes/relationships, or to make a higher-degree association clearer.",fs=11)
 
 add_activity("Ternary or associative?",
     ["In pairs (3 min): model a Pathao ride involving RIDER, PASSENGER, and ROUTE.",
@@ -374,6 +468,18 @@ concept_apply("S11 · Concept 1 · [THEORY]","Specialization & Generalization",
     "\"Specialization and generalization are different tools.\" They're inverse directions of the SAME idea — both produce an is-a hierarchy with inheritance; only the direction of thinking differs.",
     "Specialization is top-down: splitting a superclass into subclasses that inherit its attributes and add specific ones (EMPLOYEE → ENGINEER, SECRETARY). Generalization is bottom-up: combining similar entity types into a superclass (CAR, TRUCK → VEHICLE). Both create an is-a hierarchy with inheritance; they are inverse directions of one idea.",
     "superclass / subclass  ·  specialization (top-down)  ·  generalization (bottom-up)  ·  is-a  ·  inheritance  ·  EER")
+add_table_slide("S11 · Concept 1 · examples","Is-a hierarchies — and the direction of thinking",
+    ["Superclass", "Subclasses", "Specific attribute each adds", "Direction"],
+    [
+     ["ACCOUNT (bank)", "SAVINGS, CURRENT", "interest_rate / overdraft_limit", "specialization (top-down)"],
+     ["EMPLOYEE", "ENGINEER, SECRETARY, TECHNICIAN", "licence_no / typing_speed / skill_grade", "specialization (top-down)"],
+     ["USER (Daraz)", "CUSTOMER, SELLER", "default_address / store_name, PAN", "specialization (top-down)"],
+     ["USER (Nagarik App)", "CITIZEN, GOVT_EMPLOYEE, BUSINESS_OWNER", "citizenship_no / office_id / PAN", "specialization (top-down)"],
+     ["PERSON (college)", "STUDENT, STAFF", "roll_no / staff_id", "specialization (top-down)"],
+     ["VEHICLE", "CAR, TRUCK", "seat_count / load_capacity", "generalization (bottom-up)"],
+     ["PAYMENT (eSewa)", "WALLET_PAY, BANK_PAY, CARD_PAY", "wallet_id / bank_ref / card_no", "generalization (bottom-up)"],
+    ],
+    per_page=7,widths=[1.8, 2.4, 3.0, 2.0],note="Specialization splits a superclass down; generalization combines similar entities up. Both produce an is-a hierarchy with attribute inheritance — inverse directions of one idea.",fs=11)
 
 concept_understand("S11 · Concept 2 · [THEORY]","Constraints: Disjoint/Overlap × Total/Partial",
     "Two independent constraints govern a specialization: disjointness (how many subclasses an entity can join) and completeness (whether it must join one). Together they give four combinations.",
@@ -388,6 +494,19 @@ concept_apply("S11 · Concept 2 · [THEORY]","Constraints: Disjoint/Overlap × T
     "\"Subclasses are always mutually exclusive.\" Not so — overlap is allowed and common (a teaching assistant is both student and staff). Choose disjoint vs overlap from the real rules.",
     "Two constraints. Disjointness: disjoint (d) — an entity is in at most one subclass; overlap (o) — it may be in several. Completeness: total — every superclass entity must be in some subclass (double line); partial — some need not be. They are independent → four combinations, e.g. ACCOUNT→SAVINGS/CURRENT is disjoint-total.",
     "disjoint (d)  ·  overlap (o)  ·  total (double line)  ·  partial  ·  completeness vs disjointness  ·  four combinations")
+add_table_slide("S11 · Concept 2 · examples","One example per constraint combination",
+    ["Specialization example", "Disjoint or Overlap?", "Total or Partial?", "Why"],
+    [
+     ["Bank ACCOUNT → SAVINGS / CURRENT", "Disjoint (d)", "Total", "one type only; every account has one"],
+     ["EMPLOYEE → PERMANENT / CONTRACT", "Disjoint (d)", "Total", "exactly one; every employee is one of them"],
+     ["VEHICLE → CAR / TRUCK / BIKE", "Disjoint (d)", "Total", "a vehicle is exactly one kind"],
+     ["College PERSON → STUDENT / STAFF", "Overlap (o)", "Partial", "a TA is both; a visitor is neither"],
+     ["Daraz USER → CUSTOMER / SELLER", "Overlap (o)", "Partial", "can both buy & sell; a new user may be neither yet"],
+     ["Nagarik USER → CITIZEN / GOVT_EMP / BUSINESS", "Overlap (o)", "Partial", "a govt employee is also a citizen"],
+     ["Hospital PERSON → PATIENT / DOCTOR", "Overlap (o)", "Partial", "a doctor can also be a patient; a visitor neither"],
+     ["ACCOUNT → SAVINGS / CURRENT / LOAN", "Disjoint (d)", "Partial", "one type, but some accounts fit none of these"],
+    ],
+    per_page=8,widths=[3.0, 1.7, 1.6, 2.7],note="Disjoint/overlap = how many subclasses an entity may join; total/partial = whether it must join one. The two are independent → four combinations.",fs=11)
 
 concept_understand("S11 · Concept 3 · [THEORY]","Attribute Inheritance & Specific Attributes",
     "A subclass inherits all attributes (and relationships) of its superclass, and then adds its own specific (local) attributes. This is why factoring shared attributes up into a superclass avoids repetition.",
@@ -402,6 +521,19 @@ concept_apply("S11 · Concept 3 · [THEORY]","Attribute Inheritance & Specific A
     "Repeating the shared columns in every subclass table is the smell that you skipped generalization — factor the common attributes up into the superclass instead.",
     "A subclass automatically receives all attributes and relationships of its superclass (inheritance) and adds its own specific attributes. E.g. SAVINGS and CURRENT inherit ACCOUNT's acc_no/holder/balance; SAVINGS adds interest_rate, CURRENT adds overdraft_limit.",
     "attribute inheritance  ·  specific / local attribute  ·  inherited relationships  ·  factoring shared attributes upward")
+add_table_slide("S11 · Concept 3 · examples","Inherit the shared, add the specific",
+    ["Superclass", "Subclass", "Inherits (shared attributes)", "Adds (specific attribute)"],
+    [
+     ["ACCOUNT", "SAVINGS", "acc_no, holder, balance", "interest_rate"],
+     ["ACCOUNT", "CURRENT", "acc_no, holder, balance", "overdraft_limit"],
+     ["EMPLOYEE", "ENGINEER", "id, name, salary", "engineering licence_no"],
+     ["EMPLOYEE", "SECRETARY", "id, name, salary", "typing_speed"],
+     ["USER (Daraz)", "CUSTOMER", "user_id, name, phone", "default_address"],
+     ["USER (Daraz)", "SELLER", "user_id, name, phone", "store_name, PAN"],
+     ["VEHICLE", "CAR", "vehicle_id, brand, price", "seat_count"],
+     ["VEHICLE", "TRUCK", "vehicle_id, brand, price", "load_capacity"],
+    ],
+    per_page=8,widths=[1.5, 1.6, 2.6, 2.4],note="Shared attributes (and relationships) live once in the superclass and are inherited by every subclass; each subclass adds only its own local attributes.",fs=11)
 
 add_activity("Classify the specialization",
     ["In pairs (3 min): for a platform USER → CUSTOMER and SELLER…",
@@ -444,6 +576,19 @@ concept_apply("S12 · Concept 1 · [THEORY]","The 7-Step Mapping Algorithm",
     "Mapping by intuition instead of the algorithm is where schemas go wrong. Apply the seven cases mechanically and the tables fall out correctly every time.",
     "(1) strong entity → table + PK; (2) weak entity → table with owner PK + partial key; (3) 1:1 → FK on one (total) side; (4) 1:N → FK on the N side; (5) M:N → junction table with both PKs; (6) multivalued attribute → separate table; (7) n-ary → table with all participants' keys. Composite attributes flatten; derived attributes are not stored.",
     "mapping algorithm  ·  foreign key  ·  junction table  ·  composite → flatten  ·  derived → omit")
+add_table_slide("S12 · Concept 1 · examples","Each ER construct → its relational result",
+    ["ER construct", "Maps to…", "Worked example"],
+    [
+     ["Strong entity", "a table + primary key", "STUDENT → STUDENT(roll_no PK, name)"],
+     ["Weak entity", "table with owner PK + partial key", "DEPENDENT → DEPENDENT(emp_id FK, dep_name); PK=(emp_id, dep_name)"],
+     ["1:1 relationship", "FK on one (total) side", "EMPLOYEE—HEADS—DEPARTMENT → head_id in DEPARTMENT"],
+     ["1:N relationship", "FK on the N (many) side", "DEPARTMENT 1:N EMPLOYEE → dept_id in EMPLOYEE"],
+     ["M:N relationship", "new junction table (both PKs)", "STUDENT M:N COURSE → ENROLLS(roll_no, course_id)"],
+     ["Multivalued attribute", "a separate table", "student phones → STUDENT_PHONE(roll_no, phone)"],
+     ["n-ary relationship", "table with all participants' keys", "SUPPLIES(supplier_id, part_id, project_id)"],
+     ["Composite / derived attr", "flatten into columns / not stored", "address → street, city; age is computed, never stored"],
+    ],
+    per_page=8,widths=[1.9, 2.6, 3.5],note="The algorithm is mechanical: learn the seven cases (plus composite→flatten, derived→omit) and any ER diagram converts to tables the same way every time.",fs=11)
 
 concept_understand("S12 · Concept 2 · [THEORY]","Mapping 1:N — Foreign Key on the N Side",
     "For a 1:N relationship the foreign key goes on the MANY side — each 'many' row points to its one partner. Putting it on the 'one' side would need a multi-valued column.",
@@ -458,6 +603,18 @@ concept_apply("S12 · Concept 2 · [THEORY]","Mapping 1:N — Foreign Key on the
     "\"Put the FK on the 1 side.\" Then the one row must hold many foreign values in a single column — non-atomic, breaks 1NF, and makes queries and updates unreliable. FK always goes on the N side.",
     "In a 1:N relationship the foreign key goes on the N (many) side, because each many-side row relates to exactly one entity on the one side, so a single FK column suffices. Placing it on the one side would require a multi-valued (non-atomic) column.",
     "1:N mapping  ·  foreign key placement  ·  N-side FK  ·  atomic column (1NF preview)")
+add_table_slide("S12 · Concept 2 · examples","Where the foreign key lives in a 1:N relationship",
+    ["1:N relationship", "One side", "Many (N) side — gets the FK", "Resulting FK column"],
+    [
+     ["DEPARTMENT — has — EMPLOYEE", "DEPARTMENT", "EMPLOYEE", "EMPLOYEE.dept_id"],
+     ["CUSTOMER — places — ORDER (Daraz)", "CUSTOMER", "ORDER", "ORDER.customer_id"],
+     ["DEPARTMENT — offers — COURSE", "DEPARTMENT", "COURSE", "COURSE.dept_id"],
+     ["USER — makes — TRANSACTION (eSewa)", "USER", "TRANSACTION", "TRANSACTION.user_id"],
+     ["CITY — has — BRANCH (bank)", "CITY", "BRANCH", "BRANCH.city_id"],
+     ["RESTAURANT — has — DISH (Foodmandu)", "RESTAURANT", "DISH", "DISH.restaurant_id"],
+     ["PUBLISHER — prints — BOOK (library)", "PUBLISHER", "BOOK", "BOOK.publisher_id"],
+    ],
+    per_page=7,widths=[2.7, 1.7, 2.4, 2.2],note="The FK always goes on the N side, because each many-side row relates to exactly one partner — one FK column suffices. On the '1' side it would need a non-atomic multi-valued column (breaks 1NF).",fs=11)
 
 concept_understand("S12 · Concept 3 · [THEORY]","Mapping M:N — the Junction Table",
     "An M:N relationship cannot be a single foreign key on either side. It maps to a NEW junction table whose rows are pairs of the two entities' primary keys.",
@@ -472,6 +629,18 @@ concept_apply("S12 · Concept 3 · [THEORY]","Mapping M:N — the Junction Table
     "\"Store M:N as a comma-separated list of ids in a column.\" Then you can't query/aggregate one product cleanly and can't attach per-item data like quantity. The junction table solves both.",
     "An M:N relationship maps to a new junction table whose composite primary key is the two participating entities' primary keys (each a foreign key); any attributes of the relationship become columns of the junction table (e.g. ENROLLS date/grade). Example: STUDENT–COURSE → ENROLLS(roll_no, course_id).",
     "junction / relationship table  ·  composite primary key  ·  relationship attributes → junction  ·  one row per pair")
+add_table_slide("S12 · Concept 3 · examples","Every M:N relationship becomes a junction table",
+    ["M:N relationship", "Junction table", "Composite PK (both FKs)", "Relationship attributes inside"],
+    [
+     ["STUDENT — ENROLLS — COURSE", "ENROLLS", "(roll_no, course_id)", "grade, semester"],
+     ["ORDER — contains — PRODUCT (Daraz)", "ORDER_ITEM", "(order_id, product_id)", "quantity, price"],
+     ["MEMBER — borrows — BOOK (library)", "BORROWS", "(member_id, book_id)", "borrow_date, due_date"],
+     ["DOCTOR — treats — PATIENT (hospital)", "TREATS", "(doctor_id, patient_id)", "visit_date, notes"],
+     ["STUDENT — joins — CLUB (college)", "MEMBERSHIP", "(roll_no, club_id)", "join_date, role"],
+     ["USER — follows — SHOP (Daraz)", "FOLLOWS", "(user_id, shop_id)", "followed_on"],
+     ["ACCOUNT — signs — SCHEME (bank)", "SUBSCRIPTION", "(acc_no, scheme_id)", "start_date"],
+    ],
+    per_page=7,widths=[2.5, 1.6, 2.3, 2.4],note="One row per pair; the two PKs together form the composite primary key (each half a FK). Any attribute of the relationship (grade, quantity, date) lives in the junction table — never in either entity.",fs=11)
 
 concept_understand("S12 · Concept 4 · [THEORY]","Common Mapping Mistakes",
     "Three recurring errors turn a clean design into a buggy schema. Knowing them is half of getting mapping right.",
@@ -486,6 +655,18 @@ concept_apply("S12 · Concept 4 · [THEORY]","Common Mapping Mistakes",
     "All three feel convenient at the keyboard and cost dearly later. Follow the algorithm: junction table for M:N, FK on the N side, and omit derived attributes.",
     "Common mistakes: (1) M:N stored as a multi-valued column instead of a junction table; (2) 1:N foreign key placed on the one side instead of the N side; (3) storing derived attributes rather than computing them. Correct: junction table for M:N, FK on the N side, omit derived attributes.",
     "non-atomic column  ·  FK-placement error  ·  storing-derived error  ·  subclass mapping options")
+add_table_slide("S12 · Concept 4 · examples","The recurring mistakes — and their fixes",
+    ["Mistake", "Why it's wrong", "Correct fix", "Symptom months later"],
+    [
+     ["M:N as a comma-list of ids in a column", "non-atomic, breaks 1NF, unqueryable", "a junction table", "can't aggregate one product; slow, buggy reports"],
+     ["1:N foreign key on the '1' side", "one row must hold many ids", "FK on the N (many) side", "multi-valued column; unreliable updates"],
+     ["Storing a derived value (age, order total)", "it drifts out of date", "compute it on read", "totals no longer match the line items"],
+     ["Multivalued attr kept as one field ('phones')", "non-atomic value", "a separate table", "can't search or index one phone number"],
+     ["Weak entity without the owner's PK", "rows aren't uniquely identifiable", "owner PK + partial key", "duplicate or orphan rows"],
+     ["Composite attr kept as one field ('address')", "components can't be queried", "flatten into street, city, …", "can't filter customers by city"],
+     ["No primary key chosen for a table", "duplicate rows allowed", "always pick a primary key", "data integrity silently lost"],
+    ],
+    per_page=7,widths=[2.4, 2.2, 2.1, 2.5],note="All feel convenient at the keyboard and cost dearly later. Follow the algorithm: junction table for M:N, FK on the N side, omit derived data, separate table for multivalued/weak.",fs=11)
 
 add_solved_problem("S12 · Capstone Solved Problem","Map a college ER diagram to tables",
     "Map a college ER: STUDENT and COURSE (M:N ENROLLS, with a grade), DEPARTMENT (1:N with STUDENT), "

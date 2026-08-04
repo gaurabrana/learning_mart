@@ -1,0 +1,240 @@
+[
+  {
+    "heading": "What Relational Algebra Is",
+    "kicker": "S13 · Concept 1 · examples",
+    "title": "The eight relational-algebra operators at a glance",
+    "headers": ["Operator", "Symbol", "What it does (plain English)", "Example expression", "Returns"],
+    "rows": [
+      ["SELECT", "σ", "keep ROWS meeting a condition", "σ city='Pokhara'(Student)", "Sita, Ram (Pokhara rows)"],
+      ["PROJECT", "π", "keep chosen COLUMNS", "π name(Student)", "just the name column"],
+      ["UNION", "∪", "rows in either table", "π sid(BIM) ∪ π sid(BBA)", "all sids from both"],
+      ["DIFFERENCE", "−", "rows in R but not in S", "AllStudent − Graduated", "currently active students"],
+      ["PRODUCT", "×", "pair every row with every row", "Student × Course", "all sid–course pairings"],
+      ["JOIN", "⋈", "product kept to matching rows", "Student ⋈ Enrollment", "each student with their courses"],
+      ["DIVISION", "÷", "rows related to ALL of a set", "Enrollment ÷ CoreCourse", "students in every core course"],
+      ["RENAME", "ρ", "rename a relation / its columns", "ρ S(Student)", "Student re-labelled S"]
+    ],
+    "per_page": 8,
+    "widths": [1.4, 0.7, 2.6, 2.6, 2.4],
+    "note": "Every operator takes relation(s) in and gives a relation out (closure) — so they chain into big queries. Sample schema: Student(sid,name,program,city), Enrollment(sid,course,grade), Course(cid,title).",
+    "fs": 11
+  },
+  {
+    "heading": "SELECT (σ) & PROJECT (π) — the unary operations",
+    "kicker": "S13 · Concept 2 · examples",
+    "title": "σ (rows) vs π (columns) — worked on the sample Student table",
+    "headers": ["Expression", "Operation", "Cut", "Result on sample", "Rows × Cols"],
+    "rows": [
+      ["σ city='Pokhara'(Student)", "SELECT (σ)", "horizontal (rows)", "Sita, Ram", "2 × 4"],
+      ["σ program='BIM'(Student)", "SELECT (σ)", "horizontal (rows)", "Sita, Hari", "2 × 4"],
+      ["σ sid>2(Student)", "SELECT (σ)", "horizontal (rows)", "Ram, Gita", "2 × 4"],
+      ["π name(Student)", "PROJECT (π)", "vertical (cols)", "Sita, Hari, Ram, Gita", "4 × 1"],
+      ["π program(Student)", "PROJECT (π)", "vertical (cols)", "BIM, BBA, BScCSIT (dups dropped)", "3 × 1"],
+      ["π name(σ city='Pokhara'(Student))", "σ then π", "both", "Sita, Ram", "2 × 1"]
+    ],
+    "per_page": 6,
+    "widths": [3.0, 1.4, 1.5, 2.6, 1.1],
+    "note": "σ changes the row count but keeps the schema; π changes the columns and auto-removes duplicate rows. SQL's SELECT keyword actually does π's job (columns), not σ's.",
+    "fs": 11
+  },
+  {
+    "heading": "UNION (∪), INTERSECTION (∩), DIFFERENCE (−)",
+    "kicker": "S14 · Concept 1 · examples",
+    "title": "Set operations on DbmsStudents={1,2,3} and JavaStudents={1,3}",
+    "headers": ["Set operation", "Expression", "Reads as", "Result", "Union-compatible?"],
+    "rows": [
+      ["UNION (∪)", "Dbms ∪ Java", "sid in DBMS OR Java", "{1, 2, 3}", "Yes — both are (sid)"],
+      ["INTERSECTION (∩)", "Dbms ∩ Java", "sid in BOTH", "{1, 3}", "Yes"],
+      ["DIFFERENCE (−)", "Dbms − Java", "in DBMS, not Java", "{2}  (only Hari)", "Yes"],
+      ["DIFFERENCE (−)", "Java − Dbms", "in Java, not DBMS", "{ }  empty — order matters", "Yes"],
+      ["UNION (∪)", "Morning ∪ Day", "merge both shift lists", "one de-duplicated list", "Yes — same (sid,name,…)"],
+      ["UNION (∪)", "Student ∪ Enrollment", "4 cols vs 3 cols", "✗ ERROR", "No — not union-compatible"]
+    ],
+    "per_page": 6,
+    "widths": [1.6, 2.1, 2.3, 2.1, 1.7],
+    "note": "All three need union-compatible relations (same number of attributes, matching domains). DIFFERENCE is NOT commutative. Duplicates are removed (set semantics).",
+    "fs": 11
+  },
+  {
+    "heading": "CARTESIAN PRODUCT (×)",
+    "kicker": "S14 · Concept 2 · examples",
+    "title": "× arithmetic — degree = sum, cardinality = product",
+    "headers": ["Expression", "R: deg × card", "S: deg × card", "Result degree (sum)", "Result card. (product)", "Note"],
+    "rows": [
+      ["Student × Course", "4 × 4", "2 × 3", "6", "12", "most pairings meaningless"],
+      ["Student × Enrollment", "4 × 4", "3 × 5", "7", "20", "raw material for a JOIN"],
+      ["σ sid=sid(Student × Enrollment)", "—", "—", "7", "5", "filtered → this IS the JOIN"],
+      ["R × S, |R|=5, |S|=4", "deg 3, 5 rows", "deg 2, 4 rows", "5", "20", "cardinality = product"],
+      ["Course × CoreCourse", "2 × 3", "1 × 2", "3", "6", "no union-compatibility needed"],
+      ["Enrollment × Course", "3 × 5", "2 × 3", "5", "15", "huge; filter to keep sense"]
+    ],
+    "per_page": 6,
+    "widths": [3.2, 1.3, 1.3, 1.4, 1.5, 2.0],
+    "note": "× pairs every tuple of R with every tuple of S; degree = sum of degrees, cardinality = product of cardinalities; no compatibility needed. Alone it is meaningless — a following σ turns it into a JOIN.",
+    "fs": 10
+  },
+  {
+    "heading": "JOIN: from × to the Theta Join (⋈)",
+    "kicker": "S15 · Concept 1 · examples",
+    "title": "A join is × + σ — theta joins on any comparison θ",
+    "headers": ["Join expression", "θ operator", "What it keeps", "Result on sample"],
+    "rows": [
+      ["R ⋈θ S  ≡  σθ(R × S)", "any of = < > ≤ ≥ ≠", "product filtered by θ", "(the definition of a join)"],
+      ["Student ⋈(S.sid=E.sid) Enrollment", "= (equijoin)", "pairs with matching sid", "5 rows: Sita–DBMS, Sita–Java, Hari–DBMS, Ram–DBMS, Ram–Java"],
+      ["Student ⋈(marks ≥ Slab.min) Slab", "≥ (theta)", "each student in a scholarship band", "Sita→50%, Ram→25%"],
+      ["Emp ⋈(E.sal > M.sal) Manager", "> (theta)", "staff earning more than manager", "only over-paying pairs"],
+      ["Course ⋈(C.credit ≤ 3) LightLoad", "≤ (theta)", "courses within a credit cap", "the 3-credit courses"],
+      ["Applicant ⋈(A.score ≠ 0) Sat", "≠ (theta)", "applicants who actually sat", "non-zero scorers"]
+    ],
+    "per_page": 6,
+    "widths": [2.9, 1.3, 2.6, 3.2],
+    "note": "Every join is a Cartesian product (×) followed by a selection (σ) on the join condition θ. θ using only '=' is an equijoin (next concept).",
+    "fs": 10
+  },
+  {
+    "heading": "Equijoin vs Natural Join (⋈)",
+    "kicker": "S15 · Concept 2 · comparison",
+    "title": "Equijoin vs Natural join — same match, different result schema",
+    "headers": ["Aspect", "Equijoin (⋈=)", "Natural join (⋈)"],
+    "rows": [
+      ["Condition", "explicit equality, e.g. S.sid = E.sid", "implicit on ALL same-named attrs (sid)"],
+      ["Join column", "appears TWICE (both sid columns kept)", "appears ONCE (duplicate dropped)"],
+      ["Expression", "Student ⋈(S.sid=E.sid) Enrollment", "Student ⋈ Enrollment"],
+      ["Result schema", "sid, name, program, city, sid, course, grade", "sid, name, program, city, course, grade"],
+      ["Matches by", "the written condition", "identical attribute NAME (not position)"],
+      ["Rename risk", "unaffected by renaming", "ρ(sid→roll) breaks it → becomes a product"]
+    ],
+    "per_page": 6,
+    "widths": [1.7, 3.0, 3.0],
+    "note": "Natural join = equijoin on same-named attributes + drop the duplicate column. It matches by NAME, so a rename can silently turn it into a Cartesian product.",
+    "fs": 11
+  },
+  {
+    "heading": "DIVISION (÷)",
+    "kicker": "S15 · Concept 3 · examples",
+    "title": "Division answers 'related to ALL of a set' (universal 'for all')",
+    "headers": ["R ÷ S query", "R (dividend)", "S (divisor)", "Result", "Why"],
+    "rows": [
+      ["students in ALL core courses", "Enrollment(sid,course)", "CoreCourse = {DBMS, Java}", "{1, 3}  (Sita, Ram)", "took every required course"],
+      ["...why Hari drops out", "Enrollment(sid,course)", "{DBMS, Java}", "Hari(2) excluded", "took DBMS only, not Java"],
+      ["riders covering EVERY district", "Coverage(rider,district)", "ValleyDistrict", "riders in all districts", "'for all' districts"],
+      ["suppliers who supply ALL parts", "Supply(sup,part)", "Part", "suppliers with every part", "classic division example"],
+      ["students who cleared ALL sems", "Result(sid,sem)", "AllSem", "sid passing every sem", "graduation eligibility"],
+      ["S has one course {DBMS}", "Enrollment(sid,course)", "{DBMS}", "{1, 2, 3}", "'for all' over a 1-set ≈ 'any'"]
+    ],
+    "per_page": 6,
+    "widths": [2.4, 2.3, 2.0, 1.7, 2.1],
+    "note": "R ÷ S returns tuples of R related to EVERY tuple of S — universal ('for all'), NOT existential ('any'). 'Any' is a simple σ / JOIN; 'all' is division.",
+    "fs": 10
+  },
+  {
+    "heading": "Aggregate Functions & Grouping (ℱ)",
+    "kicker": "S16 · Concept 1 · examples",
+    "title": "Grouping (ℱ): partition rows, then summarize each group",
+    "headers": ["Aggregate expression", "Groups by", "Function", "Result on sample"],
+    "rows": [
+      ["ℱ COUNT(sid)(Student)", "(none — whole table)", "COUNT", "4 students"],
+      ["program ℱ COUNT(sid)(Student)", "program", "COUNT", "BIM: 2, BBA: 1, BScCSIT: 1"],
+      ["course ℱ COUNT(sid)(Enrollment)", "course", "COUNT", "DBMS: 3, Java: 2"],
+      ["course ℱ AVG(grade)(Enrollment)", "course", "AVG", "average grade per course"],
+      ["city ℱ COUNT(sid)(Student)", "city", "COUNT", "Pokhara: 2, Kathmandu: 1, Butwal: 1"],
+      ["merchant ℱ SUM(amount)(Txn)", "merchant", "SUM", "total collected per merchant (Khalti)"]
+    ],
+    "per_page": 6,
+    "widths": [3.0, 1.7, 1.2, 3.0],
+    "note": "<grouping attrs> ℱ <functions>(R) partitions R by the grouping attributes, then produces one summary row per group. ℱ is an EXTENDED (not one of the basic) operations.",
+    "fs": 11
+  },
+  {
+    "heading": "Outer Joins (⟕ ⟖ ⟗)",
+    "kicker": "S16 · Concept 2 · examples",
+    "title": "Inner vs outer — Gita (sid 4) has no enrolment",
+    "headers": ["Join", "Keeps", "Unmatched rows", "Result on Student / Enrollment"],
+    "rows": [
+      ["Inner (natural) ⋈", "only matching sid", "dropped", "5 rows; Gita hidden"],
+      ["LEFT outer ⟕", "all LEFT (Student) rows", "kept, right side = NULL", "6 rows; Gita with course=NULL, grade=NULL"],
+      ["RIGHT outer ⟖", "all RIGHT (Enrollment) rows", "kept, left side = NULL", "orphan enrolments kept (none here → 5 rows)"],
+      ["FULL outer ⟗", "all rows from BOTH", "both sides padded NULL", "6 rows; Gita + any orphan enrolments"],
+      ["Account ⟕ Transaction", "all accounts", "zero-txn accounts kept", "dormant accounts appear (NULL txns)"],
+      ["Student ⋈ Enrollment (inner)", "matches only", "dropped", "a new admit with no enrolment vanishes"]
+    ],
+    "per_page": 6,
+    "widths": [1.7, 2.2, 2.2, 3.4],
+    "note": "Outer joins keep unmatched tuples, padding the missing side with NULL: LEFT (⟕) all left rows, RIGHT (⟖) all right rows, FULL (⟗) both. An inner join silently drops them.",
+    "fs": 11
+  },
+  {
+    "heading": "Tuple Relational Calculus (TRC)",
+    "kicker": "S16 · Concept 3 · examples",
+    "title": "Same query as algebra (HOW) and TRC (WHAT)",
+    "headers": ["Query in English", "Relational algebra (HOW)", "Tuple calculus — TRC (WHAT)"],
+    "rows": [
+      ["names of BIM students", "π name(σ program='BIM'(Student))", "{ t.name | t ∈ Student ∧ t.program='BIM' }"],
+      ["students from Pokhara", "σ city='Pokhara'(Student)", "{ t | t ∈ Student ∧ t.city='Pokhara' }"],
+      ["students enrolled in ≥ 1 course", "Student ⋈ π sid(Enrollment)", "{ t | t ∈ Student ∧ ∃e(e∈Enrollment ∧ e.sid=t.sid) }"],
+      ["names of DBMS students", "π name(Student ⋈ σ course='DBMS'(Enrollment))", "{ t.name | t∈Student ∧ ∃e(e∈Enrollment ∧ e.sid=t.sid ∧ e.course='DBMS') }"],
+      ["students in ALL core courses", "Enrollment ÷ CoreCourse", "{ t | t∈Student ∧ ∀c(c∈CoreCourse → ∃e(e∈Enrollment ∧ e.sid=t.sid ∧ e.course=c.course)) }"],
+      ["students NOT enrolled anywhere", "π name(Student) − π name(Student ⋈ Enrollment)", "{ t.name | t∈Student ∧ ¬∃e(e∈Enrollment ∧ e.sid=t.sid) }"]
+    ],
+    "per_page": 6,
+    "widths": [2.1, 3.0, 3.6],
+    "note": "TRC form { t | COND(t) } uses a tuple variable t and quantifiers ∃ (exists) / ∀ (for all). Equal in power to relational algebra (relational completeness): algebra says HOW, TRC says WHAT.",
+    "fs": 10
+  },
+  {
+    "heading": "Domain Relational Calculus (DRC)",
+    "kicker": "S17 · Concept 1 · examples",
+    "title": "TRC (row variable) vs DRC (one variable per column)",
+    "headers": ["Query in English", "Tuple calculus (TRC)", "Domain calculus (DRC)"],
+    "rows": [
+      ["names of Pokhara students", "{ t.name | t∈Student ∧ t.city='Pokhara' }", "{ ⟨n⟩ | ∃s,p(⟨s,n,p,'Pokhara'⟩ ∈ Student) }"],
+      ["names of BIM students", "{ t.name | t∈Student ∧ t.program='BIM' }", "{ ⟨n⟩ | ∃s,c(⟨s,n,'BIM',c⟩ ∈ Student) }"],
+      ["all student sids", "{ t.sid | t∈Student }", "{ ⟨s⟩ | ∃n,p,c(⟨s,n,p,c⟩ ∈ Student) }"],
+      ["courses taken by sid 1", "{ e.course | e∈Enrollment ∧ e.sid=1 }", "{ ⟨co⟩ | ∃g(⟨1,co,g⟩ ∈ Enrollment) }"],
+      ["names of DBMS students", "{ t.name | t∈Student ∧ ∃e(e.sid=t.sid ∧ e.course='DBMS') }", "{ ⟨n⟩ | ∃s,p,c(⟨s,n,p,c⟩∈Student ∧ ∃g(⟨s,'DBMS',g⟩∈Enrollment)) }"],
+      ["name + city pairs", "{ ⟨t.name, t.city⟩ | t∈Student }", "{ ⟨n,c⟩ | ∃s,p(⟨s,n,p,c⟩ ∈ Student) }"]
+    ],
+    "per_page": 6,
+    "widths": [1.9, 3.2, 3.6],
+    "note": "DRC form { ⟨x1,…,xn⟩ | COND } binds one domain variable per COLUMN, positionally inside ⟨…⟩; uses ∃/∀. It underlies QBE 'fill the columns' and is equal in power to TRC and algebra.",
+    "fs": 10
+  },
+  {
+    "heading": "TRC vs DRC · Safety of Expressions",
+    "kicker": "S17 · Concept 2 · comparison",
+    "title": "TRC vs DRC — scope, not power; and why safety matters",
+    "headers": ["Aspect", "TRC", "DRC"],
+    "rows": [
+      ["Variable ranges over", "a whole TUPLE (row)", "a single DOMAIN VALUE (column)"],
+      ["Reference style", "t.name, t.city", "positional ⟨s, n, p, c⟩ — one var per column"],
+      ["Example", "{ t.name | t∈Student ∧ t.city='Pokhara' }", "{ ⟨n⟩ | ∃s,p(⟨s,n,p,'Pokhara'⟩∈Student) }"],
+      ["Underlies", "declarative SQL-style thinking", "QBE 'fill the columns' interfaces"],
+      ["Safe expression", "finite result, from DB values", "finite result, from DB values"],
+      ["UNSAFE example", "{ t | ¬(t∈Student) } — infinite", "{ ⟨x⟩ | ¬(⟨x⟩∈Student) } — infinite"]
+    ],
+    "per_page": 6,
+    "widths": [1.8, 3.1, 3.3],
+    "note": "TRC and DRC differ in variable SCOPE (row vs value), not power. Only SAFE expressions — finite results drawn from stored values — are allowed; a bare NOT ∈ would return an infinite set and is disallowed.",
+    "fs": 10
+  },
+  {
+    "heading": "Unit 3 Synthesis: Procedural ⇄ Declarative ⇄ SQL",
+    "kicker": "S17 · Concept 3 · examples",
+    "title": "One map: SQL ↔ relational algebra ↔ calculus",
+    "headers": ["SQL", "Relational algebra", "Reads as", "Calculus idea"],
+    "rows": [
+      ["WHERE clause", "σ (SELECT)", "filter rows", "COND(t) predicate"],
+      ["SELECT column-list", "π (PROJECT)", "keep columns", "{ t.col | … } head"],
+      ["FROM a, b WHERE a.k=b.k", "⋈ (JOIN) = σ(×)", "match rows across tables", "∃ join predicate"],
+      ["UNION / INTERSECT / EXCEPT", "∪ / ∩ / −", "combine sets", "∨ / ∧ / ∧¬"],
+      ["GROUP BY … COUNT/SUM", "ℱ (aggregate)", "summarize groups", "(extended operation)"],
+      ["LEFT / RIGHT / FULL JOIN", "⟕ / ⟖ / ⟗", "keep unmatched (NULL)", "outer semantics"],
+      ["NOT EXISTS / 'for all' pattern", "÷ (DIVISION)", "related to ALL of a set", "∀ quantifier"],
+      ["SELECT DISTINCT", "(π already de-dups)", "remove duplicate rows", "set semantics"]
+    ],
+    "per_page": 8,
+    "widths": [2.6, 2.2, 2.1, 2.1],
+    "note": "Every SQL query maps to a relational-algebra expression and an equivalent calculus formula — all relationally equivalent (relational completeness). Algebra says HOW, calculus says WHAT, SQL is the friendly syntax on top.",
+    "fs": 11
+  }
+]

@@ -129,6 +129,19 @@ concept_apply("S1 · Concept 2 · [EXAMPLE]","The Legal / Ethical Grid",
     "\"Wrong things are always illegal.\" No — the legal-but-unethical quadrant is full of everyday, perfectly-legal harm. That quadrant is exactly what this course trains you to handle.",
     "The legal/ethical grid plots an action on two independent axes (legal↔illegal, ethical↔unethical), giving four quadrants. The critical one is legal-but-unethical — technically allowed but clearly wrong — because nothing external stops you there; only your own judgment does.",
     "legal/ethical grid · four quadrants · legal-but-unethical (the danger zone) · judgment call")
+add_table_slide("S1 · Concept 2 · examples","Real instances placed on the legal/ethical grid",
+    ["Instance", "Legal?", "Ethical?", "Quadrant"],
+    [
+     ["Paying 'chiya kharcha' to push your file up the pile", "No", "No", "Illegal + Unethical"],
+     ["Sharing one paid Netflix/Canva login among 8 friends", "Grey (contract breach)", "No", "Legal-ish + Unethical"],
+     ["Using 'source-force' to skip a government-office queue", "Yes", "No", "Legal + Unethical"],
+     ["Selling legally-collected customer data without consent", "Yes", "No", "Legal + Unethical"],
+     ["Paying your taxes honestly and on time", "Yes", "Yes", "Legal + Ethical"],
+     ["Whistle-blowing on employer fraud, breaking an NDA", "No (breach)", "Yes (debated)", "Illegal + Ethical"],
+     ["A student pirating software they cannot afford", "No", "Debated", "Illegal + (arguably) Ethical"],
+     ["Leaking a customer's private photos from a database", "No", "No", "Illegal + Unethical"],
+    ],
+    per_page=8,widths=[3.4, 1.7, 1.7, 2.2],note="The danger zone is legal-but-unethical: nothing external stops you there — only your own judgment. Most everyday harm lives in that quadrant.",fs=11)
 
 add_table_slide("S1 · recall","The four concepts — one-line recall table",
     ["Concept","Main focus","Example question it answers"],
@@ -179,6 +192,18 @@ concept_apply("S1 · Concept 3 · [THEORY]","Ethics in the Business World",
     "\"Ethics slows business down.\" Ethics is the brakes that let a business move FAST safely — spend the trust reserve on shortcuts and you don't speed, you crash (reputation collapse).",
     "Business ethics applies ethical standards to commercial conduct. Because a business serves conflicting stakeholders, its core tension is short-term profit vs long-term trust; since customers can't verify most claims, business runs on trust, which is slow to build and instant to lose. Ethical conduct is usually good business on a longer horizon.",
     "business ethics · stakeholders · profit vs trust · trust is slow to build, instant to lose")
+add_table_slide("S1 · Concept 3 · examples","Profit vs trust — real Nepali business choices",
+    ["Business scenario", "Short-term profit move", "Long-term trust cost", "Verdict"],
+    [
+     ["Festival shop triples oil/sugar price in a Dashain shortage", "One-time fat margin", "Customers desert it every Dashain after", "Trust lost"],
+     ["Trekking agency hides a route safety risk to keep a booking", "Keeps one deposit", "Client harmed; lawsuits; scares off future tourists", "Sector loses"],
+     ["A wallet (eSewa/Khalti-style) quietly reuses data for ads", "Extra ad revenue", "Users switch wallets once they find out", "Trust lost"],
+     ["A Daraz seller ships a counterfeit as genuine", "One quick sale", "Bad reviews, returns, delisting", "Reputation crash"],
+     ["A bank buries fees in the fine print", "More fee income now", "Complaints, NRB scrutiny, churn", "Trust lost"],
+     ["A college promises placements it cannot deliver", "Higher admissions this year", "Angry students, falling reputation", "Enrolment falls"],
+     ["A momo restaurant reuses stale ingredients to cut cost", "Saves on stock", "One food-poisoning post ends it", "Business closes"],
+    ],
+    per_page=7,widths=[2.6, 2.0, 2.9, 1.3],note="Trust is slow to build and instant to lose — each shortcut spends a years-long reserve. Good ethics is usually good business on a longer clock.",fs=10.5)
 
 concept_understand("S1 · Concept 4 · [THEORY]","Why Good People & Businesses Still Go Wrong",
     "Most misbehaviour comes from ordinary people under predictable PRESSURE — not 'bad people'. Because it is situational, good systems and culture can prevent it (which is what S2 and S3 build).",
@@ -193,6 +218,18 @@ concept_apply("S1 · Concept 4 · [THEORY]","Why Good People & Businesses Still 
     "\"We just need to hire good people.\" Good people misbehave under bad systems. You don't only hire virtue — you build conditions where the ethical choice is the easy default.",
     "Unethical behaviour is mostly situational, driven by results pressure, normalization ('everyone does it'), weak oversight, and diffusion of responsibility — not by inherently bad people. Because it is situational, ethical systems and culture (leadership, codes, reporting, consequences) prevent it.",
     "situational (not 'bad apples') · results pressure · normalization · weak oversight · diffusion of responsibility")
+add_table_slide("S1 · Concept 4 · examples","Ordinary people, predictable pressure — name the cause",
+    ["Scenario", "Pressure at work", "Why the person went wrong"],
+    [
+     ["Junior accountant rounds up numbers because 'everyone here does'", "Normalization", "Wrong feels normal"],
+     ["Sales rep oversells a policy to hit target or lose the job", "Results pressure", "The target crowds out ethics"],
+     ["Clerk approves a shortcut because 'no one audits this desk'", "Weak oversight", "Cutting corners feels free"],
+     ["Staffer follows a manager's 'just do it' on a dodgy file", "Diffusion of responsibility", "'The boss decided, not me'"],
+     ["IT admin skips a security patch because the team never bothers", "Normalization", "Everyone else skips it too"],
+     ["Bank teller waives KYC for a VIP under branch-target pressure", "Results pressure + weak oversight", "Targets plus nobody checking"],
+     ["Team member stays silent though the plan clearly feels wrong", "Diffusion / groupthink", "'Not my call to object'"],
+    ],
+    per_page=7,widths=[3.1, 1.9, 3.0],note="No villains here — the failures are situational. Change the conditions (leadership, oversight, consequences) and the behaviour changes. Fix the situation, not just the person.",fs=11)
 
 add_activity("S1 — 'Find the grey area'  ·  ~6 min",
     ["In pairs (2 min): invent ONE act that is legal-but-unethical and ONE illegal-but-arguably-ethical.",
@@ -250,6 +287,18 @@ concept_apply("S2 · Concept 2 · [THEORY]","Carroll's CSR Pyramid",
     "\"CSR is just charity / a PR stunt.\" Real CSR is responsibility embedded in operations — fair wages, clean production, honest marketing, safe products. Donations are the visible tip; the base is how you run the business every day.",
     "CSR is a company's duty to act for society's benefit, not only shareholders'. Carroll's pyramid orders four responsibilities — economic (be profitable), legal (obey the law), ethical (do right beyond the law), and philanthropic (give back) — with lower layers foundational to the upper ones.",
     "CSR · duty to society · Carroll's pyramid (economic→legal→ethical→philanthropic) · embedded-not-decorative")
+add_table_slide("S2 · Concept 2 · examples","Real Nepali activities sorted onto Carroll's four levels",
+    ["Real activity", "Carroll level", "Why it sits there"],
+    [
+     ["A commercial bank staying solvent and profitable", "Economic (base)", "Survival funds everything above it"],
+     ["A bank allocating a share of profit to CSR as NRB directs", "Legal", "A regulatory requirement, not charity"],
+     ["A firm paying all taxes and following labour law", "Legal", "Society's codified minimum"],
+     ["A company paying fair wages and advertising honestly", "Ethical", "Right beyond what the law forces"],
+     ["A telecom NOT exploiting a billing loophole that overcharges", "Ethical", "Above the legal floor"],
+     ["Ncell/NTC extending coverage to remote villages", "Philanthropic", "Serves society beyond pure profit"],
+     ["A bank funding scholarships and flood relief", "Philanthropic (top)", "Giving back to the community"],
+    ],
+    per_page=7,widths=[3.1, 1.6, 3.3],note="A company donating to charity (top) while underpaying staff (skipping the ethical layer) is doing CSR backwards — image without foundation.",fs=11)
 
 concept_understand("S2 · Concept 3 · [THEORY]","Stakeholder Theory — who is a business accountable to?",
     "Central question: to whom does a company answer? The narrow answer is shareholders (owners). Stakeholder theory widens it to EVERYONE materially affected — customers, employees, suppliers, community, environment, government, and owners.",
@@ -272,6 +321,17 @@ concept_apply("S2 · Concept 3 · [THEORY]","Stakeholder Theory",
     "\"A company only answers to its owners.\" Stakeholder theory: it answers to everyone it materially affects. Ignoring non-owner stakeholders doesn't remove the cost — it hides it until it returns as lawsuits, boycotts, or lost licence to operate.",
     "Stakeholder theory holds that a business is accountable to all groups materially affected by it — customers, employees, suppliers, community, environment, government, and owners — not shareholders alone. A decision that profits owners while harming another stakeholder is an ethical failure, because the cost is hidden, not absent.",
     "stakeholder theory · shareholder vs stakeholder lens · social licence to operate · hidden costs")
+add_table_slide("S2 · Concept 3 · examples","One decision, two lenses — real Nepali cases",
+    ["Business decision", "Shareholder lens", "Stakeholder lens", "Hidden cost"],
+    [
+     ["A brick/cement factory profitable but polluting a village's water", "Success — profit up", "Failure — village harmed", "Health costs, lawsuits, lost licence"],
+     ["A wallet firm sells user location data to advertisers", "Revenue up", "Privacy violated", "Churn, regulator action"],
+     ["A garment exporter underpays workers to win a contract", "Lower cost, more orders", "Workers exploited", "Strikes, boycotts, reputation"],
+     ["A bank pushes loans farmers can't repay", "Loan-book growth", "Farmers trapped in debt", "Defaults, social backlash"],
+     ["A college over-enrols far beyond capacity", "More fee income", "Students get poor teaching", "Falling reputation, dropouts"],
+     ["A hydropower project skips community consultation", "Faster build", "Locals displaced and angry", "Protests, delays, lawsuits"],
+    ],
+    per_page=6,widths=[2.7, 1.6, 1.6, 2.1],note="The costs pushed onto non-owner stakeholders are hidden, not absent — they return as lawsuits, boycotts, or a lost social licence to operate.",fs=10.5)
 
 concept_understand("S2 · Concept 4 · [THEORY]","Fostering CSR & an Ethical Culture",
     "Good ethics is BUILT, not wished. Four levers turn CSR from a slogan into practice.",
@@ -294,6 +354,18 @@ concept_apply("S2 · Concept 4 · [THEORY]","Fostering CSR & an Ethical Culture"
     "\"A good CSR campaign proves a company is ethical.\" The ad is not the evidence — the operation is. Apply the test: does everyday behaviour match the message?",
     "CSR and an ethical culture are built through tone from the top (leaders' actions), a clear public code, a culture that rewards raising concerns, and social-responsibility reporting. Genuine CSR is embedded in operations; greenwashing lives only in marketing and fails the 'does daily operation match the message?' test.",
     "tone from the top · code of ethics · ethical culture · CSR reporting · greenwashing test")
+add_table_slide("S2 · Concept 4 · examples","Genuine CSR or greenwashing? Apply the test",
+    ["CSR claim / activity", "Does daily operation match?", "Verdict"],
+    [
+     ["Bank ad 'we care about farmers' while loan terms crush them", "No", "Greenwashing"],
+     ["A firm plants trees for a photo op but pollutes a river daily", "No", "Greenwashing"],
+     ["'Eco-friendly' labels added with no change to the packaging", "No", "Greenwashing"],
+     ["A one-off Dashain donation heavily used in ads by a low-wage employer", "No", "Greenwashing"],
+     ["A firm with years of fair wages runs a modest 'we treat staff well' campaign", "Yes", "Genuine CSR"],
+     ["Telecom runs real rural-coverage & digital-literacy programs", "Yes", "Genuine CSR"],
+     ["A bank publishes an audited social-responsibility report matching practice", "Yes", "Genuine CSR"],
+    ],
+    per_page=7,widths=[3.8, 1.9, 1.3],note="The ad is never the evidence — the operation is. One-line test: does the company's everyday behaviour match its CSR message?",fs=11)
 
 add_activity("S2 — 'Genuine or greenwashing?'  ·  ~6 min",
     ["In pairs (2 min): name ONE Nepali company's CSR activity you've seen.",
@@ -344,6 +416,19 @@ concept_apply("S3 · Concept 1 · [THEORY]","From Values to Behaviour",
     "\"Writing a good code makes a company ethical.\" The document is not the cause. Enforcement and culture make values real; an unenforced code actively teaches people that rules don't matter.",
     "An ethics program is the system of practices that converts stated values into real behaviour. Its power is shown by the fact that two companies with the identical code can have opposite cultures — the difference is leadership, enforcement, and culture, not the document.",
     "ethics program · values vs behaviour · enforcement · culture · unenforced code (worse than none)")
+add_table_slide("S3 · Concept 1 · examples","Same code, opposite lessons — what staff actually learn",
+    ["Value the code states", "What actually happens", "What staff learn"],
+    [
+     ["'Zero tolerance for bribery'", "A manager who takes a kickback is dismissed", "The rules are real — follow them"],
+     ["'Zero tolerance for bribery'", "A senior is quietly excused", "The code is theatre"],
+     ["'Report concerns safely'", "A whistle-blower is thanked and protected", "Speaking up is safe"],
+     ["'Report concerns safely'", "A reporter is sidelined and punished", "Stay quiet"],
+     ["'We respect data privacy'", "Staff who peek at accounts are disciplined", "Privacy is enforced"],
+     ["'We respect data privacy'", "Snooping is ignored", "Privacy is just a poster"],
+     ["'Deadlines never justify cutting corners'", "A rushed, unsafe release is rolled back", "Quality genuinely matters"],
+     ["'Deadlines never justify cutting corners'", "Corners cut to ship on time, and praised", "The code doesn't apply under pressure"],
+    ],
+    per_page=8,widths=[2.6, 2.9, 2.5],note="The document is never the cause. An unenforced code is worse than none — it teaches everyone that the rules are for show.",fs=10.5)
 
 concept_understand("S3 · Concept 2 · [THEORY]","Components of an Effective Program",
     "The machinery that actually works — a cycle of mutually-reinforcing parts, not a single document.",
@@ -390,6 +475,18 @@ concept_apply("S3 · Concept 3 · [THEORY]","Measuring & Sustaining Ethics",
     "\"As long as we have rules, we're fine.\" Rules enforced selectively are worse than none. Consistency — especially punishing seniors — is what keeps a program credible.",
     "Ethics programs are sustained through audits, anonymous culture surveys, tracking of reported concerns, and — most importantly — consistent consequences applied at every level. Selective enforcement (excusing seniors) destroys trust faster than having no code, because it exposes visible hypocrisy.",
     "ethics audit · culture survey · consistent consequences · selective enforcement (the killer)")
+add_table_slide("S3 · Concept 3 · examples","How a violation is handled — and what everyone learns",
+    ["Situation", "How it was handled", "What everyone learned"],
+    [
+     ["A senior and a junior both take a kickback", "Both dismissed", "Rules apply to everyone"],
+     ["Senior excused, junior fired for the same breach", "Selective", "The code is power-dependent"],
+     ["A culture survey flags a bullying manager", "Acted on quickly", "Reporting is worthwhile"],
+     ["Reported concerns are collected but never acted on", "Ignored", "Reporting is pointless — people stop"],
+     ["An ethics audit finds a compliance gap", "Fixed before it became a scandal", "Audits protect the firm"],
+     ["A branch skips the mandated AML training", "Overlooked, no consequence", "Rules are optional here"],
+     ["A director's conflict of interest is disclosed", "Managed openly", "Ethics applies at the top too"],
+    ],
+    per_page=7,widths=[2.9, 2.3, 2.8],note="Consistency is make-or-break. Selective punishment — excusing seniors — destroys trust faster than having no code at all, because the hypocrisy is visible.",fs=11)
 
 add_activity("S3 — 'Design one enforceable rule'  ·  ~5 min",
     ["In pairs (2 min): design ONE concrete rule to make the college exam process more ethical.",
@@ -440,6 +537,17 @@ concept_apply("S4 · Concept 1 · [THEORY]","The 5-Step Decision Process",
     "\"You either know the right thing or you don't.\" People skip steps 1–2 (facts, stakeholders) and jump to an answer — that's where bad decisions are born. The method forces those steps.",
     "The 5-step ethical decision process is: (1) get the facts; (2) identify stakeholders and realistic options; (3) evaluate options through ethical lenses; (4) choose and act, owning it; (5) reflect to improve future judgment. Steps 1–2 are the most-skipped and most important.",
     "5-step process · facts · stakeholders & options · evaluate · act · reflect")
+add_table_slide("S4 · Concept 1 · examples","The process on six everyday dilemmas",
+    ["Dilemma", "First fact to get", "Key stakeholders", "Defensible action"],
+    [
+     ["Classmate shares a Drive with tomorrow's exam answers", "Are these really the exam? How did I get them?", "Honest students, teacher, institution", "Report / delete without looking"],
+     ["A vendor offers your procurement officer a 'gift' before a tender", "Gift or bribe? What's the policy limit?", "Other bidders, employer, public", "Decline and disclose"],
+     ["Boss asks you to backdate an invoice", "Is this legal? Why is it needed?", "Auditors, tax office, firm", "Refuse and escalate"],
+     ["A user's data was leaked from your app", "What leaked, to whom, when?", "Affected users, the regulator", "Contain, disclose, notify"],
+     ["Friend asks you to share paid software licence keys", "Is the licence transferable?", "Vendor, your employer", "Decline, suggest a legal option"],
+     ["You spot a bug that overcharges some customers", "How many affected, and by how much?", "Overcharged customers, firm", "Report and refund"],
+    ],
+    per_page=6,widths=[2.5, 2.4, 2.1, 2.0],note="Steps 1-2 (get the facts, name the stakeholders) are the most-skipped and most important — that is where most bad decisions are born.",fs=10.5)
 
 concept_understand("S4 · Concept 2 · [THEORY]","Four Ethical Lenses",
     "Four complementary ways to TEST an option in step 3. Each asks a different question; on hard cases they disagree, and naming the disagreement is half the work.",
@@ -462,6 +570,18 @@ concept_apply("S4 · Concept 2 · [THEORY]","Four Ethical Lenses",
     "\"Ethics is just personal opinion — anything goes.\" Structured reasoning gives defensible, comparable answers. Two people using the lenses can disagree, but they can explain and compare their reasoning — the opposite of 'just opinion'.",
     "The four ethical lenses test an option from complementary angles: utilitarian (greatest good for the greatest number), rights/duty (respect rights and duties regardless of outcome), fairness/justice (treat like cases alike), and virtue/common good (what a person of good character would do). On easy cases they converge; naming their disagreement is the work on hard cases.",
     "utilitarian · rights/duty (deontology) · fairness/justice · virtue/common good · lenses converge vs disagree")
+add_table_slide("S4 · Concept 2 · examples","Which lens fits — and what it decides",
+    ["Situation", "Lens that fits best", "What it decides"],
+    [
+     ["Ambulance asks to jump the fuel queue in a shortage", "All four converge", "Let it pass"],
+     ["Lay off 10 staff to save 200 jobs", "Utilitarian", "Greatest good for the greatest number"],
+     ["Read a subordinate's private chats 'for the company'", "Rights / duty", "No — it violates their privacy"],
+     ["Pay two equally-qualified interns the same", "Fairness / justice", "Treat like cases alike"],
+     ["Report a friend who is stealing from the till", "Virtue / common good", "What a person of good character does"],
+     ["Promote strictly on merit, not on 'source-force'", "Fairness / justice", "Fair to all candidates"],
+     ["Use user data in a profitable way most would object to", "Rights/duty vs utilitarian", "Lenses disagree — name it, decide on merits"],
+    ],
+    per_page=7,widths=[3.0, 1.9, 3.1],note="On easy cases the four lenses converge (which is why it feels obvious). The hard cases are exactly where they disagree — naming the disagreement is half the work.",fs=11)
 
 concept_understand("S4 · Concept 3 · [THEORY]","Common Decision Traps",
     "Four predictable pressures that derail good people — learn to name them in the moment.",
@@ -484,6 +604,18 @@ concept_apply("S4 · Concept 3 · [THEORY]","Common Decision Traps",
     "\"If my boss told me to, it's not my fault.\" Blind obedience doesn't transfer responsibility — you're still accountable. 'Just this once' is a slippery slope that lowers the bar for the next time.",
     "Common decision traps are rationalization ('everyone does it'), groupthink (going along with the team), slippery slope ('just this once'), and blind obedience to authority ('the boss decided'). They pressure ordinary people into wrong choices; naming the trap in the moment is the defence.",
     "rationalization · groupthink · slippery slope · blind obedience · you remain responsible")
+add_table_slide("S4 · Concept 3 · examples","How the traps sound in real life — and the counter",
+    ["What you hear in real life", "Trap being used", "How to counter it"],
+    [
+     ["'Everyone in this office rounds the numbers'", "Rationalization", "Name the act — would you defend it openly?"],
+     ["'The whole team agreed, so it must be fine'", "Groupthink", "Ask for one dissenting view; decide on merits"],
+     ["'Just fudge this one report, only this once'", "Slippery slope (+ obedience)", "Set the bright line before the pressure"],
+     ["'The manager told me to, so it's on him'", "Blind obedience", "You remain responsible; run the 5 steps"],
+     ["'It's not really piracy — students do it all the time'", "Rationalization", "Would it survive open scrutiny?"],
+     ["'Nobody will notice one skipped KYC check'", "Rationalization / slippery slope", "One exception lowers the bar for next time"],
+     ["'Don't rock the boat, the seniors already decided'", "Groupthink / obedience", "Decide on merits, not seniority"],
+    ],
+    per_page=7,widths=[3.1, 1.9, 3.0],note="'Just fudge this one report' uses two traps at once — blind obedience plus slippery slope. Naming the trap out loud strips half its power.",fs=11)
 
 add_activity("S4 — 'Run the dilemma'  ·  ~6 min",
     ["In pairs (3 min): take the leaked-exam-answers hook and work it through ALL 5 steps explicitly.",
@@ -534,6 +666,18 @@ concept_apply("S5 · Concept 1 · [THEORY]","Why IT Raises Distinct Ethical Chal
     "\"IT ethics is the same as normal ethics.\" The scale, speed, anonymity, and permanence of IT make the stakes and irreversibility far higher — and the law often hasn't caught up, so you can't lean on 'is it legal?'.",
     "IT raises distinct ethical challenges because of scale (millions affected at once), speed (harm spreads in seconds), anonymity (wrongdoers hide), permanence (data can't be erased), and a capability–regulation gap (technology outruns the law). This is why 'the law is only the floor' matters most in IT.",
     "scale · speed · anonymity · permanence · capability–regulation gap")
+add_table_slide("S5 · Concept 1 · examples","Real IT incidents — the factor that makes each worse",
+    ["IT incident", "Amplifying factor", "Why it's worse than offline"],
+    [
+     ["Personal data leaked from a Nepali online service", "Permanence + speed", "It can never be fully recalled"],
+     ["A default privacy setting exposes millions of accounts", "Scale", "One choice harms a whole population"],
+     ["A viral election deepfake the night before voting", "Speed", "Outruns fact-checkers before anyone reacts"],
+     ["An anonymous account harasses a victim across borders", "Anonymity", "Hard to catch or hold accountable"],
+     ["A loan algorithm rejects an entire neighbourhood", "Scale + accuracy", "One model discriminates automatically"],
+     ["A leaked private photo re-shared across many groups", "Permanence", "A screenshot is forever"],
+     ["A new AI tool with no law yet governing its use", "Capability-regulation gap", "'Is it legal?' has no answer yet"],
+    ],
+    per_page=7,widths=[3.0, 1.9, 3.1],note="Because the legal 'floor' is often missing in IT, your own ethics is frequently the only thing holding — this is where 'law is only the floor' matters most.",fs=11)
 
 concept_understand("S5 · Concept 2 · [THEORY]","The Four Pillars — 'PAPA'",
     "PAPA names the four core IT-ethics themes — Privacy, Accuracy, Property, Access — and doubles as a map of the whole IT 246 course.",
@@ -556,6 +700,18 @@ concept_apply("S5 · Concept 2 · [THEORY]","The Four Pillars — 'PAPA'",
     "\"It's just technology — the tool is neutral.\" Technology is NOT value-neutral: what you build, what data you collect, and how an algorithm decides all encode human values and bias. A model trained on biased data discriminates automatically, at scale.",
     "The PAPA framework names four core IT-ethics themes: Privacy (who sees your data), Accuracy (responsibility for wrong data/algorithms), Property (who owns information/software), and Access (who can use technology and who is excluded). Security runs through all four; together they map the whole course.",
     "PAPA · Privacy · Accuracy · Property · Access · technology is not value-neutral")
+add_table_slide("S5 · Concept 2 · examples","Name the pillar — real IT / Nepal concerns",
+    ["Real concern", "PAPA pillar", "Why"],
+    [
+     ["An app sells your location data to advertisers", "Privacy", "Who can collect and see your data"],
+     ["A wallet reuses your transaction history without consent", "Privacy", "Data used beyond what you agreed to"],
+     ["A biased loan algorithm wrongly rejects you", "Accuracy", "Responsibility when the algorithm is wrong"],
+     ["Wrong info on a government portal blocks your service", "Accuracy", "Harm from incorrect data"],
+     ["Pirating Windows/Adobe or copying a code repo", "Property", "Who owns software and information"],
+     ["Villages with no internet miss e-services (Nagarik App)", "Access", "Who is left out — the digital divide"],
+     ["Only smartphone owners can use a digital-ID system", "Access", "The divide excludes people"],
+    ],
+    per_page=7,widths=[3.4, 1.4, 3.2],note="Security threads through all four pillars (Units 5-8). PAPA lets you name any IT-ethics concern precisely.",fs=11)
 
 concept_understand("S5 · Concept 3 · [THEORY]","The IT Professional's Responsibility — 'Can' vs 'Should'",
     "The defining question of IT ethics: just because you CAN build or do something, does that mean you SHOULD? As a BIM graduate, you'll be the one choosing what data to collect, how an algorithm treats people, what to log, what to expose.",
@@ -579,6 +735,18 @@ concept_apply("S5 · Concept 3 · [THEORY]","The IT Professional's Responsibilit
     "\"If the data is public, using it is fine.\" Public visibility isn't consent to any use. The professional's duty (per ACM/IEEE codes) is to the people in the data, not just to what's technically allowed.",
     "IT-ethics responsibility centres on 'can vs should': technical possibility does not settle whether an action is right. IT professionals decide what data to collect and how algorithms treat people, so professional codes (ACM, IEEE) place their duty to users and the public above an employer's short-term convenience.",
     "can vs should · public ≠ consented · professional codes (ACM/IEEE) · duty to users & public")
+add_table_slide("S5 · Concept 3 · examples","'Can' vs 'Should' — you can, but should you?",
+    ["You CAN...", "SHOULD you?", "The ethical catch"],
+    [
+     ["Scrape 100,000 users' public posts for a project", "Usually no", "Public is not consent to THIS use"],
+     ["Log every keystroke of staff 'for productivity'", "No", "Violates reasonable privacy"],
+     ["Sell 'anonymised' data that can be re-identified", "No", "'Anonymised' often isn't"],
+     ["Build a face-recognition tool from public photos", "Rarely", "People didn't consent to be identified"],
+     ["Read user DMs because you have admin access", "No", "Access is not permission"],
+     ["A/B test a dark pattern that tricks users into paying", "No", "Deception harms the user"],
+     ["Deploy an untested medical-advice chatbot because it 'works'", "No", "Accuracy failures can harm people"],
+    ],
+    per_page=7,widths=[3.2, 1.4, 3.4],note="Professional codes (ACM, IEEE) exist to keep 'should' in front of 'can' — your duty is to the people in the data, not just to what is technically allowed.",fs=11)
 
 add_activity("S5 — 'Can vs Should audit'  ·  ~6 min",
     ["In pairs (2 min): pick ONE app you use daily.",

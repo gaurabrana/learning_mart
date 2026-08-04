@@ -220,6 +220,40 @@ def _add_page_numbers():
         tb=_box(s,12.35,0.30,0.9,0.35); p=tb.paragraphs[0]; p.alignment=PP_ALIGN.RIGHT
         r=p.add_run(); r.text=f"{i} / {total}"; r.font.size=Pt(10); r.font.color.rgb=col
 
+ROWALT=RGBColor(0xEE,0xF3,0xF8)
+def add_table_slide(kicker,title,headers,rows,per_page=8,widths=None,note="",fs=11):
+    """Native PPTX table on its OWN slide; auto-paginates so nothing is squeezed. (§7A depth tables.)"""
+    pages=[rows[i:i+per_page] for i in range(0,len(rows),per_page)] or [[]]
+    ncols=len(headers)
+    if widths is None: widths=[1]*ncols
+    tot=sum(widths); ws=[12.5*w/tot for w in widths]
+    for pi,chunk in enumerate(pages):
+        s=prs.slides.add_slide(BLANK); _bg(s,WHITE)
+        _header(s,kicker,title+("  (cont.)" if pi else ""))
+        nrows=len(chunk)+1
+        top=1.72; avail=(6.55 if note else 6.95)-top
+        gt=s.shapes.add_table(nrows,ncols,Inches(0.42),Inches(top),Inches(12.5),Inches(avail))
+        table=gt.table; table.first_row=False; table.horz_banding=False
+        for j,w in enumerate(ws): table.columns[j].width=Inches(w)
+        for j,h in enumerate(headers):
+            c=table.cell(0,j); c.fill.solid(); c.fill.fore_color.rgb=NAVY
+            c.vertical_anchor=MSO_ANCHOR.MIDDLE
+            c.margin_left=Inches(0.08); c.margin_right=Inches(0.06); c.margin_top=Inches(0.03); c.margin_bottom=Inches(0.03)
+            tf=c.text_frame; tf.word_wrap=True; p=tf.paragraphs[0]; r=p.add_run(); r.text=h
+            r.font.size=Pt(fs+0.5); r.font.bold=True; r.font.color.rgb=WHITE
+        for i,row in enumerate(chunk,1):
+            for j,val in enumerate(row):
+                c=table.cell(i,j); c.fill.solid(); c.fill.fore_color.rgb=(WHITE if i%2 else ROWALT)
+                c.vertical_anchor=MSO_ANCHOR.MIDDLE
+                c.margin_left=Inches(0.08); c.margin_right=Inches(0.06); c.margin_top=Inches(0.03); c.margin_bottom=Inches(0.03)
+                tf=c.text_frame; tf.word_wrap=True; p=tf.paragraphs[0]; r=p.add_run(); r.text=str(val)
+                r.font.size=Pt(fs); r.font.color.rgb=DARK
+                if j==0: r.font.bold=True; r.font.color.rgb=NAVY
+        if note:
+            nb=_box(s,0.42,6.62,12.5,0.5); p=nb.paragraphs[0]; r=p.add_run(); r.text="ℹ️  "+note
+            r.font.size=Pt(11.5); r.font.italic=True; r.font.color.rgb=GREY
+    return
+
 # ============================================================
 #                        BUILD
 # ============================================================
@@ -265,6 +299,17 @@ concept_apply("S5 · Concept 1 · [THEORY]","What a Conceptual Data Model Is (an
     "\"Modelling = drawing the tables.\" No — the conceptual model is ABOVE tables; rows and foreign keys come later (S12). Concept first, tables later.",
     "A conceptual data model is a high-level, implementation-independent description of WHAT data a system stores and how the data relate — in terms of real-world things, not tables or storage. The ER model is the most widely used conceptual notation because it is technology-neutral and easy for non-technical stakeholders (rectangle = entity, oval = attribute, diamond = relationship).",
     "conceptual / high-level model  ·  implementation-independent  ·  Entity-Relationship (ER) model  ·  Chen notation  ·  stakeholder-readable")
+add_table_slide("S5 · Concept 1 · examples","Real-world things → their ER element (not tables yet)",
+    ["Everyday thing (Nepali app)", "ER element", "Chen symbol", "What it is NOT yet"],
+    [
+     ["A Daraz customer", "entity", "rectangle", "not a `customer` row yet"],
+     ["That customer's email", "attribute", "oval", "not a VARCHAR column yet"],
+     ["'places an order'", "relationship", "diamond", "not a foreign key yet"],
+     ["The customer's ID", "key attribute", "underlined oval", "not a PRIMARY KEY clause yet"],
+     ["CUSTOMER as a category", "entity type", "rectangle (design-time)", "not MySQL, not a table"],
+     ["The whole Daraz shop design", "conceptual data model", "full ER diagram", "not CREATE TABLE code"],
+    ],
+    per_page=6,widths=[2.3, 1.6, 1.8, 2.3],note="The conceptual (ER) model captures WHAT data exists using real-world things and symbols — tables, columns and foreign keys (the HOW) come later in S12. It is technology-neutral, so a registrar or finance manager can verify it.",fs=11)
 
 concept_understand("S5 · Concept 2 · [THEORY]","The Database Design Process",
     "Database design is a pipeline of four stages, each producing output that feeds the next: Requirements → Conceptual → Logical → Physical (RCLP).",
@@ -280,6 +325,15 @@ concept_apply("S5 · Concept 2 · [THEORY]","The Database Design Process",
     "Skipping requirements to 'save time' is the #1 cause of costly rework. Every stage you skip, a later stage pays for — with interest.",
     "Database design has four phases: (1) Requirements collection & analysis — what data and what operations; (2) Conceptual design — a DBMS-independent ER diagram; (3) Logical design — map the ER diagram to relational tables (keys, foreign keys); (4) Physical design — storage structures and indexes. Each phase feeds the next; ER sits at the conceptual phase, ER→tables is the logical phase.",
     "database design process  ·  requirements collection  ·  conceptual design (ER)  ·  logical design (mapping)  ·  physical design  ·  rework")
+add_table_slide("S5 · Concept 2 · examples","The four design stages (RCLP) worked on eSewa",
+    ["Stage", "What it produces", "eSewa worked example", "Skip it and…"],
+    [
+     ["1. Requirements", "the data + operations needed", "store users & transactions; must send money, show statement", "'top-up source' never captured → painful live migration"],
+     ["2. Conceptual (ER)", "a DBMS-independent ER diagram", "USER —MAKES— TRANSACTION drawn as a diamond", "jump to tables → rewrite when 'one user, many wallets' appears"],
+     ["3. Logical", "ER mapped to relational tables + keys", "User & Transaction tables + a user_id foreign key", "wrong keys → duplicate or orphaned rows"],
+     ["4. Physical", "storage, indexes, tuning", "an index on transaction date so the statement loads in a tap", "the statement screen crawls at month-end"],
+    ],
+    per_page=4,widths=[1.5, 2.0, 2.8, 2.5],note="Each stage feeds the next; ER sits at the conceptual stage, ER→tables is the logical stage. Every stage you skip, a later stage pays for — with interest. Mirrors Unit 1's conceptual → logical → internal schema levels.",fs=11)
 
 concept_understand("S5 · Concept 3 · [THEORY]","Data vs Functional Requirements",
     "Requirements come in two kinds, captured together: data requirements = WHAT to store (the nouns); functional requirements = WHAT operations to support (the verbs).",
@@ -294,6 +348,17 @@ concept_apply("S5 · Concept 3 · [THEORY]","Data vs Functional Requirements",
     "\"Requirements are only about data.\" No — miss the operations (verbs) and you can build a perfectly-structured DB that is slow or unable to do what users actually need.",
     "Data requirements specify what data must be stored — the things and their properties (nouns), e.g. Khalti users, balances, transactions. Functional requirements specify what operations the system must support (verbs), e.g. send money, view statement. Data requirements shape entities/attributes; functional requirements shape the operations the design must serve. Both must be captured.",
     "data requirements (nouns → entities/attributes)  ·  functional requirements (verbs → transactions)  ·  requirements collection  ·  capture both")
+add_table_slide("S5 · Concept 3 · examples","Sort each Khalti requirement: data (noun) or functional (verb)?",
+    ["Requirement (Khalti)", "Data or functional?", "What it shapes in the design"],
+    [
+     ["Store each user's name, number, KYC", "data (noun)", "entity + attributes (USER)"],
+     ["Record every transaction's amount, date, status", "data (noun)", "entity + attributes (TRANSACTION)"],
+     ["Send money to another user", "functional (verb)", "an operation the design must serve"],
+     ["Top up from a linked bank", "functional (verb)", "operation → needs a BANK link"],
+     ["View statement for a date range", "functional (verb)", "operation → drives an index on date"],
+     ["Pay an electricity bill", "functional (verb)", "operation → needs a BILLER entity"],
+    ],
+    per_page=6,widths=[2.7, 1.7, 2.6],note="Data requirements (nouns) become entities & attributes; functional requirements (verbs) are the operations the design must serve. Capture BOTH — store the right data yet miss the verbs and you ship a correct but painfully slow system.",fs=11)
 
 add_activity("Nouns & Verbs of a Nepali app",
     ["In pairs (2–3 min): pick a Nepali app — eSewa, Khalti, Daraz, Nagarik App, or Foodmandu.",
@@ -335,6 +400,17 @@ concept_apply("S6 · Concept 1 · [THEORY]","Entity, Entity Type, Entity Set",
     "\"An entity is just a row in a table.\" That's later thinking — an entity is a real-world thing; the row is only its stored representation, produced when we map to tables in S12.",
     "An entity is a single real-world thing (e.g. the student Sita). An entity type is the category/template all such things share — a design-time definition (e.g. STUDENT, a rectangle in Chen); it is stable. An entity set is all entities of that type at a given moment (e.g. all students enrolled today); it changes constantly. One entity type has many entity sets — analogous to one schema having many instances.",
     "entity  ·  entity type (rectangle, design-time)  ·  entity set (instance-time)  ·  type ≈ schema, set ≈ instance")
+add_table_slide("S6 · Concept 1 · examples","Entity vs entity type vs entity set across Nepali systems",
+    ["System", "Entity type (category)", "One entity", "Entity set (right now)"],
+    [
+     ["Daraz", "CUSTOMER", "you — ID 4412, Sita", "all registered customers this moment"],
+     ["Nagarik App", "CITIZEN", "one citizen, Hari", "all citizens enrolled today"],
+     ["A college", "STUDENT", "Sita, roll 21", "all students enrolled this semester"],
+     ["NIC Asia bank", "ACCOUNT", "your savings a/c #001", "all open accounts now"],
+     ["eSewa", "TRANSACTION", "txn #88921", "all transactions logged today"],
+     ["Foodmandu", "RESTAURANT", "Bajeko Sekuwa", "all listed restaurants now"],
+    ],
+    per_page=6,widths=[1.5, 2.0, 2.0, 2.6],note="The TYPE is the stable category (design-time, a rectangle); the SET changes every second as things come and go; an ENTITY is one member. One type → many sets, exactly like one schema → many instances (S2).",fs=11)
 
 concept_understand("S6 · Concept 2 · [THEORY]","Attributes and Their Four Types",
     "An attribute is a property that describes an entity (an oval in Chen notation). Attributes come in four types — simple, composite, derived, multivalued — and classifying them correctly now decides table design later.",
@@ -350,6 +426,16 @@ concept_apply("S6 · Concept 2 · [THEORY]","Attributes and Their Four Types",
     "\"Store the age\" / \"cram several phone numbers into one box.\" Age is derived (causes update anomalies); several values must be a multivalued attribute → its own table. Store what you can't compute; derive what you can.",
     "Simple (atomic): a single indivisible value (roll_no). Composite: made of sub-parts (name = first+middle+last). Derived: computed, not stored (age from DOB — dashed oval). Multivalued: several values for one entity (phone_numbers — double oval). In Chen, attributes are ovals; composites branch, derived are dashed, multivalued are doubled. Derived and multivalued especially affect how the entity maps to tables.",
     "attribute (oval)  ·  simple/atomic  ·  composite (branches)  ·  derived (dashed, computed)  ·  multivalued (double)  ·  update anomaly")
+add_table_slide("S6 · Concept 2 · examples","The four attribute types (+ key) with Chen symbol and mapping",
+    ["Attribute type", "Chen symbol", "Nepali example", "How it maps to tables later (S12)"],
+    [
+     ["Simple (atomic)", "plain oval", "roll_no, citizenship_no", "one plain column"],
+     ["Composite", "branching oval", "full_name = first+middle+last; address = district/municipality/ward", "flattened into separate columns"],
+     ["Derived", "dashed oval", "age from DOB; order total; loan balance", "NOT stored — computed on demand"],
+     ["Multivalued", "double oval", "a customer's phone numbers; Daraz saved addresses", "breaks out into its OWN table"],
+     ["Key", "underlined oval", "customer_id, national ID", "becomes the PRIMARY KEY"],
+    ],
+    per_page=5,widths=[1.5, 1.5, 2.9, 2.6],note="Classify attributes now and table design falls out later: multivalued → own table, composite → split columns, derived → never stored, key → primary key. Storing a derived value (e.g. age) causes update anomalies — it rots every birthday.",fs=11)
 
 concept_understand("S6 · Concept 3 · [THEORY]","Keys",
     "A key is a uniqueness constraint — an attribute (or set of attributes) whose value is unique for every entity, used to tell one entity from another. In Chen notation, a key attribute is underlined.",
@@ -364,6 +450,17 @@ concept_apply("S6 · Concept 3 · [THEORY]","Keys",
     "\"A name can be a key.\" Names repeat — two 'Ram Thapa's will collide. Test any proposed key: could two different real things ever share this value? If yes, it is not a key.",
     "A key is a uniqueness constraint that uniquely identifies each entity. A candidate key is any minimal attribute set that could serve as identifier (there may be several). The primary key is the chosen main identifier (underlined in Chen). A composite key combines more than one attribute (roll_no + program) when no single attribute is unique alone. Names should not be keys because they repeat.",
     "key / uniqueness constraint  ·  candidate key  ·  primary key (underlined)  ·  composite key  ·  test: unique, stable, minimal")
+add_table_slide("S6 · Concept 3 · examples","Good keys vs bad 'keys' — and why they fail",
+    ["Entity", "Good key (why it works)", "A bad 'key' (why it fails)", "Type of key"],
+    [
+     ["CITIZEN (Nagarik)", "citizenship / national ID — designed unique", "full name — two 'Sita Sharma's collide", "primary key"],
+     ["STUDENT (college)", "roll_no — unique within college", "name + DOB — may still clash", "primary / candidate"],
+     ["Course result", "roll_no + program together", "roll_no alone — repeats across programs", "composite key"],
+     ["CUSTOMER (Daraz)", "customer_id — system-generated", "email — changes, can be reused", "primary; email = candidate"],
+     ["ACCOUNT (bank)", "account_number", "phone number — can change / transfer", "primary key"],
+     ["Khalti user", "user_id", "mobile_number — can be re-issued", "primary vs candidate"],
+    ],
+    per_page=6,widths=[1.6, 2.6, 2.6, 1.6],note="Test any proposed key: could two different real things ever share this value, or could it change? Names, emails and phones fail — national IDs, roll numbers and system IDs are designed to be unique, stable and minimal.",fs=11)
 
 add_activity("Label the attributes of a Khalti account",
     ["In pairs (3 min): list the attributes of a Khalti user account.",
@@ -405,6 +502,17 @@ concept_apply("S7 · Concept 1 · [THEORY]","Relationship Type, Set & Degree",
     "\"A relationship is just a foreign key.\" At the conceptual level it's a real-world association; a foreign key is one later implementation — and M:N relationships become a whole junction table, not a foreign key.",
     "A relationship type is a named association between entity types (ENROLLS between STUDENT and COURSE; a diamond in Chen). A relationship set is the actual associations at a moment ((Sita, DBMS), (Hari, Networking)). Degree is the number of participating entity types — 2 is binary (most common), 3 ternary, n n-ary. A relationship is a conceptual association, not a foreign key.",
     "relationship (diamond)  ·  relationship type  ·  relationship set  ·  degree (binary / ternary / n-ary)  ·  not a foreign key")
+add_table_slide("S7 · Concept 1 · examples","Relationships across Nepali systems: type, degree, one pair",
+    ["Relationship (verb)", "Entity types joined", "Degree", "A pair in its set right now"],
+    [
+     ["PLACES (Daraz)", "CUSTOMER, ORDER", "2 (binary)", "(Sita, order #88921)"],
+     ["ENROLLS (college)", "STUDENT, COURSE", "2 (binary)", "(Hari, DBMS)"],
+     ["MAKES (eSewa)", "USER, TRANSACTION", "2 (binary)", "(you, txn #4412)"],
+     ["SUPERVISES (Ntc)", "EMPLOYEE, EMPLOYEE", "2 (recursive)", "(Ram supervises Gita)"],
+     ["PRESCRIBES (hospital)", "DOCTOR, PATIENT, DRUG", "3 (ternary)", "(Dr Rai, patient #7, Amoxicillin)"],
+     ["WORKS_ON", "EMPLOYEE, PROJECT", "2 (binary)", "(Sita, 'Dashain sale')"],
+    ],
+    per_page=6,widths=[1.8, 2.2, 1.4, 2.4],note="A relationship is a real-world association (a diamond), not a foreign key. Its TYPE is the named verb, its SET is today's pairings, its DEGREE is how many entity types the verb joins (2 = binary, the common case).",fs=11)
 
 concept_understand("S7 · Concept 2 · [THEORY]","Roles & Recursive (Self) Relationships",
     "A role name is the part an entity plays in a relationship. A recursive (self) relationship is one where the SAME entity type participates more than once — the diamond loops back to the same rectangle.",
@@ -418,6 +526,17 @@ concept_apply("S7 · Concept 2 · [THEORY]","Roles & Recursive (Self) Relationsh
     "Leaving roles off a recursive relationship makes it ambiguous — the direction (who supervises or mentors whom) is simply lost, because both ends are the same entity type.",
     "A recursive (self) relationship is one where the same entity type participates more than once — the relationship connects an entity type to itself (EMPLOYEE SUPERVISES EMPLOYEE). A role name states the part an entity plays. Recursive relationships require role names (e.g. 'supervisor' and 'supervisee') because both ends are the same type and would otherwise be indistinguishable; the roles carry the direction of the association.",
     "role name  ·  recursive / self relationship  ·  roles are mandatory for recursive relationships (to distinguish the identical ends)")
+add_table_slide("S7 · Concept 2 · examples","Recursive relationships — the two roles you must name",
+    ["Recursive relationship", "Entity type", "Role A / Role B", "Lost without roles"],
+    [
+     ["MENTORS (college scheme)", "STUDENT", "mentor / mentee", "who mentors whom (Sita ↔ Gita)"],
+     ["SUPERVISES (Ntc)", "EMPLOYEE", "supervisor / supervisee", "who reports to whom"],
+     ["MANAGES (bank branch)", "EMPLOYEE", "manager / subordinate", "direction of the reporting line"],
+     ["REFERS (Daraz referral)", "CUSTOMER", "referrer / referred", "who invited whom"],
+     ["REPLIES_TO (Facebook)", "COMMENT", "parent / reply", "which comment answers which"],
+     ["PREREQUISITE_OF (courses)", "COURSE", "prerequisite / dependent", "which course must come first"],
+    ],
+    per_page=6,widths=[2.2, 1.4, 2.0, 2.4],note="In a recursive (self) relationship the same entity type sits on both ends, so role names are MANDATORY — without them the direction (who supervises / mentors / invited whom) is simply lost.",fs=11)
 
 concept_understand("S7 · Concept 3 · [THEORY]","Cardinality Ratio (1:1, 1:N, M:N)",
     "The cardinality ratio of a binary relationship specifies the MAXIMUM number of relationship instances an entity can take part in — how many of one thing relate to how many of the other.",
@@ -433,6 +552,17 @@ concept_apply("S7 · Concept 3 · [THEORY]","Cardinality Ratio (1:1, 1:N, M:N)",
     "\"M:N can be stored directly.\" No — there's no single 'other side' to point to; every M:N must break out into a junction table when mapped (S12).",
     "The cardinality ratio specifies the maximum relationship instances an entity may participate in. 1:1 — at most one each side (CITIZEN–PASSPORT). 1:N — one relates to many, each back to one (DEPARTMENT–EMPLOYEE). M:N — both sides many (STUDENT–COURSE). Determine it by checking the maximum on EACH side. An M:N relationship must become a junction table when mapped.",
     "cardinality ratio  ·  1:1  ·  1:N / N:1  ·  M:N  ·  read-it-both-ways  ·  M:N ⇒ junction table (preview of S12)")
+add_table_slide("S7 · Concept 3 · examples","1:1, 1:N, M:N — read both ways, then map",
+    ["Ratio", "Nepali example", "Read it both ways", "Maps to (S12)"],
+    [
+     ["1:1", "CITIZEN – PASSPORT", "one citizen ↔ at most one passport, and back", "foreign key on either side"],
+     ["1:1", "USER – KYC_PROFILE (Khalti)", "one user ↔ one KYC record", "foreign key (often merged)"],
+     ["1:N", "DEPARTMENT – EMPLOYEE", "one dept has many staff; each staff one dept", "department_id on EMPLOYEE"],
+     ["1:N", "USER – TRANSACTION (eSewa)", "one user many txns; each txn one user", "user_id on TRANSACTION"],
+     ["M:N", "STUDENT – COURSE", "many students ↔ many courses", "junction table ENROLLMENT"],
+     ["M:N", "ORDER – PRODUCT (Daraz)", "many products per order; many orders per product", "junction table ORDER_ITEM"],
+    ],
+    per_page=6,widths=[0.9, 2.3, 3.0, 2.2],note="Find the ratio by checking the MAXIMUM on each side (read it both ways). 1:N becomes a foreign key on the 'many' side; every M:N must break out into a junction table when mapped — it has no single 'other side' to point to.",fs=11)
 
 concept_understand("S7 · Concept 4 · [THEORY]","Participation (Total vs Partial)",
     "The participation constraint tells you whether an entity MUST take part at all (the minimum) — the second structural constraint. Total = mandatory (double line); partial = optional (single line).",
@@ -448,6 +578,17 @@ concept_apply("S7 · Concept 4 · [THEORY]","Participation (Total vs Partial)",
     "Making both sides partial by mistake allows orphaned loans belonging to nobody — a genuine data-integrity and audit disaster for a bank.",
     "The participation constraint states whether an entity's participation is mandatory. Total participation — every entity of the type must participate (double line); e.g. every LOAN must belong to a CUSTOMER. Partial participation — an entity may or may not participate (single line); e.g. a CUSTOMER need not have any loan. The two sides can differ. Participation gives the minimum; cardinality gives the maximum.",
     "participation constraint  ·  total (mandatory, double line)  ·  partial (optional, single line)  ·  structural constraints: cardinality = max, participation = min")
+add_table_slide("S7 · Concept 4 · examples","Total vs partial participation — each side, each line",
+    ["Relationship & side", "Total or partial?", "Chen line", "What the DB enforces"],
+    [
+     ["LOAN → CUSTOMER (loan side)", "total", "double line", "no loan may exist without a customer"],
+     ["CUSTOMER → LOAN (customer side)", "partial", "single line", "a customer may have zero loans"],
+     ["TRANSACTION → USER (txn side)", "total", "double line", "every transaction belongs to a user"],
+     ["USER → TRANSACTION (user side)", "partial", "single line", "a brand-new user may have zero txns"],
+     ["ORDER → CUSTOMER (order side)", "total", "double line", "no ownerless orders on Daraz"],
+     ["INSTALLMENT → LOAN (installment side)", "total", "double line", "every installment is tied to a loan"],
+    ],
+    per_page=6,widths=[2.6, 1.4, 1.2, 2.6],note="Participation is the MINIMUM (whether at all); cardinality is the maximum (how many) — they are independent. Total = double line = must participate; partial = single line = optional. Making a mandatory side partial allows orphan records — an audit disaster.",fs=11)
 
 add_activity("Cardinality & participation on eSewa",
     ["In pairs (3–4 min): on eSewa, model USER and TRANSACTION with a relationship.",
@@ -489,6 +630,18 @@ concept_apply("S8 · Concept 1 · [THEORY]","Weak vs Strong (Regular) Entity Typ
     "\"Weak = unimportant / optional.\" Wrong — order items and loan installments are critical to the business. 'Weak' means IDENTITY-DEPENDENT (no key of its own), never 'doesn't matter'.",
     "A strong (regular) entity type has its own key and is identified independently (single rectangle; e.g. EMPLOYEE). A weak entity type has no key of its own and is identified only through an owning (identifying) entity (double rectangle; e.g. DEPENDENT, ORDER_ITEM). Its attributes are unique only within one owner. 'Weak' means identity-dependent, not unimportant.",
     "strong entity (own key, single rectangle)  ·  weak entity (no key, double rectangle)  ·  owner / identifying entity  ·  identity dependence")
+add_table_slide("S8 · Concept 1 · examples","Strong vs weak entities — own key or borrowed identity?",
+    ["Entity", "Strong or weak?", "Own key?", "Owner it depends on", "Why"],
+    [
+     ["EMPLOYEE", "strong", "employee_id", "—", "identified on its own"],
+     ["STUDENT", "strong", "roll_no", "—", "has its own unique key"],
+     ["ORDER_ITEM (Daraz)", "weak", "no", "ORDER", "'item 2' means nothing without the order"],
+     ["INSTALLMENT", "weak", "no", "LOAN", "'installment 3' of which loan?"],
+     ["DEPENDENT", "weak", "no", "EMPLOYEE", "two staff can each have a child 'Ram'"],
+     ["ROOM (hotel)", "weak", "no", "HOTEL", "room '101' exists in many hotels"],
+     ["COMMENT (Facebook)", "weak", "no", "POST", "a reply has no identity without its post"],
+    ],
+    per_page=7,widths=[1.7, 1.2, 1.1, 1.4, 2.8],note="'Weak' means IDENTITY-DEPENDENT (no key of its own), never unimportant — order items, loan installments and exam answer-sheets are business-critical. A strong entity is a single rectangle; a weak entity a double rectangle.",fs=10.5)
 
 concept_understand("S8 · Concept 2 · [THEORY]","The Identifying (Owner) Relationship",
     "The identifying (owner) relationship links a weak entity to its owner, supplying the identity the weak entity lacks. In Chen it is a DOUBLE diamond, and the weak side always has total participation (double line).",
@@ -502,6 +655,17 @@ concept_apply("S8 · Concept 2 · [THEORY]","The Identifying (Owner) Relationshi
     "Forgetting the owner link (or drawing a single diamond) breaks identity — a weak entity with no identifying relationship cannot be identified at all.",
     "An identifying (owner) relationship connects a weak entity to its owner (identifying) entity, supplying the identity the weak entity lacks. In Chen notation it is drawn as a double diamond. The weak entity's participation is always total (double line) — a weak entity cannot exist without its owner. Example: LOAN —HAS→ INSTALLMENT.",
     "identifying (owner) relationship (double diamond)  ·  owner entity  ·  total participation on the weak side  ·  the 'three doubles' signature")
+add_table_slide("S8 · Concept 2 · examples","Weak entity + owner + identifying (double-diamond) link",
+    ["Weak entity", "Owner", "Identifying relationship (double diamond)", "Weak side is always total…"],
+    [
+     ["INSTALLMENT", "LOAN", "LOAN —HAS— INSTALLMENT", "no installment without a loan"],
+     ["ORDER_ITEM", "ORDER", "ORDER —CONTAINS— ITEM", "no order-item without an order"],
+     ["ROOM", "HOTEL", "HOTEL —HAS— ROOM", "no room without a hotel"],
+     ["DEPENDENT", "EMPLOYEE", "EMPLOYEE —HAS_DEPENDENT— DEPENDENT", "no dependent without an employee"],
+     ["COMMENT", "POST", "POST —HAS— COMMENT", "no comment without a post"],
+     ["ANSWER_SHEET", "EXAM", "EXAM —HAS— ANSWER_SHEET", "no answer-sheet without an exam"],
+    ],
+    per_page=6,widths=[1.5, 1.3, 3.0, 2.4],note="The identifying relationship (a DOUBLE diamond) supplies the identity a weak entity lacks, and the weak side is ALWAYS total participation (double line). Examiners look for the 'three doubles': double rectangle + double diamond + double line.",fs=11)
 
 concept_understand("S8 · Concept 3 · [THEORY]","The Partial Key (Discriminator)",
     "A partial key (discriminator) is an attribute that distinguishes weak entities belonging to the SAME owner. It is NOT unique on its own — only within one owner. Shown with a dashed underline in Chen.",
@@ -515,6 +679,17 @@ concept_apply("S8 · Concept 3 · [THEORY]","The Partial Key (Discriminator)",
     "\"The partial key alone is unique.\" No — installment 3 of loan 4521 and installment 3 of loan 6002 are different installments. Partial key + owner's key = the real identity.",
     "A partial key (discriminator) is an attribute of a weak entity that distinguishes weak entities belonging to the same owner; it is unique only within an owner, shown with a dashed underline (e.g. installment_no). A weak entity is uniquely identified by the owner's primary key + its partial key (e.g. loan_id + installment_no) — neither part suffices alone.",
     "partial key / discriminator (dashed underline)  ·  unique only within one owner  ·  full identifier = owner PK + partial key  ·  links to the S6 composite key")
+add_table_slide("S8 · Concept 3 · examples","Partial key + owner key = the full identifier",
+    ["Weak entity", "Partial key (dashed underline)", "Owner's PK", "Full identifier", "Partial key alone collides…"],
+    [
+     ["INSTALLMENT", "installment_no", "loan_id", "loan_id + installment_no", "inst. 3 of loan 4521 vs 6002"],
+     ["ROOM (hotel)", "room_no (101)", "hotel_id", "hotel_id + room_no", "Pokhara 101 vs Kathmandu 101"],
+     ["ORDER_ITEM", "line_no", "order_id", "order_id + line_no", "'line 2' matches thousands of orders"],
+     ["DEPENDENT", "dependent_name", "employee_id", "employee_id + name", "two staff's child 'Ram' merge"],
+     ["COMMENT", "comment_seq", "post_id", "post_id + comment_seq", "same seq exists on other posts"],
+     ["ANSWER_SHEET", "question_no", "exam_id", "exam_id + question_no", "Q1 exists for every exam"],
+    ],
+    per_page=6,widths=[1.4, 2.0, 1.2, 2.2, 2.4],note="A partial key is unique only WITHIN one owner (dashed underline). Full identity = owner's primary key + partial key — exactly the S6 composite-key idea. The partial key alone always collides across owners.",fs=10.5)
 
 add_activity("Find the weak entity in a Nepali app",
     ["In pairs (3 min): find a weak entity — a comment on a Facebook post, a room in a hotel booking, an item on a Daraz order, an installment on a loan.",

@@ -1,0 +1,150 @@
+[
+  {
+    "heading": "Intellectual Property",
+    "kicker": "S11 · Concept 1 · examples",
+    "title": "Which IP family? — classify each creation",
+    "headers": ["The creation", "Which IP family?", "Why"],
+    "rows": [
+      ["Your college app's source code", "Copyright", "Original expression, automatic on creation"],
+      ["Wai Wai / CG Foods' exact masala ratio", "Trade secret", "Confidential info kept secret, never filed"],
+      ["The 'Goldstar' name & shoe logo", "Trademark", "A source identifier for the brand"],
+      ["A DoI-filed herbal-extraction machine", "Patent", "New, useful, non-obvious invention"],
+      ["A bank's fraud-scoring algorithm (server-side)", "Trade secret", "Never shipped; protected by secrecy"],
+      ["eSewa's app name & green logo", "Trademark", "Brand identity customers recognise"]
+    ],
+    "per_page": 6,
+    "widths": [3.0, 1.6, 2.5],
+    "note": "One question sorts almost any IP case: is it expression (copyright), an invention (patent), a kept secret (trade secret), or a brand sign (trademark)?",
+    "fs": 11
+  },
+  {
+    "heading": "Patent — what is patentable",
+    "kicker": "S12 · Concept 1 · examples",
+    "title": "Is it patentable? — applying the three tests",
+    "headers": ["Claimed 'invention'", "Patentable?", "Why / which test it fails"],
+    "rows": [
+      ["A new herbal water-filter mechanism", "Yes", "Novel, non-obvious, industrially useful"],
+      ["'The idea of paying by mobile phone'", "No", "A pure idea — fails industrial applicability"],
+      ["A genuinely new, faster momo-steamer design", "Yes", "Passes all three tests"],
+      ["Adding an obvious 'share' button to an app", "No", "Fails inventiveness — obvious to an expert"],
+      ["A law of nature / gravity formula", "No", "A discovery, not an invention"],
+      ["A machine already sold in India last year", "No", "Fails novelty — prior art exists"],
+      ["A novel agricultural threshing device", "Yes", "New, useful, makeable — DoI-filable"]
+    ],
+    "per_page": 7,
+    "widths": [3.1, 1.4, 2.6],
+    "note": "Popularity or cleverness is irrelevant — an invention must be new, non-obvious, AND useful/makeable. Pure ideas, discoveries, and laws of nature fail outright.",
+    "fs": 11
+  },
+  {
+    "heading": "Software Patents",
+    "kicker": "S12 · Concept 2 · examples",
+    "title": "How Nepali software actually gets protected (not by patent)",
+    "headers": ["Software asset", "Realistic protection", "Why not a patent"],
+    "rows": [
+      ["A Kathmandu startup's app source code", "Copyright", "Automatic; code is copyrightable already"],
+      ["A clever server-side load-balancing algorithm", "Trade secret", "Never shipped; a patent would disclose it"],
+      ["A framework the team wants widely adopted", "Open-source licence", "Adoption matters more than a monopoly"],
+      ["A fintech app's fraud-detection logic", "Copyright + trade secret", "The standard Nepali software combo"],
+      ["'One-click checkout' style method", "(hard to protect)", "Pure-software patents restricted/unavailable here"],
+      ["A UI layout / look-and-feel", "Copyright", "Software patents contested, costly, and rare"]
+    ],
+    "per_page": 6,
+    "widths": [3.0, 2.2, 2.3],
+    "note": "For pure software in Nepal the realistic toolkit is copyright + trade secret (sometimes open source) — patents are contested, costly, and largely unavailable locally.",
+    "fs": 11
+  },
+  {
+    "heading": "The Patent Process",
+    "kicker": "S12 · Concept 3 · examples",
+    "title": "The process's traits, as real filing consequences",
+    "headers": ["A patent filing decision", "What happens", "Because…"],
+    "rows": [
+      ["Files only in Nepal, but exports to India", "No protection in India — rivals copy freely there", "Patents are territorial"],
+      ["Rushes a fast-moving app feature to patent", "Examination drags on for years; feature is stale", "The process is slow"],
+      ["Small startup tries to patent globally", "Fees per country drain the budget", "Costly, one country at a time"],
+      ["Patents a device; a rival reads the claims", "Rival learns exactly how it works", "Grant requires full public disclosure"],
+      ["Skips the prior-art search", "Application rejected — someone filed first", "Novelty fails against existing prior art"],
+      ["Keeps a recipe secret instead of filing", "Protection can last forever, undisclosed", "No disclosure bargain if never patented"]
+    ],
+    "per_page": 6,
+    "widths": [3.0, 2.6, 1.9],
+    "note": "The four traits — slow, costly, public, territorial — turn into real consequences. They're why many Nepali startups file abroad or skip patents for trade secrets.",
+    "fs": 11
+  },
+  {
+    "heading": "Trade Secret — definition",
+    "kicker": "S13 · Concept 1 · examples",
+    "title": "Is it a trade secret? — what qualifies and what doesn't",
+    "headers": ["The information", "A trade secret?", "Why"],
+    "rows": [
+      ["Wai Wai / CG Foods' exact masala ratio", "Yes", "Confidential, valuable, kept secret"],
+      ["A remittance firm's internal pricing model", "Yes", "Secret info giving a competitive edge"],
+      ["A company's phone number on its website", "No", "Already public — no secrecy"],
+      ["A restaurant's signature sauce recipe", "Yes", "Kept in-house, never disclosed"],
+      ["A published, patented machine design", "No", "The patent disclosed it — no longer secret"],
+      ["A software house's private source-code repo", "Yes", "Confidential and access-controlled"],
+      ["Coca-Cola's formula", "Yes", "Secret for over a century, never filed"]
+    ],
+    "per_page": 7,
+    "widths": [3.0, 1.6, 2.5],
+    "note": "It's a trade secret only if it's genuinely confidential AND kept secret by reasonable effort. Anything already public — or disclosed by a patent — cannot be one.",
+    "fs": 11
+  },
+  {
+    "heading": "How Trade Secrets Are Protected",
+    "kicker": "S13 · Concept 2 · examples",
+    "title": "Misappropriation or not? — where the law gives a remedy",
+    "headers": ["What happened", "Misappropriation?", "Why"],
+    "rows": [
+      ["Developer emails the company's source code to a rival", "Yes", "Theft of confidential info — breach of confidence"],
+      ["Ex-employee reuses general skills learned on the job", "No", "General know-how is theirs to reuse"],
+      ["A rival independently invents the same algorithm", "No", "Independent discovery is never misappropriation"],
+      ["Staffer leaks the masala ratio despite an NDA", "Yes", "Breach of the NDA / confidentiality clause"],
+      ["Competitor legally reverse-engineers a shipped product", "No", "Legitimate reverse engineering breaks no law"],
+      ["Bribing an insider for a customer list", "Yes", "Theft of a trade secret via bribery"],
+      ["Firm never locked down the 'secret'; it leaks", "No remedy", "No reasonable effort — may not count as a secret"]
+    ],
+    "per_page": 7,
+    "widths": [3.1, 1.7, 2.4],
+    "note": "The law protects against misappropriation (theft/breach), not independent discovery or legal reverse engineering — and only if the owner made reasonable efforts to keep it secret.",
+    "fs": 11
+  },
+  {
+    "heading": "Open Source Code",
+    "kicker": "S15 · Concept 1 · examples",
+    "title": "Is it a licence violation? — MIT/Apache vs GPL in practice",
+    "headers": ["What the team did", "Licence violation?", "Why"],
+    "rows": [
+      ["Ships GPL code inside a closed proprietary app", "Yes", "Copyleft requires derivatives be open too"],
+      ["Uses React (MIT) in a closed product, keeps the notice", "No", "Permissive; only attribution required"],
+      ["Drops the MIT attribution / licence notice", "Yes", "Attribution is the one MIT obligation"],
+      ["Modifies GPL code, releases the source under GPL", "No", "Share-alike obligation honoured"],
+      ["Builds a gov site on WordPress, keeps its licence", "No", "Compliant open-source use"],
+      ["Removes GPL notices and sells it as their own", "Yes", "Copyright infringement of the licensed code"]
+    ],
+    "per_page": 6,
+    "widths": [3.1, 1.7, 2.4],
+    "note": "Open source is copyright + a licence. Permissive (MIT/Apache) needs attribution; copyleft (GPL) needs derivatives kept open. Breaking either is copyright infringement.",
+    "fs": 11
+  },
+  {
+    "heading": "Pulling It Together — the four IP types",
+    "kicker": "S16 · Concept 3 · examples",
+    "title": "Classify the asset — and the common wrong answer",
+    "headers": ["Nepali asset", "Correct IP type", "Common wrong answer"],
+    "rows": [
+      ["A brand name like 'eSewa'", "Trademark", "'Copyright the name' — names aren't copyrighted"],
+      ["The source code of the eSewa app", "Copyright", "'Patent the code' — code is copyrighted"],
+      ["Wai Wai's masala ratio", "Trade secret", "'Patent it' — that would disclose & expire it"],
+      ["A pirated Kabaddi film copy", "Copyright", "'A trademark issue' — it's the film's expression"],
+      ["A DoI-registered herbal machine", "Patent", "'Trade-secret it' — a visible product is copyable"],
+      ["A momo shop's registered logo", "Trademark", "'Company registration covers it' — separate filing"],
+      ["A daraz.com.np domain grabbed in bad faith", "Trademark (cybersquatting)", "'First to register owns it fairly'"]
+    ],
+    "per_page": 7,
+    "widths": [2.7, 1.9, 3.0],
+    "note": "Classify by what's at stake — expression→copyright, invention→patent, secret→trade secret, brand→trademark. The right-hand column shows the mix-ups that give wrong answers.",
+    "fs": 11
+  }
+]

@@ -184,6 +184,40 @@ def _add_page_numbers():
         tb=_box(s,12.35,0.30,0.9,0.35); p=tb.paragraphs[0]; p.alignment=PP_ALIGN.RIGHT
         r=p.add_run(); r.text=f"{i} / {total}"; r.font.size=Pt(10); r.font.color.rgb=col
 
+ROWALT=RGBColor(0xEE,0xF3,0xF8)
+def add_table_slide(kicker,title,headers,rows,per_page=8,widths=None,note="",fs=11):
+    """Native PPTX table on its OWN slide; auto-paginates so nothing is squeezed. (§7A depth tables.)"""
+    pages=[rows[i:i+per_page] for i in range(0,len(rows),per_page)] or [[]]
+    ncols=len(headers)
+    if widths is None: widths=[1]*ncols
+    tot=sum(widths); ws=[12.5*w/tot for w in widths]
+    for pi,chunk in enumerate(pages):
+        s=prs.slides.add_slide(BLANK); _bg(s,WHITE)
+        _header(s,kicker,title+("  (cont.)" if pi else ""))
+        nrows=len(chunk)+1
+        top=1.72; avail=(6.55 if note else 6.95)-top
+        gt=s.shapes.add_table(nrows,ncols,Inches(0.42),Inches(top),Inches(12.5),Inches(avail))
+        table=gt.table; table.first_row=False; table.horz_banding=False
+        for j,w in enumerate(ws): table.columns[j].width=Inches(w)
+        for j,h in enumerate(headers):
+            c=table.cell(0,j); c.fill.solid(); c.fill.fore_color.rgb=NAVY
+            c.vertical_anchor=MSO_ANCHOR.MIDDLE
+            c.margin_left=Inches(0.08); c.margin_right=Inches(0.06); c.margin_top=Inches(0.03); c.margin_bottom=Inches(0.03)
+            tf=c.text_frame; tf.word_wrap=True; p=tf.paragraphs[0]; r=p.add_run(); r.text=h
+            r.font.size=Pt(fs+0.5); r.font.bold=True; r.font.color.rgb=WHITE
+        for i,row in enumerate(chunk,1):
+            for j,val in enumerate(row):
+                c=table.cell(i,j); c.fill.solid(); c.fill.fore_color.rgb=(WHITE if i%2 else ROWALT)
+                c.vertical_anchor=MSO_ANCHOR.MIDDLE
+                c.margin_left=Inches(0.08); c.margin_right=Inches(0.06); c.margin_top=Inches(0.03); c.margin_bottom=Inches(0.03)
+                tf=c.text_frame; tf.word_wrap=True; p=tf.paragraphs[0]; r=p.add_run(); r.text=str(val)
+                r.font.size=Pt(fs); r.font.color.rgb=DARK
+                if j==0: r.font.bold=True; r.font.color.rgb=NAVY
+        if note:
+            nb=_box(s,0.42,6.62,12.5,0.5); p=nb.paragraphs[0]; r=p.add_run(); r.text="ℹ️  "+note
+            r.font.size=Pt(11.5); r.font.italic=True; r.font.color.rgb=GREY
+    return
+
 # ============================================================
 #                        BUILD
 # ============================================================
@@ -229,6 +263,17 @@ concept_apply("S18 · Concept 1 · [THEORY]","What Makes a Schema 'Good'",
     "\"Fewer tables = simpler = better.\" No — fewer tables usually means MORE redundancy and MORE anomalies. The right number of tables is 'one per real thing'.",
     "Good relational design: each relation models one entity with clear semantics; minimise redundant storage; minimise nulls; and avoid designs that generate spurious tuples on join. It trades a few more tables for far less redundancy and fewer anomalies.",
     "design guidelines · one-relation-one-entity · redundancy · nulls · spurious tuples")
+add_table_slide("S18 · Concept 1 · examples","One bad all-in-one table → the entities it should be split into",
+    ["System · bad table", "Facts crammed together", "Guideline broken", "Clean split (one-thing-per-table)"],
+    [
+     ["College ENROLL", "student + course + instructor + grade", "one relation ≠ one entity", "STUDENT · COURSE · INSTRUCTOR · ENROLL"],
+     ["Daraz orders sheet", "customer + product + order + seller", "excessive redundancy", "CUSTOMER · PRODUCT · ORDER · SELLER"],
+     ["eSewa txn log", "user + merchant + transaction", "same fact stored many times", "USER · MERCHANT · TRANSACTION"],
+     ["Hospital record", "patient + doctor + appointment + ward", "one relation ≠ one entity", "PATIENT · DOCTOR · APPOINTMENT · WARD"],
+     ["Bank sheet", "customer + savings + loan fields in one row", "excessive nulls (loan cols empty)", "CUSTOMER · ACCOUNT · LOAN · BRANCH"],
+     ["Library register", "member + book + loan + author", "redundancy + spurious joins", "MEMBER · BOOK · LOAN · AUTHOR"],
+    ],
+    per_page=6,widths=[1.7, 3.0, 2.1, 3.2],note="One relation per real thing. Each split stores every fact once and removes stray nulls — the whole reason this unit exists.",fs=11)
 
 concept_understand("S18 · Concept 2 · [THEORY]","Redundancy & the Three Anomalies",
     "An anomaly is an update problem caused by REDUNDANT storage. Redundancy in the ENROLL table produces three kinds of anomaly.",
@@ -243,6 +288,17 @@ concept_apply("S18 · Concept 2 · [THEORY]","Redundancy & the Three Anomalies",
     "\"Anomalies are rare edge cases.\" They're the everyday cost of redundancy — every duplicated fact is a future insert/delete/update anomaly waiting to corrupt data.",
     "An anomaly is an update problem caused by redundancy. Insertion: can't add a course until a student enrolls. Deletion: dropping the last student loses the course/instructor facts. Update: changing an instructor's department needs many-row edits, risking inconsistency. All stem from storing a fact more than once.",
     "anomaly · insertion / deletion / update anomaly · redundancy · inconsistency")
+add_table_slide("S18 · Concept 2 · examples","Each anomaly, worked on an unnormalized Nepali table",
+    ["Anomaly", "Worked example (unnormalized table)", "Why it happens", "The fix"],
+    [
+     ["Insertion", "Can't record new course IT250 until a student enrolls in it", "a course fact needs an unrelated student row", "give COURSE its own table"],
+     ["Insertion", "Can't add a new Daraz seller until they list a product", "seller fact trapped behind a product row", "separate SELLER table"],
+     ["Deletion", "Last student drops IT246 → the course + its instructor vanish", "one delete erases unrelated facts", "move course facts to COURSE"],
+     ["Deletion", "Cancel Dr. Sharma's only booking → the doctor's phone is lost", "patient row was holding the doctor fact", "separate DOCTOR table"],
+     ["Update", "Instructor moves dept → edit 11 rows, miss one = two 'truths'", "the dept is copied into every row", "store dept once in INSTRUCTOR"],
+     ["Update", "eSewa merchant commission changes → some txn rows go stale", "rate duplicated per transaction", "keep rate once in MERCHANT"],
+    ],
+    per_page=6,widths=[1.2, 4.1, 2.6, 2.3],note="All three anomalies share one root cause — the same fact stored more than once. Store each fact in exactly one place and they disappear.",fs=11)
 
 concept_understand("S18 · Concept 3 · [THEORY]","Functional Dependencies (FDs) & Keys",
     "A functional dependency X → Y means 'if you know X, you know exactly one Y' — X DETERMINES Y. A key is an attribute set that functionally determines EVERY attribute; a candidate key is a minimal such set.",
@@ -257,6 +313,19 @@ concept_apply("S18 · Concept 3 · [THEORY]","Functional Dependencies (FDs) & Ke
     "\"X → Y means Y → X too.\" FDs are one-directional: Roll → Name, but Name does not determine Roll (duplicate names). Reversing an FD is the classic beginner error.",
     "A functional dependency X → Y holds if each X value is associated with exactly one Y value (X determines Y); FDs are one-directional and come from business rules. A key is a minimal attribute set that functionally determines all attributes; here the key is {StudentRoll, CourseCode}.",
     "functional dependency (X → Y) · one-directional · candidate key · determines-all-attributes")
+add_table_slide("S18 · Concept 3 · examples","Which X → Y actually holds — and which reversals fail",
+    ["Determinant X", "→ determines Y", "Holds?", "Reason (real-world rule)"],
+    [
+     ["StudentRoll", "StudentName", "✅ yes", "one roll = exactly one student"],
+     ["CourseCode", "CourseTitle", "✅ yes", "one code names one course"],
+     ["InstructorID", "InstructorName, Dept", "✅ yes", "the ID pins down one instructor"],
+     ["{StudentRoll, CourseCode}", "Grade", "✅ yes", "the whole key fixes one grade"],
+     ["CitizenshipNo", "PersonName", "✅ yes", "the national ID is unique"],
+     ["StudentName", "StudentRoll", "❌ no", "two students named 'Anish'"],
+     ["Phone", "StudentRoll", "❌ no", "a family can share one number"],
+     ["Grade", "StudentRoll", "❌ no", "many students score 'A'"],
+    ],
+    per_page=8,widths=[2.2, 2.5, 1.0, 3.3],note="FDs are one-directional and come from business rules, not today's sample rows — reversing an FD (Roll→Name so Name→Roll) is the classic beginner error.",fs=11)
 
 add_activity("Find an FD in your marksheet",
     ["In pairs (3 min): look at your own college marksheet or result slip.",
@@ -298,6 +367,16 @@ concept_apply("S19 · Concept 1 · [THEORY]","Normalization: the Ladder",
     "\"Normalization is one big action.\" It's incremental — you climb one normal form at a time, checking the specific anomaly each rung removes before moving up.",
     "Normalization is a stepwise process of decomposing relations to reduce redundancy and anomalies, guided by FDs and keys, through a ladder of normal forms (1NF → 2NF → 3NF → BCNF → 4NF); each rung removes a specific class of anomaly and each is stricter than the last.",
     "normalization · normal form · ladder (1NF→2NF→3NF→BCNF→4NF) · incremental")
+add_table_slide("S19 · Concept 1 · examples","Each rung — the anomaly it removes and the fix on ENROLL",
+    ["Rung", "Anomaly it removes", "Example violation", "Decomposition fix"],
+    [
+     ["1NF", "lists / repeating groups in a cell", "StudentPhone = '9801, 9842, 9818'", "split phones into their own rows/table"],
+     ["2NF", "partial dependency on a composite key", "Roll → Name (half of {Roll, Course})", "move Name into STUDENT"],
+     ["3NF", "transitive dependency (non-key → non-key)", "Course → InstrID → Dept", "move instructor facts into INSTRUCTOR"],
+     ["BCNF", "a non-superkey determinant", "Instructor → Room in SECTION", "split ROOM_OF(Instructor, Room)"],
+     ["4NF", "independent multivalued facts crossed", "Roll ↠ Phone AND Roll ↠ Hobby in one table", "separate PHONE and HOBBY tables"],
+    ],
+    per_page=6,widths=[0.9, 2.6, 3.3, 3.1],note="Higher rungs are stricter and include the lower ones — satisfying 3NF means you already satisfy 1NF and 2NF. Climb one rung at a time.",fs=11)
 
 concept_understand("S19 · Concept 2 · [THEORY]","First Normal Form (1NF)",
     "A relation is in 1NF if every attribute holds a single, ATOMIC value — no repeating groups, no multivalued cells, no nested tables. Each cell = one value.",
@@ -312,6 +391,17 @@ concept_apply("S19 · Concept 2 · [THEORY]","First Normal Form (1NF)",
     "\"1NF just means no duplicate rows.\" No — 1NF is about atomic, single-valued cells and no repeating groups; row uniqueness is a different idea (the key).",
     "A relation is in 1NF if every attribute value is atomic (single-valued) with no repeating groups or nested relations. Multivalued/list cells are split into separate rows or a separate table — e.g. StudentPhone becomes STUDENT_PHONE(StudentRoll, Phone).",
     "1NF · atomic value · repeating group · multivalued cell · one-value-per-cell")
+add_table_slide("S19 · Concept 2 · examples","Spot the 1NF violation → make each cell atomic",
+    ["Column (as stored)", "Bad value", "1NF violation", "1NF fix (atomic)"],
+    [
+     ["StudentPhone", "'9801, 9842, 9818'", "list inside one cell", "STUDENT_PHONE(Roll, Phone), one per row"],
+     ["Course1 / Course2 / Course3", "three parallel columns", "repeating group", "one row per (Roll, CourseCode)"],
+     ["Address", "'Kathmandu-10, Baneshwor'", "non-atomic composite value", "split into City, Ward, Tole columns"],
+     ["Daraz Product.Sizes", "'S, M, L, XL'", "multivalued cell", "PRODUCT_SIZE(ProductID, Size)"],
+     ["Employee.Skills", "'Python; SQL; Java'", "list inside one cell", "EMP_SKILL(EmpID, Skill)"],
+     ["Order.Items", "'Rice x2, Dal x1'", "repeating group in a cell", "ORDER_ITEM(OrderID, Item, Qty)"],
+    ],
+    per_page=6,widths=[2.0, 2.4, 2.2, 3.4],note="1NF fixes CELLS (atomicity, no repeating groups) — it does NOT yet remove the row-level redundancy that 2NF and 3NF attack.",fs=11)
 
 add_solved_problem("S19 · Solved Problem","Bring ENROLL to 1NF",
     "Given ENROLL with StudentPhone = '9801, 9842, 9818' and repeating Course1/Course2/Course3 columns, "
@@ -359,6 +449,17 @@ concept_apply("S20 · Concept 1 · [THEORY]","Partial Dependency & 2NF",
     "\"Every table must be forced to 2NF separately.\" A table whose key is a single attribute is already in 2NF — partial dependency is only possible against a COMPOSITE key.",
     "A relation is in 2NF if it is in 1NF and has no partial dependency — no non-key attribute depends on only part of a composite key. Fix by moving each partially-dependent attribute into a table keyed on the part it depends on (StudentRoll→StudentName gives a STUDENT table).",
     "2NF · partial dependency · composite key · non-key attribute")
+add_table_slide("S20 · Concept 1 · examples","Does the non-key depend on the WHOLE composite key?",
+    ["Table (composite key)", "Non-key attribute", "Actually depends on", "Partial?", "2NF fix"],
+    [
+     ["ENROLL{Roll, Course}", "StudentName", "Roll only", "✅ partial", "→ STUDENT(Roll, Name)"],
+     ["ENROLL{Roll, Course}", "CourseTitle", "Course only", "✅ partial", "→ COURSE(Course, Title)"],
+     ["ENROLL{Roll, Course}", "Grade", "{Roll, Course}", "❌ full", "stays in ENROLL"],
+     ["ORDER_ITEM{Order, Product}", "ProductName", "Product only", "✅ partial", "→ PRODUCT(Product, Name)"],
+     ["ORDER_ITEM{Order, Product}", "OrderDate", "Order only", "✅ partial", "→ ORDER(Order, Date)"],
+     ["ORDER_ITEM{Order, Product}", "Quantity", "{Order, Product}", "❌ full", "stays in ORDER_ITEM"],
+    ],
+    per_page=6,widths=[2.4, 1.9, 1.9, 1.2, 2.1],note="Partial dependency is only possible against a COMPOSITE key. A table whose key is a single attribute is automatically in 2NF.",fs=11)
 
 concept_understand("S20 · Concept 2 · [THEORY]","Transitive Dependency & 3NF",
     "A relation is in 3NF if it is in 2NF AND no non-key attribute depends on ANOTHER non-key attribute — no transitive dependency (a key → non-key → non-key chain).",
@@ -373,6 +474,17 @@ concept_apply("S20 · Concept 2 · [THEORY]","Transitive Dependency & 3NF",
     "\"3NF means absolutely no redundancy ever.\" 3NF removes the common transitive redundancy, but a few odd cases survive — which is exactly why BCNF (S21) exists.",
     "A relation is in 3NF if it is in 2NF and has no transitive dependency — no non-key attribute determines another non-key attribute. Fix by moving the dependent non-key attributes into a table keyed on their determinant (InstructorID → its instructor facts).",
     "3NF · transitive dependency · non-key determinant · key→non-key→non-key chain")
+add_table_slide("S20 · Concept 2 · examples","Break the key → non-key → non-key chain",
+    ["Table", "Transitive chain (key → non-key → non-key)", "Redundant fact", "3NF fix"],
+    [
+     ["COURSE", "Course → InstrID → InstrName, Dept", "instructor repeats per course", "INSTRUCTOR(InstrID, Name, Dept)"],
+     ["Khalti TXN", "TxnID → MerchantID → MerchantCity", "city repeats per transaction", "MERCHANT(MerchantID, City)"],
+     ["EMPLOYEE", "EmpID → DeptID → DeptName", "dept name repeats per employee", "DEPT(DeptID, DeptName)"],
+     ["STUDENT", "Roll → ProgramID → ProgramName", "program name repeats per student", "PROGRAM(ProgramID, Name)"],
+     ["ORDER", "OrderID → CustID → CustCity", "customer city repeats per order", "CUSTOMER(CustID, City)"],
+     ["BOOK", "ISBN → PublisherID → PublisherAddr", "publisher address repeats", "PUBLISHER(PubID, Addr)"],
+    ],
+    per_page=6,widths=[1.4, 3.6, 2.4, 2.6],note="A non-key attribute must depend on the key DIRECTLY, never through another non-key. Move the tail of the chain into its own keyed table.",fs=11)
 
 concept_understand("S20 · Concept 3 · [THEORY]","The Fully Decomposed Design",
     "The running ENROLL table is now five clean tables in 3NF — and every S18 anomaly is gone.",
@@ -387,6 +499,16 @@ concept_apply("S20 · Concept 3 · [THEORY]","The Fully Decomposed Design",
     "\"More tables makes it slower/harder.\" The five tables re-join losslessly on their shared keys; correctness comes first, and indexes/joins handle performance. A corrupt single-table design is far costlier.",
     "After decomposition the design is STUDENT, STUDENT_PHONE, COURSE, INSTRUCTOR, ENROLL — each fact stored once. Course facts live in COURSE (no insert/delete anomaly), instructor facts in INSTRUCTOR (a dept change is one row), and the tables re-join losslessly.",
     "decomposed design · one-fact-one-place · anomalies eliminated")
+add_table_slide("S20 · Concept 3 · examples","The five 3NF tables → each fact once → anomaly gone",
+    ["Final table", "Primary key", "Fact stored once", "Anomaly it removes"],
+    [
+     ["STUDENT", "Roll", "student name", "update a name in ONE row"],
+     ["STUDENT_PHONE", "{Roll, Phone}", "each phone, atomically", "add/remove a phone freely"],
+     ["COURSE", "Course", "title + who teaches it", "add a course with NO students (insertion ✓)"],
+     ["INSTRUCTOR", "InstrID", "instructor name + dept", "dept change = one row (update ✓)"],
+     ["ENROLL", "{Roll, Course}", "the grade only", "drop last student, keep course (deletion ✓)"],
+    ],
+    per_page=6,widths=[1.8, 1.7, 2.8, 3.5],note="The five tables re-join losslessly on their shared keys (Roll, Course, InstrID) — every fact now lives in exactly one place.",fs=11)
 
 add_solved_problem("S20 · Solved Problem","Decompose ENROLL_1NF → 2NF → 3NF",
     "Starting from ENROLL_1NF (key {StudentRoll, CourseCode}), decompose it to 3NF, justifying each step.",
@@ -433,6 +555,16 @@ concept_apply("S21 · Concept 1 · [THEORY]","Boyce–Codd Normal Form (BCNF)",
     "\"3NF and BCNF are the same.\" They're equal most of the time, but differ when a non-superkey determines another attribute (often with overlapping candidate keys) — that case is 3NF-OK but not BCNF.",
     "A relation is in BCNF if, for every non-trivial FD X → Y, X is a superkey. It is stricter than 3NF (which permits a non-superkey determinant of a prime attribute). They coincide unless a non-superkey determines something; then decompose so every determinant is a key.",
     "BCNF · superkey · determinant · stricter-than-3NF · overlapping candidate keys")
+add_table_slide("S21 · Concept 1 · examples","The 3NF-OK-but-BCNF-violating trap",
+    ["Table · FD to test", "X a superkey?", "3NF?", "BCNF?", "Fix"],
+    [
+     ["SECTION(Course, Instr, Room) · Instr → Room", "❌ no", "✅ yes", "❌ no", "ROOM_OF(Instr, Room) + TEACHES(Course, Instr)"],
+     ["ADVISOR(Student, Subject, Teacher) · Teacher → Subject", "❌ no", "✅ yes", "❌ no", "split off TEACHES(Teacher, Subject)"],
+     ["BANK(Acct, Branch, Manager) · Manager → Branch", "❌ no", "✅ yes", "❌ no", "split off MANAGES(Manager, Branch)"],
+     ["ENROLL(Roll, Course, Grade) · {Roll,Course} → Grade", "✅ yes", "✅ yes", "✅ yes", "already BCNF"],
+     ["COURSE(Course, Title, InstrID) · Course → all", "✅ yes", "✅ yes", "✅ yes", "already BCNF"],
+    ],
+    per_page=6,widths=[3.6, 1.3, 0.9, 0.9, 2.8],note="3NF and BCNF coincide unless a NON-superkey determines an attribute (often with overlapping candidate keys) — then decompose so every determinant is a key.",fs=10.5)
 
 concept_understand("S21 · Concept 2 · [THEORY]","Multivalued Dependency (MVD) & 4NF",
     "A multivalued dependency X ↠ Y means: for each X there is a SET of independent Y values, independent of the other attributes. A relation is in 4NF if it is in BCNF and has no non-trivial MVD (unless X is a superkey).",
@@ -447,6 +579,16 @@ concept_apply("S21 · Concept 2 · [THEORY]","Multivalued Dependency (MVD) & 4NF
     "\"4NF is the same as 1NF — both are about multiple values.\" 1NF bans lists INSIDE a cell; 4NF bans two INDEPENDENT multivalued facts combined in one table (the cross-multiply).",
     "A multivalued dependency X ↠ Y holds when X determines a set of Y values independent of the rest of the tuple. A relation is in 4NF if it is in BCNF and has no non-trivial MVD (unless the determinant is a superkey). Fix by splitting the independent multivalued attributes into separate tables.",
     "multivalued dependency (X ↠ Y) · 4NF · independent multivalued facts · row explosion")
+add_table_slide("S21 · Concept 2 · examples","Two independent multivalued facts → row explosion → 4NF split",
+    ["Table", "Two independent multivalued facts", "Cross-multiply explosion", "4NF split"],
+    [
+     ["STUDENT_ACTIVITY", "Roll ↠ Course  and  Roll ↠ Hobby", "2 courses × 2 hobbies = 4 rows", "(Roll, Course) + (Roll, Hobby)"],
+     ["CONTACT", "Person ↠ Phone  and  Person ↠ Email", "2 phones × 3 emails = 6 rows", "(Person, Phone) + (Person, Email)"],
+     ["EMP_SKILL_LANG", "Emp ↠ Skill  and  Emp ↠ Language", "3 skills × 2 languages = 6 rows", "(Emp, Skill) + (Emp, Language)"],
+     ["DOCTOR", "Doctor ↠ Clinic  and  Doctor ↠ Language", "2 clinics × 2 languages = 4 rows", "(Doctor, Clinic) + (Doctor, Language)"],
+     ["DARAZ_SELLER", "Seller ↠ Category  and  Seller ↠ PickupCity", "2 categories × 3 cities = 6 rows", "(Seller, Category) + (Seller, City)"],
+    ],
+    per_page=6,widths=[1.7, 3.4, 2.4, 2.5],note="1NF bans lists INSIDE a cell; 4NF bans two INDEPENDENT multivalued facts crossed in ONE table. The rows carry no real information — pure cross-product noise.",fs=11)
 
 concept_understand("S21 · Concept 3 · [THEORY]","Lossless Join & Dependency Preservation",
     "A decomposition must be CORRECT, judged by two properties: it must be lossless, and ideally dependency-preserving.",
@@ -461,6 +603,16 @@ concept_apply("S21 · Concept 3 · [THEORY]","Lossless Join & Dependency Preserv
     "\"Any split into smaller tables is safe.\" A careless split is LOSSY — re-joining invents spurious tuples. Losslessness must be verified (shared attribute is a superkey of one piece), never assumed.",
     "Two properties of a good decomposition: lossless (non-additive) join — the natural join of the pieces reproduces the original exactly (guaranteed if the common attribute is a superkey of one piece); and dependency preservation — all original FDs remain checkable without joining. A split must be lossless; dependency preservation is desirable and can conflict with BCNF.",
     "lossless (non-additive) join · spurious tuples · shared attribute = superkey · dependency preservation · BCNF-vs-3NF trade-off")
+add_table_slide("S21 · Concept 3 · examples","Is this split safe? Check lossless first, then dependency-preserving",
+    ["Split into two tables", "Shared attr", "Superkey of a piece?", "Lossless?", "Dep-preserving?"],
+    [
+     ["STUDENT(Roll,Name) · ENROLL(Roll,Course,Grade)", "Roll", "✅ key of STUDENT", "✅ yes", "✅ yes"],
+     ["COURSE(Course,Title,InstrID) · INSTRUCTOR(InstrID,Name,Dept)", "InstrID", "✅ key of INSTRUCTOR", "✅ yes", "✅ yes"],
+     ["Careless R(A,B,C) → (A,B) · (A,C), A not key", "A", "❌ no", "❌ LOSSY", "— (spurious tuples on re-join)"],
+     ["SECTION → ROOM_OF(Instr,Room) · TEACHES(Course,Instr)", "Instr", "✅ key of ROOM_OF", "✅ yes", "❌ no (loses Course,Instr→Room)"],
+     ["Bank(Acct,Branch) · (Branch,City) on Branch", "Branch", "✅ key of Branch table", "✅ yes", "✅ yes"],
+    ],
+    per_page=6,widths=[3.6, 1.1, 1.9, 1.1, 2.1],note="A split MUST be lossless (shared attribute is a superkey of one piece, else re-join invents spurious tuples). Dependency preservation is desirable and can conflict with BCNF — sometimes you stop at 3NF.",fs=10.5)
 
 concept_understand("S21 · Concept 4 · [THEORY]","Unit 4 Synthesis — the whole ladder",
     "The complete toolkit: anomalies → FDs → 1NF → 2NF → 3NF → BCNF → 4NF, with the running ENROLL example at each rung, and a final gate: is the decomposition lossless and dependency-preserving?",
@@ -475,6 +627,17 @@ concept_apply("S21 · Concept 4 · [THEORY]","Unit 4 Synthesis — the whole lad
     "\"Normalize as far as possible, always to the top.\" Not always — you sometimes stop at 3NF to keep a decomposition dependency-preserving. The goal is a correct, maintainable design, not the highest rung for its own sake.",
     "Normalization procedure: detect anomalies → write FDs and the key → 1NF (atomic) → 2NF (no partial dep) → 3NF (no transitive dep) → BCNF (every determinant a superkey) → 4NF (no independent MVD), checking each decomposition is lossless and ideally dependency-preserving.",
     "normal-form ladder · lossless & dependency-preserving gate · anomaly-driven design")
+add_table_slide("S21 · Concept 4 · examples","Which normal form is this table in? Diagnose by the worst violation",
+    ["Sample table", "Problem present", "Highest NF satisfied", "To climb higher…"],
+    [
+     ["ENROLL(Roll, Phone='9801,9842', …)", "list inside a cell", "below 1NF", "atomize the phone values → 1NF"],
+     ["ENROLL_1NF{Roll,Course}, Roll → Name", "partial dependency", "1NF", "remove partial dep → 2NF"],
+     ["COURSE(Course, Title, InstrID, Dept)", "transitive Course → InstrID → Dept", "2NF", "split off INSTRUCTOR → 3NF"],
+     ["SECTION(Course, Instr, Room), Instr → Room", "non-superkey determinant", "3NF", "split so every determinant is a key → BCNF"],
+     ["STUDENT_ACTIVITY(Roll, Course, Hobby)", "two independent MVDs", "BCNF", "split independent facts → 4NF"],
+     ["INSTRUCTOR(InstrID, Name, Dept)", "none", "4NF (fully normalized)", "already done"],
+    ],
+    per_page=6,widths=[3.0, 2.6, 1.9, 2.5],note="Diagnose by the WORST violation present: non-atomic cell → below 1NF; partial dep → 1NF; transitive dep → 2NF; non-superkey determinant → 3NF; independent MVD → BCNF; none → 4NF.",fs=11)
 
 add_solved_problem("S21 · Capstone Solved Problem","Decompose ENROLL all the way to BCNF/4NF",
     "Take the original ENROLL (with multivalued StudentPhone) and normalize it fully, checking correctness.",

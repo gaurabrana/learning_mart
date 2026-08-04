@@ -45,6 +45,20 @@
 
 > **🔑 Key terms:** design guidelines · one-relation-one-entity · redundancy · nulls · spurious tuples.
 
+**📊 Depth table — One bad all-in-one table → the entities it should be split into**
+
+| System · bad table | Facts crammed together | Guideline broken | Clean split (one-thing-per-table) |
+|---|---|---|---|
+| College ENROLL | student + course + instructor + grade | one relation ≠ one entity | STUDENT · COURSE · INSTRUCTOR · ENROLL |
+| Daraz orders sheet | customer + product + order + seller | excessive redundancy | CUSTOMER · PRODUCT · ORDER · SELLER |
+| eSewa txn log | user + merchant + transaction | same fact stored many times | USER · MERCHANT · TRANSACTION |
+| Hospital record | patient + doctor + appointment + ward | one relation ≠ one entity | PATIENT · DOCTOR · APPOINTMENT · WARD |
+| Bank sheet | customer + savings + loan fields in one row | excessive nulls (loan cols empty) | CUSTOMER · ACCOUNT · LOAN · BRANCH |
+| Library register | member + book + loan + author | redundancy + spurious joins | MEMBER · BOOK · LOAN · AUTHOR |
+
+*ℹ️ One relation per real thing. Each split stores every fact once and removes stray nulls — the whole reason this unit exists.*
+
+
 ---
 
 #### Concept 2 — Redundancy & the Three Anomalies `[THEORY]` `[EXAMPLE]` `[~13 min]`
@@ -63,6 +77,20 @@
 
 > **🔑 Key terms:** anomaly · insertion / deletion / update anomaly · redundancy · inconsistency.
 
+**📊 Depth table — Each anomaly, worked on an unnormalized Nepali table**
+
+| Anomaly | Worked example (unnormalized table) | Why it happens | The fix |
+|---|---|---|---|
+| Insertion | Can't record new course IT250 until a student enrolls in it | a course fact needs an unrelated student row | give COURSE its own table |
+| Insertion | Can't add a new Daraz seller until they list a product | seller fact trapped behind a product row | separate SELLER table |
+| Deletion | Last student drops IT246 → the course + its instructor vanish | one delete erases unrelated facts | move course facts to COURSE |
+| Deletion | Cancel Dr. Sharma's only booking → the doctor's phone is lost | patient row was holding the doctor fact | separate DOCTOR table |
+| Update | Instructor moves dept → edit 11 rows, miss one = two 'truths' | the dept is copied into every row | store dept once in INSTRUCTOR |
+| Update | eSewa merchant commission changes → some txn rows go stale | rate duplicated per transaction | keep rate once in MERCHANT |
+
+*ℹ️ All three anomalies share one root cause — the same fact stored more than once. Store each fact in exactly one place and they disappear.*
+
+
 ---
 
 #### Concept 3 — Functional Dependencies (FDs) & Keys `[THEORY]` `[~12 min]`
@@ -79,6 +107,22 @@
 > **⚠️ Misconception.** *"X → Y means Y → X too."* No — Roll → Name, but Name does not determine Roll.
 
 > **🔑 Key terms:** functional dependency (X → Y, "determines") · one-directional · trivial vs non-trivial · candidate key.
+
+**📊 Depth table — Which X → Y actually holds — and which reversals fail**
+
+| Determinant X | → determines Y | Holds? | Reason (real-world rule) |
+|---|---|---|---|
+| StudentRoll | StudentName | ✅ yes | one roll = exactly one student |
+| CourseCode | CourseTitle | ✅ yes | one code names one course |
+| InstructorID | InstructorName, Dept | ✅ yes | the ID pins down one instructor |
+| {StudentRoll, CourseCode} | Grade | ✅ yes | the whole key fixes one grade |
+| CitizenshipNo | PersonName | ✅ yes | the national ID is unique |
+| StudentName | StudentRoll | ❌ no | two students named 'Anish' |
+| Phone | StudentRoll | ❌ no | a family can share one number |
+| Grade | StudentRoll | ❌ no | many students score 'A' |
+
+*ℹ️ FDs are one-directional and come from business rules, not today's sample rows — reversing an FD (Roll→Name so Name→Roll) is the classic beginner error.*
+
 
 #### 🛠 ACTIVITY `[~5 min]`
 Find one FD that holds in your college marksheet, and one pair of columns where neither determines the other.
@@ -115,6 +159,19 @@ Find one FD that holds in your college marksheet, and one pair of columns where 
 
 > **🔑 Key terms:** normalization · normal form · ladder (1NF→2NF→3NF→BCNF→4NF) · incremental.
 
+**📊 Depth table — Each rung — the anomaly it removes and the fix on ENROLL**
+
+| Rung | Anomaly it removes | Example violation | Decomposition fix |
+|---|---|---|---|
+| 1NF | lists / repeating groups in a cell | StudentPhone = '9801, 9842, 9818' | split phones into their own rows/table |
+| 2NF | partial dependency on a composite key | Roll → Name (half of {Roll, Course}) | move Name into STUDENT |
+| 3NF | transitive dependency (non-key → non-key) | Course → InstrID → Dept | move instructor facts into INSTRUCTOR |
+| BCNF | a non-superkey determinant | Instructor → Room in SECTION | split ROOM_OF(Instructor, Room) |
+| 4NF | independent multivalued facts crossed | Roll ↠ Phone AND Roll ↠ Hobby in one table | separate PHONE and HOBBY tables |
+
+*ℹ️ Higher rungs are stricter and include the lower ones — satisfying 3NF means you already satisfy 1NF and 2NF. Climb one rung at a time.*
+
+
 ---
 
 #### Concept 2 — First Normal Form (1NF) `[THEORY]` `[EXAMPLE]` `[~12 min]`
@@ -131,6 +188,20 @@ Find one FD that holds in your college marksheet, and one pair of columns where 
 > **⚠️ Misconception.** *"1NF just means no duplicate rows."* It is about atomic values + no repeating groups, not row uniqueness.
 
 > **🔑 Key terms:** 1NF · atomic value · repeating group · multivalued cell · one-value-per-cell.
+
+**📊 Depth table — Spot the 1NF violation → make each cell atomic**
+
+| Column (as stored) | Bad value | 1NF violation | 1NF fix (atomic) |
+|---|---|---|---|
+| StudentPhone | '9801, 9842, 9818' | list inside one cell | STUDENT_PHONE(Roll, Phone), one per row |
+| Course1 / Course2 / Course3 | three parallel columns | repeating group | one row per (Roll, CourseCode) |
+| Address | 'Kathmandu-10, Baneshwor' | non-atomic composite value | split into City, Ward, Tole columns |
+| Daraz Product.Sizes | 'S, M, L, XL' | multivalued cell | PRODUCT_SIZE(ProductID, Size) |
+| Employee.Skills | 'Python; SQL; Java' | list inside one cell | EMP_SKILL(EmpID, Skill) |
+| Order.Items | 'Rice x2, Dal x1' | repeating group in a cell | ORDER_ITEM(OrderID, Item, Qty) |
+
+*ℹ️ 1NF fixes CELLS (atomicity, no repeating groups) — it does NOT yet remove the row-level redundancy that 2NF and 3NF attack.*
+
 
 #### 🛠 CAPSTONE (deck solved problem) — fix ENROLL to 1NF
 Pull `StudentPhone` into `STUDENT_PHONE(Roll, Phone)`; flatten repeating course columns → one row per (Roll, Course). Key = {Roll, Course}.
@@ -169,6 +240,20 @@ Pull `StudentPhone` into `STUDENT_PHONE(Roll, Phone)`; flatten repeating course 
 
 > **🔑 Key terms:** 2NF · partial dependency · composite key · non-key attribute.
 
+**📊 Depth table — Does the non-key depend on the WHOLE composite key?**
+
+| Table (composite key) | Non-key attribute | Actually depends on | Partial? | 2NF fix |
+|---|---|---|---|---|
+| ENROLL{Roll, Course} | StudentName | Roll only | ✅ partial | → STUDENT(Roll, Name) |
+| ENROLL{Roll, Course} | CourseTitle | Course only | ✅ partial | → COURSE(Course, Title) |
+| ENROLL{Roll, Course} | Grade | {Roll, Course} | ❌ full | stays in ENROLL |
+| ORDER_ITEM{Order, Product} | ProductName | Product only | ✅ partial | → PRODUCT(Product, Name) |
+| ORDER_ITEM{Order, Product} | OrderDate | Order only | ✅ partial | → ORDER(Order, Date) |
+| ORDER_ITEM{Order, Product} | Quantity | {Order, Product} | ❌ full | stays in ORDER_ITEM |
+
+*ℹ️ Partial dependency is only possible against a COMPOSITE key. A table whose key is a single attribute is automatically in 2NF.*
+
+
 ---
 
 #### Concept 2 — Transitive Dependency & 3NF `[THEORY]` `[~12 min]`
@@ -186,6 +271,20 @@ Pull `StudentPhone` into `STUDENT_PHONE(Roll, Phone)`; flatten repeating course 
 
 > **🔑 Key terms:** 3NF · transitive dependency · non-key determinant · key→non-key→non-key chain.
 
+**📊 Depth table — Break the key → non-key → non-key chain**
+
+| Table | Transitive chain (key → non-key → non-key) | Redundant fact | 3NF fix |
+|---|---|---|---|
+| COURSE | Course → InstrID → InstrName, Dept | instructor repeats per course | INSTRUCTOR(InstrID, Name, Dept) |
+| Khalti TXN | TxnID → MerchantID → MerchantCity | city repeats per transaction | MERCHANT(MerchantID, City) |
+| EMPLOYEE | EmpID → DeptID → DeptName | dept name repeats per employee | DEPT(DeptID, DeptName) |
+| STUDENT | Roll → ProgramID → ProgramName | program name repeats per student | PROGRAM(ProgramID, Name) |
+| ORDER | OrderID → CustID → CustCity | customer city repeats per order | CUSTOMER(CustID, City) |
+| BOOK | ISBN → PublisherID → PublisherAddr | publisher address repeats | PUBLISHER(PubID, Addr) |
+
+*ℹ️ A non-key attribute must depend on the key DIRECTLY, never through another non-key. Move the tail of the chain into its own keyed table.*
+
+
 ---
 
 #### Concept 3 — The Fully Decomposed Design `[THEORY]` `[~6 min]`
@@ -198,6 +297,19 @@ Pull `StudentPhone` into `STUDENT_PHONE(Roll, Phone)`; flatten repeating course 
 > **🧠 Hook:** "Each fact in exactly one place."
 
 > **🔑 Key terms:** decomposed design · one-fact-one-place · anomalies eliminated.
+
+**📊 Depth table — The five 3NF tables → each fact once → anomaly gone**
+
+| Final table | Primary key | Fact stored once | Anomaly it removes |
+|---|---|---|---|
+| STUDENT | Roll | student name | update a name in ONE row |
+| STUDENT_PHONE | {Roll, Phone} | each phone, atomically | add/remove a phone freely |
+| COURSE | Course | title + who teaches it | add a course with NO students (insertion ✓) |
+| INSTRUCTOR | InstrID | instructor name + dept | dept change = one row (update ✓) |
+| ENROLL | {Roll, Course} | the grade only | drop last student, keep course (deletion ✓) |
+
+*ℹ️ The five tables re-join losslessly on their shared keys (Roll, Course, InstrID) — every fact now lives in exactly one place.*
+
 
 #### 🛠 CAPSTONE (deck solved problem) — decompose ENROLL_1NF → 2NF → 3NF
 Remove partial deps (Roll→Name, Course→Title) → 2NF; remove transitive dep (InstructorID→…) → 3NF; arrive at the five-table design.
@@ -236,6 +348,19 @@ Remove partial deps (Roll→Name, Course→Title) → 2NF; remove transitive dep
 
 > **🔑 Key terms:** BCNF · superkey · determinant · stricter-than-3NF · overlapping candidate keys.
 
+**📊 Depth table — The 3NF-OK-but-BCNF-violating trap**
+
+| Table · FD to test | X a superkey? | 3NF? | BCNF? | Fix |
+|---|---|---|---|---|
+| SECTION(Course, Instr, Room) · Instr → Room | ❌ no | ✅ yes | ❌ no | ROOM_OF(Instr, Room) + TEACHES(Course, Instr) |
+| ADVISOR(Student, Subject, Teacher) · Teacher → Subject | ❌ no | ✅ yes | ❌ no | split off TEACHES(Teacher, Subject) |
+| BANK(Acct, Branch, Manager) · Manager → Branch | ❌ no | ✅ yes | ❌ no | split off MANAGES(Manager, Branch) |
+| ENROLL(Roll, Course, Grade) · {Roll,Course} → Grade | ✅ yes | ✅ yes | ✅ yes | already BCNF |
+| COURSE(Course, Title, InstrID) · Course → all | ✅ yes | ✅ yes | ✅ yes | already BCNF |
+
+*ℹ️ 3NF and BCNF coincide unless a NON-superkey determines an attribute (often with overlapping candidate keys) — then decompose so every determinant is a key.*
+
+
 ---
 
 #### Concept 2 — Multivalued Dependency (MVD) & 4NF `[THEORY]` `[~12 min]`
@@ -252,6 +377,19 @@ Remove partial deps (Roll→Name, Course→Title) → 2NF; remove transitive dep
 > **⚠️ Misconception.** *"4NF is the same as 1NF — both about multiple values."* 1NF bans lists **inside a cell**; 4NF bans independent multivalued facts **combined in one table**.
 
 > **🔑 Key terms:** multivalued dependency (X ↠ Y) · 4NF · independent multivalued facts · row explosion.
+
+**📊 Depth table — Two independent multivalued facts → row explosion → 4NF split**
+
+| Table | Two independent multivalued facts | Cross-multiply explosion | 4NF split |
+|---|---|---|---|
+| STUDENT_ACTIVITY | Roll ↠ Course  and  Roll ↠ Hobby | 2 courses × 2 hobbies = 4 rows | (Roll, Course) + (Roll, Hobby) |
+| CONTACT | Person ↠ Phone  and  Person ↠ Email | 2 phones × 3 emails = 6 rows | (Person, Phone) + (Person, Email) |
+| EMP_SKILL_LANG | Emp ↠ Skill  and  Emp ↠ Language | 3 skills × 2 languages = 6 rows | (Emp, Skill) + (Emp, Language) |
+| DOCTOR | Doctor ↠ Clinic  and  Doctor ↠ Language | 2 clinics × 2 languages = 4 rows | (Doctor, Clinic) + (Doctor, Language) |
+| DARAZ_SELLER | Seller ↠ Category  and  Seller ↠ PickupCity | 2 categories × 3 cities = 6 rows | (Seller, Category) + (Seller, City) |
+
+*ℹ️ 1NF bans lists INSIDE a cell; 4NF bans two INDEPENDENT multivalued facts crossed in ONE table. The rows carry no real information — pure cross-product noise.*
+
 
 ---
 
@@ -272,6 +410,19 @@ Remove partial deps (Roll→Name, Course→Title) → 2NF; remove transitive dep
 
 > **🔑 Key terms:** lossless (non-additive) join · spurious tuples · shared attribute = superkey · dependency preservation · BCNF-vs-3NF trade-off.
 
+**📊 Depth table — Is this split safe? Check lossless first, then dependency-preserving**
+
+| Split into two tables | Shared attr | Superkey of a piece? | Lossless? | Dep-preserving? |
+|---|---|---|---|---|
+| STUDENT(Roll,Name) · ENROLL(Roll,Course,Grade) | Roll | ✅ key of STUDENT | ✅ yes | ✅ yes |
+| COURSE(Course,Title,InstrID) · INSTRUCTOR(InstrID,Name,Dept) | InstrID | ✅ key of INSTRUCTOR | ✅ yes | ✅ yes |
+| Careless R(A,B,C) → (A,B) · (A,C), A not key | A | ❌ no | ❌ LOSSY | — (spurious tuples on re-join) |
+| SECTION → ROOM_OF(Instr,Room) · TEACHES(Course,Instr) | Instr | ✅ key of ROOM_OF | ✅ yes | ❌ no (loses Course,Instr→Room) |
+| Bank(Acct,Branch) · (Branch,City) on Branch | Branch | ✅ key of Branch table | ✅ yes | ✅ yes |
+
+*ℹ️ A split MUST be lossless (shared attribute is a superkey of one piece, else re-join invents spurious tuples). Dependency preservation is desirable and can conflict with BCNF — sometimes you stop at 3NF.*
+
+
 ---
 
 #### Concept 4 — Unit 4 Synthesis `[THEORY]` `[~ built into deck]`
@@ -284,6 +435,20 @@ Remove partial deps (Roll→Name, Course→Title) → 2NF; remove transitive dep
 > **🧠 Hook:** "Anomalies → FDs → climb the ladder → check it's lossless."
 
 > **🔑 Key terms:** normal-form ladder · lossless & dependency-preserving gate · anomaly-driven design.
+
+**📊 Depth table — Which normal form is this table in? Diagnose by the worst violation**
+
+| Sample table | Problem present | Highest NF satisfied | To climb higher… |
+|---|---|---|---|
+| ENROLL(Roll, Phone='9801,9842', …) | list inside a cell | below 1NF | atomize the phone values → 1NF |
+| ENROLL_1NF{Roll,Course}, Roll → Name | partial dependency | 1NF | remove partial dep → 2NF |
+| COURSE(Course, Title, InstrID, Dept) | transitive Course → InstrID → Dept | 2NF | split off INSTRUCTOR → 3NF |
+| SECTION(Course, Instr, Room), Instr → Room | non-superkey determinant | 3NF | split so every determinant is a key → BCNF |
+| STUDENT_ACTIVITY(Roll, Course, Hobby) | two independent MVDs | BCNF | split independent facts → 4NF |
+| INSTRUCTOR(InstrID, Name, Dept) | none | 4NF (fully normalized) | already done |
+
+*ℹ️ Diagnose by the WORST violation present: non-atomic cell → below 1NF; partial dep → 1NF; transitive dep → 2NF; non-superkey determinant → 3NF; independent MVD → BCNF; none → 4NF.*
+
 
 #### 🛠 CAPSTONE (deck solved problem) — full ENROLL → BCNF/4NF with lossless check.
 

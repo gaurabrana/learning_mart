@@ -184,6 +184,21 @@ By the end of this unit, students will be able to:
 > 🎙️ Speaker note: The takeaway students must leave with: "Ethics is the harder question, and the
 > dangerous quadrant is legal-but-unethical, because nothing stops you except your own judgment."
 
+**📊 Depth table — Real instances placed on the legal/ethical grid**
+
+| Instance | Legal? | Ethical? | Quadrant |
+|---|---|---|---|
+| Paying 'chiya kharcha' to push your file up the pile | No | No | Illegal + Unethical |
+| Sharing one paid Netflix/Canva login among 8 friends | Grey (contract breach) | No | Legal-ish + Unethical |
+| Using 'source-force' to skip a government-office queue | Yes | No | Legal + Unethical |
+| Selling legally-collected customer data without consent | Yes | No | Legal + Unethical |
+| Paying your taxes honestly and on time | Yes | Yes | Legal + Ethical |
+| Whistle-blowing on employer fraud, breaking an NDA | No (breach) | Yes (debated) | Illegal + Ethical |
+| A student pirating software they cannot afford | No | Debated | Illegal + (arguably) Ethical |
+| Leaking a customer's private photos from a database | No | No | Illegal + Unethical |
+
+*ℹ️ The danger zone is legal-but-unethical: nothing external stops you there — only your own judgment. Most everyday harm lives in that quadrant.*
+
 #### Concept 3 — Ethics in the Business World `[THEORY]` `[~8 min]`
 
 [SLIDE] **Why business ethics is its own topic**
@@ -248,6 +263,20 @@ By the end of this unit, students will be able to:
 
 *ℹ️ Good ethics is not a cost centre — each practice buys a concrete, compounding return.*
 
+**📊 Depth table — Profit vs trust — real Nepali business choices**
+
+| Business scenario | Short-term profit move | Long-term trust cost | Verdict |
+|---|---|---|---|
+| Festival shop triples oil/sugar price in a Dashain shortage | One-time fat margin | Customers desert it every Dashain after | Trust lost |
+| Trekking agency hides a route safety risk to keep a booking | Keeps one deposit | Client harmed; lawsuits; scares off future tourists | Sector loses |
+| A wallet (eSewa/Khalti-style) quietly reuses data for ads | Extra ad revenue | Users switch wallets once they find out | Trust lost |
+| A Daraz seller ships a counterfeit as genuine | One quick sale | Bad reviews, returns, delisting | Reputation crash |
+| A bank buries fees in the fine print | More fee income now | Complaints, NRB scrutiny, churn | Trust lost |
+| A college promises placements it cannot deliver | Higher admissions this year | Angry students, falling reputation | Enrolment falls |
+| A momo restaurant reuses stale ingredients to cut cost | Saves on stock | One food-poisoning post ends it | Business closes |
+
+*ℹ️ Trust is slow to build and instant to lose — each shortcut spends a years-long reserve. Good ethics is usually good business on a longer clock.*
+
 #### Concept 4 — Why Good People & Businesses Still Go Wrong `[THEORY]` `[~7 min]`
 
 [SLIDE] **The usual pressures**
@@ -267,6 +296,20 @@ By the end of this unit, students will be able to:
 > Wrong. Brakes are exactly what let a car drive **fast safely** — take the brakes off and you
 > can't speed, you can only crash. A business with strong ethics can move aggressively *because* it
 > won't destroy its own reputation doing so."
+
+**📊 Depth table — Ordinary people, predictable pressure — name the cause**
+
+| Scenario | Pressure at work | Why the person went wrong |
+|---|---|---|
+| Junior accountant rounds up numbers because 'everyone here does' | Normalization | Wrong feels normal |
+| Sales rep oversells a policy to hit target or lose the job | Results pressure | The target crowds out ethics |
+| Clerk approves a shortcut because 'no one audits this desk' | Weak oversight | Cutting corners feels free |
+| Staffer follows a manager's 'just do it' on a dodgy file | Diffusion of responsibility | 'The boss decided, not me' |
+| IT admin skips a security patch because the team never bothers | Normalization | Everyone else skips it too |
+| Bank teller waives KYC for a VIP under branch-target pressure | Results pressure + weak oversight | Targets plus nobody checking |
+| Team member stays silent though the plan clearly feels wrong | Diffusion / groupthink | 'Not my call to object' |
+
+*ℹ️ No villains here — the failures are situational. Change the conditions (leadership, oversight, consequences) and the behaviour changes. Fix the situation, not just the person.*
 
 #### 🛠 ACTIVITY — "Find the grey area" `[ACTIVITY]` `[~6 min]`
 
@@ -387,6 +430,20 @@ behavioral interviews ("tell me about a time you faced an ethical dilemma").
 
 *ℹ️ Nepal Rastra Bank directs commercial banks to allocate part of profit to CSR — so here, CSR is partly built into regulation, not just goodwill.*
 
+**📊 Depth table — Real Nepali activities sorted onto Carroll's four levels**
+
+| Real activity | Carroll level | Why it sits there |
+|---|---|---|
+| A commercial bank staying solvent and profitable | Economic (base) | Survival funds everything above it |
+| A bank allocating a share of profit to CSR as NRB directs | Legal | A regulatory requirement, not charity |
+| A firm paying all taxes and following labour law | Legal | Society's codified minimum |
+| A company paying fair wages and advertising honestly | Ethical | Right beyond what the law forces |
+| A telecom NOT exploiting a billing loophole that overcharges | Ethical | Above the legal floor |
+| Ncell/NTC extending coverage to remote villages | Philanthropic | Serves society beyond pure profit |
+| A bank funding scholarships and flood relief | Philanthropic (top) | Giving back to the community |
+
+*ℹ️ A company donating to charity (top) while underpaying staff (skipping the ethical layer) is doing CSR backwards — image without foundation.*
+
 #### Concept 3 — Stakeholder Theory `[THEORY]` `[~8 min]`
 
 [SLIDE] **Who is a business accountable to?**
@@ -416,6 +473,19 @@ behavioral interviews ("tell me about a time you faced an ethical dilemma").
 
 *ℹ️ Same facts, opposite conclusions — which is why 'whose interests count?' is the first ethical question in business.*
 
+**📊 Depth table — One decision, two lenses — real Nepali cases**
+
+| Business decision | Shareholder lens | Stakeholder lens | Hidden cost |
+|---|---|---|---|
+| A brick/cement factory profitable but polluting a village's water | Success — profit up | Failure — village harmed | Health costs, lawsuits, lost licence |
+| A wallet firm sells user location data to advertisers | Revenue up | Privacy violated | Churn, regulator action |
+| A garment exporter underpays workers to win a contract | Lower cost, more orders | Workers exploited | Strikes, boycotts, reputation |
+| A bank pushes loans farmers can't repay | Loan-book growth | Farmers trapped in debt | Defaults, social backlash |
+| A college over-enrols far beyond capacity | More fee income | Students get poor teaching | Falling reputation, dropouts |
+| A hydropower project skips community consultation | Faster build | Locals displaced and angry | Protests, delays, lawsuits |
+
+*ℹ️ The costs pushed onto non-owner stakeholders are hidden, not absent — they return as lawsuits, boycotts, or a lost social licence to operate.*
+
 #### Concept 4 — Fostering CSR & an Ethical Culture `[THEORY]` `[~7 min]`
 
 [SLIDE] **How good ethics gets built (not wished)**
@@ -442,6 +512,20 @@ behavioral interviews ("tell me about a time you faced an ethical dilemma").
 | What survives scrutiny? | Consistent record over years | A campaign that falls apart on a closer look |
 
 *ℹ️ The one-line test: does the company's everyday operation match its CSR message, or does the ad contradict the behaviour?*
+
+**📊 Depth table — Genuine CSR or greenwashing? Apply the test**
+
+| CSR claim / activity | Does daily operation match? | Verdict |
+|---|---|---|
+| Bank ad 'we care about farmers' while loan terms crush them | No | Greenwashing |
+| A firm plants trees for a photo op but pollutes a river daily | No | Greenwashing |
+| 'Eco-friendly' labels added with no change to the packaging | No | Greenwashing |
+| A one-off Dashain donation heavily used in ads by a low-wage employer | No | Greenwashing |
+| A firm with years of fair wages runs a modest 'we treat staff well' campaign | Yes | Genuine CSR |
+| Telecom runs real rural-coverage & digital-literacy programs | Yes | Genuine CSR |
+| A bank publishes an audited social-responsibility report matching practice | Yes | Genuine CSR |
+
+*ℹ️ The ad is never the evidence — the operation is. One-line test: does the company's everyday behaviour match its CSR message?*
 
 #### 🛠 ACTIVITY — "Genuine or greenwashing?" `[ACTIVITY]` `[~6 min]`
 
@@ -527,6 +611,21 @@ real rather than decorative.
 
 *ℹ️ An unenforced code can be WORSE than none — it signals the rules are for show, teaching everyone to ignore them.*
 
+**📊 Depth table — Same code, opposite lessons — what staff actually learn**
+
+| Value the code states | What actually happens | What staff learn |
+|---|---|---|
+| 'Zero tolerance for bribery' | A manager who takes a kickback is dismissed | The rules are real — follow them |
+| 'Zero tolerance for bribery' | A senior is quietly excused | The code is theatre |
+| 'Report concerns safely' | A whistle-blower is thanked and protected | Speaking up is safe |
+| 'Report concerns safely' | A reporter is sidelined and punished | Stay quiet |
+| 'We respect data privacy' | Staff who peek at accounts are disciplined | Privacy is enforced |
+| 'We respect data privacy' | Snooping is ignored | Privacy is just a poster |
+| 'Deadlines never justify cutting corners' | A rushed, unsafe release is rolled back | Quality genuinely matters |
+| 'Deadlines never justify cutting corners' | Corners cut to ship on time, and praised | The code doesn't apply under pressure |
+
+*ℹ️ The document is never the cause. An unenforced code is worse than none — it teaches everyone that the rules are for show.*
+
 #### Concept 2 — Components of an Effective Program `[THEORY]` `[~9 min]`
 
 [SLIDE] **The machinery that works**
@@ -593,6 +692,20 @@ real rather than decorative.
 | Net result | Ethical culture strengthens | Worse than having no code at all |
 
 *ℹ️ Consistency is the make-or-break factor — a code applied only to the powerless teaches everyone that ethics is negotiable.*
+
+**📊 Depth table — How a violation is handled — and what everyone learns**
+
+| Situation | How it was handled | What everyone learned |
+|---|---|---|
+| A senior and a junior both take a kickback | Both dismissed | Rules apply to everyone |
+| Senior excused, junior fired for the same breach | Selective | The code is power-dependent |
+| A culture survey flags a bullying manager | Acted on quickly | Reporting is worthwhile |
+| Reported concerns are collected but never acted on | Ignored | Reporting is pointless — people stop |
+| An ethics audit finds a compliance gap | Fixed before it became a scandal | Audits protect the firm |
+| A branch skips the mandated AML training | Overlooked, no consequence | Rules are optional here |
+| A director's conflict of interest is disclosed | Managed openly | Ethics applies at the top too |
+
+*ℹ️ Consistency is make-or-break. Selective punishment — excusing seniors — destroys trust faster than having no code at all, because the hypocrisy is visible.*
 
 #### 🛠 ACTIVITY — "Design one enforceable rule" `[ACTIVITY]` `[~5 min]`
 
@@ -683,6 +796,19 @@ later, to build a good one.
 
 *ℹ️ The method matters more than instant agreement — everyone should be able to defend their choice.*
 
+**📊 Depth table — The process on six everyday dilemmas**
+
+| Dilemma | First fact to get | Key stakeholders | Defensible action |
+|---|---|---|---|
+| Classmate shares a Drive with tomorrow's exam answers | Are these really the exam? How did I get them? | Honest students, teacher, institution | Report / delete without looking |
+| A vendor offers your procurement officer a 'gift' before a tender | Gift or bribe? What's the policy limit? | Other bidders, employer, public | Decline and disclose |
+| Boss asks you to backdate an invoice | Is this legal? Why is it needed? | Auditors, tax office, firm | Refuse and escalate |
+| A user's data was leaked from your app | What leaked, to whom, when? | Affected users, the regulator | Contain, disclose, notify |
+| Friend asks you to share paid software licence keys | Is the licence transferable? | Vendor, your employer | Decline, suggest a legal option |
+| You spot a bug that overcharges some customers | How many affected, and by how much? | Overcharged customers, firm | Report and refund |
+
+*ℹ️ Steps 1-2 (get the facts, name the stakeholders) are the most-skipped and most important — that is where most bad decisions are born.*
+
 #### Concept 2 — Four Ethical Lenses `[THEORY]` `[~9 min]`
 
 [SLIDE] **Four ways to test an option**
@@ -718,6 +844,20 @@ later, to build a good one.
 
 *ℹ️ All four CONVERGE here — which is why it feels obviously right. The hard cases are where the lenses disagree.*
 
+**📊 Depth table — Which lens fits — and what it decides**
+
+| Situation | Lens that fits best | What it decides |
+|---|---|---|
+| Ambulance asks to jump the fuel queue in a shortage | All four converge | Let it pass |
+| Lay off 10 staff to save 200 jobs | Utilitarian | Greatest good for the greatest number |
+| Read a subordinate's private chats 'for the company' | Rights / duty | No — it violates their privacy |
+| Pay two equally-qualified interns the same | Fairness / justice | Treat like cases alike |
+| Report a friend who is stealing from the till | Virtue / common good | What a person of good character does |
+| Promote strictly on merit, not on 'source-force' | Fairness / justice | Fair to all candidates |
+| Use user data in a profitable way most would object to | Rights/duty vs utilitarian | Lenses disagree — name it, decide on merits |
+
+*ℹ️ On easy cases the four lenses converge (which is why it feels obvious). The hard cases are exactly where they disagree — naming the disagreement is half the work.*
+
 #### Concept 3 — Common Decision Traps `[THEORY]` `[~7 min]`
 
 [SLIDE] **What derails good people**
@@ -742,6 +882,20 @@ later, to build a good one.
 | Blind obedience | 'My manager told me to, so it's on them' | You remain responsible — run it through the 5 steps |
 
 *ℹ️ 'Just fudge this one report' uses TWO traps at once — blind obedience + slippery slope.*
+
+**📊 Depth table — How the traps sound in real life — and the counter**
+
+| What you hear in real life | Trap being used | How to counter it |
+|---|---|---|
+| 'Everyone in this office rounds the numbers' | Rationalization | Name the act — would you defend it openly? |
+| 'The whole team agreed, so it must be fine' | Groupthink | Ask for one dissenting view; decide on merits |
+| 'Just fudge this one report, only this once' | Slippery slope (+ obedience) | Set the bright line before the pressure |
+| 'The manager told me to, so it's on him' | Blind obedience | You remain responsible; run the 5 steps |
+| 'It's not really piracy — students do it all the time' | Rationalization | Would it survive open scrutiny? |
+| 'Nobody will notice one skipped KYC check' | Rationalization / slippery slope | One exception lowers the bar for next time |
+| 'Don't rock the boat, the seniors already decided' | Groupthink / obedience | Decide on merits, not seniority |
+
+*ℹ️ 'Just fudge this one report' uses two traps at once — blind obedience plus slippery slope. Naming the trap out loud strips half its power.*
 
 #### 🛠 ACTIVITY — "Run the dilemma" `[ACTIVITY]` `[~6 min]`
 
@@ -836,6 +990,20 @@ through a hard decision you made."
 
 *ℹ️ Because the legal 'floor' is often missing in IT, your own ethics is frequently the only thing holding.*
 
+**📊 Depth table — Real IT incidents — the factor that makes each worse**
+
+| IT incident | Amplifying factor | Why it's worse than offline |
+|---|---|---|
+| Personal data leaked from a Nepali online service | Permanence + speed | It can never be fully recalled |
+| A default privacy setting exposes millions of accounts | Scale | One choice harms a whole population |
+| A viral election deepfake the night before voting | Speed | Outruns fact-checkers before anyone reacts |
+| An anonymous account harasses a victim across borders | Anonymity | Hard to catch or hold accountable |
+| A loan algorithm rejects an entire neighbourhood | Scale + accuracy | One model discriminates automatically |
+| A leaked private photo re-shared across many groups | Permanence | A screenshot is forever |
+| A new AI tool with no law yet governing its use | Capability-regulation gap | 'Is it legal?' has no answer yet |
+
+*ℹ️ Because the legal 'floor' is often missing in IT, your own ethics is frequently the only thing holding — this is where 'law is only the floor' matters most.*
+
 #### Concept 2 — The Four Pillars: "PAPA" `[THEORY]` `[~9 min]`
 
 [SLIDE] **Privacy · Accuracy · Property · Access**
@@ -871,6 +1039,20 @@ through a hard decision you made."
 
 *ℹ️ Security threads through all four pillars (Units 5–8) — so this single table is a map of the entire IT 246 course.*
 
+**📊 Depth table — Name the pillar — real IT / Nepal concerns**
+
+| Real concern | PAPA pillar | Why |
+|---|---|---|
+| An app sells your location data to advertisers | Privacy | Who can collect and see your data |
+| A wallet reuses your transaction history without consent | Privacy | Data used beyond what you agreed to |
+| A biased loan algorithm wrongly rejects you | Accuracy | Responsibility when the algorithm is wrong |
+| Wrong info on a government portal blocks your service | Accuracy | Harm from incorrect data |
+| Pirating Windows/Adobe or copying a code repo | Property | Who owns software and information |
+| Villages with no internet miss e-services (Nagarik App) | Access | Who is left out — the digital divide |
+| Only smartphone owners can use a digital-ID system | Access | The divide excludes people |
+
+*ℹ️ Security threads through all four pillars (Units 5-8). PAPA lets you name any IT-ethics concern precisely.*
+
 #### Concept 3 — The IT Professional's Responsibility `[THEORY]` `[~7 min]`
 
 [SLIDE] **"Can" vs "Should"**
@@ -898,6 +1080,20 @@ through a hard decision you made."
 | Verdict | 'We can, so let's' | Often: don't — or seek consent / anonymise |
 
 *ℹ️ 'Can' and 'should' give different answers — professional codes (ACM, IEEE) exist to keep 'should' in front.*
+
+**📊 Depth table — 'Can' vs 'Should' — you can, but should you?**
+
+| You CAN... | SHOULD you? | The ethical catch |
+|---|---|---|
+| Scrape 100,000 users' public posts for a project | Usually no | Public is not consent to THIS use |
+| Log every keystroke of staff 'for productivity' | No | Violates reasonable privacy |
+| Sell 'anonymised' data that can be re-identified | No | 'Anonymised' often isn't |
+| Build a face-recognition tool from public photos | Rarely | People didn't consent to be identified |
+| Read user DMs because you have admin access | No | Access is not permission |
+| A/B test a dark pattern that tricks users into paying | No | Deception harms the user |
+| Deploy an untested medical-advice chatbot because it 'works' | No | Accuracy failures can harm people |
+
+*ℹ️ Professional codes (ACM, IEEE) exist to keep 'should' in front of 'can' — your duty is to the people in the data, not just to what is technically allowed.*
 
 #### 🛠 ACTIVITY — "Can vs Should audit" `[ACTIVITY]` `[~6 min]`
 

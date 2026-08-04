@@ -45,6 +45,21 @@
 
 > **🔑 Key terms:** relational algebra · procedural · relation (input/output) · closure property · basis of SQL.
 
+**📊 Depth table — The eight relational-algebra operators at a glance**
+
+| Operator | Symbol | What it does (plain English) | Example expression | Returns |
+|---|---|---|---|---|
+| SELECT | σ | keep ROWS meeting a condition | σ city='Pokhara'(Student) | Sita, Ram (Pokhara rows) |
+| PROJECT | π | keep chosen COLUMNS | π name(Student) | just the name column |
+| UNION | ∪ | rows in either table | π sid(BIM) ∪ π sid(BBA) | all sids from both |
+| DIFFERENCE | − | rows in R but not in S | AllStudent − Graduated | currently active students |
+| PRODUCT | × | pair every row with every row | Student × Course | all sid–course pairings |
+| JOIN | ⋈ | product kept to matching rows | Student ⋈ Enrollment | each student with their courses |
+| DIVISION | ÷ | rows related to ALL of a set | Enrollment ÷ CoreCourse | students in every core course |
+| RENAME | ρ | rename a relation / its columns | ρ S(Student) | Student re-labelled S |
+
+*ℹ️ Every operator takes relation(s) in and gives a relation out (closure) — so they chain into big queries. Sample schema: Student(sid,name,program,city), Enrollment(sid,course,grade), Course(cid,title).*
+
 ---
 
 #### Concept 2 — SELECT (σ) & PROJECT (π) `[THEORY]` `[EXAMPLE]` `[~13 min]`
@@ -65,6 +80,19 @@
 > **⚠️ Misconception.** *"π keeps duplicate rows like SQL."* Pure relational algebra removes duplicates automatically; SQL needs `DISTINCT`.
 
 > **🔑 Key terms:** SELECT (σ, rows) · PROJECT (π, columns) · condition · same-schema · duplicate removal · SQL-SELECT-is-π trap.
+
+**📊 Depth table — σ (rows) vs π (columns) — worked on the sample Student table**
+
+| Expression | Operation | Cut | Result on sample | Rows × Cols |
+|---|---|---|---|---|
+| σ city='Pokhara'(Student) | SELECT (σ) | horizontal (rows) | Sita, Ram | 2 × 4 |
+| σ program='BIM'(Student) | SELECT (σ) | horizontal (rows) | Sita, Hari | 2 × 4 |
+| σ sid>2(Student) | SELECT (σ) | horizontal (rows) | Ram, Gita | 2 × 4 |
+| π name(Student) | PROJECT (π) | vertical (cols) | Sita, Hari, Ram, Gita | 4 × 1 |
+| π program(Student) | PROJECT (π) | vertical (cols) | BIM, BBA, BScCSIT (dups dropped) | 3 × 1 |
+| π name(σ city='Pokhara'(Student)) | σ then π | both | Sita, Ram | 2 × 1 |
+
+*ℹ️ σ changes the row count but keeps the schema; π changes the columns and auto-removes duplicate rows. SQL's SELECT keyword actually does π's job (columns), not σ's.*
 
 ---
 
@@ -114,6 +142,19 @@ Every "search then show selected fields" screen (result lookup, transaction filt
 
 > **🔑 Key terms:** union-compatible · UNION (∪) · INTERSECTION (∩) · DIFFERENCE (−, not commutative) · set semantics.
 
+**📊 Depth table — Set operations on DbmsStudents={1,2,3} and JavaStudents={1,3}**
+
+| Set operation | Expression | Reads as | Result | Union-compatible? |
+|---|---|---|---|---|
+| UNION (∪) | Dbms ∪ Java | sid in DBMS OR Java | {1, 2, 3} | Yes — both are (sid) |
+| INTERSECTION (∩) | Dbms ∩ Java | sid in BOTH | {1, 3} | Yes |
+| DIFFERENCE (−) | Dbms − Java | in DBMS, not Java | {2}  (only Hari) | Yes |
+| DIFFERENCE (−) | Java − Dbms | in Java, not DBMS | { }  empty — order matters | Yes |
+| UNION (∪) | Morning ∪ Day | merge both shift lists | one de-duplicated list | Yes — same (sid,name,…) |
+| UNION (∪) | Student ∪ Enrollment | 4 cols vs 3 cols | ✗ ERROR | No — not union-compatible |
+
+*ℹ️ All three need union-compatible relations (same number of attributes, matching domains). DIFFERENCE is NOT commutative. Duplicates are removed (set semantics).*
+
 ---
 
 #### Concept 2 — CARTESIAN PRODUCT (×) `[THEORY]` `[~13 min]`
@@ -130,6 +171,19 @@ Every "search then show selected fields" screen (result lookup, transaction filt
 > **⚠️ Misconception.** *"Cartesian product combines related rows."* No — it blindly pairs everything; relating them needs a following condition.
 
 > **🔑 Key terms:** CARTESIAN PRODUCT (×) · degree = sum · cardinality = product · no compatibility needed · raw material for JOIN.
+
+**📊 Depth table — × arithmetic — degree = sum, cardinality = product**
+
+| Expression | R: deg × card | S: deg × card | Result degree (sum) | Result card. (product) | Note |
+|---|---|---|---|---|---|
+| Student × Course | 4 × 4 | 2 × 3 | 6 | 12 | most pairings meaningless |
+| Student × Enrollment | 4 × 4 | 3 × 5 | 7 | 20 | raw material for a JOIN |
+| σ sid=sid(Student × Enrollment) | — | — | 7 | 5 | filtered → this IS the JOIN |
+| R × S, |R|=5, |S|=4 | deg 3, 5 rows | deg 2, 4 rows | 5 | 20 | cardinality = product |
+| Course × CoreCourse | 2 × 3 | 1 × 2 | 3 | 6 | no union-compatibility needed |
+| Enrollment × Course | 3 × 5 | 2 × 3 | 5 | 15 | huge; filter to keep sense |
+
+*ℹ️ × pairs every tuple of R with every tuple of S; degree = sum of degrees, cardinality = product of cardinalities; no compatibility needed. Alone it is meaningless — a following σ turns it into a JOIN.*
 
 #### 🛠 ACTIVITY `[~5 min]`
 Give a Nepali example where you'd want INTERSECTION (overlap) vs DIFFERENCE (what's missing). If R has 5 and S has 4 rows, how many in R × S? (20.)
@@ -166,6 +220,19 @@ Give a Nepali example where you'd want INTERSECTION (overlap) vs DIFFERENCE (wha
 
 > **🔑 Key terms:** JOIN (⋈) · theta join (⋈_θ) · join condition · × + σ.
 
+**📊 Depth table — A join is × + σ — theta joins on any comparison θ**
+
+| Join expression | θ operator | What it keeps | Result on sample |
+|---|---|---|---|
+| R ⋈θ S  ≡  σθ(R × S) | any of = < > ≤ ≥ ≠ | product filtered by θ | (the definition of a join) |
+| Student ⋈(S.sid=E.sid) Enrollment | = (equijoin) | pairs with matching sid | 5 rows: Sita–DBMS, Sita–Java, Hari–DBMS, Ram–DBMS, Ram–Java |
+| Student ⋈(marks ≥ Slab.min) Slab | ≥ (theta) | each student in a scholarship band | Sita→50%, Ram→25% |
+| Emp ⋈(E.sal > M.sal) Manager | > (theta) | staff earning more than manager | only over-paying pairs |
+| Course ⋈(C.credit ≤ 3) LightLoad | ≤ (theta) | courses within a credit cap | the 3-credit courses |
+| Applicant ⋈(A.score ≠ 0) Sat | ≠ (theta) | applicants who actually sat | non-zero scorers |
+
+*ℹ️ Every join is a Cartesian product (×) followed by a selection (σ) on the join condition θ. θ using only '=' is an equijoin (next concept).*
+
 ---
 
 #### Concept 2 — Equijoin vs Natural Join (⋈) `[THEORY]` `[EXAMPLE]` `[~12 min]`
@@ -185,6 +252,19 @@ Give a Nepali example where you'd want INTERSECTION (overlap) vs DIFFERENCE (wha
 
 > **🔑 Key terms:** equijoin (= only, both columns) · natural join (⋈, same-named attrs, duplicate removed) · join on name not position.
 
+**📊 Depth table — Equijoin vs Natural join — same match, different result schema**
+
+| Aspect | Equijoin (⋈=) | Natural join (⋈) |
+|---|---|---|
+| Condition | explicit equality, e.g. S.sid = E.sid | implicit on ALL same-named attrs (sid) |
+| Join column | appears TWICE (both sid columns kept) | appears ONCE (duplicate dropped) |
+| Expression | Student ⋈(S.sid=E.sid) Enrollment | Student ⋈ Enrollment |
+| Result schema | sid, name, program, city, sid, course, grade | sid, name, program, city, course, grade |
+| Matches by | the written condition | identical attribute NAME (not position) |
+| Rename risk | unaffected by renaming | ρ(sid→roll) breaks it → becomes a product |
+
+*ℹ️ Natural join = equijoin on same-named attributes + drop the duplicate column. It matches by NAME, so a rename can silently turn it into a Cartesian product.*
+
 ---
 
 #### Concept 3 — DIVISION (÷) `[THEORY]` `[~12 min]`
@@ -201,6 +281,19 @@ Give a Nepali example where you'd want INTERSECTION (overlap) vs DIFFERENCE (wha
 > **⚠️ Misconception.** *"Division finds X in ANY of the set."* No — it is **ALL** (universal), not **any** (existential).
 
 > **🔑 Key terms:** DIVISION (÷) · universal / "for all" · R ÷ S · all-not-any.
+
+**📊 Depth table — Division answers 'related to ALL of a set' (universal 'for all')**
+
+| R ÷ S query | R (dividend) | S (divisor) | Result | Why |
+|---|---|---|---|---|
+| students in ALL core courses | Enrollment(sid,course) | CoreCourse = {DBMS, Java} | {1, 3}  (Sita, Ram) | took every required course |
+| ...why Hari drops out | Enrollment(sid,course) | {DBMS, Java} | Hari(2) excluded | took DBMS only, not Java |
+| riders covering EVERY district | Coverage(rider,district) | ValleyDistrict | riders in all districts | 'for all' districts |
+| suppliers who supply ALL parts | Supply(sup,part) | Part | suppliers with every part | classic division example |
+| students who cleared ALL sems | Result(sid,sem) | AllSem | sid passing every sem | graduation eligibility |
+| S has one course {DBMS} | Enrollment(sid,course) | {DBMS} | {1, 2, 3} | 'for all' over a 1-set ≈ 'any' |
+
+*ℹ️ R ÷ S returns tuples of R related to EVERY tuple of S — universal ('for all'), NOT existential ('any'). 'Any' is a simple σ / JOIN; 'all' is division.*
 
 #### 🛠 ACTIVITY `[~5 min]`
 Describe a real "must match ALL of them" situation (a rider covering all districts, a student passing all subjects) — that's division.
@@ -239,6 +332,19 @@ Describe a real "must match ALL of them" situation (a rider covering all distric
 
 > **🔑 Key terms:** aggregate (ℱ) · COUNT/SUM/AVG/MAX/MIN · grouping · extended operation.
 
+**📊 Depth table — Grouping (ℱ): partition rows, then summarize each group**
+
+| Aggregate expression | Groups by | Function | Result on sample |
+|---|---|---|---|
+| ℱ COUNT(sid)(Student) | (none — whole table) | COUNT | 4 students |
+| program ℱ COUNT(sid)(Student) | program | COUNT | BIM: 2, BBA: 1, BScCSIT: 1 |
+| course ℱ COUNT(sid)(Enrollment) | course | COUNT | DBMS: 3, Java: 2 |
+| course ℱ AVG(grade)(Enrollment) | course | AVG | average grade per course |
+| city ℱ COUNT(sid)(Student) | city | COUNT | Pokhara: 2, Kathmandu: 1, Butwal: 1 |
+| merchant ℱ SUM(amount)(Txn) | merchant | SUM | total collected per merchant (Khalti) |
+
+*ℹ️ <grouping attrs> ℱ <functions>(R) partitions R by the grouping attributes, then produces one summary row per group. ℱ is an EXTENDED (not one of the basic) operations.*
+
 ---
 
 #### Concept 2 — Outer Joins (⟕ ⟖ ⟗) `[THEORY]` `[~12 min]`
@@ -258,6 +364,19 @@ Example: `Student ⟕ Enrollment` keeps a newly-admitted student who hasn't enro
 
 > **🔑 Key terms:** inner vs outer join · LEFT (⟕) / RIGHT (⟖) / FULL (⟗) · NULL padding.
 
+**📊 Depth table — Inner vs outer — Gita (sid 4) has no enrolment**
+
+| Join | Keeps | Unmatched rows | Result on Student / Enrollment |
+|---|---|---|---|
+| Inner (natural) ⋈ | only matching sid | dropped | 5 rows; Gita hidden |
+| LEFT outer ⟕ | all LEFT (Student) rows | kept, right side = NULL | 6 rows; Gita with course=NULL, grade=NULL |
+| RIGHT outer ⟖ | all RIGHT (Enrollment) rows | kept, left side = NULL | orphan enrolments kept (none here → 5 rows) |
+| FULL outer ⟗ | all rows from BOTH | both sides padded NULL | 6 rows; Gita + any orphan enrolments |
+| Account ⟕ Transaction | all accounts | zero-txn accounts kept | dormant accounts appear (NULL txns) |
+| Student ⋈ Enrollment (inner) | matches only | dropped | a new admit with no enrolment vanishes |
+
+*ℹ️ Outer joins keep unmatched tuples, padding the missing side with NULL: LEFT (⟕) all left rows, RIGHT (⟖) all right rows, FULL (⟗) both. An inner join silently drops them.*
+
 ---
 
 #### Concept 3 — Tuple Relational Calculus (TRC) `[THEORY]` `[~12 min]`
@@ -274,6 +393,19 @@ Example: `Student ⟕ Enrollment` keeps a newly-admitted student who hasn't enro
 > **⚠️ Misconception.** *"Calculus and algebra give different answers."* They are equivalent in power — same result, different style.
 
 > **🔑 Key terms:** TRC · declarative / non-procedural · tuple variable · ∃ / ∀ · relational completeness.
+
+**📊 Depth table — Same query as algebra (HOW) and TRC (WHAT)**
+
+| Query in English | Relational algebra (HOW) | Tuple calculus — TRC (WHAT) |
+|---|---|---|
+| names of BIM students | π name(σ program='BIM'(Student)) | { t.name | t ∈ Student ∧ t.program='BIM' } |
+| students from Pokhara | σ city='Pokhara'(Student) | { t | t ∈ Student ∧ t.city='Pokhara' } |
+| students enrolled in ≥ 1 course | Student ⋈ π sid(Enrollment) | { t | t ∈ Student ∧ ∃e(e∈Enrollment ∧ e.sid=t.sid) } |
+| names of DBMS students | π name(Student ⋈ σ course='DBMS'(Enrollment)) | { t.name | t∈Student ∧ ∃e(e∈Enrollment ∧ e.sid=t.sid ∧ e.course='DBMS') } |
+| students in ALL core courses | Enrollment ÷ CoreCourse | { t | t∈Student ∧ ∀c(c∈CoreCourse → ∃e(e∈Enrollment ∧ e.sid=t.sid ∧ e.course=c.course)) } |
+| students NOT enrolled anywhere | π name(Student) − π name(Student ⋈ Enrollment) | { t.name | t∈Student ∧ ¬∃e(e∈Enrollment ∧ e.sid=t.sid) } |
+
+*ℹ️ TRC form { t | COND(t) } uses a tuple variable t and quantifiers ∃ (exists) / ∀ (for all). Equal in power to relational algebra (relational completeness): algebra says HOW, TRC says WHAT.*
 
 #### 🛠 ACTIVITY `[~5 min]`
 Phrase one query about your college in plain English, then say whether you described HOW (algebra) or WHAT (calculus).
@@ -310,6 +442,19 @@ Phrase one query about your college in plain English, then say whether you descr
 
 > **🔑 Key terms:** DRC · domain variable · ⟨…⟩ list · ∃/∀ · QBE · relational completeness.
 
+**📊 Depth table — TRC (row variable) vs DRC (one variable per column)**
+
+| Query in English | Tuple calculus (TRC) | Domain calculus (DRC) |
+|---|---|---|
+| names of Pokhara students | { t.name | t∈Student ∧ t.city='Pokhara' } | { ⟨n⟩ | ∃s,p(⟨s,n,p,'Pokhara'⟩ ∈ Student) } |
+| names of BIM students | { t.name | t∈Student ∧ t.program='BIM' } | { ⟨n⟩ | ∃s,c(⟨s,n,'BIM',c⟩ ∈ Student) } |
+| all student sids | { t.sid | t∈Student } | { ⟨s⟩ | ∃n,p,c(⟨s,n,p,c⟩ ∈ Student) } |
+| courses taken by sid 1 | { e.course | e∈Enrollment ∧ e.sid=1 } | { ⟨co⟩ | ∃g(⟨1,co,g⟩ ∈ Enrollment) } |
+| names of DBMS students | { t.name | t∈Student ∧ ∃e(e.sid=t.sid ∧ e.course='DBMS') } | { ⟨n⟩ | ∃s,p,c(⟨s,n,p,c⟩∈Student ∧ ∃g(⟨s,'DBMS',g⟩∈Enrollment)) } |
+| name + city pairs | { ⟨t.name, t.city⟩ | t∈Student } | { ⟨n,c⟩ | ∃s,p(⟨s,n,p,c⟩ ∈ Student) } |
+
+*ℹ️ DRC form { ⟨x1,…,xn⟩ | COND } binds one domain variable per COLUMN, positionally inside ⟨…⟩; uses ∃/∀. It underlies QBE 'fill the columns' and is equal in power to TRC and algebra.*
+
 ---
 
 #### Concept 2 — TRC vs DRC · Safety of Expressions `[THEORY]` `[~11 min]`
@@ -328,6 +473,19 @@ Phrase one query about your college in plain English, then say whether you descr
 
 > **🔑 Key terms:** tuple vs domain variable · scope · safe / unsafe expression · finite result.
 
+**📊 Depth table — TRC vs DRC — scope, not power; and why safety matters**
+
+| Aspect | TRC | DRC |
+|---|---|---|
+| Variable ranges over | a whole TUPLE (row) | a single DOMAIN VALUE (column) |
+| Reference style | t.name, t.city | positional ⟨s, n, p, c⟩ — one var per column |
+| Example | { t.name | t∈Student ∧ t.city='Pokhara' } | { ⟨n⟩ | ∃s,p(⟨s,n,p,'Pokhara'⟩∈Student) } |
+| Underlies | declarative SQL-style thinking | QBE 'fill the columns' interfaces |
+| Safe expression | finite result, from DB values | finite result, from DB values |
+| UNSAFE example | { t | ¬(t∈Student) } — infinite | { ⟨x⟩ | ¬(⟨x⟩∈Student) } — infinite |
+
+*ℹ️ TRC and DRC differ in variable SCOPE (row vs value), not power. Only SAFE expressions — finite results drawn from stored values — are allowed; a bare NOT ∈ would return an infinite set and is disallowed.*
+
 ---
 
 #### Concept 3 — Unit 3 Synthesis: Procedural ⇄ Declarative ⇄ SQL `[THEORY]` `[~7 min]`
@@ -340,6 +498,21 @@ Phrase one query about your college in plain English, then say whether you descr
 > **🧠 Hook:** "Algebra (HOW) ⇄ TRC/DRC (WHAT) → all equal → all become SQL."
 
 > **🔑 Key terms:** relational equivalence · procedural vs declarative · foundation of SQL.
+
+**📊 Depth table — One map: SQL ↔ relational algebra ↔ calculus**
+
+| SQL | Relational algebra | Reads as | Calculus idea |
+|---|---|---|---|
+| WHERE clause | σ (SELECT) | filter rows | COND(t) predicate |
+| SELECT column-list | π (PROJECT) | keep columns | { t.col | … } head |
+| FROM a, b WHERE a.k=b.k | ⋈ (JOIN) = σ(×) | match rows across tables | ∃ join predicate |
+| UNION / INTERSECT / EXCEPT | ∪ / ∩ / − | combine sets | ∨ / ∧ / ∧¬ |
+| GROUP BY … COUNT/SUM | ℱ (aggregate) | summarize groups | (extended operation) |
+| LEFT / RIGHT / FULL JOIN | ⟕ / ⟖ / ⟗ | keep unmatched (NULL) | outer semantics |
+| NOT EXISTS / 'for all' pattern | ÷ (DIVISION) | related to ALL of a set | ∀ quantifier |
+| SELECT DISTINCT | (π already de-dups) | remove duplicate rows | set semantics |
+
+*ℹ️ Every SQL query maps to a relational-algebra expression and an equivalent calculus formula — all relationally equivalent (relational completeness). Algebra says HOW, calculus says WHAT, SQL is the friendly syntax on top.*
 
 #### 🛠 ACTIVITY `[~5 min]`
 Why might a non-programmer find DRC-style "fill in the blank" (QBE) easier than writing algebra? Where have you seen fill-in-the-blank query forms?

@@ -1,0 +1,233 @@
+[
+  {
+    "heading": "Naming Conventions",
+    "kicker": "S9 · Concept 2 · examples",
+    "title": "Poor name vs good name — and why it matters",
+    "headers": ["Concept in the diagram", "Poor name (avoid)", "Good name (use)", "Why the good name wins"],
+    "rows": [
+      ["Entity of course-takers", "STUDENTS / TBL1", "STUDENT", "singular noun = the type (one specimen of the kind)"],
+      ["Entity for shops on Daraz", "E2 / tbl_m", "MERCHANT", "reader knows what it is; clean table name after mapping"],
+      ["Student ↔ course link", "REL1", "ENROLLS", "STUDENT — ENROLLS — COURSE reads as a sentence"],
+      ["Teacher ↔ course link", "R3", "TEACHES", "verb; a registrar can confirm or correct it on the spot"],
+      ["Customer ↔ order link (Daraz)", "LINK2", "PLACES", "CUSTOMER — PLACES — ORDER reads left-to-right"],
+      ["Customer ↔ account link (bank)", "R7", "OWNS", "CUSTOMER — OWNS — ACCOUNT is plain English"],
+      ["Rider ↔ delivery link (Foodmandu)", "REL9", "DELIVERS", "stakeholders verify the model by reading it aloud"]
+    ],
+    "per_page": 7,
+    "widths": [2.2, 1.6, 1.5, 2.7],
+    "note": "Singular-noun entities + verb relationships make the diagram self-explanatory and become clean table/column names after mapping.",
+    "fs": 11
+  },
+  {
+    "heading": "Design Issue: Attribute vs Entity",
+    "kicker": "S9 · Concept 3 · examples",
+    "title": "Attribute or its own entity? — the 'own data/relationships' test",
+    "headers": ["Concept", "Attribute or Entity?", "Why (the test)", "If modelled the wrong way…"],
+    "rows": [
+      ["Product colour (Daraz)", "Attribute", "a plain value with no data of its own", "a needless, almost-empty table (over-modelling)"],
+      ["Category (Daraz)", "Entity", "has name, parent, icon; groups many products", "nowhere to store category data if kept as text"],
+      ["Merchant (eSewa)", "Entity", "has PAN, settlement account, many transactions", "merchant details and links are lost"],
+      ["Order status (pending/paid)", "Attribute", "just one value per order", "over-modelling — an entity adds needless complexity"],
+      ["Restaurant (Foodmandu)", "Entity", "has name, location, menu, relationships", "can't relate its dishes or ratings"],
+      ["Delivery address", "Entity / multivalued composite", "a customer has many; it has parts", "can't store a customer's several addresses"],
+      ["Cuisine label (Foodmandu)", "Attribute", "usually just a tag on a restaurant", "an extra table for no benefit"],
+      ["Rating value", "Attribute of a review", "a single numeric value", "over-modelling if promoted to an entity"]
+    ],
+    "per_page": 8,
+    "widths": [1.9, 1.9, 2.7, 2.5],
+    "note": "Model a concept as its own entity ONLY when it has its own attributes and/or relationships; otherwise an attribute is enough. Don't over-model.",
+    "fs": 11
+  },
+  {
+    "heading": "Degree Revisited: Binary, Ternary, n-ary",
+    "kicker": "S10 · Concept 1 · examples",
+    "title": "Real relationships classified by degree",
+    "headers": ["Relationship (example)", "Degree", "Entity types it connects", "Why that degree"],
+    "rows": [
+      ["STUDENT — ENROLLS — COURSE", "Binary (2)", "STUDENT, COURSE", "one fact links exactly two types"],
+      ["CUSTOMER — PLACES — ORDER (Daraz)", "Binary (2)", "CUSTOMER, ORDER", "a two-way fact — most designs are binary"],
+      ["EMPLOYEE — MANAGES — EMPLOYEE", "Recursive (2)", "EMPLOYEE with itself", "same entity type plays two roles"],
+      ["SUPPLIES(SUPPLIER, PART, PROJECT)", "Ternary (3)", "SUPPLIER, PART, PROJECT", "one fact ties three things together"],
+      ["TEACHES(TEACHER, COURSE, ROOM)", "Ternary (3)", "TEACHER, COURSE, ROOM", "a timetable fact of three at once"],
+      ["PRESCRIBES(DOCTOR, PATIENT, DRUG)", "Ternary (3)", "DOCTOR, PATIENT, DRUG", "three-way fact in one instance"],
+      ["DELIVERS(RIDER, ORDER, ADDRESS)", "Ternary (3)", "RIDER, ORDER, ADDRESS", "one delivery ties three entities"]
+    ],
+    "per_page": 7,
+    "widths": [3.0, 1.4, 2.5, 2.4],
+    "note": "Degree = how many entity types the diamond touches. Binary (2) is by far the most common; ternary (3) is occasional; n > 3 is rare.",
+    "fs": 11
+  },
+  {
+    "heading": "Why a Ternary Is NOT Three Binaries",
+    "kicker": "S10 · Concept 2 · examples",
+    "title": "The combined fact three binaries silently lose",
+    "headers": ["Scenario", "The three binaries record…", "The combined fact they LOSE", "Correct model"],
+    "rows": [
+      ["Procurement", "S–P, P–J, S–J", "that S supplied P specifically TO project J", "ternary SUPPLIES(S, P, J)"],
+      ["Foodmandu delivery", "customer–restaurant, restaurant–rider, rider–customer", "which rider carried which order from which restaurant to which customer", "ternary / associative DELIVERY"],
+      ["Pathao ride", "rider–passenger, rider–route, passenger–route", "which passenger rode which route with which rider on one trip", "associative RIDE entity"],
+      ["Hospital", "doctor–patient, doctor–drug, patient–drug", "which doctor gave which drug to which patient", "ternary PRESCRIBES"],
+      ["Timetable", "teacher–course, course–room, teacher–room", "which teacher teaches which course in which room", "ternary TEACHES"],
+      ["Project staffing", "employee–project, employee–role, project–role", "which employee holds which role on which project", "ternary WORKS_ON"]
+    ],
+    "per_page": 6,
+    "widths": [1.4, 2.6, 3.0, 2.0],
+    "note": "Pairwise facts can't capture that three entities were associated together in one instance. When the meaning is in the combination, use a ternary or an associative entity.",
+    "fs": 11
+  },
+  {
+    "heading": "Constraints & the Associative Entity",
+    "kicker": "S10 · Concept 3 · examples",
+    "title": "When a relationship should become an associative entity",
+    "headers": ["Relationship", "Its own attributes", "Model it as…", "Why"],
+    "rows": [
+      ["DELIVERY (CUSTOMER, RESTAURANT, RIDER)", "time, fee, status", "associative entity DELIVERY", "relationship carries its own data"],
+      ["RIDE (RIDER, PASSENGER, ROUTE) — Pathao", "fare, distance, rating", "associative entity RIDE", "own attributes make a diamond awkward"],
+      ["STUDENT — ENROLLS — COURSE", "grade, semester", "associative / junction ENROLLS", "the attribute 'grade' lives on the link"],
+      ["ORDER — contains — PRODUCT (Daraz)", "quantity, price", "associative ORDER_ITEM", "per-item data belongs on the link"],
+      ["SUPPLIES(SUPPLIER, PART, PROJECT)", "quantity, delivery date", "associative SUPPLY", "clarifies the ternary and holds its data"],
+      ["CUSTOMER — OWNS — ACCOUNT (bank)", "none (maybe open date)", "keep as a plain binary relationship", "no own data → don't over-model"],
+      ["STUDENT — ADVISES — TEACHER", "none", "plain binary relationship", "a simple diamond is enough"]
+    ],
+    "per_page": 7,
+    "widths": [2.7, 2.0, 2.5, 2.3],
+    "note": "Prefer binary. Promote a relationship to an associative (intermediate) entity when it needs its own attributes/relationships, or to make a higher-degree association clearer.",
+    "fs": 11
+  },
+  {
+    "heading": "Specialization & Generalization",
+    "kicker": "S11 · Concept 1 · examples",
+    "title": "Is-a hierarchies — and the direction of thinking",
+    "headers": ["Superclass", "Subclasses", "Specific attribute each adds", "Direction"],
+    "rows": [
+      ["ACCOUNT (bank)", "SAVINGS, CURRENT", "interest_rate / overdraft_limit", "specialization (top-down)"],
+      ["EMPLOYEE", "ENGINEER, SECRETARY, TECHNICIAN", "licence_no / typing_speed / skill_grade", "specialization (top-down)"],
+      ["USER (Daraz)", "CUSTOMER, SELLER", "default_address / store_name, PAN", "specialization (top-down)"],
+      ["USER (Nagarik App)", "CITIZEN, GOVT_EMPLOYEE, BUSINESS_OWNER", "citizenship_no / office_id / PAN", "specialization (top-down)"],
+      ["PERSON (college)", "STUDENT, STAFF", "roll_no / staff_id", "specialization (top-down)"],
+      ["VEHICLE", "CAR, TRUCK", "seat_count / load_capacity", "generalization (bottom-up)"],
+      ["PAYMENT (eSewa)", "WALLET_PAY, BANK_PAY, CARD_PAY", "wallet_id / bank_ref / card_no", "generalization (bottom-up)"]
+    ],
+    "per_page": 7,
+    "widths": [1.8, 2.4, 3.0, 2.0],
+    "note": "Specialization splits a superclass down; generalization combines similar entities up. Both produce an is-a hierarchy with attribute inheritance — inverse directions of one idea.",
+    "fs": 11
+  },
+  {
+    "heading": "Constraints: Disjoint/Overlap × Total/Partial",
+    "kicker": "S11 · Concept 2 · examples",
+    "title": "One example per constraint combination",
+    "headers": ["Specialization example", "Disjoint or Overlap?", "Total or Partial?", "Why"],
+    "rows": [
+      ["Bank ACCOUNT → SAVINGS / CURRENT", "Disjoint (d)", "Total", "one type only; every account has one"],
+      ["EMPLOYEE → PERMANENT / CONTRACT", "Disjoint (d)", "Total", "exactly one; every employee is one of them"],
+      ["VEHICLE → CAR / TRUCK / BIKE", "Disjoint (d)", "Total", "a vehicle is exactly one kind"],
+      ["College PERSON → STUDENT / STAFF", "Overlap (o)", "Partial", "a TA is both; a visitor is neither"],
+      ["Daraz USER → CUSTOMER / SELLER", "Overlap (o)", "Partial", "can both buy & sell; a new user may be neither yet"],
+      ["Nagarik USER → CITIZEN / GOVT_EMP / BUSINESS", "Overlap (o)", "Partial", "a govt employee is also a citizen"],
+      ["Hospital PERSON → PATIENT / DOCTOR", "Overlap (o)", "Partial", "a doctor can also be a patient; a visitor neither"],
+      ["ACCOUNT → SAVINGS / CURRENT / LOAN", "Disjoint (d)", "Partial", "one type, but some accounts fit none of these"]
+    ],
+    "per_page": 8,
+    "widths": [3.0, 1.7, 1.6, 2.7],
+    "note": "Disjoint/overlap = how many subclasses an entity may join; total/partial = whether it must join one. The two are independent → four combinations.",
+    "fs": 11
+  },
+  {
+    "heading": "Attribute Inheritance & Specific Attributes",
+    "kicker": "S11 · Concept 3 · examples",
+    "title": "Inherit the shared, add the specific",
+    "headers": ["Superclass", "Subclass", "Inherits (shared attributes)", "Adds (specific attribute)"],
+    "rows": [
+      ["ACCOUNT", "SAVINGS", "acc_no, holder, balance", "interest_rate"],
+      ["ACCOUNT", "CURRENT", "acc_no, holder, balance", "overdraft_limit"],
+      ["EMPLOYEE", "ENGINEER", "id, name, salary", "engineering licence_no"],
+      ["EMPLOYEE", "SECRETARY", "id, name, salary", "typing_speed"],
+      ["USER (Daraz)", "CUSTOMER", "user_id, name, phone", "default_address"],
+      ["USER (Daraz)", "SELLER", "user_id, name, phone", "store_name, PAN"],
+      ["VEHICLE", "CAR", "vehicle_id, brand, price", "seat_count"],
+      ["VEHICLE", "TRUCK", "vehicle_id, brand, price", "load_capacity"]
+    ],
+    "per_page": 8,
+    "widths": [1.5, 1.6, 2.6, 2.4],
+    "note": "Shared attributes (and relationships) live once in the superclass and are inherited by every subclass; each subclass adds only its own local attributes.",
+    "fs": 11
+  },
+  {
+    "heading": "The 7-Step Mapping Algorithm",
+    "kicker": "S12 · Concept 1 · examples",
+    "title": "Each ER construct → its relational result",
+    "headers": ["ER construct", "Maps to…", "Worked example"],
+    "rows": [
+      ["Strong entity", "a table + primary key", "STUDENT → STUDENT(roll_no PK, name)"],
+      ["Weak entity", "table with owner PK + partial key", "DEPENDENT → DEPENDENT(emp_id FK, dep_name); PK=(emp_id, dep_name)"],
+      ["1:1 relationship", "FK on one (total) side", "EMPLOYEE—HEADS—DEPARTMENT → head_id in DEPARTMENT"],
+      ["1:N relationship", "FK on the N (many) side", "DEPARTMENT 1:N EMPLOYEE → dept_id in EMPLOYEE"],
+      ["M:N relationship", "new junction table (both PKs)", "STUDENT M:N COURSE → ENROLLS(roll_no, course_id)"],
+      ["Multivalued attribute", "a separate table", "student phones → STUDENT_PHONE(roll_no, phone)"],
+      ["n-ary relationship", "table with all participants' keys", "SUPPLIES(supplier_id, part_id, project_id)"],
+      ["Composite / derived attr", "flatten into columns / not stored", "address → street, city; age is computed, never stored"]
+    ],
+    "per_page": 8,
+    "widths": [1.9, 2.6, 3.5],
+    "note": "The algorithm is mechanical: learn the seven cases (plus composite→flatten, derived→omit) and any ER diagram converts to tables the same way every time.",
+    "fs": 11
+  },
+  {
+    "heading": "Mapping 1:N — Foreign Key on the N Side",
+    "kicker": "S12 · Concept 2 · examples",
+    "title": "Where the foreign key lives in a 1:N relationship",
+    "headers": ["1:N relationship", "One side", "Many (N) side — gets the FK", "Resulting FK column"],
+    "rows": [
+      ["DEPARTMENT — has — EMPLOYEE", "DEPARTMENT", "EMPLOYEE", "EMPLOYEE.dept_id"],
+      ["CUSTOMER — places — ORDER (Daraz)", "CUSTOMER", "ORDER", "ORDER.customer_id"],
+      ["DEPARTMENT — offers — COURSE", "DEPARTMENT", "COURSE", "COURSE.dept_id"],
+      ["USER — makes — TRANSACTION (eSewa)", "USER", "TRANSACTION", "TRANSACTION.user_id"],
+      ["CITY — has — BRANCH (bank)", "CITY", "BRANCH", "BRANCH.city_id"],
+      ["RESTAURANT — has — DISH (Foodmandu)", "RESTAURANT", "DISH", "DISH.restaurant_id"],
+      ["PUBLISHER — prints — BOOK (library)", "PUBLISHER", "BOOK", "BOOK.publisher_id"]
+    ],
+    "per_page": 7,
+    "widths": [2.7, 1.7, 2.4, 2.2],
+    "note": "The FK always goes on the N side, because each many-side row relates to exactly one partner — one FK column suffices. On the '1' side it would need a non-atomic multi-valued column (breaks 1NF).",
+    "fs": 11
+  },
+  {
+    "heading": "Mapping M:N — the Junction Table",
+    "kicker": "S12 · Concept 3 · examples",
+    "title": "Every M:N relationship becomes a junction table",
+    "headers": ["M:N relationship", "Junction table", "Composite PK (both FKs)", "Relationship attributes inside"],
+    "rows": [
+      ["STUDENT — ENROLLS — COURSE", "ENROLLS", "(roll_no, course_id)", "grade, semester"],
+      ["ORDER — contains — PRODUCT (Daraz)", "ORDER_ITEM", "(order_id, product_id)", "quantity, price"],
+      ["MEMBER — borrows — BOOK (library)", "BORROWS", "(member_id, book_id)", "borrow_date, due_date"],
+      ["DOCTOR — treats — PATIENT (hospital)", "TREATS", "(doctor_id, patient_id)", "visit_date, notes"],
+      ["STUDENT — joins — CLUB (college)", "MEMBERSHIP", "(roll_no, club_id)", "join_date, role"],
+      ["USER — follows — SHOP (Daraz)", "FOLLOWS", "(user_id, shop_id)", "followed_on"],
+      ["ACCOUNT — signs — SCHEME (bank)", "SUBSCRIPTION", "(acc_no, scheme_id)", "start_date"]
+    ],
+    "per_page": 7,
+    "widths": [2.5, 1.6, 2.3, 2.4],
+    "note": "One row per pair; the two PKs together form the composite primary key (each half a FK). Any attribute of the relationship (grade, quantity, date) lives in the junction table — never in either entity.",
+    "fs": 11
+  },
+  {
+    "heading": "Common Mapping Mistakes",
+    "kicker": "S12 · Concept 4 · examples",
+    "title": "The recurring mistakes — and their fixes",
+    "headers": ["Mistake", "Why it's wrong", "Correct fix", "Symptom months later"],
+    "rows": [
+      ["M:N as a comma-list of ids in a column", "non-atomic, breaks 1NF, unqueryable", "a junction table", "can't aggregate one product; slow, buggy reports"],
+      ["1:N foreign key on the '1' side", "one row must hold many ids", "FK on the N (many) side", "multi-valued column; unreliable updates"],
+      ["Storing a derived value (age, order total)", "it drifts out of date", "compute it on read", "totals no longer match the line items"],
+      ["Multivalued attr kept as one field ('phones')", "non-atomic value", "a separate table", "can't search or index one phone number"],
+      ["Weak entity without the owner's PK", "rows aren't uniquely identifiable", "owner PK + partial key", "duplicate or orphan rows"],
+      ["Composite attr kept as one field ('address')", "components can't be queried", "flatten into street, city, …", "can't filter customers by city"],
+      ["No primary key chosen for a table", "duplicate rows allowed", "always pick a primary key", "data integrity silently lost"]
+    ],
+    "per_page": 7,
+    "widths": [2.4, 2.2, 2.1, 2.5],
+    "note": "All feel convenient at the keyboard and cost dearly later. Follow the algorithm: junction table for M:N, FK on the N side, omit derived data, separate table for multivalued/weak.",
+    "fs": 11
+  }
+]

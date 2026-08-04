@@ -185,6 +185,40 @@ def _add_page_numbers():
         tb=_box(s,12.35,0.30,0.9,0.35); p=tb.paragraphs[0]; p.alignment=PP_ALIGN.RIGHT
         r=p.add_run(); r.text=f"{i} / {total}"; r.font.size=Pt(10); r.font.color.rgb=col
 
+ROWALT=RGBColor(0xEE,0xF3,0xF8)
+def add_table_slide(kicker,title,headers,rows,per_page=8,widths=None,note="",fs=11):
+    """Native PPTX table on its OWN slide; auto-paginates so nothing is squeezed. (§7A depth tables.)"""
+    pages=[rows[i:i+per_page] for i in range(0,len(rows),per_page)] or [[]]
+    ncols=len(headers)
+    if widths is None: widths=[1]*ncols
+    tot=sum(widths); ws=[12.5*w/tot for w in widths]
+    for pi,chunk in enumerate(pages):
+        s=prs.slides.add_slide(BLANK); _bg(s,WHITE)
+        _header(s,kicker,title+("  (cont.)" if pi else ""))
+        nrows=len(chunk)+1
+        top=1.72; avail=(6.55 if note else 6.95)-top
+        gt=s.shapes.add_table(nrows,ncols,Inches(0.42),Inches(top),Inches(12.5),Inches(avail))
+        table=gt.table; table.first_row=False; table.horz_banding=False
+        for j,w in enumerate(ws): table.columns[j].width=Inches(w)
+        for j,h in enumerate(headers):
+            c=table.cell(0,j); c.fill.solid(); c.fill.fore_color.rgb=NAVY
+            c.vertical_anchor=MSO_ANCHOR.MIDDLE
+            c.margin_left=Inches(0.08); c.margin_right=Inches(0.06); c.margin_top=Inches(0.03); c.margin_bottom=Inches(0.03)
+            tf=c.text_frame; tf.word_wrap=True; p=tf.paragraphs[0]; r=p.add_run(); r.text=h
+            r.font.size=Pt(fs+0.5); r.font.bold=True; r.font.color.rgb=WHITE
+        for i,row in enumerate(chunk,1):
+            for j,val in enumerate(row):
+                c=table.cell(i,j); c.fill.solid(); c.fill.fore_color.rgb=(WHITE if i%2 else ROWALT)
+                c.vertical_anchor=MSO_ANCHOR.MIDDLE
+                c.margin_left=Inches(0.08); c.margin_right=Inches(0.06); c.margin_top=Inches(0.03); c.margin_bottom=Inches(0.03)
+                tf=c.text_frame; tf.word_wrap=True; p=tf.paragraphs[0]; r=p.add_run(); r.text=str(val)
+                r.font.size=Pt(fs); r.font.color.rgb=DARK
+                if j==0: r.font.bold=True; r.font.color.rgb=NAVY
+        if note:
+            nb=_box(s,0.42,6.62,12.5,0.5); p=nb.paragraphs[0]; r=p.add_run(); r.text="ℹ️  "+note
+            r.font.size=Pt(11.5); r.font.italic=True; r.font.color.rgb=GREY
+    return
+
 # ============================================================
 #                        BUILD
 # ============================================================
@@ -231,6 +265,19 @@ concept_apply("S13 · Concept 1 · [THEORY]","What Relational Algebra Is",
     "\"Relational algebra is just SQL.\" No — SQL is a practical language; relational algebra is the underlying math: closed-form, removes duplicates by definition, no display formatting.",
     "Relational algebra is a formal, procedural query language: a set of operations that take relation(s) as input and yield a relation as output. Its closure property (output is always a relation) lets operations be composed. It is procedural (specifies HOW) and is the theoretical foundation of SQL.",
     "relational algebra · procedural · relation (in/out) · closure property · basis of SQL")
+add_table_slide("S13 · Concept 1 · examples","The eight relational-algebra operators at a glance",
+    ["Operator", "Symbol", "What it does (plain English)", "Example expression", "Returns"],
+    [
+     ["SELECT", "σ", "keep ROWS meeting a condition", "σ city='Pokhara'(Student)", "Sita, Ram (Pokhara rows)"],
+     ["PROJECT", "π", "keep chosen COLUMNS", "π name(Student)", "just the name column"],
+     ["UNION", "∪", "rows in either table", "π sid(BIM) ∪ π sid(BBA)", "all sids from both"],
+     ["DIFFERENCE", "−", "rows in R but not in S", "AllStudent − Graduated", "currently active students"],
+     ["PRODUCT", "×", "pair every row with every row", "Student × Course", "all sid–course pairings"],
+     ["JOIN", "⋈", "product kept to matching rows", "Student ⋈ Enrollment", "each student with their courses"],
+     ["DIVISION", "÷", "rows related to ALL of a set", "Enrollment ÷ CoreCourse", "students in every core course"],
+     ["RENAME", "ρ", "rename a relation / its columns", "ρ S(Student)", "Student re-labelled S"],
+    ],
+    per_page=8,widths=[1.4, 0.7, 2.6, 2.6, 2.4],note="Every operator takes relation(s) in and gives a relation out (closure) — so they chain into big queries. Sample schema: Student(sid,name,program,city), Enrollment(sid,course,grade), Course(cid,title).",fs=11)
 
 concept_understand("S13 · Concept 2 · [THEORY]","SELECT (σ) & PROJECT (π) — the unary operations",
     "The two one-input operations: SELECT (σ) keeps ROWS that satisfy a condition (a horizontal cut); PROJECT (π) keeps chosen COLUMNS (a vertical cut) and removes duplicate rows.",
@@ -245,6 +292,17 @@ concept_apply("S13 · Concept 2 · [THEORY]","SELECT (σ) & PROJECT (π) — the
     "\"PROJECT (π) keeps duplicate rows like SQL does.\" Pure relational algebra removes duplicates automatically; SQL needs DISTINCT. And remember σ = rows, not columns.",
     "SELECT σ_condition(R) filters ROWS satisfying a condition (horizontal; same schema; cardinality ≤ R). PROJECT π_attrs(R) keeps chosen COLUMNS (vertical; schema = listed attrs; duplicates removed). σ = rows, π = columns; SQL's SELECT keyword actually performs π.",
     "SELECT (σ, rows) · PROJECT (π, columns) · condition · same-schema · duplicate removal · SQL-SELECT-is-π trap")
+add_table_slide("S13 · Concept 2 · examples","σ (rows) vs π (columns) — worked on the sample Student table",
+    ["Expression", "Operation", "Cut", "Result on sample", "Rows × Cols"],
+    [
+     ["σ city='Pokhara'(Student)", "SELECT (σ)", "horizontal (rows)", "Sita, Ram", "2 × 4"],
+     ["σ program='BIM'(Student)", "SELECT (σ)", "horizontal (rows)", "Sita, Hari", "2 × 4"],
+     ["σ sid>2(Student)", "SELECT (σ)", "horizontal (rows)", "Ram, Gita", "2 × 4"],
+     ["π name(Student)", "PROJECT (π)", "vertical (cols)", "Sita, Hari, Ram, Gita", "4 × 1"],
+     ["π program(Student)", "PROJECT (π)", "vertical (cols)", "BIM, BBA, BScCSIT (dups dropped)", "3 × 1"],
+     ["π name(σ city='Pokhara'(Student))", "σ then π", "both", "Sita, Ram", "2 × 1"],
+    ],
+    per_page=6,widths=[3.0, 1.4, 1.5, 2.6, 1.1],note="σ changes the row count but keeps the schema; π changes the columns and auto-removes duplicate rows. SQL's SELECT keyword actually does π's job (columns), not σ's.",fs=11)
 
 add_solved_problem("S13 · Solved Problem","Compose σ then π — 'names of students from Pokhara'",
     "Using Student(sid, name, program, city), write a relational-algebra expression that returns just the "
@@ -298,6 +356,17 @@ concept_apply("S14 · Concept 1 · [THEORY]","UNION (∪), INTERSECTION (∩), D
     "\"Any two tables can be UNIONed\" / \"R − S = S − R.\" Both wrong — the relations must be union-compatible first, and DIFFERENCE is order-sensitive.",
     "UNION (∪, in either), INTERSECTION (∩, in both), and DIFFERENCE (−, in R not S) all require UNION-COMPATIBLE relations (same number of attributes, matching domains). DIFFERENCE is not commutative. All use set semantics (duplicates removed).",
     "union-compatible · UNION (∪) · INTERSECTION (∩) · DIFFERENCE (−, not commutative) · set semantics")
+add_table_slide("S14 · Concept 1 · examples","Set operations on DbmsStudents={1,2,3} and JavaStudents={1,3}",
+    ["Set operation", "Expression", "Reads as", "Result", "Union-compatible?"],
+    [
+     ["UNION (∪)", "Dbms ∪ Java", "sid in DBMS OR Java", "{1, 2, 3}", "Yes — both are (sid)"],
+     ["INTERSECTION (∩)", "Dbms ∩ Java", "sid in BOTH", "{1, 3}", "Yes"],
+     ["DIFFERENCE (−)", "Dbms − Java", "in DBMS, not Java", "{2}  (only Hari)", "Yes"],
+     ["DIFFERENCE (−)", "Java − Dbms", "in Java, not DBMS", "{ }  empty — order matters", "Yes"],
+     ["UNION (∪)", "Morning ∪ Day", "merge both shift lists", "one de-duplicated list", "Yes — same (sid,name,…)"],
+     ["UNION (∪)", "Student ∪ Enrollment", "4 cols vs 3 cols", "✗ ERROR", "No — not union-compatible"],
+    ],
+    per_page=6,widths=[1.6, 2.1, 2.3, 2.1, 1.7],note="All three need union-compatible relations (same number of attributes, matching domains). DIFFERENCE is NOT commutative. Duplicates are removed (set semantics).",fs=11)
 
 concept_understand("S14 · Concept 2 · [THEORY]","CARTESIAN PRODUCT (×)",
     "R × S pairs EVERY tuple of R with EVERY tuple of S. The result's degree = sum of the two degrees; its cardinality = product of the two cardinalities. It does NOT need union compatibility.",
@@ -312,6 +381,17 @@ concept_apply("S14 · Concept 2 · [THEORY]","CARTESIAN PRODUCT (×)",
     "\"Cartesian product combines related rows.\" No — it blindly pairs everything; relating them meaningfully needs a following condition (a σ), which turns it into a JOIN.",
     "R × S pairs every tuple of R with every tuple of S; degree = sum, cardinality = product; no union compatibility needed. Alone it is meaningless/large; followed by a selection it becomes a JOIN.",
     "CARTESIAN PRODUCT (×) · degree = sum · cardinality = product · no compatibility needed · raw material for JOIN")
+add_table_slide("S14 · Concept 2 · examples","× arithmetic — degree = sum, cardinality = product",
+    ["Expression", "R: deg × card", "S: deg × card", "Result degree (sum)", "Result card. (product)", "Note"],
+    [
+     ["Student × Course", "4 × 4", "2 × 3", "6", "12", "most pairings meaningless"],
+     ["Student × Enrollment", "4 × 4", "3 × 5", "7", "20", "raw material for a JOIN"],
+     ["σ sid=sid(Student × Enrollment)", "—", "—", "7", "5", "filtered → this IS the JOIN"],
+     ["R × S, |R|=5, |S|=4", "deg 3, 5 rows", "deg 2, 4 rows", "5", "20", "cardinality = product"],
+     ["Course × CoreCourse", "2 × 3", "1 × 2", "3", "6", "no union-compatibility needed"],
+     ["Enrollment × Course", "3 × 5", "2 × 3", "5", "15", "huge; filter to keep sense"],
+    ],
+    per_page=6,widths=[3.2, 1.3, 1.3, 1.4, 1.5, 2.0],note="× pairs every tuple of R with every tuple of S; degree = sum of degrees, cardinality = product of cardinalities; no compatibility needed. Alone it is meaningless — a following σ turns it into a JOIN.",fs=10)
 
 add_activity("Overlap, missing, and the explosion",
     ["In pairs (3 min): give one Nepali example where you'd want INTERSECTION (overlap) and one for DIFFERENCE (what's missing).",
@@ -353,6 +433,17 @@ concept_apply("S15 · Concept 1 · [THEORY]","JOIN: from × to the Theta Join (�
     "\"A join is a separate, magic operation.\" It is literally × then σ — a Cartesian product filtered by a condition. Understanding that demystifies every join you'll ever write.",
     "A join is a Cartesian product followed by a selection on a condition: R ⋈_θ S = σ_θ(R × S). A theta join uses any comparison operator in θ (=, <, >, ≤, ≥, ≠); it keeps only the matching pairs.",
     "JOIN (⋈) · theta join (⋈_θ) · join condition · × + σ")
+add_table_slide("S15 · Concept 1 · examples","A join is × + σ — theta joins on any comparison θ",
+    ["Join expression", "θ operator", "What it keeps", "Result on sample"],
+    [
+     ["R ⋈θ S  ≡  σθ(R × S)", "any of = < > ≤ ≥ ≠", "product filtered by θ", "(the definition of a join)"],
+     ["Student ⋈(S.sid=E.sid) Enrollment", "= (equijoin)", "pairs with matching sid", "5 rows: Sita–DBMS, Sita–Java, Hari–DBMS, Ram–DBMS, Ram–Java"],
+     ["Student ⋈(marks ≥ Slab.min) Slab", "≥ (theta)", "each student in a scholarship band", "Sita→50%, Ram→25%"],
+     ["Emp ⋈(E.sal > M.sal) Manager", "> (theta)", "staff earning more than manager", "only over-paying pairs"],
+     ["Course ⋈(C.credit ≤ 3) LightLoad", "≤ (theta)", "courses within a credit cap", "the 3-credit courses"],
+     ["Applicant ⋈(A.score ≠ 0) Sat", "≠ (theta)", "applicants who actually sat", "non-zero scorers"],
+    ],
+    per_page=6,widths=[2.9, 1.3, 2.6, 3.2],note="Every join is a Cartesian product (×) followed by a selection (σ) on the join condition θ. θ using only '=' is an equijoin (next concept).",fs=10)
 
 concept_understand("S15 · Concept 2 · [THEORY]","Equijoin vs Natural Join (⋈)",
     "An equijoin is a theta join whose condition uses only EQUALITY (=); the join column then appears twice. A natural join (⋈) is an equijoin on ALL same-named attributes that then automatically removes the duplicate column.",
@@ -367,6 +458,17 @@ concept_apply("S15 · Concept 2 · [THEORY]","Equijoin vs Natural Join (⋈)",
     "\"Natural join matches by column position\" / \"equijoin removes the duplicate.\" Natural join matches by identical NAME (a rename breaks it into a product); only the NATURAL join drops the duplicate column — the equijoin keeps both.",
     "An equijoin joins on an equality condition and keeps BOTH matching columns. A natural join (⋈) joins on ALL like-named attributes and REMOVES the duplicate column. Natural join = equijoin on same-named attributes + drop the duplicate.",
     "equijoin (= only, both columns) · natural join (⋈, same-named attrs, duplicate removed) · join on name not position")
+add_table_slide("S15 · Concept 2 · comparison","Equijoin vs Natural join — same match, different result schema",
+    ["Aspect", "Equijoin (⋈=)", "Natural join (⋈)"],
+    [
+     ["Condition", "explicit equality, e.g. S.sid = E.sid", "implicit on ALL same-named attrs (sid)"],
+     ["Join column", "appears TWICE (both sid columns kept)", "appears ONCE (duplicate dropped)"],
+     ["Expression", "Student ⋈(S.sid=E.sid) Enrollment", "Student ⋈ Enrollment"],
+     ["Result schema", "sid, name, program, city, sid, course, grade", "sid, name, program, city, course, grade"],
+     ["Matches by", "the written condition", "identical attribute NAME (not position)"],
+     ["Rename risk", "unaffected by renaming", "ρ(sid→roll) breaks it → becomes a product"],
+    ],
+    per_page=6,widths=[1.7, 3.0, 3.0],note="Natural join = equijoin on same-named attributes + drop the duplicate column. It matches by NAME, so a rename can silently turn it into a Cartesian product.",fs=11)
 
 concept_understand("S15 · Concept 3 · [THEORY]","DIVISION (÷)",
     "R ÷ S returns the tuples in R that are associated with ALL tuples in S — the 'for all' (universal) operation. It answers 'find X related to EVERY Y' queries.",
@@ -381,6 +483,17 @@ concept_apply("S15 · Concept 3 · [THEORY]","DIVISION (÷)",
     "\"Division finds X in ANY of the set.\" No — it is ALL (universal), not any (existential). 'Any' is a simple σ/JOIN; 'all' is division.",
     "R ÷ S returns the tuples of R associated with ALL tuples of S — the universal ('for all') operation. e.g. students enrolled in EVERY core course = Enrollment ÷ CoreCourses; a rider covering EVERY district = Coverage ÷ Districts.",
     "DIVISION (÷) · universal / 'for all' · R ÷ S · all-not-any")
+add_table_slide("S15 · Concept 3 · examples","Division answers 'related to ALL of a set' (universal 'for all')",
+    ["R ÷ S query", "R (dividend)", "S (divisor)", "Result", "Why"],
+    [
+     ["students in ALL core courses", "Enrollment(sid,course)", "CoreCourse = {DBMS, Java}", "{1, 3}  (Sita, Ram)", "took every required course"],
+     ["...why Hari drops out", "Enrollment(sid,course)", "{DBMS, Java}", "Hari(2) excluded", "took DBMS only, not Java"],
+     ["riders covering EVERY district", "Coverage(rider,district)", "ValleyDistrict", "riders in all districts", "'for all' districts"],
+     ["suppliers who supply ALL parts", "Supply(sup,part)", "Part", "suppliers with every part", "classic division example"],
+     ["students who cleared ALL sems", "Result(sid,sem)", "AllSem", "sid passing every sem", "graduation eligibility"],
+     ["S has one course {DBMS}", "Enrollment(sid,course)", "{DBMS}", "{1, 2, 3}", "'for all' over a 1-set ≈ 'any'"],
+    ],
+    per_page=6,widths=[2.4, 2.3, 2.0, 1.7, 2.1],note="R ÷ S returns tuples of R related to EVERY tuple of S — universal ('for all'), NOT existential ('any'). 'Any' is a simple σ / JOIN; 'all' is division.",fs=10)
 
 add_solved_problem("S15 · Solved Problem","Build a marksheet from two tables",
     "Using Student(sid, name, program, city) and Enrollment(sid, course, grade), write an expression that "
@@ -427,6 +540,17 @@ concept_apply("S16 · Concept 1 · [THEORY]","Aggregate Functions & Grouping (�
     "\"Aggregate is one of the basic relational operations.\" It is an additional/extended operation — the basic six have no built-in counting or summarizing.",
     "The aggregate/grouping operation <grouping> ℱ <functions>(R) partitions R by the grouping attributes and applies aggregate functions (COUNT/SUM/AVG/MAX/MIN) per group. It is an EXTENDED (not basic) operation. e.g. course ℱ AVG(grade)(Enrollment).",
     "aggregate (ℱ) · COUNT / SUM / AVG / MAX / MIN · grouping · extended operation")
+add_table_slide("S16 · Concept 1 · examples","Grouping (ℱ): partition rows, then summarize each group",
+    ["Aggregate expression", "Groups by", "Function", "Result on sample"],
+    [
+     ["ℱ COUNT(sid)(Student)", "(none — whole table)", "COUNT", "4 students"],
+     ["program ℱ COUNT(sid)(Student)", "program", "COUNT", "BIM: 2, BBA: 1, BScCSIT: 1"],
+     ["course ℱ COUNT(sid)(Enrollment)", "course", "COUNT", "DBMS: 3, Java: 2"],
+     ["course ℱ AVG(grade)(Enrollment)", "course", "AVG", "average grade per course"],
+     ["city ℱ COUNT(sid)(Student)", "city", "COUNT", "Pokhara: 2, Kathmandu: 1, Butwal: 1"],
+     ["merchant ℱ SUM(amount)(Txn)", "merchant", "SUM", "total collected per merchant (Khalti)"],
+    ],
+    per_page=6,widths=[3.0, 1.7, 1.2, 3.0],note="<grouping attrs> ℱ <functions>(R) partitions R by the grouping attributes, then produces one summary row per group. ℱ is an EXTENDED (not one of the basic) operations.",fs=11)
 
 concept_understand("S16 · Concept 2 · [THEORY]","Outer Joins (⟕ ⟖ ⟗)",
     "An inner join (natural/theta) DROPS rows with no match. Outer joins KEEP the unmatched rows too, padding the missing side with NULL.",
@@ -441,6 +565,17 @@ concept_apply("S16 · Concept 2 · [THEORY]","Outer Joins (⟕ ⟖ ⟗)",
     "\"Inner join shows everyone.\" It silently drops rows with no match. To keep unmatched rows (a new student, a dormant account), you need an OUTER join, which fills the gaps with NULL.",
     "An outer join keeps unmatched tuples (unlike an inner join, which drops them), padding missing values with NULL: LEFT (⟕) keeps all left rows, RIGHT (⟖) all right rows, FULL (⟗) both. e.g. Student ⟕ Enrollment keeps students with no enrolment.",
     "inner vs outer join · LEFT (⟕) / RIGHT (⟖) / FULL (⟗) · NULL padding")
+add_table_slide("S16 · Concept 2 · examples","Inner vs outer — Gita (sid 4) has no enrolment",
+    ["Join", "Keeps", "Unmatched rows", "Result on Student / Enrollment"],
+    [
+     ["Inner (natural) ⋈", "only matching sid", "dropped", "5 rows; Gita hidden"],
+     ["LEFT outer ⟕", "all LEFT (Student) rows", "kept, right side = NULL", "6 rows; Gita with course=NULL, grade=NULL"],
+     ["RIGHT outer ⟖", "all RIGHT (Enrollment) rows", "kept, left side = NULL", "orphan enrolments kept (none here → 5 rows)"],
+     ["FULL outer ⟗", "all rows from BOTH", "both sides padded NULL", "6 rows; Gita + any orphan enrolments"],
+     ["Account ⟕ Transaction", "all accounts", "zero-txn accounts kept", "dormant accounts appear (NULL txns)"],
+     ["Student ⋈ Enrollment (inner)", "matches only", "dropped", "a new admit with no enrolment vanishes"],
+    ],
+    per_page=6,widths=[1.7, 2.2, 2.2, 3.4],note="Outer joins keep unmatched tuples, padding the missing side with NULL: LEFT (⟕) all left rows, RIGHT (⟖) all right rows, FULL (⟗) both. An inner join silently drops them.",fs=11)
 
 concept_understand("S16 · Concept 3 · [THEORY]","Tuple Relational Calculus (TRC)",
     "TRC is a DECLARATIVE (non-procedural) language: you describe WHAT tuples you want, not HOW to get them. Form: { t | COND(t) }, where t is a tuple variable ranging over a relation.",
@@ -455,6 +590,17 @@ concept_apply("S16 · Concept 3 · [THEORY]","Tuple Relational Calculus (TRC)",
     "\"Calculus and algebra give different answers.\" They are equivalent in power (relational completeness) — same result set, different style: algebra says HOW, calculus says WHAT.",
     "Tuple relational calculus is a declarative (non-procedural) language of the form { t | COND(t) }, where t is a tuple variable and COND uses predicates and quantifiers (∃, ∀). It describes WHAT to retrieve, not HOW, and is equal in power to relational algebra.",
     "TRC · declarative / non-procedural · tuple variable · ∃ / ∀ · relational completeness")
+add_table_slide("S16 · Concept 3 · examples","Same query as algebra (HOW) and TRC (WHAT)",
+    ["Query in English", "Relational algebra (HOW)", "Tuple calculus — TRC (WHAT)"],
+    [
+     ["names of BIM students", "π name(σ program='BIM'(Student))", "{ t.name | t ∈ Student ∧ t.program='BIM' }"],
+     ["students from Pokhara", "σ city='Pokhara'(Student)", "{ t | t ∈ Student ∧ t.city='Pokhara' }"],
+     ["students enrolled in ≥ 1 course", "Student ⋈ π sid(Enrollment)", "{ t | t ∈ Student ∧ ∃e(e∈Enrollment ∧ e.sid=t.sid) }"],
+     ["names of DBMS students", "π name(Student ⋈ σ course='DBMS'(Enrollment))", "{ t.name | t∈Student ∧ ∃e(e∈Enrollment ∧ e.sid=t.sid ∧ e.course='DBMS') }"],
+     ["students in ALL core courses", "Enrollment ÷ CoreCourse", "{ t | t∈Student ∧ ∀c(c∈CoreCourse → ∃e(e∈Enrollment ∧ e.sid=t.sid ∧ e.course=c.course)) }"],
+     ["students NOT enrolled anywhere", "π name(Student) − π name(Student ⋈ Enrollment)", "{ t.name | t∈Student ∧ ¬∃e(e∈Enrollment ∧ e.sid=t.sid) }"],
+    ],
+    per_page=6,widths=[2.1, 3.0, 3.6],note="TRC form { t | COND(t) } uses a tuple variable t and quantifiers ∃ (exists) / ∀ (for all). Equal in power to relational algebra (relational completeness): algebra says HOW, TRC says WHAT.",fs=10)
 
 add_activity("HOW or WHAT?",
     ["In pairs (3 min): phrase one query about your college in plain English.",
@@ -496,6 +642,17 @@ concept_apply("S17 · Concept 1 · [THEORY]","Domain Relational Calculus (DRC)",
     "\"DRC and TRC are the same thing with different symbols.\" They differ in variable SCOPE — a domain variable is a single column value, a tuple variable is a whole row — though they have equal power.",
     "Domain relational calculus is a declarative calculus of the form { ⟨x1,…,xn⟩ | COND } where each variable ranges over a DOMAIN (a single attribute value), using ∃/∀. It is equal in power to algebra and TRC and underlies QBE.",
     "DRC · domain variable · ⟨…⟩ list · ∃ / ∀ · QBE · relational completeness")
+add_table_slide("S17 · Concept 1 · examples","TRC (row variable) vs DRC (one variable per column)",
+    ["Query in English", "Tuple calculus (TRC)", "Domain calculus (DRC)"],
+    [
+     ["names of Pokhara students", "{ t.name | t∈Student ∧ t.city='Pokhara' }", "{ ⟨n⟩ | ∃s,p(⟨s,n,p,'Pokhara'⟩ ∈ Student) }"],
+     ["names of BIM students", "{ t.name | t∈Student ∧ t.program='BIM' }", "{ ⟨n⟩ | ∃s,c(⟨s,n,'BIM',c⟩ ∈ Student) }"],
+     ["all student sids", "{ t.sid | t∈Student }", "{ ⟨s⟩ | ∃n,p,c(⟨s,n,p,c⟩ ∈ Student) }"],
+     ["courses taken by sid 1", "{ e.course | e∈Enrollment ∧ e.sid=1 }", "{ ⟨co⟩ | ∃g(⟨1,co,g⟩ ∈ Enrollment) }"],
+     ["names of DBMS students", "{ t.name | t∈Student ∧ ∃e(e.sid=t.sid ∧ e.course='DBMS') }", "{ ⟨n⟩ | ∃s,p,c(⟨s,n,p,c⟩∈Student ∧ ∃g(⟨s,'DBMS',g⟩∈Enrollment)) }"],
+     ["name + city pairs", "{ ⟨t.name, t.city⟩ | t∈Student }", "{ ⟨n,c⟩ | ∃s,p(⟨s,n,p,c⟩ ∈ Student) }"],
+    ],
+    per_page=6,widths=[1.9, 3.2, 3.6],note="DRC form { ⟨x1,…,xn⟩ | COND } binds one domain variable per COLUMN, positionally inside ⟨…⟩; uses ∃/∀. It underlies QBE 'fill the columns' and is equal in power to TRC and algebra.",fs=10)
 
 concept_understand("S17 · Concept 2 · [THEORY]","TRC vs DRC · Safety of Expressions",
     "TRC and DRC differ in variable SCOPE, not power; and both must be SAFE — producing a finite result drawn from values actually in the database.",
@@ -510,6 +667,17 @@ concept_apply("S17 · Concept 2 · [THEORY]","TRC vs DRC · Safety of Expression
     "\"Any condition you can write is a valid query.\" Unsafe expressions (like NOT ∈) would return infinite sets and are disallowed; a valid query must be safe (finite, drawn from database values).",
     "In TRC a variable ranges over whole tuples; in DRC over individual domain values (one per column) — same power, different variable scope. A SAFE expression yields a finite result drawn from database values; unsafe expressions (e.g. NOT ∈) return infinite sets and are disallowed.",
     "tuple vs domain variable · scope · safe / unsafe expression · finite result")
+add_table_slide("S17 · Concept 2 · comparison","TRC vs DRC — scope, not power; and why safety matters",
+    ["Aspect", "TRC", "DRC"],
+    [
+     ["Variable ranges over", "a whole TUPLE (row)", "a single DOMAIN VALUE (column)"],
+     ["Reference style", "t.name, t.city", "positional ⟨s, n, p, c⟩ — one var per column"],
+     ["Example", "{ t.name | t∈Student ∧ t.city='Pokhara' }", "{ ⟨n⟩ | ∃s,p(⟨s,n,p,'Pokhara'⟩∈Student) }"],
+     ["Underlies", "declarative SQL-style thinking", "QBE 'fill the columns' interfaces"],
+     ["Safe expression", "finite result, from DB values", "finite result, from DB values"],
+     ["UNSAFE example", "{ t | ¬(t∈Student) } — infinite", "{ ⟨x⟩ | ¬(⟨x⟩∈Student) } — infinite"],
+    ],
+    per_page=6,widths=[1.8, 3.1, 3.3],note="TRC and DRC differ in variable SCOPE (row vs value), not power. Only SAFE expressions — finite results drawn from stored values — are allowed; a bare NOT ∈ would return an infinite set and is disallowed.",fs=10)
 
 concept_understand("S17 · Concept 3 · [THEORY]","Unit 3 Synthesis: Procedural ⇄ Declarative ⇄ SQL",
     "Relational algebra (procedural) and relational calculus (declarative: TRC over tuples, DRC over domains) are all RELATIONALLY EQUIVALENT — they express the same queries; algebra says HOW, calculus says WHAT.",
@@ -524,6 +692,19 @@ concept_apply("S17 · Concept 3 · [THEORY]","Unit 3 Synthesis: Procedural ⇄ D
     "\"Algebra, TRC, and DRC are three unrelated topics.\" They are three equivalent faces of the same query power — and SQL is the practical language sitting on top of all of them.",
     "Relational algebra (procedural) and relational calculus (TRC over tuples, DRC over domains — declarative) are all relationally equivalent (relational completeness): each expresses the same queries. All three underlie SQL.",
     "relational equivalence · procedural vs declarative · foundation of SQL")
+add_table_slide("S17 · Concept 3 · examples","One map: SQL ↔ relational algebra ↔ calculus",
+    ["SQL", "Relational algebra", "Reads as", "Calculus idea"],
+    [
+     ["WHERE clause", "σ (SELECT)", "filter rows", "COND(t) predicate"],
+     ["SELECT column-list", "π (PROJECT)", "keep columns", "{ t.col | … } head"],
+     ["FROM a, b WHERE a.k=b.k", "⋈ (JOIN) = σ(×)", "match rows across tables", "∃ join predicate"],
+     ["UNION / INTERSECT / EXCEPT", "∪ / ∩ / −", "combine sets", "∨ / ∧ / ∧¬"],
+     ["GROUP BY … COUNT/SUM", "ℱ (aggregate)", "summarize groups", "(extended operation)"],
+     ["LEFT / RIGHT / FULL JOIN", "⟕ / ⟖ / ⟗", "keep unmatched (NULL)", "outer semantics"],
+     ["NOT EXISTS / 'for all' pattern", "÷ (DIVISION)", "related to ALL of a set", "∀ quantifier"],
+     ["SELECT DISTINCT", "(π already de-dups)", "remove duplicate rows", "set semantics"],
+    ],
+    per_page=8,widths=[2.6, 2.2, 2.1, 2.1],note="Every SQL query maps to a relational-algebra expression and an equivalent calculus formula — all relationally equivalent (relational completeness). Algebra says HOW, calculus says WHAT, SQL is the friendly syntax on top.",fs=11)
 
 add_activity("Why is 'fill in the blanks' easier?",
     ["In pairs (3 min): why might a non-programmer find DRC-style 'fill the columns' (QBE) easier than writing algebra?",
