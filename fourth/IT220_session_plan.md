@@ -117,34 +117,43 @@
 > does **not** consume the 48 lecture hours. Per the syllabus, the lab requires writing SQL
 > (create/insert/update/delete/select) plus a project (individual or groups of ≤4).
 >
-> **Design rule — a practical runs every week from Week 1, even before the theory it needs is
-> taught.** Early weeks are therefore front-loaded with environment setup, tool familiarization,
-> and design/modeling practicals (run *given* queries, draw ER diagrams, normalize on paper);
-> topic-specific SQL labs begin in Week 8 once Unit 5 starts. All datasets use a Nepal/South-Asia
-> context (e.g., an eSewa-style wallet, a Kathmandu college, a local library).
+> **Design rule 1 — a practical runs every week from Week 1, even before the theory it needs is
+> taught.** SQL labs therefore begin in **Week 4**, four weeks before Unit 5 starts in lectures.
+> Beginners follow exact steps first; by the time Unit 5 is taught they already recognise every
+> statement.
+>
+> **Design rule 2 — the lab is hands-on SQL only.** Relational algebra, relational calculus and
+> pen-and-paper normalization are notation and reasoning, not runnable work: they stay in the
+> **lectures** (Units 3–4) and the theory exam, and were removed from the lab track in 2026-08.
+> Lab 3 (design) is the only non-SQL practical, and exists because the project needs a schema
+> before it can be built.
+>
+> **One running database — "Model College"** (students, teachers, courses, enrolments, fee
+> payments) — is built up across all 16 labs and doubles as the project. Nepal/South-Asia context
+> throughout.
 
 | Week | Theory so far | Practical (L#) | Tools |
 |------|---------------|----------------|-------|
-| 1 | U1 intro | **L1 — Lab setup & first look:** install MySQL/MariaDB + a client; connect; tour a pre-loaded sample DB; run *given* `SELECT`s to see live data | MySQL/MariaDB, DBeaver / Workbench (or XAMPP + phpMyAdmin) |
-| 2 | U1 (architecture) | **L2 — Inside the DBMS:** database vs schema vs table; the catalog/data dictionary; create a user & `GRANT`/`REVOKE`; see logical vs physical vs view layers (three-schema) | same client |
-| 3 | U2 (ER) | **L3 — ER modeling:** draw an ER diagram for a Nepali domain — entities, attributes, keys, relationships, cardinality | dbdiagram.io / draw.io / Workbench EER |
-| 4 | U2 (ER→tables) | **L4 — ER → relational schema:** map the L3 diagram to tables with PK/FK; handle weak entities & M:N junctions | dbdiagram.io / draw.io |
-| 5 | U3 (rel. algebra) | **L5 — Relational algebra:** run SELECT/PROJECT/JOIN/set operations on sample relations and verify results | RelaX (online algebra calculator) |
-| 6 | U3 → U4 | **L6 — Calculus & spotting FDs:** express queries in tuple/domain calculus; find functional dependencies in a messy sample table | RelaX, worksheet |
-| 7 | U4 (normalization) | **L7 — Normalization:** take an unnormalized Nepali dataset and decompose 1NF→2NF→3NF→BCNF, documenting FDs | spreadsheet + worksheet |
-| 8 | U5 (DDL) | **L8 — DDL & INSERT:** `CREATE DATABASE`/`TABLE`, data types, constraints (PK/FK/CHECK/UNIQUE/NOT NULL); implement the L4/L7 schema; `INSERT` data | SQL client |
-| 9 | U5 (SELECT) | **L9 — Querying:** `SELECT`+`WHERE`, `ORDER BY`, `DISTINCT`, aggregates, `GROUP BY`/`HAVING`, `NULL` handling | SQL client |
-| 10 | U5 (subqueries/views) | **L10 — Subqueries & views:** nested subqueries (IN/EXISTS/comparison), derived tables, `CREATE VIEW` | SQL client |
-| 11 | U5 (modify/joins) | **L11 — Modification & joins:** `INSERT`/`UPDATE`/`DELETE`, updatable views, all join types incl. self-join | SQL client |
-| 12 | U5 close | **L12 — Procedures, triggers, indexing:** a stored procedure, a DML audit trigger, indexes + `EXPLAIN` — **SQL practical test** | SQL client |
-| 13 | U6 (transactions) | **L13 — Transactions:** `START TRANSACTION`/`COMMIT`/`ROLLBACK`; demo ACID with a failed eSewa-style transfer | SQL client |
-| 14 | U6 (concurrency) | **L14 — Concurrency:** two sessions → lost update / dirty read; isolation levels; observe a deadlock | SQL client (2 sessions) |
-| 15 | U6 close / U7 | **L15 — Backup, recovery & security:** `mysqldump` backup → drop → restore; users, roles, `GRANT`/`REVOKE` | mysqldump, SQL client |
-| 16 | U7 + wrap-up | **L16 — Project demos + NoSQL taste:** teams present ER→normalized→implemented DB; quick MongoDB document vs SQL table comparison | project DBs, MongoDB (demo) |
+| 1 | U1 intro | **L1 — Setup & first query:** install XAMPP; start MySQL + Apache; open phpMyAdmin; create `demo_shop`; run `SELECT *`, a column list, and a `WHERE` | XAMPP + phpMyAdmin |
+| 2 | U1 (architecture) | **L2 — Inside the DBMS:** server→database→table→row; query `information_schema` (catalog/metadata); create a limited user; `SHOW GRANTS` | phpMyAdmin |
+| 3 | U2 (ER) | **L3 — Database design:** entities/attributes/keys/cardinality; resolve the M:N into an `Enrolment` junction table with a composite key; draw all 5 tables; export PNG; write the schema *(only non-SQL lab)* | dbdiagram.io |
+| 4 | U2 (ER→tables) | **L4 — DDL & constraints:** `CREATE DATABASE`/`TABLE` × 5, data types, PK/FK/NOT NULL/CHECK/DEFAULT; `SHOW TABLES`/`DESCRIBE`; **break three constraints on purpose** | phpMyAdmin |
+| 5 | U3 (rel. algebra) | **L5 — INSERT:** populate all 5 tables, parents before children; named-column INSERT using DEFAULT; trigger an FK error deliberately | phpMyAdmin |
+| 6 | U3 → U4 | **L6 — SELECT, WHERE, ORDER BY:** column lists, `AS`, AND/OR, `IN`, `BETWEEN`, `LIKE`, `ORDER BY` (two keys), `DISTINCT`, `LIMIT` | phpMyAdmin |
+| 7 | U4 (normalization) | **L7 — Aggregates & grouping:** COUNT/SUM/AVG/MIN/MAX, `GROUP BY`, `HAVING`, WHERE-vs-HAVING, `IS NULL` vs `= NULL` | phpMyAdmin |
+| 8 | U5 (DDL) | **L8 — JOINs:** INNER (2- and 3-table), LEFT JOIN, the LEFT-JOIN+`IS NULL` trick to find non-payers, self-join, JOIN + GROUP BY | phpMyAdmin |
+| 9 | U5 (SELECT) | **L9 — Subqueries:** scalar subqueries, `IN`/`NOT IN`, `EXISTS`/`NOT EXISTS`, derived table in `FROM` | phpMyAdmin |
+| 10 | U5 (subqueries/views) | **L10 — Views:** `CREATE VIEW`; a 4-table `enrolment_sheet`; views are live not copies; update **through** a simple view; joined views are read-only | phpMyAdmin |
+| 11 | U5 (modify/joins) | **L11 — UPDATE & DELETE:** the SELECT→UPDATE→SELECT habit; update using the existing value; DELETE blocked by an FK; the no-`WHERE` disaster rescued by `ROLLBACK` | phpMyAdmin |
+| 12 | U5 close | **L12 — Procedures, triggers, indexing:** a stored procedure (`IN` and `OUT`), a DML audit trigger, `CREATE INDEX` + `EXPLAIN` before/after — **SQL practical test** | phpMyAdmin |
+| 13 | U6 (transactions) | **L13 — Transactions:** `START TRANSACTION`/`COMMIT`/`ROLLBACK`; a transaction that fails halfway proving atomicity; `SAVEPOINT` | phpMyAdmin |
+| 14 | U6 (concurrency) | **L14 — Concurrency:** two sessions → one blocks on a locked row until COMMIT; a different row does *not* block; isolation levels; `SHOW PROCESSLIST` | phpMyAdmin (2 tabs) |
+| 15 | U6 close / U7 | **L15 — Backup, recovery & security:** Export `.sql` → DROP → Import restore; `CREATE USER`, `GRANT`/`REVOKE`, `SHOW GRANTS` before/after; grant on a **view** only | phpMyAdmin |
+| 16 | U7 + wrap-up | **L16 — Project demo:** present diagram → schema → build → data → queries → view/procedure/trigger/index → transaction → backup → limited user; run and modify queries live | project DBs |
 
-**Project (Weeks 3–16):** carry one domain end-to-end — ER design (L3) → relational mapping (L4) →
-normalization (L7) → SQL implementation (L8–L12) → transactions/backup (L13–L15) → demo (L16).
-Individual or groups of ≤4; presented in S48.
+**Project (Weeks 3–16):** carry the Model College database end-to-end — design (L3) → build (L4–L5)
+→ query (L6–L10) → automate (L11–L12) → make it reliable (L13–L15) → demo (L16). Individual or
+groups of ≤4; presented in S48.
 
 ---
 

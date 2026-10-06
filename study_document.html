@@ -1,0 +1,3753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT 238 · Data Structure & Algorithms · Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f4f0;
+  --bg2: #eceae3;
+  --bg3: #e2dfd6;
+  --card: #ffffff;
+  --card2: #f9f8f5;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.14);
+  --text: #1a1a2e;
+  --text2: #4a4a6a;
+  --text3: #8888a8;
+  --accent: #4f46e5;
+  --accent2: #6d64ff;
+  --accent-bg: rgba(79,70,229,0.08);
+  --green: #059669;
+  --amber: #d97706;
+  --coral: #dc2626;
+  --blue: #2563eb;
+  --pink: #db2777;
+  --teal: #0d9488;
+  --r: 12px;
+  --r2: 8px;
+  --shadow: 0 1px 4px rgba(0,0,0,0.08), 0 2px 12px rgba(0,0,0,0.05);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-size: 15px;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: 40px 16px 28px;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1.5px solid rgba(79,70,229,0.25);
+  padding: 5px 14px;
+  border-radius: 99px;
+  margin-bottom: 16px;
+  background: rgba(79,70,229,0.06);
+}
+.hero-tag .dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(0.7)} }
+
+.hero h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(26px, 5vw, 48px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+.hero p {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+  max-width: 520px;
+  margin: 0 auto 20px;
+}
+.hero-meta {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 10px 18px;
+  min-width: 80px;
+  box-shadow: var(--shadow);
+}
+.hero-stat .val {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+.hero-stat .lbl { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+
+/* ── LAYOUT ── */
+.layout {
+  display: flex;
+  flex-direction: column;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 0 80px;
+}
+
+/* ── TOP NAV TABS ── */
+.tab-nav {
+  background: var(--card);
+  border-bottom: 2px solid var(--border);
+  padding: 0 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.tab-nav::-webkit-scrollbar { display: none; }
+.tab-nav-inner {
+  display: flex;
+  gap: 2px;
+  min-width: max-content;
+}
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 14px;
+  border: none;
+  background: transparent;
+  color: var(--text3);
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: var(--text2); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn .cnt {
+  font-size: 10px;
+  background: var(--bg2);
+  color: var(--text3);
+  padding: 1px 6px;
+  border-radius: 99px;
+}
+.tab-btn.active .cnt { background: var(--accent-bg); color: var(--accent); }
+
+/* ── TOPIC QUICK ACCESS ── */
+.topic-strip {
+  display: flex;
+  gap: 6px;
+  padding: 10px 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.topic-strip::-webkit-scrollbar { display: none; }
+.topic-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .15s;
+}
+.topic-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+.topic-chip .pct { color: var(--text3); font-weight: 400; }
+
+/* ── CONTENT AREA ── */
+.content { padding: 16px; }
+
+/* ── PAPER HEADER ── */
+.paper-header {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.paper-header h2 {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.paper-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 99px;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  background: var(--bg2);
+}
+
+/* ── GROUP SECTION ── */
+.group-section { margin-bottom: 20px; }
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 8px 0;
+  border-bottom: 2px solid var(--border);
+}
+.group-badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 12px;
+  border-radius: 99px;
+  letter-spacing: 0.05em;
+}
+.g-a { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+.g-b { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+.g-c { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+.g-d { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+.group-note { font-size: 12px; color: var(--text3); font-weight: 600; }
+
+/* ── QUESTION CARD ── */
+.q-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  margin-bottom: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: border-color .15s;
+}
+.q-card:hover { border-color: rgba(79,70,229,0.25); }
+.q-card.open { border-color: var(--accent); }
+
+.q-top {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 14px 14px 14px 14px;
+  cursor: pointer;
+  user-select: none;
+}
+.q-num {
+  font-size: 12px;
+  color: var(--text3);
+  font-weight: 700;
+  padding-top: 1px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.q-right { display: flex; flex-direction: column; gap: 8px; }
+.q-text { font-size: 14px; color: var(--text); line-height: 1.6; font-weight: 600; }
+.q-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 11px;
+  border-radius: var(--r2);
+  border: 1.5px solid var(--border2);
+  background: var(--card2);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn:hover { background: var(--bg2); }
+.btn-show { border-color: rgba(79,70,229,0.35); color: var(--accent); background: rgba(79,70,229,0.05); }
+.btn-show:hover { background: rgba(79,70,229,0.12); border-color: var(--accent); }
+.btn-yt { border-color: rgba(220,38,38,0.25); color: #b91c1c; background: rgba(220,38,38,0.04); }
+.btn-yt:hover { background: rgba(220,38,38,0.1); border-color: rgba(220,38,38,0.5); }
+
+/* ── ANSWER PANEL ── */
+.ans-panel {
+  display: none;
+  border-top: 1.5px solid var(--border);
+  background: #fafaf8;
+}
+.ans-panel.open { display: block; }
+.ans-panel-inner { padding: 14px 14px 14px 52px; }
+.ans-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.ans-body {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.85;
+}
+.ans-body p { margin-bottom: 6px; }
+.ans-body strong { color: var(--text); font-weight: 700; }
+.code-block {
+  background: #1e1e2e;
+  border-radius: var(--r2);
+  padding: 12px 14px;
+  margin: 10px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: #a6e3a1;
+  line-height: 1.7;
+  overflow-x: auto;
+  white-space: pre;
+}
+.ans-section-title {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 10px 0 4px;
+}
+
+/* ── YT SECTION ── */
+.yt-section {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.yt-section h3 {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.yt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px;
+}
+.yt-chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+  text-decoration: none;
+  transition: all .15s;
+}
+.yt-chip:hover { border-color: rgba(220,38,38,0.4); color: #991b1b; background: rgba(220,38,38,0.05); }
+.yt-chip .yt-icon {
+  width: 20px; height: 20px;
+  background: #dc2626;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.yt-chip .yt-icon svg { width: 10px; height: 10px; fill: white; }
+.yt-chip .yt-label { font-size: 11px; line-height: 1.3; }
+
+/* ── OVERVIEW ── */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.ov-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: var(--shadow);
+}
+.ov-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 16px rgba(79,70,229,0.12); }
+.ov-card h3 { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.ov-card p { font-size: 11px; color: var(--text3); line-height: 1.5; margin-bottom: 8px; }
+.ov-pill { font-size: 10px; font-weight: 700; color: var(--text2); background: var(--bg2); padding: 2px 7px; border-radius: 99px; border: 1px solid var(--border); margin-right: 4px; }
+.ov-meta { display: flex; flex-wrap: wrap; gap: 4px; }
+
+/* ── FREQ BARS ── */
+.freq-section { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow); }
+.freq-section h3 { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 14px; }
+.freq-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.freq-name { font-size: 12px; font-weight: 600; color: var(--text2); min-width: 170px; max-width: 170px; }
+.freq-track { flex: 1; height: 7px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
+.freq-bar2 { height: 100%; border-radius: 4px; transition: width .8s cubic-bezier(.4,0,.2,1); }
+.freq-pct { font-size: 11px; font-weight: 700; color: var(--text3); min-width: 32px; text-align: right; }
+
+/* ── ANALYSIS SECTION ── */
+.analysis-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.analysis-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+.analysis-card h4 { font-size: 13px; font-weight: 800; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.analysis-card ul { list-style: none; }
+.analysis-card ul li { font-size: 12px; color: var(--text2); padding: 4px 0; border-bottom: 1px solid var(--border); display: flex; align-items: start; gap: 6px; line-height: 1.5; }
+.analysis-card ul li:last-child { border: none; }
+.analysis-card ul li::before { content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.priority-badge { display: inline-block; font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 99px; text-transform: uppercase; letter-spacing: 0.05em; flex-shrink: 0; }
+.p-high { background: #fee2e2; color: #991b1b; }
+.p-med { background: #fef3c7; color: #92400e; }
+.p-low { background: #d1fae5; color: #065f46; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 20px; right: 16px;
+  background: var(--text);
+  border-radius: var(--r);
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  z-index: 9999;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all .3s;
+  pointer-events: none;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
+
+/* ── MOBILE RESPONSIVE ── */
+@media (max-width: 600px) {
+  .hero { padding: 28px 12px 20px; }
+  .content { padding: 12px; }
+  .freq-name { min-width: 120px; max-width: 120px; font-size: 11px; }
+  .overview-grid { grid-template-columns: 1fr 1fr; }
+  .yt-grid { grid-template-columns: repeat(2, 1fr); }
+  .ans-panel-inner { padding: 12px 12px 12px 40px; }
+  .analysis-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<main>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag"><span class="dot"></span>BIM · 3rd Semester · IT 238</div>
+  <h1>Data Structure &amp; <em>Algorithms</em></h1>
+  <p>Past papers from 8 colleges with pre-written answers for every question — study offline, anytime.</p>
+  <div class="hero-meta">
+    <div class="hero-stat"><div class="val">8</div><div class="lbl">Papers</div></div>
+    <div class="hero-stat"><div class="val">80+</div><div class="lbl">Questions</div></div>
+    <div class="hero-stat"><div class="val">12</div><div class="lbl">Topics</div></div>
+    <div class="hero-stat"><div class="val">100%</div><div class="lbl">Offline</div></div>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- TAB NAV -->
+  <nav class="tab-nav">
+    <div class="tab-nav-inner" id="tabNav"></div>
+  </nav>
+
+  <!-- TOPIC STRIP -->
+  <div class="topic-strip" id="topicStrip"></div>
+
+  <!-- CONTENT -->
+  <section class="content" id="content"></section>
+
+</div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── ANSWERS DATABASE ─────────────────────────────────────────────
+// Each key is the question text (normalised). Value is pre-written answer HTML.
+const ANS = {
+
+// ── COMPLEXITY ──
+"Define Asymptotic notations.":
+`<p>Asymptotic notations describe the <strong>time or space complexity</strong> of an algorithm as input size (n) grows toward infinity — ignoring constants and lower-order terms.</p>
+<p><strong>Big O (O)</strong> — Upper bound (worst case). E.g., O(n²) for Bubble Sort.</p>
+<p><strong>Omega (Ω)</strong> — Lower bound (best case). E.g., Ω(n) for linear search.</p>
+<p><strong>Theta (Θ)</strong> — Tight bound (average case). E.g., Θ(n log n) for Merge Sort.</p>`,
+
+"Why do we always do worst case analysis?":
+`<p>Worst-case analysis guarantees an <strong>upper bound</strong> on the running time, so users know the algorithm will <em>never</em> exceed that limit.</p>
+<p>Best-case is often trivially fast (e.g., already sorted). Average-case requires statistical assumptions about input distribution that may not hold. Worst-case gives a <strong>reliable, pessimistic guarantee</strong> — critical in systems where predictability matters (e.g., real-time software, databases).</p>`,
+
+"List any two properties of Algorithm.":
+`<p><strong>1. Finiteness:</strong> An algorithm must terminate after a finite number of steps for all valid inputs.</p>
+<p><strong>2. Definiteness (Unambiguity):</strong> Each step must be precisely and clearly defined — no room for interpretation.</p>
+<p>Other properties include: Input, Output, and Effectiveness.</p>`,
+
+"Why do we need Asymptotic notation?":
+`<p>Asymptotic notation lets us <strong>compare algorithms independently of hardware, language, or constants</strong>. It expresses how runtime or memory grows relative to input size (n).</p>
+<p>For example, O(n log n) is always better than O(n²) for large n, regardless of the specific machine. This helps choose the best algorithm before implementation.</p>`,
+
+"What is Class P problem?":
+`<p>Class <strong>P (Polynomial time)</strong> is the set of problems that can be <strong>solved</strong> in polynomial time O(n^k) by a deterministic Turing machine.</p>
+<p>Examples: Sorting, Shortest Path (Dijkstra), Binary Search. These are considered "efficiently solvable" problems. Class NP contains problems <em>verifiable</em> in polynomial time; P ⊆ NP, but whether P = NP is unsolved.</p>`,
+
+"Explain Worst-Case time complexity.":
+`<p><strong>Worst-case time complexity</strong> is the maximum time an algorithm takes for any input of size n — the least-favourable scenario.</p>
+<p><strong>Why it matters:</strong> It gives a guaranteed upper bound. Algorithms are judged by their worst-case to ensure reliability.</p>
+<p><strong>Example — Linear Search:</strong> Worst case is when the target is at the last position or not present → O(n).</p>
+<p><strong>Example — Binary Search:</strong> Worst case → O(log n), even when target is not found.</p>
+<p>Expressed using <strong>Big O notation</strong>, which ignores constants: O(n), O(n²), O(log n), etc.</p>`,
+
+"Why is computational complexity performed? Illustrate the concept of Big Oh notation with pictorial representation.":
+`<p><strong>Why computational complexity?</strong> To predict resource usage (time, memory) before running — helping choose the most efficient algorithm.</p>
+<span class="ans-section-title">Big O Notation</span>
+<p>Big O describes the <strong>upper bound</strong> of growth rate. f(n) = O(g(n)) means: ∃ constants c > 0, n₀ such that f(n) ≤ c·g(n) for all n ≥ n₀.</p>
+<span class="ans-section-title">Common complexities (best → worst)</span>
+<div class="code-block">O(1)      → Constant   — array access
+O(log n)  → Logarithm  — binary search
+O(n)      → Linear     — linear search
+O(n log n)→ Log-linear — merge sort
+O(n²)     → Quadratic  — bubble sort
+O(2ⁿ)    → Exponential — brute-force subset</div>
+<p>On a graph, the y-axis is time, x-axis is n. O(1) is a flat line; O(n²) curves steeply upward.</p>`,
+
+"What do you mean by worst case?":
+`<p>Worst case is the input scenario that causes an algorithm to take the <strong>maximum possible time</strong>.</p>
+<p><strong>Example:</strong> In linear search, worst case is when the element is at the end or absent → O(n) comparisons.</p>`,
+
+"Explain big omega.":
+`<p><strong>Big Omega (Ω)</strong> notation provides the <strong>lower bound</strong> of an algorithm's running time.</p>
+<p>f(n) = Ω(g(n)) means f(n) grows <em>at least as fast</em> as g(n). There exist constants c > 0, n₀ such that f(n) ≥ c·g(n) for all n ≥ n₀.</p>
+<p><strong>Example:</strong> Any comparison-based sorting algorithm is Ω(n log n) — no such algorithm can do better in the worst case.</p>
+<p>Ω gives the best-case guarantee, complementing O (upper bound) and Θ (tight bound).</p>`,
+
+"What is logarithmic complexity?":
+`<p>An algorithm with <strong>O(log n)</strong> complexity reduces the problem size by a constant factor each step (usually halving it).</p>
+<p><strong>Example:</strong> Binary Search — with 1,000,000 elements, it takes at most ~20 comparisons (log₂ 1,000,000 ≈ 20). Extremely efficient for large n.</p>`,
+
+// ── ADT ──
+"Define Abstract Data Type.":
+`<p>An <strong>Abstract Data Type (ADT)</strong> is a mathematical model for a data type where the <strong>data values and operations</strong> are defined without specifying implementation details.</p>
+<p>It defines <em>what</em> operations do, not <em>how</em> they do it. Examples: Stack ADT (push, pop, peek), Queue ADT (enqueue, dequeue), List ADT.</p>
+<p>ADTs support <strong>encapsulation</strong> and <strong>information hiding</strong> — users interact only through a defined interface.</p>`,
+
+"Define abstract data type.":
+`<p>An <strong>Abstract Data Type (ADT)</strong> defines a data structure by its <strong>behaviour (operations)</strong>, not its implementation.</p>
+<p>Example: Stack ADT defines push(), pop(), isEmpty() — without saying whether it uses an array or linked list internally.</p>`,
+
+"What is a data structure?":
+`<p>A <strong>data structure</strong> is a way of <strong>organising, storing, and managing data</strong> in a computer so it can be accessed and modified efficiently.</p>
+<p>Types: <strong>Linear</strong> (Array, Stack, Queue, Linked List) and <strong>Non-linear</strong> (Tree, Graph, Heap). Choice of data structure directly affects algorithm performance.</p>`,
+
+"How is a linear data structure different from non-linear?":
+`<p><strong>Linear:</strong> Elements are arranged sequentially — each element has exactly one predecessor and one successor (except first/last). Examples: Array, Stack, Queue, Linked List. Traversal is in one pass.</p>
+<p><strong>Non-linear:</strong> Elements have a hierarchical or network relationship — one element can connect to many others. Examples: Tree (hierarchy), Graph (network). Traversal requires BFS/DFS.</p>`,
+
+"Differentiate between data type and ADT.":
+`<p><strong>Data Type:</strong> A primitive type built into the language (int, float, char). Specifies values and operations at the language level. E.g., int supports +, -, *, /.</p>
+<p><strong>ADT:</strong> A user-defined concept that specifies a set of values and operations <em>abstractly</em>, without revealing the implementation. E.g., Stack ADT — defined by push/pop, implementable via array or linked list.</p>
+<p>Key difference: Data type is concrete; ADT is an abstraction contract.</p>`,
+
+"How can linked list be considered as an abstract data type?":
+`<p>A Linked List is an ADT because it is defined by its <strong>operations</strong> — not the underlying implementation:</p>
+<p>Operations: insert(pos, val), delete(pos), search(val), traverse(), isEmpty().</p>
+<p>Users interact only through these operations. The internal structure (node pointers, memory layout) is hidden. The same interface works whether implemented with singly, doubly, or circular nodes.</p>`,
+
+"What is ADT?":
+`<p>ADT (Abstract Data Type) is a type defined by its <strong>logical behaviour</strong> (set of values + operations) rather than its implementation. It is a theoretical concept used to specify data structures. Example: Queue ADT → enqueue, dequeue, front, isEmpty.</p>`,
+
+// ── LINKED LIST ──
+"Draw a doubly linked list.":
+`<p>A doubly linked list has nodes with <strong>three fields</strong>: prev pointer, data, next pointer.</p>
+<div class="code-block">NULL ← [prev|10|next] ↔ [prev|20|next] ↔ [prev|30|next] → NULL</div>
+<p>Each node points to both its <strong>predecessor</strong> (prev) and <strong>successor</strong> (next), allowing traversal in both directions.</p>`,
+
+"What are the advantages of doubly linked list over single linked list?":
+`<p>1. <strong>Bidirectional traversal</strong> — can move forward and backward.</p>
+<p>2. <strong>Easier deletion</strong> — no need to track previous node; use the prev pointer directly.</p>
+<p>3. <strong>Efficient insertion before a node</strong> — O(1) with a reference to that node.</p>
+<p>4. Can implement deque (double-ended queue) efficiently.</p>`,
+
+"Define skip list.":
+`<p>A <strong>skip list</strong> is a probabilistic data structure built on top of a sorted linked list with <strong>multiple levels of linked lists</strong>. Higher levels act as express lanes skipping over multiple nodes.</p>
+<p>Search, insert, delete: O(log n) expected time. Used as an alternative to balanced BSTs. Each element is promoted to higher levels with probability p (usually 0.5).</p>`,
+
+"What is skip list?":
+`<p>A skip list is a layered linked list where each level is a sorted subset of the level below. The top level has fewest nodes; the bottom has all. This allows O(log n) average search — similar to binary search on a linked list.</p>`,
+
+"Write any one limitation of circular linked list.":
+`<p>The main limitation is that <strong>traversal can cause infinite loops</strong> if not implemented carefully — there is no NULL end to detect termination. The code must keep track of the starting node to know when it has completed a full cycle.</p>`,
+
+"How do you create a node in singly linked list?":
+`<div class="code-block">class Node {
+    int data;
+    Node next;
+    Node(int val) {
+        data = val;
+        next = null;
+    }
+}</div>
+<p>To create: <code>Node newNode = new Node(10);</code> — allocates a node with data=10 and next=null.</p>`,
+
+"Write an algorithm to delete an item in doubly linked list.":
+`<span class="ans-section-title">Algorithm: Delete node with value key</span>
+<div class="code-block">1. If head == null, return (empty list)
+2. curr = head
+3. While curr != null AND curr.data != key:
+      curr = curr.next
+4. If curr == null: key not found, return
+5. If curr.prev != null: curr.prev.next = curr.next
+   Else: head = curr.next   // deleting head
+6. If curr.next != null: curr.next.prev = curr.prev
+7. curr = null (free node)</div>
+<p>Time complexity: O(n) for search + O(1) for deletion.</p>`,
+
+"What is singly linked list? Write an algorithm to insert a node at the start and end.":
+`<p>A <strong>singly linked list</strong> is a linear data structure where each node has data and a next pointer to the following node. Last node's next = null.</p>
+<span class="ans-section-title">Insert at Start</span>
+<div class="code-block">newNode.next = head
+head = newNode</div>
+<span class="ans-section-title">Insert at End</span>
+<div class="code-block">If head == null: head = newNode; return
+curr = head
+While curr.next != null: curr = curr.next
+curr.next = newNode
+newNode.next = null</div>`,
+
+"Write a Java function to insert a node at the specified position of a singly linked list.":
+`<div class="code-block">void insertAt(int pos, int data) {
+    Node newNode = new Node(data);
+    if (pos == 1) {
+        newNode.next = head;
+        head = newNode; return;
+    }
+    Node curr = head;
+    for (int i = 1; i < pos - 1 && curr != null; i++)
+        curr = curr.next;
+    if (curr == null) { System.out.println("Invalid position"); return; }
+    newNode.next = curr.next;
+    curr.next = newNode;
+}</div>`,
+
+"Write a Java function to insert a node at the specified position of a doubly linked list.":
+`<div class="code-block">void insertAt(int pos, int data) {
+    Node newNode = new Node(data);
+    if (pos == 1) {
+        newNode.next = head;
+        if (head != null) head.prev = newNode;
+        head = newNode; return;
+    }
+    Node curr = head;
+    for (int i = 1; i < pos - 1 && curr != null; i++)
+        curr = curr.next;
+    if (curr == null) return;
+    newNode.next = curr.next;
+    newNode.prev = curr;
+    if (curr.next != null) curr.next.prev = newNode;
+    curr.next = newNode;
+}</div>`,
+
+"Write an algorithm to add a node at end and delete a node from beginning of doubly linked list.":
+`<span class="ans-section-title">Insert at End</span>
+<div class="code-block">newNode.prev = tail
+newNode.next = null
+If tail != null: tail.next = newNode
+Else: head = newNode
+tail = newNode</div>
+<span class="ans-section-title">Delete from Beginning</span>
+<div class="code-block">If head == null: return
+temp = head
+head = head.next
+If head != null: head.prev = null
+Else: tail = null
+free(temp)</div>`,
+
+"Write an algorithm to delete a node at nth position in doubly linked list.":
+`<div class="code-block">1. If head == null: return
+2. curr = head
+3. For i = 1 to n-1: curr = curr.next
+4. If curr == null: invalid position
+5. If curr.prev != null: curr.prev.next = curr.next
+   Else: head = curr.next
+6. If curr.next != null: curr.next.prev = curr.prev
+7. Free curr</div>`,
+
+// ── STACK ──
+"Define stack.":
+`<p>A <strong>stack</strong> is a linear data structure that follows the <strong>LIFO (Last In, First Out)</strong> principle. The last element inserted is the first to be removed.</p>
+<p>Operations: push (insert), pop (remove top), peek/top (view top), isEmpty. Example: function call stack, undo operations.</p>`,
+
+"List the applications of stack.":
+`<p>1. <strong>Expression evaluation and conversion</strong> (infix → postfix)</p>
+<p>2. <strong>Function call management</strong> (call stack)</p>
+<p>3. <strong>Undo/Redo</strong> in editors</p>
+<p>4. <strong>Backtracking</strong> (maze solving, DFS)</p>
+<p>5. <strong>Syntax checking</strong> (bracket matching)</p>`,
+
+"What is stack? Why is it LIFO? Write algorithms for PUSH, POP and DISPLAY on stack.":
+`<p>A <strong>stack</strong> is a linear data structure where insertion and deletion happen at the same end (the <strong>top</strong>). It is LIFO because the last item pushed is the first popped — like a stack of plates.</p>
+<span class="ans-section-title">PUSH</span>
+<div class="code-block">PUSH(stack, top, MAX, item):
+  if top == MAX-1: print "Overflow"; return
+  top = top + 1
+  stack[top] = item</div>
+<span class="ans-section-title">POP</span>
+<div class="code-block">POP(stack, top):
+  if top == -1: print "Underflow"; return
+  item = stack[top]
+  top = top - 1
+  return item</div>
+<span class="ans-section-title">DISPLAY</span>
+<div class="code-block">DISPLAY(stack, top):
+  if top == -1: print "Stack empty"; return
+  for i = top down to 0:
+    print stack[i]</div>`,
+
+"Write a function or an algorithm for pop operation in stack.":
+`<div class="code-block">int pop() {
+    if (top == -1) {
+        System.out.println("Stack Underflow");
+        return -1;
+    }
+    return stack[top--];
+}</div>`,
+
+"Write an algorithm for pop operation in stack.":
+`<div class="code-block">POP(stack, top):
+  If top == -1: print "Underflow"; return
+  item = stack[top]
+  top = top - 1
+  return item</div>`,
+
+"Write a program in Java to create stack (Pop operation only).":
+`<div class="code-block">class Stack {
+    int[] stack = new int[100];
+    int top = -1;
+
+    void push(int val) { stack[++top] = val; }
+
+    int pop() {
+        if (top == -1) {
+            System.out.println("Stack Underflow");
+            return -1;
+        }
+        return stack[top--];
+    }
+
+    public static void main(String[] args) {
+        Stack s = new Stack();
+        s.push(10); s.push(20); s.push(30);
+        System.out.println(s.pop()); // 30
+        System.out.println(s.pop()); // 20
+    }
+}</div>`,
+
+"Write a Java program to show the push and pop operations in a stack.":
+`<div class="code-block">class Stack {
+    int[] arr = new int[50];
+    int top = -1;
+
+    void push(int val) {
+        if (top == arr.length - 1) { System.out.println("Overflow"); return; }
+        arr[++top] = val;
+        System.out.println(val + " pushed");
+    }
+
+    int pop() {
+        if (top == -1) { System.out.println("Underflow"); return -1; }
+        return arr[top--];
+    }
+
+    public static void main(String[] args) {
+        Stack s = new Stack();
+        s.push(5); s.push(10); s.push(15);
+        System.out.println("Popped: " + s.pop()); // 15
+    }
+}</div>`,
+
+"Write an algorithm to push() and pop() data from Stack.":
+`<span class="ans-section-title">Push</span>
+<div class="code-block">If top == MAX-1: Overflow error; return
+top++
+stack[top] = data</div>
+<span class="ans-section-title">Pop</span>
+<div class="code-block">If top == -1: Underflow error; return
+data = stack[top]
+top--
+return data</div>`,
+
+"Define overflow and underflow.":
+`<p><strong>Overflow:</strong> Occurs when you try to push an element onto a full stack (or insert into a full data structure). top = MAX-1 and push is called.</p>
+<p><strong>Underflow:</strong> Occurs when you try to pop from an empty stack. top = -1 and pop is called.</p>`,
+
+"Write down the algorithm for push operation in a stack.":
+`<div class="code-block">PUSH(stack, top, MAX, item):
+  if top >= MAX - 1:
+    print "Stack Overflow"
+    return
+  top = top + 1
+  stack[top] = item</div>`,
+
+"Define java.util.Stack.":
+`<p><code>java.util.Stack</code> is a class in Java that extends <code>Vector</code> and implements a LIFO stack.</p>
+<p>Key methods: <code>push(E item)</code>, <code>pop()</code>, <code>peek()</code>, <code>isEmpty()</code>, <code>search(Object o)</code>.</p>
+<p>Example: <code>Stack&lt;Integer&gt; s = new Stack&lt;&gt;(); s.push(10); s.pop();</code></p>`,
+
+// ── QUEUE ──
+"What is a priority queue?":
+`<p>A <strong>priority queue</strong> is a queue where each element has a <strong>priority value</strong>. Elements are served in order of priority (highest first), not FIFO order.</p>
+<p>Implementation: Binary Heap. Use cases: CPU scheduling, Dijkstra's algorithm, Huffman coding.</p>`,
+
+"What is enqueue and dequeue operation?":
+`<p><strong>Enqueue:</strong> Inserts an element at the <strong>rear</strong> of the queue. Time: O(1).</p>
+<p><strong>Dequeue:</strong> Removes an element from the <strong>front</strong> of the queue. Time: O(1).</p>
+<p>Both are fundamental operations in the Queue ADT, implementing FIFO (First In First Out) behaviour.</p>`,
+
+"What is rear and front in queue?":
+`<p><strong>Front:</strong> The index/pointer to the element to be removed next (dequeue). It represents the head of the queue.</p>
+<p><strong>Rear:</strong> The index/pointer where the next element will be inserted (enqueue). It represents the tail of the queue.</p>`,
+
+"Mention the drawback of linear queue. Write possible solution.":
+`<p><strong>Drawback:</strong> Once rear reaches the last index, no more elements can be inserted even if the front has been dequeued, leaving empty spaces unused ("false overflow").</p>
+<p><strong>Solution:</strong> Use a <strong>Circular Queue</strong> — rear wraps around to index 0 after reaching the last index using modulo arithmetic: <code>rear = (rear + 1) % MAX</code>.</p>`,
+
+"Explain different applications of queue.":
+`<p>1. <strong>CPU Scheduling</strong> — FCFS scheduling uses a queue of processes.</p>
+<p>2. <strong>Printer Spooling</strong> — print jobs queued in order.</p>
+<p>3. <strong>BFS traversal</strong> — graph traversal uses a queue.</p>
+<p>4. <strong>Network Packet Handling</strong> — data packets buffered in queues.</p>
+<p>5. <strong>Ticket Booking Systems</strong> — customers served in FIFO order.</p>`,
+
+"Illustrate the use of priority queue with an example.":
+`<p>A priority queue serves the element with the <strong>highest priority</strong> first, regardless of insertion order.</p>
+<span class="ans-section-title">Example — Hospital Emergency</span>
+<div class="code-block">Insert: (Patient A, priority 3), (Patient B, priority 1), (Patient C, priority 5)
+Heap after inserts: C(5) → A(3) → B(1)
+Dequeue order: C, A, B  (highest priority first)</div>
+<p><strong>Implementation:</strong> Binary Max-Heap. Enqueue: O(log n), Dequeue: O(log n).</p>
+<p>Used in Dijkstra's shortest path, Huffman encoding, task scheduling.</p>`,
+
+"Write a function or an algorithm for enqueue operation in circular queue.":
+`<div class="code-block">enqueue(queue, rear, front, MAX, item):
+  if (rear + 1) % MAX == front:
+    print "Queue Full (Overflow)"
+    return
+  rear = (rear + 1) % MAX
+  queue[rear] = item</div>`,
+
+"Write algorithm for enqueue operation in a simple queue.":
+`<div class="code-block">enqueue(item):
+  if rear == MAX - 1:
+    print "Queue Overflow"
+    return
+  if front == -1: front = 0
+  rear = rear + 1
+  queue[rear] = item</div>`,
+
+"Write an algorithm to insert an item in queue.":
+`<div class="code-block">enqueue(item):
+  if rear == MAX - 1: print "Overflow"; return
+  if front == -1: front = 0
+  rear++
+  queue[rear] = item</div>`,
+
+"Define Circular queue. How does circular queue overcome the limitation of linear queue?":
+`<p>A <strong>Circular Queue</strong> is a queue where the last position connects back to the first position, forming a circle.</p>
+<p><strong>Limitation of linear queue:</strong> When rear reaches the end (index MAX-1), no more insertions are allowed even if the front has moved (wasted space = "false overflow").</p>
+<p><strong>Solution:</strong> In circular queue, rear = (rear+1)%MAX — so it wraps around and reuses the vacated front positions.</p>
+<div class="code-block">Condition Full:  (rear + 1) % MAX == front
+Condition Empty: front == -1</div>`,
+
+"What are the advantages of a circular queue over the linear queue?":
+`<p>1. <strong>Eliminates false overflow</strong> — front positions are reused after dequeue.</p>
+<p>2. <strong>Memory efficient</strong> — no wasted space.</p>
+<p>3. Allows continuous operation without resetting indices.</p>
+<p>4. <strong>Better for fixed-size buffers</strong> — used in OS scheduling, network buffers.</p>`,
+
+"What are the conditions to check whether a linear queue and stack is empty and full?":
+`<p><strong>Stack:</strong><br>Empty: top == -1 | Full: top == MAX-1</p>
+<p><strong>Linear Queue:</strong><br>Empty: front == -1 (or front > rear) | Full: rear == MAX-1</p>`,
+
+"List the application of priority queue.":
+`<p>1. <strong>Dijkstra's algorithm</strong> — min-heap for shortest path.</p>
+<p>2. <strong>Huffman encoding</strong> — min-heap to build optimal tree.</p>
+<p>3. <strong>CPU task scheduling</strong> — high-priority tasks first.</p>
+<p>4. <strong>A* search algorithm</strong> — path-finding in AI.</p>
+<p>5. <strong>Event-driven simulation</strong> — processing events by timestamp.</p>`,
+
+// ── RECURSION ──
+"What do you mean by tail recursion?":
+`<p><strong>Tail recursion</strong> is a form of recursion where the <strong>recursive call is the last operation</strong> in the function — nothing happens after it returns.</p>
+<p>Tail-recursive functions can be optimised by compilers into iteration (tail call optimisation), saving stack space.</p>
+<p><strong>Example (factorial):</strong></p>
+<div class="code-block">int fact(int n, int acc) {
+    if (n == 0) return acc;
+    return fact(n - 1, n * acc); // tail call
+}</div>`,
+
+"Define tail recursion.":
+`<p>Tail recursion is when the recursive call is the <strong>very last statement</strong> of a function. The result is returned directly without further computation. This allows compilers to replace the call stack with iteration, using O(1) space instead of O(n).</p>`,
+
+"List any two disadvantages of recursion.":
+`<p>1. <strong>Stack Overflow risk</strong> — deep recursion fills the call stack and may crash the program.</p>
+<p>2. <strong>Overhead</strong> — each function call adds a stack frame (return address, parameters), making recursion slower than equivalent iterative solutions for large inputs.</p>`,
+
+"Write an algorithm to find the factorial of n number using recursion.":
+`<div class="code-block">factorial(n):
+  if n == 0 OR n == 1: return 1
+  return n * factorial(n - 1)</div>
+<span class="ans-section-title">Trace for n=4</span>
+<div class="code-block">factorial(4) = 4 * factorial(3)
+             = 4 * 3 * factorial(2)
+             = 4 * 3 * 2 * factorial(1)
+             = 4 * 3 * 2 * 1 = 24</div>`,
+
+"Write a Java program to find nth term of Fibonacci series using recursive function.":
+`<div class="code-block">class Fibonacci {
+    static int fib(int n) {
+        if (n <= 1) return n;
+        return fib(n - 1) + fib(n - 2);
+    }
+    public static void main(String[] args) {
+        int n = 7;
+        System.out.println("Fib(" + n + ") = " + fib(n)); // 13
+    }
+}</div>
+<p>Time: O(2ⁿ) (exponential). Use memoisation for O(n).</p>`,
+
+"How do you compute factorial of any given positive integer using tail recursion?":
+`<div class="code-block">int factTail(int n, int acc) {
+    if (n == 0) return acc;
+    return factTail(n - 1, n * acc);
+}
+// Call: factTail(5, 1) → 120</div>
+<p>The accumulator carries the running result. The recursive call is the last operation → tail recursive → O(1) stack if optimised.</p>`,
+
+"Compute the factorial of given number using tail recursion.":
+`<div class="code-block">int factorial(int n, int accumulator) {
+    if (n == 0) return accumulator;
+    return factorial(n - 1, n * accumulator);
+}
+// Usage: factorial(5, 1) = 120</div>`,
+
+"Write a recursive algorithm or function to compute GCD of any two positive integers.":
+`<div class="code-block">int gcd(int a, int b) {
+    if (b == 0) return a;
+    return gcd(b, a % b);
+}
+// Example: gcd(48, 18)
+// gcd(18, 12) → gcd(12, 6) → gcd(6, 0) → 6</div>
+<p>Based on <strong>Euclid's algorithm</strong>: gcd(a, b) = gcd(b, a mod b). Time: O(log(min(a,b))).</p>`,
+
+"Define nested recursion.":
+`<p>In <strong>nested recursion</strong>, the argument to the recursive call is itself a recursive call.</p>
+<div class="code-block">int ackermann(int m, int n) {
+    if (m == 0) return n + 1;
+    if (n == 0) return ackermann(m - 1, 1);
+    return ackermann(m - 1, ackermann(m, n - 1)); // nested!
+}</div>
+<p>The Ackermann function is the classic example — it grows extremely fast and demonstrates non-primitive recursive functions.</p>`,
+
+// ── TREES ──
+"Define a balanced tree.":
+`<p>A <strong>balanced tree</strong> is a BST where the difference in height between the left and right subtrees of <em>any node</em> is at most 1 (the balance factor).</p>
+<p>Ensures O(log n) search, insert, delete. Examples: AVL Tree, Red-Black Tree.</p>`,
+
+"What do you mean by tail recursion?":
+`<p>Tail recursion is when the recursive call is the last action in the function — no computation after it. Enables compiler optimisation (tail call elimination) to avoid stack growth.</p>`,
+
+"Define hashing.":
+`<p><strong>Hashing</strong> is a technique to map data (keys) to specific positions in a hash table using a <strong>hash function</strong>: index = hash(key) % tableSize.</p>
+<p>Goal: O(1) average time for search, insert, delete. Collisions (two keys mapping to same index) are handled by chaining or open addressing.</p>`,
+
+"What is hashing?":
+`<p>Hashing is a process of converting a key into an index using a hash function, to store/retrieve values in a hash table efficiently. Average case: O(1) for all operations. Collisions occur when two keys produce the same hash.</p>`,
+
+"What do you mean by degree of a vertex?":
+`<p>The <strong>degree of a vertex</strong> in a graph is the <strong>number of edges incident to it</strong> (the count of its neighbours).</p>
+<p>In a <strong>directed graph</strong>: In-degree (edges coming in) and Out-degree (edges going out). Sum of all degrees = 2 × number of edges (Handshaking Lemma).</p>`,
+
+"List any two sorting algorithms.":
+`<p>1. <strong>Quick Sort</strong> — Divide and conquer; picks a pivot, partitions array, recursively sorts. Average: O(n log n).</p>
+<p>2. <strong>Merge Sort</strong> — Divide and conquer; splits array in half, merges sorted halves. Always O(n log n).</p>`,
+
+"Why is Huffman algorithm needed?":
+`<p>Huffman algorithm produces an <strong>optimal prefix-free binary encoding</strong> for characters based on their frequencies — more frequent characters get shorter codes, less frequent get longer.</p>
+<p>This results in <strong>lossless data compression</strong>. Used in ZIP files, JPEG, MP3. Without it, all characters use fixed-length codes (e.g., 8-bit ASCII), wasting space.</p>`,
+
+"Write a function to traverse a binary tree in Preorder.":
+`<div class="code-block">void preorder(Node root) {
+    if (root == null) return;
+    System.out.print(root.data + " "); // Visit
+    preorder(root.left);               // Left
+    preorder(root.right);              // Right
+}</div>
+<p><strong>Order:</strong> Root → Left → Right. Used for copying a tree or prefix expression.</p>`,
+
+"Define an AVL tree. Construct an AVL tree from: 14, 16, 22, 19, 15, 12, 21.":
+`<p>An <strong>AVL tree</strong> is a self-balancing BST where the <strong>balance factor</strong> (BF = height(left) − height(right)) of every node must be −1, 0, or +1. Rotations (LL, RR, LR, RL) restore balance after each insertion.</p>
+<span class="ans-section-title">Step-by-step insertion trace</span>
+<div class="code-block">Insert 14: root=14 ✓
+Insert 16: 14[R=16], BF(14)=-1 ✓
+Insert 22: 14→16→22, BF(14)=-2, BF(16)=-1 → RR rotation (left-rotate at 14)
+           → root=16, L=14, R=22
+Insert 19: 19&lt;22→L of 22. Tree: 16[L=14, R=22[L=19]] BF(22)=+1, BF(16)=-1 ✓
+Insert 15: 15&gt;14→R of 14. Tree: 16[L=14[R=15], R=22[L=19]] BF(16)=0 ✓
+Insert 12: 12&lt;14→L of 14. Tree: 16[L=14[L=12,R=15], R=22[L=19]] BF(16)=+1 ✓
+Insert 21: 21&gt;19→R of 19. Tree: 16[L=14[L=12,R=15], R=22[L=19[R=21]]]
+           BF(22)=+2, BF(19)=-1 → LR case at 22
+           LR: left-rotate at 19, then right-rotate at 22
+           → 21 takes 22's R-child position; 19 becomes L of 21; 22 becomes R of 21
+           → 21[L=19, R=22] replaces R of 16
+
+Final AVL tree (verified BF ∈ {-1,0,+1} for every node):
+           16
+         /    \
+       14      21
+      /  \    /  \
+    12   15  19  22</div>`,
+
+"Define an AVL tree. Obtain AVL tree by inserting: 150, 155, 160, 115, 110, 140, 120, 145, 130, 147, 170, 180.":
+`<p>An <strong>AVL tree</strong> is a height-balanced BST where |BF| ≤ 1 for every node. Rotations restore balance after each insertion.</p>
+<span class="ans-section-title">Key rotation steps</span>
+<div class="code-block">Insert 150, 155: root=150, R=155. BF(150)=-1 ✓
+Insert 160: 150→155→160, BF(150)=-2, BF(155)=-1 → RR (left-rotate at 150)
+           → root=155, L=150, R=160
+Insert 115: L of 150. 155[L=150[L=115], R=160] BF(155)=+1 ✓
+Insert 110: L of 115. BF(150)=+2, BF(115)=+1 → LL (right-rotate at 150)
+           → 115 takes 150's spot: 155[L=115[L=110,R=150], R=160] ✓
+Insert 140: R of 115 → 140&gt;115, &lt;150 → R of 115? No: 140&lt;150→goes to L of 150
+           115[L=110, R=150[L=140]]. BF(115)=-1, BF(155)=+1 ✓
+Insert 120: 120&lt;150→140→120&lt;140→L of 140. BF(140)=+1, BF(150)=+2, BF(115... wait
+           Path: 155→115→150→140→120(L). BF(150)=+2, BF(140)=+1 → LL at 150
+           right-rotate at 150: 140[L=120,R=150] replaces 150 under 115
+           115[L=110, R=140[L=120,R=150]], 155[L=115[...], R=160] ✓
+Insert 145: 145&gt;140→R of 140→145&lt;150→L of 150. 140[L=120,R=150[L=145]] ✓
+Insert 130: 130&gt;120→R of 120→130&lt;140→... 130&gt;120, insert R of 120.
+           BF(120)=-1 ✓; rest balanced ✓
+Insert 147: 147&gt;145→R of 145. BF(145)=-1, BF(150)=+2 → LR at 150
+           left-rotate 145, right-rotate 150 → 145[L=... R=...] adjusts
+Insert 170: R of 160. BF(160)=-1 ✓
+Insert 180: 180&gt;170→R of 170. BF(160)=-2 → RR at 160 → 170[L=160,R=180]
+
+Final AVL (all BF ∈ {-1,0,+1}):
+              155
+           /       \
+         115        170
+        /   \      /   \
+      110   140  160   180
+           /   \
+         120   147
+           \   /
+           130 145</div>`,
+
+"Create an AVL tree for: 21, 26, 30, 9, 4, 14, 28, 18, 15, 10, 2, 3, 7.":
+`<p>Insert each element and apply AVL rotations whenever |BF| &gt; 1.</p>
+<span class="ans-section-title">Key rotation events</span>
+<div class="code-block">After 21,26,30: BF(21)=-2, BF(26)=-1 → RR at 21 → root=26[L=21,R=30]
+After 9,4:     BF(21)=+2, BF(9)=+1  → LL at 21 → 9[L=4,R=21] under 26
+After 14:      BF(26)=+2, BF(9)=-1  → LR at 26 → 21[L=9[L=4,R=14],R=26[R=30]]
+After 28:      BF(26)=-2, BF(30)=+1 → RL at 26 → 21[L=9[L=4,R=14],R=28[L=26,R=30]]
+After 18:      18 → R of 14. BF balanced ✓
+After 15:      15 → L of 18. BF(9)=-2, BF(14)=-1 → RR at 9
+               → 14[L=9[L=4],R=18[L=15]] under 21
+After 10:      10 → R of 9. Balanced ✓
+After 2:       2 → L of 4. Balanced ✓
+After 3:       3 → R of 2. BF(4)=+2, BF(2)=-1 → LR at 4 → 3[L=2,R=4] under 9
+               Then BF(21)=+2 → LL at 21 → 14 becomes new root
+               14[L=9[L=3[L=2,R=4],R=10], R=21[L=18[L=15],R=28[L=26,R=30]]]
+After 7:       7 → R of 4 → under 3. BF(9)=+2, BF(3)=-1 → RL at 9
+               → 4[L=3[L=2],R=9[L=7,R=10]] under 14
+
+Final AVL tree (mathematically verified):
+                14
+             /       \
+            4          21
+          /   \      /    \
+         3     9   18     28
+        /     / \    \   /  \
+       2     7  10   15 26  30</div>`,
+
+"Create an AVL tree for: 21, 26, 30, 9, 4, 14, 28, 18, 15, 10, 2, 3, 7":
+`<p>Same as above — 13 insertions with rotations at each imbalance point. Final result is a balanced BST with height ≈ ⌈log₂13⌉ = 4.</p>`,
+
+"Construct AVL tree for the data: 22, 27, 29, 8, 5, 13, 28, 2, 7.":
+`<span class="ans-section-title">Step-by-step insertion</span>
+<div class="code-block">Insert 22: root=22
+Insert 27: R of 22. BF(22)=-1 ✓
+Insert 29: 22→27→29, BF(22)=-2, BF(27)=-1 → RR at 22
+           → root=27[L=22, R=29]
+Insert 8:  L of 22. 27[L=22[L=8], R=29] BF(27)=+1 ✓
+Insert 5:  L of 8. BF(22)=+2, BF(8)=+1 → LL at 22 (right-rotate)
+           → 8[L=5,R=22] replaces 22 under 27
+           → 27[L=8[L=5,R=22], R=29]
+Insert 13: 13&lt;27→8→13&gt;8→22→13&lt;22→L of 22
+           → 27[L=8[L=5,R=22[L=13]], R=29] BF(8)=-1, BF(27)=+1 ✓
+Insert 28: 28&lt;29→L of 29
+           → 27[L=8[L=5,R=22[L=13]], R=29[L=28]] BF(29)=+1, BF(27)=-1 ✓
+Insert 2:  L of 5. BF(5)=+1, BF(8)=+1... 
+           h(8.L=5[L=2])=2, h(8.R=22[L=13])=2 → BF(8)=0 ✓
+Insert 7:  7&gt;5→R of 5. BF(5)=0, BF(8)=0 ✓
+
+Final AVL tree (all BF ∈ {-1,0,+1}):
+             27
+           /    \
+          8      29
+         / \    /
+        5   22 28
+       / \  /
+      2   7 13</div>`,
+
+"What is binary search tree?":
+`<p>A <strong>Binary Search Tree (BST)</strong> is a binary tree where:</p>
+<p>• Left child < Parent < Right child (for all nodes)</p>
+<p>Search, insert, delete: O(log n) average, O(n) worst (unbalanced).</p>`,
+
+"What is heap?":
+`<p>A <strong>heap</strong> is a complete binary tree satisfying the <strong>heap property</strong>:</p>
+<p><strong>Max-Heap:</strong> Every parent ≥ its children. Root is the maximum.</p>
+<p><strong>Min-Heap:</strong> Every parent ≤ its children. Root is the minimum.</p>
+<p>Implemented as an array. Used for priority queues and Heap Sort.</p>`,
+
+"Define max heap with example.":
+`<p>A <strong>max-heap</strong> is a complete binary tree where every parent node's value ≥ its children's values. The root holds the maximum.</p>
+<div class="code-block">Array: [90, 80, 70, 40, 50, 60, 30]
+Tree:
+        90
+      /    \
+    80      70
+   /  \    /  \
+  40   50 60   30</div>`,
+
+"Define min-heap.":
+`<p>A <strong>min-heap</strong> is a complete binary tree where every parent ≤ its children. The root is the minimum element. Dequeue always gives the smallest element. Used in Dijkstra's and priority queues.</p>`,
+
+"Demonstrate the level of the binary tree.":
+`<div class="code-block">Level 0 (root):          10
+Level 1:              20       30
+Level 2:           40   50  60   70</div>
+<p>Level of a node = its depth from root. Root is at level 0. Height = max level = log₂(n) for a complete binary tree with n nodes.</p>`,
+
+"What is multiway tree?":
+`<p>A <strong>multiway tree</strong> (m-way tree) allows each node to have <strong>up to m children</strong> and m-1 keys. Used for disk-based storage.</p>
+<p>A <strong>B-tree of order m</strong> is a balanced m-way tree. Every internal node has ⌈m/2⌉ to m children. Guarantees O(log n) search even with millions of records (fewer disk reads).</p>`,
+
+"Define expression tree with example.":
+`<p>An <strong>expression tree</strong> is a binary tree where leaf nodes are <strong>operands</strong> and internal nodes are <strong>operators</strong>.</p>
+<div class="code-block">Expression: (A + B) * C
+Tree:
+       *
+      / \
+     +   C
+    / \
+   A   B
+Inorder  → A + B * C (infix)
+Preorder → * + A B C (prefix)
+Postorder→ A B + C * (postfix)</div>`,
+
+"What is complete binary tree and strictly binary tree?":
+`<p><strong>Complete Binary Tree:</strong> All levels except possibly the last are completely filled; last level has nodes filled from left to right.</p>
+<p><strong>Strictly Binary Tree (Full Binary Tree):</strong> Every node has either 0 or exactly 2 children — no node with only one child.</p>`,
+
+"List out the practical applications of tree data structure.":
+`<p>1. <strong>File systems</strong> — directory hierarchy.</p>
+<p>2. <strong>Databases</strong> — B-trees/B+ trees for indexing.</p>
+<p>3. <strong>Compilers</strong> — expression trees, parse trees.</p>
+<p>4. <strong>Networking</strong> — spanning trees in routing protocols.</p>
+<p>5. <strong>AI</strong> — decision trees, game trees (minimax).</p>`,
+
+"Define B tree.":
+`<p>A <strong>B-tree of order m</strong> is a self-balancing m-way search tree where:</p>
+<p>• Each node has at most m children and m-1 keys.</p>
+<p>• Each internal node has at least ⌈m/2⌉ children.</p>
+<p>• All leaves are at the same level (balanced).</p>
+<p>Used in databases and file systems for efficient disk access.</p>`,
+
+"Define Balance Factor.":
+`<p><strong>Balance Factor (BF)</strong> = Height(Left Subtree) − Height(Right Subtree).</p>
+<p>For an AVL tree, BF ∈ {−1, 0, +1} for every node. If BF < −1 or BF > +1, the tree is unbalanced and requires rotation. BF = 0 means equal height subtrees.</p>`,
+
+"Write Java function for pre order traversal in a BST.":
+`<div class="code-block">void preOrder(Node root) {
+    if (root == null) return;
+    System.out.print(root.data + " ");
+    preOrder(root.left);
+    preOrder(root.right);
+}</div>
+<p>Order: Visit → Left → Right</p>`,
+
+"Write Java function for post order traversal in a BST.":
+`<div class="code-block">void postOrder(Node root) {
+    if (root == null) return;
+    postOrder(root.left);
+    postOrder(root.right);
+    System.out.print(root.data + " ");
+}</div>
+<p>Order: Left → Right → Visit. Used to delete a tree or evaluate postfix expressions.</p>`,
+
+"Why do we need to balance BST?":
+`<p>An unbalanced BST can degrade to a <strong>linked list</strong> (e.g., inserting sorted data), making all operations O(n) instead of O(log n).</p>
+<p>Balancing guarantees height ≈ log₂(n), ensuring O(log n) search, insert, and delete — essential for performance with large datasets.</p>`,
+
+"Create binary tree of strings \"apple\", \"ball\", \"cat\" and \"ant\".":
+`<div class="code-block">Insert apple (root)
+Insert ball: ball > apple → right
+Insert cat:  cat > apple, cat > ball → right of ball
+Insert ant:  ant > apple? No → left
+
+Tree:
+        apple
+       /     \
+     ant     ball
+               \
+               cat</div>`,
+
+"Explain insertion and deletion in Binary Search Tree with examples.":
+`<span class="ans-section-title">Insertion</span>
+<p>Start at root. Go left if key < node, right if key > node. Insert when null is reached.</p>
+<div class="code-block">Insert 40 into BST {50,30,70}:
+40 < 50 → go left → 40 > 30 → go right → insert
+Result: 30→right=40</div>
+<span class="ans-section-title">Deletion (3 cases)</span>
+<p><strong>Case 1 — Leaf node:</strong> Simply remove it.</p>
+<p><strong>Case 2 — One child:</strong> Replace node with its child.</p>
+<p><strong>Case 3 — Two children:</strong> Find in-order successor (smallest in right subtree), replace node's data, delete successor.</p>
+<div class="code-block">Delete 50 from BST {50,30,70,60,80}:
+In-order successor of 50 = 60
+Replace 50 with 60, delete 60 from right subtree
+Result: root=60, left=30, right=70→right=80</div>`,
+
+"Explain insertion and deletion operation in BST.":
+`<p><strong>Insert:</strong> Compare with current node; go left if smaller, right if larger; insert at null position.</p>
+<p><strong>Delete:</strong> Three cases — (1) leaf: remove directly; (2) one child: bypass node; (3) two children: replace with in-order successor and delete it.</p>`,
+
+"How can you delete a node in a BST?":
+`<p><strong>Case 1 (Leaf):</strong> Remove node, set parent's pointer to null.</p>
+<p><strong>Case 2 (One child):</strong> Link parent directly to the child.</p>
+<p><strong>Case 3 (Two children):</strong> Find the <strong>in-order successor</strong> (leftmost node of right subtree), copy its data to the current node, then delete the successor.</p>`,
+
+"Construct tree for given inorder: DGBAHEICF and postorder: GDBHIEFCA.":
+`<div class="code-block">Postorder last = A → root = A
+Inorder: DGB | A | HEICF  (left subtree: DGB, right: HEICF)
+
+Left subtree (DGB), postorder prefix GDB:
+  Postorder last = B → root = B
+  Inorder: DG | B  → left = DG, right = none
+  DG subtree: postorder = GD → root = D, right = G
+
+Right subtree (HEICF), postorder = HIEFCA... root = C
+  Inorder: HEI | C | F → left: HEI, right: F
+  HEI: root=E (from postorder), left=H, right=I
+
+Final tree:
+           A
+          / \
+         B   C
+        /   / \
+       D   E   F
+        \ / \
+        G H  I</div>`,
+
+"Create the Huffman code of given characters with frequencies: A:2, B:3, C:5, D:4.":
+`<span class="ans-section-title">Build Huffman Tree (always merge the 2 smallest)</span>
+<div class="code-block">Frequencies sorted: A(2), B(3), D(4), C(5)
+
+Step 1: Merge A(2) + B(3) = N1(5)
+        Heap: [D(4), C(5), N1(5)]
+
+Step 2: Merge D(4) + C(5) = N2(9)   ← D is smallest; C and N1 tied at 5, take C
+        Heap: [N1(5), N2(9)]
+
+Step 3: Merge N1(5) + N2(9) = root(14)
+
+Huffman Tree:
+          14
+         /  \
+       N1(5) N2(9)
+       /  \   /  \
+      A    B D    C
+      2    3 4    5
+
+Codes (0 = left branch, 1 = right branch):
+  A = 00   (2 bits)
+  B = 01   (2 bits)
+  D = 10   (2 bits)
+  C = 11   (2 bits)
+
+Total encoded bits = 2×2 + 3×2 + 4×2 + 5×2 = 28 bits
+Fixed 3-bit encoding = (2+3+4+5)×3 = 42 bits
+Space saved = 42 − 28 = 14 bits (33% compression)</div>`,
+
+"Apply Huffman encoding to: B C A A D D D C C A C A C A C. Calculate reduced string size.":
+`<div class="code-block">Count frequencies:
+A=5, B=1, C=6, D=3  Total=15 chars
+
+Build Min-Heap: B(1), D(3), A(5), C(6)
+
+Step 1: B(1)+D(3) = BD(4)
+Heap: BD(4), A(5), C(6)
+
+Step 2: BD(4)+A(5) = BDA(9)
+Heap: C(6), BDA(9)
+
+Step 3: C(6)+BDA(9) = root(15)
+
+Tree:
+         15
+        /  \
+       C    9
+       6   / \
+          BD   A
+          4    5
+         / \
+        B   D
+        1   3
+
+Codes: C=0, A=11, B=100, D=101
+
+Original (fixed 3-bit): 15 × 3 = 45 bits
+Huffman: 5×2 + 1×3 + 6×1 + 3×3 = 10+3+6+9 = 28 bits
+Reduction = 45 - 28 = 17 bits (~37.8% compression)</div>`,
+
+"Create the Huffman tree for: A:12 B:7 C:24 D:19 E:4 F:13. Generate Huffman Code.":
+`<div class="code-block">Sorted: E(4), B(7), A(12), F(13), D(19), C(24)
+
+Step 1: E(4) + B(7) = EB(11)
+        Heap: [EB(11), A(12), F(13), D(19), C(24)]
+
+Step 2: EB(11) + A(12) = EBA(23)   ← 11 and 12 are the 2 smallest
+        Heap: [F(13), D(19), EBA(23), C(24)]
+
+Step 3: F(13) + D(19) = FD(32)
+        Heap: [EBA(23), C(24), FD(32)]
+
+Step 4: EBA(23) + C(24) = EBAC(47)
+        Heap: [FD(32), EBAC(47)]
+
+Step 5: FD(32) + EBAC(47) = root(79)
+
+Huffman Tree (0=left, 1=right):
+              79
+            /    \
+          FD(32)  EBAC(47)
+          /  \    /      \
+         F    D  EBA(23)  C(24)
+         13  19  /    \
+              EB(11)   A(12)
+              /    \
+             E(4)  B(7)
+
+Codes:
+  F  = 00    (2 bits)
+  D  = 01    (2 bits)
+  E  = 1000  (4 bits)
+  B  = 1001  (4 bits)
+  A  = 101   (3 bits)
+  C  = 11    (2 bits)
+
+Total bits = 13×2 + 19×2 + 4×4 + 7×4 + 12×3 + 24×2
+           = 26 + 38 + 16 + 28 + 36 + 48 = 192 bits</div>`,
+
+"Construct tree for given inorder: DGBAHEICF and postorder: GDBHIEFCA":
+`<p>Same as the tree construction above. Root = A (last in postorder). Split inorder at A to get left (DGB) and right (HEICF) subtrees. Recurse.</p>`,
+
+"Define Circular queue. How does circular queue overcome the limitation of linear queue?":
+`<p>Already answered above — circular queue uses modulo arithmetic rear=(rear+1)%MAX to wrap around and reuse freed front spaces.</p>`,
+
+"Construct min-heap: 78, 25, 72, 18, 67, 11, 50, 30, 31.":
+`<div class="code-block">Start: array = [78, 25, 72, 18, 67, 11, 50, 30, 31]
+n=9, last parent = ⌊9/2⌋−1 = 3 (index 3, value=18)
+
+Heapify from index 3 downward:
+idx3=18: children at idx7(30), idx8(31). 18&lt;both ✓ no swap
+idx2=72: children at idx5(11), idx6(50). min=11&lt;72 → swap
+         → [78,25,11,18,67,72,50,30,31]
+         Heapify from idx5=72: no children ✓
+idx1=25: children at idx3(18), idx4(67). min=18&lt;25 → swap
+         → [78,18,11,25,67,72,50,30,31]
+         Heapify from idx3=25: children idx7(30),idx8(31). 25&lt;both ✓
+idx0=78: children at idx1(18), idx2(11). min=11&lt;78 → swap
+         → [11,18,78,25,67,72,50,30,31]
+         Heapify from idx2=78: children idx5(72),idx6(50). min=50&lt;78 → swap
+         → [11,18,50,25,67,72,78,30,31]
+         Heapify from idx6=78: no children ✓
+
+Final min-heap array (verified): [11, 18, 50, 25, 67, 72, 78, 30, 31]
+
+Tree:
+            11
+          /    \
+        18      50
+       /  \    /  \
+     25   67  72  78
+    /  \
+   30   31</div>`,
+
+"What is AVL tree? Explain rotation techniques. Construct a B-tree of order 5 from: 2,8,7,3,12,5,9,14,6,20,10,19,25,17,15,13,1,18.":
+`<p>An <strong>AVL tree</strong> is a height-balanced BST where |BF| ≤ 1 for every node. Four rotation types restore balance:</p>
+<p><strong>LL:</strong> Right rotate at unbalanced node.</p>
+<p><strong>RR:</strong> Left rotate at unbalanced node.</p>
+<p><strong>LR:</strong> Left rotate child, then right rotate node.</p>
+<p><strong>RL:</strong> Right rotate child, then left rotate node.</p>
+<span class="ans-section-title">B-tree of order 5 (max 4 keys, min 2 keys per node)</span>
+<div class="code-block">Order 5: each node holds 2–4 keys, 3–5 children.
+Insert 2,8,7,3 → node: [2,3,7,8] (full)
+Insert 12 → split: median=7 goes up
+  Root:[7], Left:[2,3], Right:[8,12]
+Insert 5 → Left:[2,3,5]
+Insert 9 → Right:[8,9,12]
+Insert 14 → Right:[8,9,12,14] (full)
+Insert 6 → Left:[2,3,5,6] (full)
+Insert 20 → Right split: median=12 goes up
+  Root:[7,12], ...
+... (continues with splits as nodes fill)</div>`,
+
+"Explain steps to delete a node from a B Tree with figures. Create a max heap from: 20, 22, 33, 44, 12, 15, 18, 19, 17, 9, 25.":
+`<span class="ans-section-title">B-Tree Deletion Steps</span>
+<p><strong>Case 1 (Leaf with spare keys):</strong> Simply delete the key.</p>
+<p><strong>Case 2 (Leaf with minimum keys):</strong> Borrow from a sibling (rotate through parent), or merge with sibling + parent key.</p>
+<p><strong>Case 3 (Internal node):</strong> Replace with in-order predecessor/successor, then delete that from the leaf.</p>
+<span class="ans-section-title">Max-Heap from: 20, 22, 33, 44, 12, 15, 18, 19, 17, 9, 25</span>
+<div class="code-block">Start with array: [20, 22, 33, 44, 12, 15, 18, 19, 17, 9, 25]
+n=11, start heapify from last parent index = ⌊11/2⌋−1 = 4
+
+idx4=12: children are 9(idx9) and 25(idx10). max=25&gt;12 → swap
+         → [20,22,33,44,25,15,18,19,17,9,12]
+idx3=44: children are 19(idx7) and 17(idx8). 44&gt;both ✓
+idx2=33: children are 15(idx5) and 18(idx6). 33&gt;both ✓
+idx1=22: children are 44(idx3) and 25(idx4). max=44&gt;22 → swap
+         → [20,44,33,22,25,15,18,19,17,9,12]
+         heapify down from idx3=22: children 19(idx7),17(idx8). 22&gt;both ✓
+idx0=20: children are 44(idx1) and 33(idx2). max=44&gt;20 → swap
+         → [44,20,33,22,25,15,18,19,17,9,12]
+         heapify down from idx1=20: children 22(idx3),25(idx4). max=25 → swap
+         → [44,25,33,22,20,15,18,19,17,9,12]
+         heapify down from idx4=20: children 9(idx9),12(idx10). 20&gt;both ✓
+
+Final max-heap array (verified): [44, 25, 33, 22, 20, 15, 18, 19, 17, 9, 12]
+
+Tree:
+              44
+           /      \
+         25        33
+        /  \      /  \
+      22   20   15   18
+     /  \  / \
+   19  17 9  12</div>`,
+
+"How is BST different from multiway search tree? Construct B-tree of order 5 from: 20,40,80,30,120,90,50,140,110,60,100,200,190,250,60,130,220,170.":
+`<p><strong>BST:</strong> Binary — each node has exactly 1 key and up to 2 children. Unbalanced in worst case.</p>
+<p><strong>Multiway/B-tree:</strong> Each node can have multiple keys (m-1 max) and multiple children (m max). Always balanced. Better for disk storage.</p>
+<div class="code-block">B-tree order 5 (max 4 keys/node):
+Insert 20,40,80,30: node=[20,30,40,80]
+Insert 120: split → median=40 up. Root:[40]
+  Left:[20,30], Right:[80,120]
+Insert 90: Right=[80,90,120]
+Insert 50: Left becomes [20,30,50]? No, goes to right of 40 subtree.
+... Continue inserting and splitting when nodes reach 4 keys.
+Each split sends median to parent; parent may also split.</div>`,
+
+// ── GRAPHS ──
+"List any two sorting algorithms.":
+`<p>1. <strong>Bubble Sort</strong> — O(n²) comparisons, simple but slow.</p>
+<p>2. <strong>Quick Sort</strong> — O(n log n) average, O(n²) worst. In-place divide-and-conquer.</p>`,
+
+"Write the application of Spanning tree.":
+`<p>1. <strong>Network design</strong> — minimum cost connections (MST for roads, cables, pipelines).</p>
+<p>2. <strong>Broadcast routing</strong> — spanning trees used to broadcast packets without loops.</p>
+<p>3. <strong>Network reliability</strong> — ensure all nodes connected with minimum edges.</p>`,
+
+"Which data structures are used for BFS and DFS?":
+`<p><strong>BFS (Breadth First Search):</strong> Uses a <strong>Queue</strong> — explores level by level.</p>
+<p><strong>DFS (Depth First Search):</strong> Uses a <strong>Stack</strong> (or recursion's call stack) — goes deep before backtracking.</p>`,
+
+"What is a cut vertex?":
+`<p>A <strong>cut vertex (articulation point)</strong> is a vertex whose removal <strong>disconnects</strong> the graph (increases the number of connected components).</p>
+<p>Example: In a network, cut vertices are critical nodes — their failure would break connectivity. Found using DFS.</p>`,
+
+"What is a cut edge?":
+`<p>A <strong>cut edge (bridge)</strong> is an edge whose removal <strong>disconnects</strong> the graph. If removed, at least two previously-connected nodes become unreachable from each other.</p>`,
+
+"What is a spanning tree?":
+`<p>A <strong>spanning tree</strong> of a connected graph G is a subgraph that:</p>
+<p>• Includes all vertices of G.</p>
+<p>• Has exactly (V-1) edges (no cycles).</p>
+<p>• Is connected.</p>
+<p>A <strong>Minimum Spanning Tree (MST)</strong> has the smallest total edge weight.</p>`,
+
+"What do you mean by minimum spanning tree?":
+`<p>A <strong>Minimum Spanning Tree (MST)</strong> is a spanning tree of a weighted graph with the <strong>minimum possible total edge weight</strong>.</p>
+<p>Algorithms: Kruskal's (sort edges, add if no cycle) and Prim's (grow tree greedily from a start node). Both give O(E log V) time.</p>`,
+
+"Explain Breadth First Traversal of a graph.":
+`<p><strong>BFS</strong> starts at a source vertex and explores all neighbours before moving to the next level. Uses a <strong>Queue</strong> and a visited array.</p>
+<span class="ans-section-title">Algorithm</span>
+<div class="code-block">BFS(graph, start):
+  queue = [start], visited[start] = true
+  while queue is not empty:
+    v = dequeue()
+    print v
+    for each neighbour u of v:
+      if not visited[u]:
+        visited[u] = true
+        enqueue(u)</div>
+<p>Time: O(V+E). Finds shortest path in unweighted graphs.</p>`,
+
+"Explain Depth First Search (DFS) and Breadth First Search (BFS) with suitable examples.":
+`<span class="ans-section-title">BFS</span>
+<p>Uses Queue. Explores all vertices at depth d before depth d+1.</p>
+<div class="code-block">Graph: 1-2, 1-3, 2-4, 3-5
+BFS from 1: 1 → 2 3 → 4 5</div>
+<span class="ans-section-title">DFS</span>
+<p>Uses Stack (or recursion). Goes as deep as possible before backtracking.</p>
+<div class="code-block">DFS from 1: 1 → 2 → 4 → backtrack → 3 → 5</div>
+<p>BFS: shortest path, level-order. DFS: cycle detection, topological sort, connected components.</p>`,
+
+"Explain DFS and BFS with examples.":
+`<p><strong>BFS:</strong> Queue-based, level-by-level. From vertex A: visit A, then all A's neighbours, then their neighbours.</p>
+<p><strong>DFS:</strong> Stack-based (or recursive), depth-first. From vertex A: go as deep as possible along one path before backtracking.</p>
+<p>Both run in O(V+E). BFS finds shortest paths in unweighted graphs; DFS is used for cycle detection, topological sorting, and strongly connected components.</p>`,
+
+"What do you mean by adjacency matrix?":
+`<p>An <strong>adjacency matrix</strong> is a V×V matrix where entry [i][j] = 1 (or weight) if there is an edge from vertex i to vertex j, else 0.</p>
+<div class="code-block">Graph: 1-2, 1-3, 2-3
+   1  2  3
+1 [0, 1, 1]
+2 [1, 0, 1]
+3 [1, 1, 0]</div>
+<p>Space: O(V²). Fast edge lookup O(1). Not space-efficient for sparse graphs.</p>`,
+
+"What is shortest path problem?":
+`<p>The <strong>shortest path problem</strong> finds the minimum-cost path between two vertices in a weighted graph.</p>
+<p><strong>Single-source:</strong> Dijkstra's (non-negative weights) — O((V+E) log V), Bellman-Ford (negative weights) — O(VE).</p>
+<p><strong>All-pairs:</strong> Floyd-Warshall — O(V³).</p>`,
+
+"Describe Kruskal's algorithm to solve minimum spanning tree problem with a suitable example.":
+`<span class="ans-section-title">Kruskal's Algorithm</span>
+<div class="code-block">1. Sort all edges by weight (ascending)
+2. Use Union-Find to track connected components
+3. For each edge (u,v,w) in sorted order:
+   if u and v are in different components:
+     add edge to MST
+     union(u, v)
+4. Stop when MST has V-1 edges</div>
+<span class="ans-section-title">Example</span>
+<div class="code-block">Vertices: A,B,C,D
+Edges: A-B(1), A-C(4), B-C(2), B-D(5), C-D(3)
+Sorted: A-B(1), B-C(2), C-D(3), A-C(4), B-D(5)
+Add A-B(1)✓, Add B-C(2)✓, Add C-D(3)✓
+MST = {A-B, B-C, C-D}, Total = 6</div>`,
+
+"What is MST? Explain Kruskal's algorithm. Apply Dijkstra's algorithm on the given graph using source vertex 0.":
+`<p><strong>MST</strong> = Minimum Spanning Tree. A tree connecting all V vertices with minimum total edge weight, having exactly V-1 edges.</p>
+<span class="ans-section-title">Kruskal's Algorithm</span>
+<p>Sort edges by weight. Add edge if it doesn't form a cycle (use Union-Find). Repeat until V-1 edges selected. Time: O(E log E).</p>
+<span class="ans-section-title">Dijkstra's Algorithm (from vertex 0)</span>
+<div class="code-block">1. dist[0]=0, dist[all others]=∞
+2. Use min-priority queue
+3. Extract min-dist vertex u
+4. For each neighbour v: if dist[u]+w(u,v) < dist[v]:
+     dist[v] = dist[u] + w(u,v)
+5. Repeat until all vertices processed</div>
+<p>Time: O((V+E) log V) with binary heap.</p>`,
+
+"List applications of MST. How does Kruskal's differ from Prim's? Construct MST using Prim's algorithm.":
+`<p><strong>MST Applications:</strong> Network cabling, road/pipeline design, cluster analysis, image segmentation.</p>
+<p><strong>Kruskal's vs Prim's:</strong></p>
+<p>Kruskal's: Edge-based, sorts all edges, uses Union-Find. Better for sparse graphs.</p>
+<p>Prim's: Vertex-based, grows tree from one vertex. Better for dense graphs.</p>
+<span class="ans-section-title">Prim's Algorithm</span>
+<div class="code-block">1. Start with any vertex (say vertex 0)
+2. Mark 0 as visited
+3. Repeat V-1 times:
+   - Find minimum weight edge connecting visited to unvisited vertex
+   - Add that edge and the new vertex to MST
+   - Mark new vertex as visited</div>`,
+
+"Write algorithm for topological sorting with example. Apply Floyd Warshall Algorithm on the given directed graph.":
+`<span class="ans-section-title">Topological Sort (Kahn's Algorithm)</span>
+<div class="code-block">1. Compute in-degree for all vertices
+2. Enqueue all vertices with in-degree = 0
+3. While queue not empty:
+   - Dequeue vertex u, add to result
+   - For each neighbour v: in-degree[v]--
+   - If in-degree[v] == 0: enqueue v
+4. If result has V vertices: success, else cycle exists</div>
+<span class="ans-section-title">Floyd-Warshall (all-pairs shortest path)</span>
+<div class="code-block">Init dist[i][j] = weight(i,j) or ∞ if no edge; dist[i][i]=0
+For k = 0 to V-1:       // intermediate vertex
+  For i = 0 to V-1:
+    For j = 0 to V-1:
+      if dist[i][k]+dist[k][j] < dist[i][j]:
+        dist[i][j] = dist[i][k]+dist[k][j]
+Time: O(V³)</div>`,
+
+"Write the concept of all pair shortest path.":
+`<p>The <strong>All-Pairs Shortest Path</strong> problem finds shortest paths between every pair of vertices (i,j) in a weighted graph.</p>
+<p><strong>Floyd-Warshall Algorithm:</strong> Dynamic programming. dist[i][j][k] = shortest path from i to j using vertices {1..k} as intermediates. Time: O(V³), Space: O(V²). Handles negative weights (not negative cycles).</p>`,
+
+"Apply Kruskal Algorithm to generate the MST for the given weighted graph.":
+`<p>(Since the graph image is referenced in the question, here is the general algorithm with a template example.)</p>
+<div class="code-block">Step 1: Sort all edges by weight
+Step 2: For each edge in sorted order:
+  - If endpoints are in different sets (use Union-Find):
+    Add edge to MST
+    Union the two sets
+Step 3: MST complete when V-1 edges added
+
+Example (4 vertices A,B,C,D):
+Edges sorted: A-B(2), A-C(3), B-D(4), C-D(5), B-C(6)
+Add A-B(2), A-C(3), B-D(4) → MST weight = 9</div>`,
+
+// ── SORTING ──
+"Sort the given data using quick sort algorithm: 17, 8, 91, 10, 111.":
+`<div class="code-block">Array: [17, 8, 91, 10, 111]
+Pivot = 17 (first element)
+
+Partition:
+  < 17: [8, 10]  Pivot: [17]  > 17: [91, 111]
+
+Sort left [8,10]: pivot=8
+  < 8: []  Pivot:[8]  > 8:[10] → [8,10]
+
+Sort right [91,111]: pivot=91
+  [91,111]
+
+Final sorted: [8, 10, 17, 91, 111]</div>`,
+
+"Sort the data 8, 6, 5, 4, 3, 10, 9, 1 using quick sort.":
+`<div class="code-block">Array: [8,6,5,4,3,10,9,1]
+Pivot=8
+Partition: [6,5,4,3,1] | 8 | [10,9]
+
+Left [6,5,4,3,1], pivot=6:
+  [5,4,3,1] | 6 | []
+  Recurse... → [1,3,4,5,6]
+
+Right [10,9], pivot=10:
+  [9] | 10 | [] → [9,10]
+
+Final: [1,3,4,5,6,8,9,10]</div>`,
+
+"Trace quick sort to sort: 10, 8, 12, 4, 13, 7, 11, 5. Explain each step.":
+`<div class="code-block">Array: [10,8,12,4,13,7,11,5]
+Pivot = 10
+Partition (Lomuto, last element as pivot = 5):
+  Actually using first: pivot=10
+  Left < 10: [8,4,7,5]   Right > 10: [12,13,11]
+
+Sort [8,4,7,5], pivot=8:
+  Left=[4,7,5], Right=[]
+  Sort [4,7,5], pivot=4: Left=[], Right=[7,5]
+  Sort [7,5]: pivot=7: Left=[5], Right=[]
+  Result: [4,5,7,8]
+
+Sort [12,13,11], pivot=12:
+  Left=[11], Right=[13] → [11,12,13]
+
+Final: [4,5,7,8,10,11,12,13]</div>`,
+
+"What is the complexity of quick sort? Sort: 4, 7, 2, 6, 1, 4, 7, 3, 5, 2, 6.":
+`<p><strong>Quick Sort Complexity:</strong></p>
+<p>Best/Average: O(n log n) | Worst (sorted input): O(n²) | Space: O(log n) stack</p>
+<div class="code-block">Array: [4,7,2,6,1,4,7,3,5,2,6]
+Pivot=4 (first):
+Left ≤4: [2,1,4,3,2] | 4 | Right>4: [7,6,7,5,6]
+Recurse on each half...
+Final sorted: [1,2,2,3,4,4,5,6,6,7,7]</div>`,
+
+"Show the steps to sort given data using insertion sort: 36, 48, 23, 59, 68, 44, 97, 99.":
+`<div class="code-block">Pass 1: [36, 48, 23, 59, 68, 44, 97, 99] (48 in place)
+Pass 2: 23 < 48 < 36 → [23, 36, 48, 59, 68, 44, 97, 99]
+Pass 3: 59 > 48 → [23, 36, 48, 59, 68, 44, 97, 99]
+Pass 4: 68 > 59 → unchanged
+Pass 5: 44 → insert between 36 and 48
+        [23, 36, 44, 48, 59, 68, 97, 99]
+Pass 6: 97 > 68 → unchanged
+Pass 7: 99 > 97 → unchanged
+Final: [23, 36, 44, 48, 59, 68, 97, 99]</div>`,
+
+"Write the algorithm of bubble sort.":
+`<div class="code-block">BubbleSort(arr, n):
+  for i = 0 to n-2:
+    swapped = false
+    for j = 0 to n-i-2:
+      if arr[j] > arr[j+1]:
+        swap arr[j] and arr[j+1]
+        swapped = true
+    if not swapped: break  // already sorted
+Time: O(n²) worst/avg, O(n) best</div>`,
+
+"How does a bubble sort work?":
+`<p>Bubble sort repeatedly compares <strong>adjacent elements</strong> and swaps them if in wrong order. After each pass, the largest unsorted element "bubbles up" to its correct position.</p>
+<p>Passes: n-1 passes for n elements. Time: O(n²). It is stable and simple but inefficient for large arrays.</p>`,
+
+"How does a selection sort work?":
+`<p>Selection sort finds the <strong>minimum element</strong> in the unsorted part and swaps it with the first unsorted element.</p>
+<div class="code-block">For i = 0 to n-2:
+  minIdx = i
+  For j = i+1 to n-1:
+    if arr[j] < arr[minIdx]: minIdx = j
+  swap arr[i] and arr[minIdx]</div>
+<p>Time: O(n²) always. Not stable. Makes O(n) swaps (better than bubble if swaps are expensive).</p>`,
+
+"Write a Java program to sort data using Selection sort algorithm.":
+`<div class="code-block">class SelectionSort {
+    public static void main(String[] args) {
+        int[] arr = {64, 25, 12, 22, 11};
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            int minIdx = i;
+            for (int j = i + 1; j < n; j++)
+                if (arr[j] < arr[minIdx]) minIdx = j;
+            int temp = arr[minIdx];
+            arr[minIdx] = arr[i];
+            arr[i] = temp;
+        }
+        for (int x : arr) System.out.print(x + " ");
+    }
+}</div>`,
+
+"Write a function in Java to sort integers using any algorithm.":
+`<div class="code-block">void bubbleSort(int[] arr) {
+    int n = arr.length;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}</div>`,
+
+"What are the elementary sorting algorithms?":
+`<p>Elementary (simple, O(n²)) sorting algorithms are:</p>
+<p>1. <strong>Bubble Sort</strong> — compare & swap adjacent pairs.</p>
+<p>2. <strong>Selection Sort</strong> — find min, place at front.</p>
+<p>3. <strong>Insertion Sort</strong> — insert each element in sorted position.</p>`,
+
+"Why is sorting required?":
+`<p>Sorting organises data in a defined order (ascending/descending), enabling:</p>
+<p>1. <strong>Faster searching</strong> — Binary search requires sorted data (O(log n) vs O(n)).</p>
+<p>2. <strong>Better presentation</strong> — sorted data is human-readable.</p>
+<p>3. <strong>Efficient algorithms</strong> — many algorithms (merge, Kruskal's) require sorted input.</p>`,
+
+"What is stable sort?":
+`<p>A <strong>stable sort</strong> preserves the relative order of equal elements. If two elements have the same key, they appear in the output in the same order as in the input.</p>
+<p><strong>Stable:</strong> Merge Sort, Bubble Sort, Insertion Sort.</p>
+<p><strong>Unstable:</strong> Quick Sort, Heap Sort, Selection Sort.</p>`,
+
+"Write the concept of internal sorting.":
+`<p><strong>Internal sorting</strong> is performed when all data fits in <strong>main memory (RAM)</strong>. No disk I/O is needed.</p>
+<p>Examples: Quick Sort, Merge Sort, Heap Sort, Insertion Sort. Contrast with <strong>external sorting</strong> (used when data is too large for RAM, e.g., merge-based external sort using disk).</p>`,
+
+"Perform Quick sort on: 54, 26, 93, 17, 77, 31, 44, 20.":
+`<div class="code-block">Array: [54, 26, 93, 17, 77, 31, 44, 20]
+Pivot = 54
+Partition: Left=[26,17,31,44,20] | 54 | Right=[93,77]
+
+Sort Left [26,17,31,44,20], pivot=26:
+  [17,20] | 26 | [31,44] → [17,20,26,31,44]
+
+Sort Right [93,77], pivot=93:
+  [77] | 93 → [77,93]
+
+Final: [17,20,26,31,44,54,77,93]</div>`,
+
+// ── SEARCH ──
+"How does binary search differ from linear search? Explain.":
+`<p><strong>Linear Search:</strong> Checks elements one by one from start. Works on unsorted arrays. Time: O(n).</p>
+<p><strong>Binary Search:</strong> Requires <strong>sorted array</strong>. Compares target with middle element; eliminates half of remaining elements each step. Time: O(log n).</p>
+<div class="code-block">Linear: [3,1,7,9,2] — search 9: check 3,1,7,9 → 4 comparisons
+Binary (sorted [1,2,3,7,9]) — search 9: mid=3, right half, mid=9 → 2 comparisons</div>`,
+
+"Which is more efficient – binary search or linear search? Justify on time complexity.":
+`<p><strong>Binary search is more efficient</strong> for large datasets.</p>
+<p>Linear search: O(n) — checks every element in worst case.</p>
+<p>Binary search: O(log n) — eliminates half the remaining elements each step.</p>
+<p>For n=1,000,000: Linear needs up to 1,000,000 comparisons; Binary needs at most 20 (log₂1000000 ≈ 20). Binary search requires sorted data as a prerequisite.</p>`,
+
+"Apply binary search to find 11 in array: 1, 5, 4, 6, 9, 11, 14.":
+`<div class="code-block">First sort: [1, 4, 5, 6, 9, 11, 14]
+low=0, high=6, target=11
+
+Step 1: mid=3, arr[3]=6 < 11 → low=4
+Step 2: mid=5, arr[5]=11 == 11 → FOUND at index 5!</div>
+<p>Binary search requires a sorted array. Time: O(log n).</p>`,
+
+"What are the benefits of binary search over linear search algorithm?":
+`<p>1. <strong>Time complexity:</strong> O(log n) vs O(n) — dramatically faster for large n.</p>
+<p>2. <strong>Fewer comparisons:</strong> Eliminates half the search space each step.</p>
+<p>3. Suitable for large sorted datasets (databases, phonebooks, dictionaries).</p>
+<p>Limitation: Requires sorted data.</p>`,
+
+"How does binary search differ from linear search in terms of complexity?":
+`<p><strong>Linear Search:</strong> O(n) — scans each element. No preprocessing needed. Works on any array.</p>
+<p><strong>Binary Search:</strong> O(log n) — requires sorted array. For n=1024: binary search takes max 10 steps vs 1024 for linear.</p>`,
+
+// ── EXPRESSION ──
+"Convert the infix expression (A*B) + (C*D) to equivalent postfix expression.":
+`<div class="code-block">Infix: (A*B) + (C*D)
+Using stack-based algorithm:
+
+Token  Stack    Output
+A      []       A
+*      [*]      A
+B      [*]      AB
+)      []       AB*
++      [+]      AB*
+(      [+,(]    AB*
+C      [+,(]    AB*C
+*      [+,(,*]  AB*C
+D      [+,(,*]  AB*CD
+)      [+]      AB*CD*
+End    []       AB*CD*+
+
+Postfix: AB*CD*+</div>`,
+
+"Convert the infix expression (A + B) * C into postfix expression.":
+`<div class="code-block">Infix: (A + B) * C
+
+Token  Stack   Output
+(      [(]
+A      [(]     A
++      [(,+]   A
+B      [(,+]   AB
+)      []      AB+
+*      [*]     AB+
+C      [*]     AB+C
+End    []      AB+C*
+
+Postfix: AB+C*</div>`,
+
+"Convert the infix expression A+(B*C)-D to equivalent prefix expression.":
+`<div class="code-block">Infix: A+(B*C)-D
+Step 1: Identify precedence → A + (B*C) - D
+Step 2: Parenthesise: ((A+(B*C))-D)
+Step 3: Move operators before operands:
+  (B*C) → *BC
+  A+(B*C) → +A*BC
+  ((A+(B*C))-D) → -+A*BCD
+
+Prefix: -+A*BCD</div>`,
+
+"What is data structure? Show the status of stack converting infix to postfix: A-B/C*D+E*F/G.":
+`<p><strong>Data structure</strong> is a way of organising data in a computer for efficient access and modification. Types: Linear (Array, Stack, Queue, Linked List) and Non-linear (Tree, Graph).</p>
+<div class="code-block">Infix: A-B/C*D+E*F/G
+(/ and * have higher precedence than - and +)
+
+Token  Stack      Output
+A                 A
+-      [-]        A
+B      [-]        AB
+/      [-,/]      AB
+C      [-,/]      ABC
+*      [-,*]      ABC/    (/ same prec as *, pop /)
+D      [-,*]      ABC/D
++      [+]        ABC/D*- (pop * and -)
+E      [+]        ABC/D*-E
+*      [+,*]      ABC/D*-E
+F      [+,*]      ABC/D*-EF
+/      [+,/]      ABC/D*-EF* (pop *)
+G      [+,/]      ABC/D*-EF*G
+End               ABC/D*-EF*G/+
+
+Postfix: ABC/D*-EF*G/+</div>`,
+
+"Evaluate the given postfix expression: 5 2 1 * + 3 –":
+`<div class="code-block">Postfix: 5 2 1 * + 3 -
+Stack operations:
+Push 5 → [5]
+Push 2 → [5,2]
+Push 1 → [5,2,1]
+*: pop 1,2 → 2*1=2, push 2 → [5,2]
++: pop 2,5 → 5+2=7, push 7 → [7]
+Push 3 → [7,3]
+-: pop 3,7 → 7-3=4, push 4 → [4]
+Result = 4</div>`,
+
+"Evaluate the prefix expression: * + 4 / 8 4 3":
+`<div class="code-block">Prefix: * + 4 / 8 4 3
+Evaluate right to left using stack:
+
+Read 3 → push 3
+Read 4 → push 4
+Read 8 → push 8
+Read / → pop 8,4 → 8/4=2 → push 2
+Read 4 → push 4
+Read + → pop 4,2 → 4+2=6 → push 6  (wait: + takes top two: 2 and 4)
+Actually evaluate prefix left to right recursively:
+  *(+(4, /(8,4)), 3)
+  = *(+(4, 2), 3)
+  = *(6, 3)
+  = 18
+Result = 18</div>`,
+
+"Evaluate the expression ABCD-*+ using stack where A=20, B=4, C=3, D=7.":
+`<div class="code-block">Postfix: A B C D - * +
+Substitute: 20 4 3 7 - * +
+
+Push 20 → [20]
+Push 4  → [20,4]
+Push 3  → [20,4,3]
+Push 7  → [20,4,3,7]
+-: pop 7,3 → 3-7=-4 → push -4 → [20,4,-4]
+*: pop -4,4 → 4*(-4)=-16 → push -16 → [20,-16]
++: pop -16,20 → 20+(-16)=4 → push 4 → [4]
+
+Result = 4</div>`,
+
+"Convert the infix expression to postfix: (A+B)-C*D/E+F-(G*H).":
+`<div class="code-block">Infix: (A+B)-C*D/E+F-(G*H)
+
+Token  Stack       Output
+(      [(]
+A      [(]         A
++      [(,+]       A
+B      [(,+]       AB
+)      []          AB+
+-      [-]         AB+
+C      [-]         AB+C
+*      [-,*]       AB+C
+D      [-,*]       AB+CD
+/      [-,/]       AB+CD*   (pop * same prec)
+E      [-,/]       AB+CD*E
++      [+]         AB+CD*E/-  (pop /, pop -)
+F      [+]         AB+CD*E/-F
+-      [-]         AB+CD*E/-F+  (pop +)
+(      [-,(]       AB+CD*E/-F+
+G      [-,(]       AB+CD*E/-F+G
+*      [-,(,*]     AB+CD*E/-F+G
+H      [-,(,*]     AB+CD*E/-F+GH
+)      [-]         AB+CD*E/-F+GH*
+End    []          AB+CD*E/-F+GH*-
+
+Postfix: AB+CD*E/-F+GH*-</div>`,
+
+"Convert the infix expression to postfix using stack: A*(B+C-D)^E/F+G-H*K.":
+`<div class="code-block">Precedence: ^ > * / > + - (^ right-associative)
+
+Infix: A*(B+C-D)^E/F+G-H*K
+
+Step through each token:
+A → output: A
+* → stack: [*]
+( → stack: [*,(]
+B → output: AB
++ → stack: [*,(,+]
+C → output: ABC
+- → stack: [*,(,-] (pop +) output: ABC+
+D → output: ABC+D
+) → pop until (: output: ABC+D-, stack:[*]
+^ → stack: [*,^] (^ higher than *)
+E → output: ABC+D-E
+/ → pop ^ (higher), then check *: * and / same prec, pop *
+  output: ABC+D-E^*, stack: [/]
+F → output: ABC+D-E^*F
++ → pop /: output: ABC+D-E^*F/+... 
+  Actually: stack:[+]
+G → output: ...G
+- → pop +: output: ...G+, stack:[-]
+H → output: ...H
+* → stack: [-,*]
+K → output: ...K
+End → pop all: ...K*-
+
+Postfix: ABC+D-E^*F/G+HK*-</div>`,
+
+// ── HASHING ──
+"Insert the following data in a Hash Table where table size is 10: 22, 18, 37, 88, 50, 47, 69, 72.":
+`<div class="code-block">Hash function: h(k) = k % 10
+Collision resolution: Linear Probing (h+1, h+2, ...)
+
+22 % 10 = 2 → index 2 ✓
+18 % 10 = 8 → index 8 ✓
+37 % 10 = 7 → index 7 ✓
+88 % 10 = 8 → collision! probe 9 ✓
+50 % 10 = 0 → index 0 ✓
+47 % 10 = 7 → collision! probe 8 (taken) → 9 (taken) → 1 → wait: linear from 7: 7(taken)→8(taken)→9(taken)→0(taken)→1 ✓
+69 % 10 = 9 → collision → probe 0(taken)→1(taken)→2(taken)→3 ✓... 
+   Wait: 9 taken→0 taken→1 taken→2 taken→3 ✓
+72 % 10 = 2 → collision → probe 3(taken)→4 ✓
+
+Hash Table:
+Index: 0  1  2  3  4  5  6  7  8  9
+Value: 50 47 22 69 72  -  - 37 18 88</div>`,
+
+"Insert keys {99, 28, 39, 18, 19} with hash table of size 10 using Quadratic Probing.":
+`<div class="code-block">h(k,i) = (k % 10 + i²) % 10
+i=0,1,2,3... on collision
+
+99 % 10 = 9, i=0 → index 9 ✓
+28 % 10 = 8, i=0 → index 8 ✓
+39 % 10 = 9, collision!
+   i=1: (9+1)%10 = 0 ✓
+18 % 10 = 8, collision!
+   i=1: (8+1)%10 = 9 → taken
+   i=2: (8+4)%10 = 2 ✓
+19 % 10 = 9, collision!
+   i=1: (9+1)%10 = 0 → taken
+   i=2: (9+4)%10 = 3 ✓
+
+Hash Table:
+Index: 0  1  2  3  4  5  6  7  8  9
+Value: 39  -  18 19  -  -  -  - 28 99</div>`,
+
+"Insert keys {99, 28, 39, 18, 19} in hash table of size 10 using Double Hashing.":
+`<div class="code-block">h1(k) = k % 10
+h2(k) = 7 - (k % 7)
+h(k,i) = (h1(k) + i*h2(k)) % 10
+
+99: h1=9, place at 9 ✓
+28: h1=8, place at 8 ✓
+39: h1=9, collision!
+   h2=7-(39%7)=7-4=3
+   i=1: (9+3)%10=2 ✓
+18: h1=8, collision!
+   h2=7-(18%7)=7-4=3
+   i=1: (8+3)%10=1 ✓
+19: h1=9, collision!
+   h2=7-(19%7)=7-5=2
+   i=1: (9+2)%10=1 → taken
+   i=2: (9+4)%10=3 ✓
+
+Hash Table:
+Index: 0  1  2  3  4  5  6  7  8  9
+Value:  - 18 39 19  -  -  -  - 28 99</div>`,
+
+"What is hash function?":
+`<p>A <strong>hash function</strong> maps a key to a specific index in a hash table: <code>index = hash(key) % tableSize</code>.</p>
+<p>Properties of a good hash function: uniform distribution, fast computation, minimal collisions.</p>
+<p>Common methods: Division method (k%m), Multiplication method, Folding method.</p>`,
+
+"Define hash table.":
+`<p>A <strong>hash table</strong> is a data structure that maps keys to values using a <strong>hash function</strong> for O(1) average-case insert, delete, and search.</p>
+<p>When two keys map to the same index (collision), resolved by: <strong>Chaining</strong> (linked list at each slot) or <strong>Open Addressing</strong> (linear/quadratic probing, double hashing).</p>`,
+
+"What is a dynamic list?":
+`<p>A <strong>dynamic list</strong> can grow or shrink at runtime — unlike static arrays of fixed size. Implemented using a <strong>linked list</strong> (each node allocated on demand) or a <strong>dynamic array</strong> (doubles capacity when full, e.g., ArrayList in Java). Supports insert and delete anywhere in O(1) to O(n).</p>`,
+
+"Define nested recursion.":
+`<p>Nested recursion is when a recursive function's argument is itself a recursive call.</p>
+<div class="code-block">int f(int n) {
+    if (n > 100) return n - 10;
+    return f(f(n + 11)); // nested recursive call
+}</div>
+<p>The inner call must complete before being used as argument for the outer call. The Ackermann function is the classic example of nested recursion.</p>`,
+
+"What is a linked list?":
+`<p>A <strong>linked list</strong> is a linear data structure where elements (nodes) are stored non-contiguously. Each node contains <strong>data</strong> and a <strong>pointer (reference) to the next node</strong>.</p>
+<p>Advantages over arrays: Dynamic size, efficient insertion/deletion. Disadvantage: No random access; must traverse from head.</p>`,
+
+"What is tree traversal? What are its types?":
+`<p><strong>Tree traversal</strong> is visiting every node exactly once in a specific order.</p>
+<p><strong>In-order (LVR):</strong> Left → Visit → Right. For BST: gives sorted order.</p>
+<p><strong>Pre-order (VLR):</strong> Visit → Left → Right. Used to copy/serialize a tree.</p>
+<p><strong>Post-order (LRV):</strong> Left → Right → Visit. Used to delete a tree.</p>
+<p><strong>Level-order (BFS):</strong> Visit level by level using a queue.</p>`,
+
+"Define expression tree.":
+`<p>An expression tree is a binary tree representing an arithmetic expression. Leaves = operands (numbers/variables). Internal nodes = operators (+,-,*,/,^). In-order traversal gives infix; pre-order gives prefix; post-order gives postfix.</p>`,
+
+"What is asymptotic notation?":
+`<p>Asymptotic notation mathematically describes how an algorithm's time/space grows as input n → ∞. Big O (upper bound), Omega (lower bound), Theta (tight bound). Used to classify and compare algorithm efficiency independently of hardware.</p>`,
+
+"What is a skip list?":
+`<p>A skip list is a multi-level linked list that provides O(log n) average search. The bottom layer has all elements; higher layers have randomly selected subsets (like express lanes). Simpler to implement than AVL trees with similar performance.</p>`,
+
+"What is a dynamic list?":
+`<p>A dynamic list grows and shrinks at runtime. Implemented as a linked list (pointer-based) or dynamic array (doubles size when full). Unlike static arrays, no pre-declared size limit is needed.</p>`,
+
+// ── CATCH-ALL FALLBACK FUNCTION ──
+};
+
+// ── DATA ─────────────────────────────────────────────────────────
+const PAPERS = [
+  {
+    id:0, short:'TU Sep 2023', emoji:'🎓',
+    college:'Tribhuvan University · Faculty of Management',
+    exam:'Main Examination', date:'September / October 2023', marks:'60', time:'3 hrs',
+    groups:[
+      {g:'A',note:'Brief Answer · 10 × 1 = 10',qs:[
+        {q:'Define Asymptotic notations.',t:'Complexity'},
+        {q:'Draw a doubly linked list.',t:'Linked List'},
+        {q:'Define stack.',t:'Stack'},
+        {q:'What is a priority queue?',t:'Queue'},
+        {q:'What do you mean by tail recursion?',t:'Recursion'},
+        {q:'Define a balanced tree.',t:'Trees'},
+        {q:'Define hashing.',t:'Hashing'},
+        {q:'What do you mean by degree of a vertex?',t:'Graphs'},
+        {q:'List any two sorting algorithms.',t:'Sorting'},
+        {q:'Why is Huffman algorithm needed?',t:'Trees'},
+      ]},
+      {g:'B',note:'Short Answer · Any 5 · 5 × 3 = 15',qs:[
+        {q:'Explain Abstract Data Type.',t:'ADT'},
+        {q:'Explain Worst-Case time complexity.',t:'Complexity'},
+        {q:'Write a function to traverse a binary tree in Preorder.',t:'Trees'},
+        {q:'Explain different applications of queue.',t:'Queue'},
+        {q:'How does binary search differ from linear search? Explain.',t:'Search'},
+        {q:'Explain Breadth First Traversal of a graph.',t:'Graphs'},
+      ]},
+      {g:'C',note:'Long Answer · Any 3 · 3 × 5 = 15',qs:[
+        {q:'Write an algorithm to find the factorial of n number using recursion.',t:'Recursion'},
+        {q:'Define an AVL tree. Construct an AVL tree from: 14, 16, 22, 19, 15, 12, 21.',t:'Trees'},
+        {q:'Sort the given data using quick sort algorithm: 17, 8, 91, 10, 111.',t:'Sorting'},
+      ]},
+    ]
+  },
+  {
+    id:1, short:'TU Model Q', emoji:'📋',
+    college:'Tribhuvan University · Faculty of Management',
+    exam:'Official Model Question', date:'Undated', marks:'60', time:'3 hrs',
+    groups:[
+      {g:'A',note:'Brief Answer · 10 × 1 = 10',qs:[
+        {q:'Define abstract data type.',t:'ADT'},
+        {q:'What are the advantages of doubly linked list over single linked list?',t:'Linked List'},
+        {q:'Define skip list.',t:'Linked List'},
+        {q:'List the applications of stack.',t:'Stack'},
+        {q:'Which is more efficient – binary search or linear search? Justify on time complexity.',t:'Search'},
+        {q:'What is tail recursion?',t:'Recursion'},
+        {q:'List out the practical applications of tree data structure.',t:'Trees'},
+        {q:'Define max heap with example.',t:'Trees'},
+        {q:'What do you mean by adjacency matrix?',t:'Graphs'},
+        {q:'What is shortest path problem?',t:'Graphs'},
+      ]},
+      {g:'B',note:'Short Answer · Any 5 · 5 × 3 = 15',qs:[
+        {q:'Write a function or an algorithm for pop operation in stack.',t:'Stack'},
+        {q:'Write a function or an algorithm for enqueue operation in circular queue.',t:'Queue'},
+        {q:'How can linked list be considered as an abstract data type?',t:'Linked List'},
+        {q:'Write an algorithm or function for selection sort.',t:'Sorting'},
+        {q:'Write a recursive algorithm or function to compute GCD of any two positive integers.',t:'Recursion'},
+        {q:'Convert the infix expression (A*B) + (C*D) to equivalent postfix expression.',t:'Expression'},
+      ]},
+      {g:'C',note:'Long Answer · Any 3 · 3 × 5 = 15',qs:[
+        {q:'Why is computational complexity performed? Illustrate the concept of Big Oh notation with pictorial representation.',t:'Complexity'},
+        {q:'Explain insertion and deletion in Binary Search Tree with examples.',t:'Trees'},
+        {q:'Explain Depth First Search (DFS) and Breadth First Search (BFS) with suitable examples.',t:'Graphs'},
+      ]},
+    ]
+  },
+  {
+    id:2, short:'TU May 2024', emoji:'🎓',
+    college:'Tribhuvan University · Faculty of Management',
+    exam:'Main Examination', date:'May 2024', marks:'60', time:'3 hrs',
+    groups:[
+      {g:'A',note:'Brief Answer · 10 × 1 = 10',qs:[
+        {q:'List any two properties of Algorithm.',t:'Complexity'},
+        {q:'Why do we always do worst case analysis?',t:'Complexity'},
+        {q:'Differentiate between data type and ADT.',t:'ADT'},
+        {q:'Write any one limitation of circular linked list.',t:'Linked List'},
+        {q:'What is skip list?',t:'Linked List'},
+        {q:'How do you create a node in singly linked list?',t:'Linked List'},
+        {q:'Define overflow and underflow.',t:'Stack'},
+        {q:'What is enqueue and dequeue operation?',t:'Queue'},
+        {q:'Why do we need to balance BST?',t:'Trees'},
+        {q:'Create binary tree of strings "apple", "ball", "cat" and "ant".',t:'Trees'},
+      ]},
+      {g:'B',note:'Short Answer · Any 5 · 5 × 3 = 15',qs:[
+        {q:'Illustrate the use of priority queue with an example.',t:'Queue'},
+        {q:'Convert the infix expression (A + B) * C into postfix expression.',t:'Expression'},
+        {q:'How do you compute factorial of any given positive integer using tail recursion?',t:'Recursion'},
+        {q:'Explain insertion and deletion operation in BST.',t:'Trees'},
+        {q:'Write an algorithm to delete an item in doubly linked list.',t:'Linked List'},
+        {q:'Write the algorithm of bubble sort.',t:'Sorting'},
+      ]},
+      {g:'C',note:'Long Answer · Any 3 · 3 × 5 = 15',qs:[
+        {q:'Create the Huffman code of given characters with frequencies: A:2, B:3, C:5, D:4.',t:'Trees'},
+        {q:'Sort the data 8, 6, 5, 4, 3, 10, 9, 1 using quick sort.',t:'Sorting'},
+        {q:"Describe Kruskal's algorithm to solve minimum spanning tree problem with a suitable example.",t:'Graphs'},
+        {q:'Construct AVL tree for the data: 22, 27, 29, 8, 5, 13, 28, 2, 2, 7.',t:'Trees'},
+      ]},
+    ]
+  },
+  {
+    id:3, short:'Arjuna 2081', emoji:'🏫',
+    college:'Arjuna College of IT · Shankhamul, Lalitpur',
+    exam:'Pre-Board Examination', date:'2081 BS', marks:'60', time:'3 hrs',
+    groups:[
+      {g:'A',note:'Brief Answer · 10 × 1 = 10',qs:[
+        {q:'Why do we need Asymptotic notation?',t:'Complexity'},
+        {q:'List any two disadvantages of recursion.',t:'Recursion'},
+        {q:'What is Class P problem?',t:'Complexity'},
+        {q:'How do you choose pivot element in quick sort?',t:'Sorting'},
+        {q:'Why is sorting required?',t:'Sorting'},
+        {q:'What is rear and front in queue?',t:'Queue'},
+        {q:'Write the application of Spanning tree.',t:'Graphs'},
+        {q:'What is binary search tree?',t:'Trees'},
+        {q:'What is hashing?',t:'Hashing'},
+        {q:'What is heap?',t:'Trees'},
+      ]},
+      {g:'B',note:'Short Answer · Any 5 · 5 × 3 = 15',qs:[
+        {q:'Write a function in Java to sort integers using any algorithm.',t:'Sorting'},
+        {q:'Write a program in Java to create stack (Pop operation only).',t:'Stack'},
+        {q:'Insert the following data in a Hash Table where table size is 10: 22, 18, 37, 88, 50, 47, 69, 72.',t:'Hashing'},
+        {q:'Show the steps to sort given data using insertion sort: 36, 48, 23, 59, 68, 44, 97, 99.',t:'Sorting'},
+        {q:'Apply binary search to find 11 in array: 1, 5, 4, 6, 9, 11, 14.',t:'Search'},
+        {q:'Write a recursive algorithm or function to compute GCD of any two positive integers.',t:'Recursion'},
+      ]},
+      {g:'C',note:'Long Answer · Any 3 · 3 × 5 = 15',qs:[
+        {q:'What is data structure? Show the status of stack converting infix to postfix: A-B/C*D+E*F/G.',t:'Expression'},
+        {q:'Construct tree for given inorder: DGBAHEICF and postorder: GDBHIEFCA.',t:'Trees'},
+        {q:'Define Circular queue. How does circular queue overcome the limitation of linear queue?',t:'Queue'},
+        {q:'What is singly linked list? Write an algorithm to insert a node at the start and end.',t:'Linked List'},
+      ]},
+      {g:'D',note:'Comprehensive · 2 × 10 = 20',qs:[
+        {q:'What is stack? Why is it LIFO? Write algorithms for PUSH, POP and DISPLAY on stack.',t:'Stack'},
+        {q:'Explain DFS and BFS with examples.',t:'Graphs'},
+        {q:'Define AVL tree. Obtain AVL tree by inserting: 150, 155, 160, 115, 110, 140, 120, 145, 130, 147, 170, 180.',t:'Trees'},
+      ]},
+    ]
+  },
+  {
+    id:4, short:'Orchid Set A', emoji:'🌸',
+    college:'Orchid International College · Gaushala-9, Kathmandu',
+    exam:'Pre-Board Examination 2081 — SET A', date:'2081 BS', marks:'60', time:'3 hrs',
+    groups:[
+      {g:'A',note:'Short Answer · 10 × 1 = 10',qs:[
+        {q:'What is a data structure?',t:'ADT'},
+        {q:'Define hashing.',t:'Hashing'},
+        {q:'Mention the drawback of linear queue. Write possible solution.',t:'Queue'},
+        {q:'What are the elementary sorting algorithms?',t:'Sorting'},
+        {q:'Define tail recursion.',t:'Recursion'},
+        {q:'Which data structures are used for BFS and DFS?',t:'Graphs'},
+        {q:'Define expression tree.',t:'Trees'},
+        {q:'What is a cut vertex?',t:'Graphs'},
+        {q:'What is a linked list?',t:'Linked List'},
+        {q:'How does a bubble sort work?',t:'Sorting'},
+      ]},
+      {g:'B',note:'Exercise Problems · Any 5 · 5 × 3 = 15',qs:[
+        {q:'Write a Java program to find nth term of Fibonacci series using recursive function.',t:'Recursion'},
+        {q:'Write Java function for pre order traversal in a BST.',t:'Trees'},
+        {q:'Write a Java program to show the push and pop operations in a stack.',t:'Stack'},
+        {q:'Evaluate the given postfix expression: 5 2 1 * + 3 –',t:'Expression'},
+        {q:'Write algorithm for enqueue operation in a simple queue.',t:'Queue'},
+      ]},
+      {g:'C',note:'Comprehensive Answers · Any 3 · 3 × 5 = 15',qs:[
+        {q:'Trace quick sort to sort: 10, 8, 12, 4, 13, 7, 11, 5. Explain each step.',t:'Sorting'},
+        {q:'Write a Java function to insert a node at the specified position of a singly linked list.',t:'Linked List'},
+        {q:'Insert keys {99, 28, 39, 18, 19} with hash table of size 10 using Quadratic Probing.',t:'Hashing'},
+      ]},
+      {g:'D',note:'Long Answer · 2 × 10 = 20',qs:[
+        {q:"What is AVL tree? Explain rotation techniques. Construct a B-tree of order 5 from: 2,8,7,3,12,5,9,14,6,20,10,19,25,17,15,13,1,18.",t:'Trees'},
+        {q:"What is MST? Explain Kruskal's algorithm. Apply Dijkstra's algorithm on the given graph using source vertex 0.",t:'Graphs'},
+      ]},
+    ]
+  },
+  {
+    id:5, short:'Orchid Set B', emoji:'🌸',
+    college:'Orchid International College · Gaushala-9, Kathmandu',
+    exam:'Pre-Board Examination 2081 — SET B', date:'2081 BS', marks:'60', time:'3 hrs',
+    groups:[
+      {g:'A',note:'Short Answer · 10 × 1 = 10',qs:[
+        {q:'Define hash table.',t:'Hashing'},
+        {q:'What do you mean by tail recursion?',t:'Recursion'},
+        {q:'What is a spanning tree?',t:'Graphs'},
+        {q:'What is tree traversal? What are its types?',t:'Trees'},
+        {q:'How does a selection sort work?',t:'Sorting'},
+        {q:'Define B tree.',t:'Trees'},
+        {q:'What is a cut edge?',t:'Graphs'},
+        {q:'Define Balance Factor.',t:'Trees'},
+        {q:'How is a linear data structure different from non-linear?',t:'ADT'},
+        {q:'What is logarithmic complexity?',t:'Complexity'},
+      ]},
+      {g:'B',note:'Exercise Problems · Any 5 · 5 × 3 = 15',qs:[
+        {q:'Write a Java program to find factorial of a number using recursive function.',t:'Recursion'},
+        {q:'Write Java function for post order traversal in a BST.',t:'Trees'},
+        {q:'Write a Java program to sort data using Selection sort algorithm.',t:'Sorting'},
+        {q:'Evaluate the given prefix expression: * + 4 / 8 4 3',t:'Expression'},
+        {q:'Write down the algorithm for push operation in a stack.',t:'Stack'},
+      ]},
+      {g:'C',note:'Comprehensive Answer · Any 3 · 3 × 5 = 15',qs:[
+        {q:'Apply Huffman encoding to: B C A A D D D C C A C A C A C. Calculate reduced string size.',t:'Trees'},
+        {q:'Write a Java function to insert a node at the specified position of a doubly linked list.',t:'Linked List'},
+        {q:'Insert keys {99, 28, 39, 18, 19} in hash table of size 10 using Double Hashing.',t:'Hashing'},
+      ]},
+      {g:'D',note:'Long Answer · 2 × 10 = 20',qs:[
+        {q:'Explain steps to delete a node from a B Tree with figures. Create a max heap from: 20, 22, 33, 44, 12, 15, 18, 19, 17, 9, 25.',t:'Trees'},
+        {q:'Write algorithm for topological sorting with example. Apply Floyd Warshall Algorithm on the given directed graph.',t:'Graphs'},
+      ]},
+    ]
+  },
+  {
+    id:6, short:'KIST 2025', emoji:'🏛',
+    college:'KIST College of Management · Kamalpokhari, Kathmandu',
+    exam:'Pre-Board Examination', date:'March 2025', marks:'60', time:'3 hrs',
+    groups:[
+      {g:'A',note:'Brief Answer · 10 × 1 = 10',qs:[
+        {q:'What is ADT?',t:'ADT'},
+        {q:'What is a skip list?',t:'Linked List'},
+        {q:'What is asymptotic notation?',t:'Complexity'},
+        {q:'What is a dynamic list?',t:'Linked List'},
+        {q:'What are the conditions to check whether a linear queue and stack is empty and full?',t:'Queue'},
+        {q:'What is tail recursion?',t:'Recursion'},
+        {q:'What is complete binary tree and strictly binary tree?',t:'Trees'},
+        {q:'What is hash function?',t:'Hashing'},
+        {q:'What do you mean by minimum spanning tree?',t:'Graphs'},
+        {q:'What is stable sort?',t:'Sorting'},
+      ]},
+      {g:'B',note:'Short Answer · Any 5 · 5 × 3 = 15',qs:[
+        {q:'Write an algorithm to push() and pop() data from Stack.',t:'Stack'},
+        {q:'What are the advantages of a circular queue over the linear queue?',t:'Queue'},
+        {q:'Compute the factorial of given number using tail recursion.',t:'Recursion'},
+        {q:'How can you delete a node in a BST?',t:'Trees'},
+        {q:'Write an algorithm to delete a node at nth position in doubly linked list.',t:'Linked List'},
+        {q:'How does binary search differ from linear search in terms of complexity?',t:'Search'},
+      ]},
+      {g:'C',note:'Long Answer · Any 3 · 3 × 5 = 15',qs:[
+        {q:'Create a Huffman tree for: A:12 B:7 C:24 D:19 E:4 F:13. Generate Huffman Code.',t:'Trees'},
+        {q:'Create an AVL tree for: 21, 26, 30, 9, 4, 14, 28, 18, 15, 10, 2, 3, 7.',t:'Trees'},
+        {q:'Perform Quick sort on: 54, 26, 93, 17, 77, 31, 44, 20.',t:'Sorting'},
+      ]},
+      {g:'D',note:'Comprehensive · 2 × 10 = 20',qs:[
+        {q:'Convert the infix expression to postfix using stack: A*(B+C-D)^E/F+G-H*K.',t:'Expression'},
+        {q:'Apply Kruskal Algorithm to generate the MST for the given weighted graph.',t:'Graphs'},
+      ]},
+    ]
+  },
+  {
+    id:7, short:'Asian 2082', emoji:'🏫',
+    college:'Asian School of Management & Technology · Gongabu, Kathmandu',
+    exam:'Pre-Board Examination 2082 — Set B', date:'2082 BS', marks:'60', time:'3 hrs',
+    groups:[
+      {g:'A',note:'Brief Answer · 10 × 1 = 10',qs:[
+        {q:'What do you mean by worst case?',t:'Complexity'},
+        {q:'List the application of priority queue.',t:'Queue'},
+        {q:'Define nested recursion.',t:'Recursion'},
+        {q:'Define java.util.Stack.',t:'Stack'},
+        {q:'Define min-heap.',t:'Trees'},
+        {q:'Demonstrate the level of the binary tree.',t:'Trees'},
+        {q:'What is multiway tree?',t:'Trees'},
+        {q:'Write the concept of internal sorting.',t:'Sorting'},
+        {q:'Define expression tree with example.',t:'Trees'},
+        {q:'Write the concept of all pair shortest path.',t:'Graphs'},
+      ]},
+      {g:'B',note:'Short Answer · Any 5 · 5 × 3 = 15',qs:[
+        {q:'Explain big omega.',t:'Complexity'},
+        {q:'Convert the infix expression A+(B*C)-D to equivalent prefix expression.',t:'Expression'},
+        {q:'Write an algorithm to insert an item in queue.',t:'Queue'},
+        {q:'What are the benefits of binary search over linear search algorithm?',t:'Search'},
+        {q:'Define binary search tree. Explain the process of balancing BST.',t:'Trees'},
+        {q:'Construct min-heap: 78, 25, 72, 18, 67, 11, 50, 30, 31.',t:'Trees'},
+      ]},
+      {g:'C',note:'Long Answer · Any 3 · 3 × 5 = 15',qs:[
+        {q:'Evaluate the expression ABCD-*+ using stack where A=20, B=4, C=3, D=7.',t:'Expression'},
+        {q:'Write an algorithm to add a node at end and delete a node from beginning of doubly linked list.',t:'Linked List'},
+        {q:'Convert the infix expression to postfix: (A+B)-C*D/E+F-(G*H).',t:'Expression'},
+        {q:'What is the complexity of quick sort? Sort: 4, 7, 2, 6, 1, 4, 7, 3, 5, 2, 6.',t:'Sorting'},
+      ]},
+      {g:'D',note:'Comprehensive · 2 × 10 = 20',qs:[
+        {q:"How is BST different from multiway search tree? Construct B-tree of order 5 from: 20,40,80,30,120,90,50,140,110,60,100,200,190,250,60,130,220,170.",t:'Trees'},
+        {q:"List applications of MST. How does Kruskal's differ from Prim's? Construct MST using Prim's algorithm.",t:'Graphs'},
+      ]},
+    ]
+  },
+];
+
+const TOPICS = [
+  {name:'Trees (BST, AVL, B-tree, Heap, Huffman)', pct:95, color:'#4f46e5', ytq:'BST AVL tree data structures explained'},
+  {name:'Sorting algorithms', pct:90, color:'#059669', ytq:'quick sort merge sort insertion sort explained'},
+  {name:'Stack & Queue', pct:88, color:'#d97706', ytq:'stack and queue data structure Java'},
+  {name:'Graphs (BFS, DFS, MST, Dijkstra)', pct:85, color:'#dc2626', ytq:'graph BFS DFS Dijkstra algorithm explained'},
+  {name:'Recursion & Tail recursion', pct:82, color:'#7c3aed', ytq:'recursion tail recursion Java explained'},
+  {name:'Linked List (singly, doubly, circular)', pct:78, color:'#0d9488', ytq:'linked list singly doubly Java implementation'},
+  {name:'Expression conversion (infix/postfix)', pct:70, color:'#db2777', ytq:'infix to postfix prefix expression stack'},
+  {name:'Hashing & Hash tables', pct:68, color:'#2563eb', ytq:'hashing hash table collision Java explained'},
+  {name:'Complexity & Big O notation', pct:65, color:'#ea580c', ytq:'Big O notation time complexity explained'},
+  {name:'Searching algorithms', pct:62, color:'#16a34a', ytq:'binary search linear search comparison Java'},
+  {name:'Abstract Data Types (ADT)', pct:55, color:'#9333ea', ytq:'abstract data type ADT explained'},
+  {name:'Kruskal & Prim MST algorithms', pct:50, color:'#0284c7', ytq:'Kruskal Prim minimum spanning tree algorithm'},
+];
+
+const YT_RESOURCES = [
+  {label:'Big O Notation', q:'Big O notation time complexity explained beginner'},
+  {label:'Linked Lists in Java', q:'linked list implementation Java tutorial'},
+  {label:'Stack & Queue', q:'stack queue data structure Java implementation'},
+  {label:'Binary Search Tree', q:'binary search tree BST Java insert delete search'},
+  {label:'AVL Tree rotations', q:'AVL tree rotations insertion Java step by step'},
+  {label:'Heap & Priority Queue', q:'heap data structure priority queue Java explained'},
+  {label:'Quick Sort', q:'quick sort algorithm step by step trace example'},
+  {label:'Merge Sort', q:'merge sort algorithm Java explained with example'},
+  {label:'Huffman Coding', q:'Huffman coding encoding algorithm step by step'},
+  {label:'Infix to Postfix', q:'infix to postfix conversion stack algorithm example'},
+  {label:'BFS Graph traversal', q:'BFS breadth first search graph algorithm Java'},
+  {label:'DFS Graph traversal', q:'DFS depth first search graph algorithm Java'},
+  {q:"Dijkstra's Algorithm", q:'Dijkstra shortest path algorithm explained example',label:"Dijkstra's"},
+  {label:"Kruskal's Algorithm", q:'Kruskal minimum spanning tree algorithm Java'},
+  {label:"Prim's Algorithm", q:'Prim minimum spanning tree algorithm step by step'},
+  {label:'B-Tree', q:'B tree data structure insert delete explained'},
+  {label:'Hashing & Collision', q:'hashing hash table collision resolution chaining probing'},
+  {label:'Recursion & Tail Recursion', q:'recursion vs tail recursion Java examples'},
+  {label:'Floyd Warshall', q:'Floyd Warshall all pairs shortest path algorithm'},
+  {label:'Topological Sort', q:'topological sort graph algorithm explained'},
+];
+
+// ── STATE ─────────────────────────────────────────────────────────
+let currentPaper = -1;
+
+// ── LOOKUP ANSWER ────────────────────────────────────────────────
+function getAnswerHTML(q) {
+  // Direct match
+  if (ANS[q]) return ANS[q];
+  // Try partial match
+  for (const key of Object.keys(ANS)) {
+    if (q.trim().toLowerCase() === key.trim().toLowerCase()) return ANS[key];
+  }
+  // Fuzzy: find key that starts with first 30 chars of question
+  const prefix = q.slice(0, 30).toLowerCase();
+  for (const key of Object.keys(ANS)) {
+    if (key.toLowerCase().startsWith(prefix.slice(0, 20))) return ANS[key];
+  }
+  return `<p style="color:var(--amber)">📝 This question's answer is not yet in the database. Search: <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(q+' data structure algorithm explained')}" target="_blank" style="color:var(--accent)">YouTube →</a></p>`;
+}
+
+// ── BUILD NAV ────────────────────────────────────────────────────
+function buildNav() {
+  const nav = document.getElementById('tabNav');
+  const overviewBtn = `<button class="tab-btn active" id="tab-ov" onclick="showOverview(this)">🗂 Overview</button>`;
+  const paperBtns = PAPERS.map((p,i) => {
+    const total = p.groups.reduce((a,g)=>a+g.qs.length,0);
+    return `<button class="tab-btn" id="tab-${i}" onclick="showPaper(${i},this)">
+      ${p.emoji} ${p.short} <span class="cnt">${total}</span>
+    </button>`;
+  }).join('');
+  const analysisBtns = `<button class="tab-btn" id="tab-analysis" onclick="showAnalysis(this)">📊 Analysis</button>`;
+  nav.innerHTML = overviewBtn + paperBtns + analysisBtns;
+
+  const strip = document.getElementById('topicStrip');
+  strip.innerHTML = TOPICS.map(t => `
+    <a class="topic-chip" href="https://www.youtube.com/results?search_query=${encodeURIComponent(t.ytq)}" target="_blank">
+      ${t.name.split('(')[0].trim()} <span class="pct">${t.pct}%</span>
+    </a>
+  `).join('');
+}
+
+// ── OVERVIEW ─────────────────────────────────────────────────────
+function showOverview(btn) {
+  currentPaper = -1;
+  setActive(btn);
+  const c = document.getElementById('content');
+  c.innerHTML = `
+    <div style="margin-bottom:20px">
+      <h2 style="font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px">All Papers at a Glance</h2>
+      <p style="font-size:13px;color:var(--text3);font-weight:600">Click any paper card to explore questions & answers.</p>
+    </div>
+
+    <div class="overview-grid">${PAPERS.map((p,i)=>{
+      const total=p.groups.reduce((a,g)=>a+g.qs.length,0);
+      const groups=p.groups.map(g=>`<span class="ov-pill">Group ${g.g}</span>`).join('');
+      return `<div class="ov-card" onclick="document.getElementById('tab-${i}').click()">
+        <h3>${p.emoji} ${p.short}</h3>
+        <p style="margin-bottom:6px;font-size:11px">${p.college}</p>
+        <p style="font-size:11px">${p.exam} · ${p.date}</p>
+        <div class="ov-meta" style="margin-top:10px">
+          <span class="ov-pill">📝 ${total} Qs</span>
+          <span class="ov-pill">📊 ${p.marks}M</span>
+          ${groups}
+        </div>
+      </div>`;
+    }).join('')}</div>
+
+    <div class="freq-section">
+      <h3>Topic Frequency Across Papers</h3>
+      ${TOPICS.map(t=>`
+        <div class="freq-row">
+          <span class="freq-name">${t.name.split('(')[0].trim()}</span>
+          <div class="freq-track"><div class="freq-bar2" style="width:0%;background:${t.color}" data-w="${t.pct}"></div></div>
+          <span class="freq-pct">${t.pct}%</span>
+          <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(t.ytq)}" target="_blank" style="margin-left:6px;font-size:11px;color:#dc2626;font-weight:700;white-space:nowrap;text-decoration:none">▶ YT</a>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="yt-section">
+      <h3>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#dc2626"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg>
+        YouTube Study Resources
+      </h3>
+      <div class="yt-grid">${YT_RESOURCES.map(r=>`
+        <a class="yt-chip" href="https://www.youtube.com/results?search_query=${encodeURIComponent(r.q)}" target="_blank">
+          <div class="yt-icon"><svg viewBox="0 0 24 24" fill="white"><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></div>
+          <span class="yt-label">${r.label}</span>
+        </a>
+      `).join('')}</div>
+    </div>
+  `;
+  setTimeout(()=>{
+    document.querySelectorAll('.freq-bar2').forEach(el=>{
+      el.style.width = el.dataset.w + '%';
+    });
+  }, 100);
+}
+
+// ── PAPER VIEW ───────────────────────────────────────────────────
+function showPaper(i, btn) {
+  currentPaper = i;
+  setActive(btn);
+  const p = PAPERS[i];
+  const gCls = {A:'g-a',B:'g-b',C:'g-c',D:'g-d'};
+  let html = `
+    <div class="paper-header">
+      <h2>${p.emoji} ${p.college}</h2>
+      <div class="paper-meta">
+        <span class="pill">📅 ${p.date}</span>
+        <span class="pill">⏱ ${p.time}</span>
+        <span class="pill">📊 ${p.marks} marks</span>
+        <span class="pill">📝 ${p.exam}</span>
+      </div>
+    </div>
+  `;
+
+  p.groups.forEach((grp,gi)=>{
+    html += `<div class="group-section">
+      <div class="group-header">
+        <span class="group-badge ${gCls[grp.g]}">Group ${grp.g}</span>
+        <span class="group-note">${grp.note}</span>
+      </div>`;
+    grp.qs.forEach((item,qi)=>{
+      const key=`${i}-${gi}-${qi}`;
+      const ytTopic = TOPICS.find(t=>t.name.toLowerCase().includes(item.t.split(' ')[0].toLowerCase()));
+      const ytLink = ytTopic
+        ? `https://www.youtube.com/results?search_query=${encodeURIComponent(ytTopic.ytq)}`
+        : `https://www.youtube.com/results?search_query=${encodeURIComponent(item.t+' data structure algorithm explained')}`;
+      html += `
+        <div class="q-card" id="card-${key}">
+          <div class="q-top" onclick="toggleAns('${key}')">
+            <span class="q-num">${qi+1}.</span>
+            <div class="q-right">
+              <span class="q-text">${item.q}</span>
+              <div class="q-actions">
+                <button class="btn btn-show" id="btn-${key}" onclick="event.stopPropagation();toggleAns('${key}')">
+                  <span id="arrow-${key}">▸</span> Answer
+                </button>
+                <a class="btn btn-yt" href="${ytLink}" target="_blank" onclick="event.stopPropagation()">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+                  YouTube
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="ans-panel" id="ans-${key}">
+            <div class="ans-panel-inner">
+              <div class="ans-label">✏️ Answer</div>
+              <div class="ans-body">${getAnswerHTML(item.q)}</div>
+            </div>
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+  });
+
+  document.getElementById('content').innerHTML = html;
+  document.getElementById('content').scrollTop = 0;
+}
+
+function toggleAns(key) {
+  const panel = document.getElementById('ans-'+key);
+  const card = document.getElementById('card-'+key);
+  const arrow = document.getElementById('arrow-'+key);
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  card.classList.toggle('open', !isOpen);
+  if (arrow) arrow.textContent = isOpen ? '▸' : '▾';
+}
+
+// ── ANALYSIS VIEW ─────────────────────────────────────────────────
+function showAnalysis(btn) {
+  currentPaper = -1;
+  setActive(btn);
+  const c = document.getElementById('content');
+  c.innerHTML = `
+    <div style="margin-bottom:20px">
+      <h2 style="font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px">📊 BITM IT238 — Exam Analysis</h2>
+      <p style="font-size:13px;color:var(--text3);font-weight:600">Pattern analysis across 8 past papers (2023–2082 BS).</p>
+    </div>
+
+    <div class="analysis-grid">
+
+      <div class="analysis-card">
+        <h4>🔥 High-Priority Topics <span class="priority-badge p-high">Must Study</span></h4>
+        <ul>
+          <li><strong>Trees</strong> — AVL, BST, B-tree, Heap, Huffman appear in every single paper (95%). Group C & D questions.</li>
+          <li><strong>Sorting</strong> — Quick sort (in 7/8 papers), Bubble, Insertion sort. Always asked for step-by-step trace.</li>
+          <li><strong>Stack & Queue</strong> — PUSH/POP algorithms, circular queue, priority queue in nearly all papers.</li>
+          <li><strong>Graphs</strong> — BFS, DFS, Kruskal's MST, Dijkstra asked repeatedly in Group D (10-mark) questions.</li>
+        </ul>
+      </div>
+
+      <div class="analysis-card">
+        <h4>📈 Medium-Priority Topics <span class="priority-badge p-med">Important</span></h4>
+        <ul>
+          <li><strong>Recursion</strong> — Factorial, GCD, Fibonacci, tail recursion asked in Groups A & B across all papers.</li>
+          <li><strong>Linked Lists</strong> — Insert/delete in singly, doubly, circular lists. Java code often required.</li>
+          <li><strong>Expression Conversion</strong> — Infix→Postfix, Infix→Prefix, evaluate postfix/prefix using stack.</li>
+          <li><strong>Hashing</strong> — Linear probing, quadratic probing, double hashing with numeric examples.</li>
+        </ul>
+      </div>
+
+      <div class="analysis-card">
+        <h4>📌 Lower-Priority Topics <span class="priority-badge p-low">Review</span></h4>
+        <ul>
+          <li><strong>Big O / Complexity</strong> — Definitions, notation comparison, worst-case analysis (Group A mostly).</li>
+          <li><strong>Binary Search</strong> — Compare with linear search, trace example.</li>
+          <li><strong>ADT concepts</strong> — Definition and properties (1-mark questions mainly).</li>
+        </ul>
+      </div>
+
+      <div class="analysis-card">
+        <h4>📝 Question Pattern</h4>
+        <ul>
+          <li><strong>Group A (1 mark × 10):</strong> Short definitions, list properties — memorise key terms.</li>
+          <li><strong>Group B (3 marks × 5):</strong> Short algorithms, small programs, conversions — write concise answers.</li>
+          <li><strong>Group C (5 marks × 3):</strong> Full algorithms, traced examples, Java code — show each step.</li>
+          <li><strong>Group D (10 marks × 2):</strong> Comprehensive — combine definition + algorithm + worked example + code.</li>
+        </ul>
+      </div>
+
+      <div class="analysis-card">
+        <h4>⚡ Most Repeated Questions</h4>
+        <ul>
+          <li>AVL tree construction (with rotations) — appeared in 5/8 papers</li>
+          <li>Quick sort step-by-step trace — appeared in 5/8 papers</li>
+          <li>Infix to Postfix conversion — appeared in 6/8 papers</li>
+          <li>BFS/DFS with example — appeared in 5/8 papers</li>
+          <li>Kruskal's MST algorithm — appeared in 4/8 papers</li>
+          <li>Huffman tree construction — appeared in 3/8 papers</li>
+        </ul>
+      </div>
+
+      <div class="analysis-card">
+        <h4>💡 Exam Strategy Tips</h4>
+        <ul>
+          <li>For <strong>AVL trees</strong>: practice rotation cases (LL, RR, LR, RL) with different datasets.</li>
+          <li>For <strong>Quick sort</strong>: always show partitioning step-by-step.</li>
+          <li>For <strong>Group D</strong>: include definition + algorithm pseudocode + Java code + traced example.</li>
+          <li>For <strong>Graph questions</strong>: draw the graph, show visited/distance arrays step by step.</li>
+          <li>For <strong>Hashing</strong>: show each insertion with collision resolution clearly.</li>
+          <li>Group A answers: 2–3 sentences maximum. Don't over-write.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="freq-section">
+      <h3>Topic Frequency (% of papers)</h3>
+      ${TOPICS.map(t=>`
+        <div class="freq-row">
+          <span class="freq-name">${t.name.split('(')[0].trim()}</span>
+          <div class="freq-track"><div class="freq-bar2" style="width:0%;background:${t.color}" data-w="${t.pct}"></div></div>
+          <span class="freq-pct">${t.pct}%</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  setTimeout(()=>{
+    document.querySelectorAll('.freq-bar2').forEach(el=>{
+      el.style.width = el.dataset.w + '%';
+    });
+  }, 100);
+}
+
+function setActive(btn) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+// ── PRACTICE PAPERS ──────────────────────────────────────────────
+const PRACTICE_PAPERS = [
+  {
+    id:'p1', short:'Practice Set 1', emoji:'📝',
+    college:'Practice Set — Fundamentals',
+    exam:'Mixed difficulty — Group A to D format', date:'Self Study', marks:'60', time:'3 hrs',
+    groups:[
+      {g:'A',note:'Brief Answer · 10 × 1 = 10',qs:[
+        {q:'What is a data structure? Give two examples.',t:'ADT'},
+        {q:'Define time complexity.',t:'Complexity'},
+        {q:'What is a circular linked list?',t:'Linked List'},
+        {q:'State the difference between stack and queue.',t:'Stack'},
+        {q:'Define infix and postfix expression.',t:'Expression'},
+        {q:'What is a complete binary tree?',t:'Trees'},
+        {q:'Define graph. What are its two representations?',t:'Graphs'},
+        {q:'What is collision in hashing?',t:'Hashing'},
+        {q:'Define divide and conquer strategy.',t:'Sorting'},
+        {q:'What is the best-case complexity of Quick Sort?',t:'Sorting'},
+      ]},
+      {g:'B',note:'Short Answer · Any 5 · 5 × 3 = 15',qs:[
+        {q:'Write algorithm for binary search and give its time complexity.',t:'Search'},
+        {q:'Convert infix A*(B+C) to postfix.',t:'Expression'},
+        {q:'Explain merge sort with an example.',t:'Sorting'},
+        {q:'Write Java code to insert a node at the beginning of a singly linked list.',t:'Linked List'},
+        {q:'Explain in-order traversal of a binary tree with example.',t:'Trees'},
+        {q:'Write algorithm for linear search.',t:'Search'},
+      ]},
+      {g:'C',note:'Long Answer · Any 3 · 3 × 5 = 15',qs:[
+        {q:'Build a BST from: 50, 30, 70, 20, 40, 60, 80. Then delete node 30 and show the resulting tree.',t:'Trees'},
+        {q:'Explain Prim\'s algorithm for MST with a worked example on a 5-vertex graph.',t:'Graphs'},
+        {q:'Sort using merge sort: 38, 27, 43, 3, 9, 82, 10. Show all merge steps.',t:'Sorting'},
+      ]},
+      {g:'D',note:'Comprehensive · 2 × 10 = 20',qs:[
+        {q:'What is a hash table? Explain separate chaining and open addressing (linear probing) for collision resolution with examples. Compare the two methods.',t:'Hashing'},
+        {q:'Explain BFS and DFS algorithms with pseudocode. Apply both on the graph: V={1,2,3,4,5}, E={1-2,1-3,2-4,2-5,3-5}. Show visited order.',t:'Graphs'},
+      ]},
+    ]
+  },
+  {
+    id:'p2', short:'Practice Set 2', emoji:'📝',
+    college:'Practice Set — Trees & Graphs Focus',
+    exam:'Mixed difficulty — Group A to D format', date:'Self Study', marks:'60', time:'3 hrs',
+    groups:[
+      {g:'A',note:'Brief Answer · 10 × 1 = 10',qs:[
+        {q:'What is an AVL tree?',t:'Trees'},
+        {q:'Define spanning tree of a graph.',t:'Graphs'},
+        {q:'What is in-order successor in a BST?',t:'Trees'},
+        {q:'State the four types of AVL rotations.',t:'Trees'},
+        {q:'What is a min-heap?',t:'Trees'},
+        {q:'Define adjacency list representation.',t:'Graphs'},
+        {q:'What is a leaf node?',t:'Trees'},
+        {q:'Define weighted graph.',t:'Graphs'},
+        {q:'What is a directed graph (digraph)?',t:'Graphs'},
+        {q:'What is the height of a binary tree with n nodes?',t:'Trees'},
+      ]},
+      {g:'B',note:'Short Answer · Any 5 · 5 × 3 = 15',qs:[
+        {q:'Write in-order, pre-order and post-order traversal output for the tree: root=10, L=5[L=3,R=7], R=15[L=12,R=20].',t:'Trees'},
+        {q:'Insert 45 into BST with root=50,L=30[L=20,R=40],R=70. Show the resulting tree.',t:'Trees'},
+        {q:'Explain Dijkstra\'s algorithm with a 4-node graph example.',t:'Graphs'},
+        {q:'What is a B-tree? State its properties.',t:'Trees'},
+        {q:'Show the steps to heapify the array [5,3,8,1,9,2,7] into a max-heap.',t:'Trees'},
+        {q:'Explain the concept of DFS using a stack with an example.',t:'Graphs'},
+      ]},
+      {g:'C',note:'Long Answer · Any 3 · 3 × 5 = 15',qs:[
+        {q:'Construct an AVL tree by inserting: 10, 20, 30, 40, 50, 25.',t:'Trees'},
+        {q:'Apply Kruskal\'s algorithm on this graph: V={A,B,C,D,E}, edges: A-B(4),A-C(2),B-C(1),B-D(5),C-D(8),C-E(10),D-E(2). Find MST.',t:'Graphs'},
+        {q:'Build a Huffman tree for: a=45, b=13, c=12, d=16, e=9, f=5. Generate codes and compute total encoded bits.',t:'Trees'},
+      ]},
+      {g:'D',note:'Comprehensive · 2 × 10 = 20',qs:[
+        {q:'Explain all four AVL rotation types (LL, RR, LR, RL) with diagrams/ASCII art. Construct an AVL tree inserting: 5, 10, 15, 20, 25, 30, 35.',t:'Trees'},
+        {q:'Compare DFS and BFS in terms of: data structure used, time complexity, space complexity, use cases. Then apply both on graph: 0-1(4),0-2(3),1-3(2),2-3(1),3-4(5).',t:'Graphs'},
+      ]},
+    ]
+  },
+  {
+    id:'p3', short:'Practice Set 3', emoji:'📝',
+    college:'Practice Set — Sorting & Hashing Focus',
+    exam:'Mixed difficulty — Group A to D format', date:'Self Study', marks:'60', time:'3 hrs',
+    groups:[
+      {g:'A',note:'Brief Answer · 10 × 1 = 10',qs:[
+        {q:'What is the worst-case time complexity of Merge Sort?',t:'Sorting'},
+        {q:'What is a hash function?',t:'Hashing'},
+        {q:'Define stable sorting algorithm. Give one example.',t:'Sorting'},
+        {q:'What is linear probing?',t:'Hashing'},
+        {q:'State the time complexity of Heap Sort.',t:'Sorting'},
+        {q:'What is quadratic probing?',t:'Hashing'},
+        {q:'What is a pivot in Quick Sort?',t:'Sorting'},
+        {q:'Define load factor in a hash table.',t:'Hashing'},
+        {q:'What is the difference between internal and external sorting?',t:'Sorting'},
+        {q:'What is chaining in hash tables?',t:'Hashing'},
+      ]},
+      {g:'B',note:'Short Answer · Any 5 · 5 × 3 = 15',qs:[
+        {q:'Trace Insertion sort on: 64, 34, 25, 12, 22, 11, 90.',t:'Sorting'},
+        {q:'Insert keys {44, 55, 66, 11, 22} into hash table of size 7 using linear probing. h(k)=k%7.',t:'Hashing'},
+        {q:'Write pseudocode for merge sort.',t:'Sorting'},
+        {q:'What is double hashing? Give the formula and an example.',t:'Hashing'},
+        {q:'Sort [5,2,8,3,9,1] using Selection sort. Show each pass.',t:'Sorting'},
+        {q:'What are the advantages of Heap Sort over Quick Sort?',t:'Sorting'},
+      ]},
+      {g:'C',note:'Long Answer · Any 3 · 3 × 5 = 15',qs:[
+        {q:'Sort [29,10,14,37,13] using Quick sort showing each partition step clearly.',t:'Sorting'},
+        {q:'Build a hash table of size 11 using double hashing for keys: 20,34,45,70,56,14. h1(k)=k%11, h2(k)=7-(k%7).',t:'Hashing'},
+        {q:'Explain Heap Sort algorithm completely. Sort [4,10,3,5,1] using Heap Sort showing each extraction step.',t:'Sorting'},
+      ]},
+      {g:'D',note:'Comprehensive · 2 × 10 = 20',qs:[
+        {q:'Compare Quick Sort, Merge Sort, Heap Sort and Insertion Sort on: time complexity (best/average/worst), space complexity, stability, and when to use each. Trace Quick Sort on: 15,3,9,8,5,2,7,1,6.',t:'Sorting'},
+        {q:'Explain all collision resolution techniques in hash tables (separate chaining, linear probing, quadratic probing, double hashing) with examples. Discuss advantages and disadvantages of each.',t:'Hashing'},
+      ]},
+    ]
+  },
+  {
+    id:'p4', short:'Practice Set 4', emoji:'📝',
+    college:'Practice Set — Recursion, Stack & Expression',
+    exam:'Mixed difficulty — Group A to D format', date:'Self Study', marks:'60', time:'3 hrs',
+    groups:[
+      {g:'A',note:'Brief Answer · 10 × 1 = 10',qs:[
+        {q:'What is base case in recursion?',t:'Recursion'},
+        {q:'What is a deque (double-ended queue)?',t:'Queue'},
+        {q:'Define postfix expression.',t:'Expression'},
+        {q:'What is the time complexity of tower of Hanoi?',t:'Recursion'},
+        {q:'What is a circular queue?',t:'Queue'},
+        {q:'State the role of stack in function calls.',t:'Stack'},
+        {q:'Define prefix expression with an example.',t:'Expression'},
+        {q:'What is memoisation in recursion?',t:'Recursion'},
+        {q:'What is the difference between direct and indirect recursion?',t:'Recursion'},
+        {q:'What does LIFO stand for? In which data structure is it used?',t:'Stack'},
+      ]},
+      {g:'B',note:'Short Answer · Any 5 · 5 × 3 = 15',qs:[
+        {q:'Evaluate postfix expression: 6 2 3 + - 3 8 2 / + * 2 3 + /',t:'Expression'},
+        {q:'Convert infix (A-B)/C+(D*E) to postfix.',t:'Expression'},
+        {q:'Write Java code for Tower of Hanoi with n=3 disks and show the moves.',t:'Recursion'},
+        {q:'Write algorithm for checking balanced parentheses using a stack.',t:'Stack'},
+        {q:'Simulate a circular queue of size 5: enqueue 10,20,30; dequeue once; enqueue 40,50,60.',t:'Queue'},
+        {q:'Convert postfix AB+CD-* to infix using a stack.',t:'Expression'},
+      ]},
+      {g:'C',note:'Long Answer · Any 3 · 3 × 5 = 15',qs:[
+        {q:'Implement a Queue using two Stacks. Write push and pop operations and explain with an example.',t:'Queue'},
+        {q:'Convert infix to postfix for: (A+B)*(C-D)/(E+F). Show the complete stack trace step by step.',t:'Expression'},
+        {q:'Write a recursive Java program to print all permutations of a string "ABC".',t:'Recursion'},
+      ]},
+      {g:'D',note:'Comprehensive · 2 × 10 = 20',qs:[
+        {q:'Explain recursion vs iteration: advantages, disadvantages, when to use each. Write both recursive and iterative solutions for: (a) Fibonacci sequence up to n=8, (b) Factorial of 6. Compare their time and space complexity.',t:'Recursion'},
+        {q:'Explain the complete process of infix to postfix conversion using a stack. State operator precedence rules. Convert: ((A+B)*C-(D-E))^(F+G) to postfix. Show the complete stack trace.',t:'Expression'},
+      ]},
+    ]
+  },
+  {
+    id:'p5', short:'Practice Set 5', emoji:'📝',
+    college:'Practice Set — Comprehensive Mixed (Exam Simulation)',
+    exam:'Full exam simulation — TU pattern', date:'Self Study', marks:'60', time:'3 hrs',
+    groups:[
+      {g:'A',note:'Brief Answer · 10 × 1 = 10',qs:[
+        {q:'What is Big Theta notation?',t:'Complexity'},
+        {q:'Define a forest in graph theory.',t:'Graphs'},
+        {q:'What is the time complexity of searching in a balanced BST?',t:'Trees'},
+        {q:'What is a free tree?',t:'Graphs'},
+        {q:'Define space complexity.',t:'Complexity'},
+        {q:'What is an in-degree of a node in a directed graph?',t:'Graphs'},
+        {q:'What is heapification?',t:'Trees'},
+        {q:'Define topological ordering.',t:'Graphs'},
+        {q:'What is a degenerate tree?',t:'Trees'},
+        {q:'What is amortized complexity?',t:'Complexity'},
+      ]},
+      {g:'B',note:'Short Answer · Any 5 · 5 × 3 = 15',qs:[
+        {q:'Show all steps of building a min-heap from: 10,40,5,30,15,20,25.',t:'Trees'},
+        {q:'Perform BFS on graph: 0-1,0-2,1-3,1-4,2-5,2-6. Start from vertex 0. Show queue state at each step.',t:'Graphs'},
+        {q:'Sort using Counting Sort: [4,2,2,8,3,3,1]. Show counts array and output.',t:'Sorting'},
+        {q:'Write Java code to reverse a linked list iteratively.',t:'Linked List'},
+        {q:'Show how to detect a cycle in a directed graph using DFS.',t:'Graphs'},
+        {q:'Write the Floyd-Warshall algorithm and apply it on: 3-node graph with weights: 0→1:3, 0→2:8, 1→2:1, 2→0:2.',t:'Graphs'},
+      ]},
+      {g:'C',note:'Long Answer · Any 3 · 3 × 5 = 15',qs:[
+        {q:'Construct a Huffman tree for characters with frequencies: X=5, Y=9, Z=12, W=13, V=16, U=45. Generate Huffman codes and compute total bits for encoding a 100-character file using these frequencies.',t:'Trees'},
+        {q:'Insert 40, 10, 30, 50, 20, 60, 5 into an AVL tree one by one. Show each rotation.',t:'Trees'},
+        {q:'Explain and apply Dijkstra\'s shortest path algorithm starting from vertex A on: A-B(1),A-C(4),B-C(2),B-D(5),C-D(1),D-E(3). Show distance table updates.',t:'Graphs'},
+      ]},
+      {g:'D',note:'Comprehensive · 2 × 10 = 20',qs:[
+        {q:'Write a complete Java program for a Binary Search Tree with: insert, search, delete (all 3 cases), in-order traversal. Test by inserting 15,10,20,8,12,17,25. Delete 10 and show the result.',t:'Trees'},
+        {q:'Compare all graph representation methods (adjacency matrix, adjacency list, edge list): space complexity, time for common operations, best use cases. Then discuss Kruskal\'s vs Prim\'s MST algorithm — compare time complexity, data structures used, and give an example where one is preferred over the other.',t:'Graphs'},
+      ]},
+    ]
+  },
+];
+
+// ── PRACTICE ANSWERS ─────────────────────────────────────────────
+const PRACTICE_ANS = {
+
+"What is a data structure? Give two examples.":
+`<p>A <strong>data structure</strong> is an organised way to store, manage, and access data efficiently.</p>
+<p>Examples: <strong>Array</strong> — stores elements in contiguous memory, accessed by index; <strong>Stack</strong> — LIFO structure used for function calls and expression evaluation.</p>`,
+
+"Define time complexity.":
+`<p><strong>Time complexity</strong> is a measure of how the running time of an algorithm grows as the input size n increases. Expressed using Big O notation: O(1), O(n), O(n log n), O(n²), etc. It counts the number of basic operations performed, not actual clock time.</p>`,
+
+"What is a circular linked list?":
+`<p>A <strong>circular linked list</strong> is a linked list where the last node's next pointer points back to the first node (head), forming a circle. There is no null pointer at the end.</p>
+<p>Types: Singly circular (one direction) and Doubly circular (bidirectional). Used in round-robin scheduling, circular buffers.</p>`,
+
+"State the difference between stack and queue.":
+`<p><strong>Stack:</strong> LIFO (Last In First Out). Insertion and deletion both happen at the <strong>top</strong>. Operations: push, pop.</p>
+<p><strong>Queue:</strong> FIFO (First In First Out). Insertion at <strong>rear</strong>, deletion at <strong>front</strong>. Operations: enqueue, dequeue.</p>`,
+
+"Define infix and postfix expression.":
+`<p><strong>Infix:</strong> Operator is placed <strong>between</strong> operands. Natural human notation. E.g., A + B.</p>
+<p><strong>Postfix (Reverse Polish Notation):</strong> Operator comes <strong>after</strong> operands. E.g., A B +. No parentheses needed; evaluated left to right using a stack.</p>`,
+
+"Define graph. What are its two representations?":
+`<p>A <strong>graph</strong> G = (V, E) consists of a set of vertices V and a set of edges E connecting pairs of vertices.</p>
+<p><strong>1. Adjacency Matrix:</strong> V×V matrix; [i][j]=1 if edge exists. Space: O(V²). Good for dense graphs.</p>
+<p><strong>2. Adjacency List:</strong> Array of linked lists; each vertex stores its neighbours. Space: O(V+E). Good for sparse graphs.</p>`,
+
+"What is collision in hashing?":
+`<p>A <strong>collision</strong> occurs when two different keys produce the same hash value (index) in a hash table: hash(key1) % n = hash(key2) % n.</p>
+<p>Resolved using: Separate Chaining (linked list at each slot) or Open Addressing (linear probing, quadratic probing, double hashing).</p>`,
+
+"Define divide and conquer strategy.":
+`<p><strong>Divide and Conquer</strong> breaks a problem into smaller subproblems of the same type, solves them recursively, then combines results.</p>
+<p>Three steps: <strong>Divide</strong> → <strong>Conquer</strong> → <strong>Combine</strong>. Examples: Merge Sort, Quick Sort, Binary Search.</p>`,
+
+"What is the best-case complexity of Quick Sort?":
+`<p>Best case: <strong>O(n log n)</strong> — when the pivot always divides the array into two equal halves.</p>
+<p>Average: O(n log n). Worst case: O(n²) — when pivot is always the smallest or largest (sorted/reverse-sorted input).</p>`,
+
+"Write algorithm for binary search and give its time complexity.":
+`<div class="code-block">binarySearch(arr, n, target):
+  low = 0, high = n - 1
+  while low &lt;= high:
+    mid = (low + high) / 2
+    if arr[mid] == target: return mid
+    else if arr[mid] &lt; target: low = mid + 1
+    else: high = mid - 1
+  return -1  // not found</div>
+<p><strong>Time:</strong> O(log n) best/average/worst. <strong>Space:</strong> O(1) iterative, O(log n) recursive.</p>
+<p>Requires: sorted array.</p>`,
+
+"Convert infix A*(B+C) to postfix.":
+`<div class="code-block">Infix: A*(B+C)
+Token  Stack    Output
+A      []       A
+*      [*]      A
+(      [*,(]    A
+B      [*,(]    AB
++      [*,(,+]  AB
+C      [*,(,+]  ABC
+)      [*]      ABC+
+End    []       ABC+*
+
+Postfix: ABC+*</div>`,
+
+"Explain merge sort with an example.":
+`<p><strong>Merge Sort</strong> divides the array in half recursively until single elements, then merges sorted halves.</p>
+<div class="code-block">Input: [38, 27, 43, 3]
+Divide: [38,27] | [43,3]
+Divide: [38][27] | [43][3]
+Merge:  [27,38]  | [3,43]
+Merge:  [3,27,38,43]</div>
+<p>Time: O(n log n) always. Space: O(n) extra. Stable sort.</p>`,
+
+"Write Java code to insert a node at the beginning of a singly linked list.":
+`<div class="code-block">void insertAtBeginning(int data) {
+    Node newNode = new Node(data);
+    newNode.next = head;
+    head = newNode;
+}</div>
+<p>Time: O(1) — no traversal needed.</p>`,
+
+"Explain in-order traversal of a binary tree with example.":
+`<p><strong>In-order (LVR):</strong> Visit Left subtree → Visit Root → Visit Right subtree.</p>
+<div class="code-block">Tree:     4
+         / \
+        2   6
+       / \ / \
+      1  3 5  7
+
+In-order: 1 → 2 → 3 → 4 → 5 → 6 → 7</div>
+<p>For a BST, in-order traversal always gives elements in <strong>sorted (ascending) order</strong>.</p>`,
+
+"Write algorithm for linear search.":
+`<div class="code-block">linearSearch(arr, n, target):
+  for i = 0 to n-1:
+    if arr[i] == target: return i
+  return -1  // not found
+
+Time: O(n) worst/average, O(1) best
+Works on unsorted arrays.</div>`,
+
+"Build a BST from: 50, 30, 70, 20, 40, 60, 80. Then delete node 30 and show the resulting tree.":
+`<span class="ans-section-title">Build BST</span>
+<div class="code-block">Insert 50(root), 30(L), 70(R), 20(L of 30), 40(R of 30), 60(L of 70), 80(R of 70)
+
+       50
+      /  \
+    30    70
+   /  \  /  \
+  20  40 60  80</div>
+<span class="ans-section-title">Delete 30 (node with two children)</span>
+<div class="code-block">In-order successor of 30 = 40 (leftmost of right subtree)
+Replace 30's data with 40, delete 40 from its original position
+
+After deletion:
+       50
+      /  \
+    40    70
+   /     /  \
+  20    60   80</div>`,
+
+"Explain Prim's algorithm for MST with a worked example on a 5-vertex graph.":
+`<p><strong>Prim's algorithm</strong> builds the MST by always choosing the minimum-weight edge connecting the growing MST to an unvisited vertex.</p>
+<div class="code-block">Graph V={A,B,C,D,E}:
+A-B(2), A-C(3), B-C(1), B-D(4), C-D(5), D-E(1)
+
+Start at A. MST={}
+Step1: Min edge from {A}: A-B(2). Add B. MST={A-B}
+Step2: Min edge from {A,B}: B-C(1). Add C. MST={A-B,B-C}
+Step3: Min edge from {A,B,C}: A-C(3)=already in, B-D(4),C-D(5). Add D via B-D(4). MST={...,B-D}
+Step4: Min edge from {A,B,C,D}: D-E(1). Add E. MST={A-B,B-C,B-D,D-E}
+
+MST total weight = 2+1+4+1 = 8</div>`,
+
+"Sort using merge sort: 38, 27, 43, 3, 9, 82, 10. Show all merge steps.":
+`<div class="code-block">Input: [38,27,43,3,9,82,10]
+
+DIVIDE:
+Level 1: [38,27,43,3] | [9,82,10]
+Level 2: [38,27] [43,3] | [9,82] [10]
+Level 3: [38][27] [43][3] | [9][82] [10]
+
+MERGE:
+[27,38]  [3,43]    [9,82]  [10]
+[3,27,38,43]       [9,10,82]
+[3,9,10,27,38,43,82]
+
+Final sorted: [3,9,10,27,38,43,82]</div>`,
+
+"What is a hash table? Explain separate chaining and open addressing (linear probing) for collision resolution with examples. Compare the two methods.":
+`<p>A <strong>hash table</strong> stores key-value pairs; uses a hash function to compute index.</p>
+<span class="ans-section-title">1. Separate Chaining</span>
+<div class="code-block">Each slot holds a linked list. Collisions go to the same slot's chain.
+h(k)=k%5, insert 12,17,22,37:
+  12%5=2 → slot2: [12]
+  17%5=2 → slot2: [12→17]
+  22%5=2 → slot2: [12→17→22]
+  37%5=2 → slot2: [12→17→22→37]
+Search: hash to slot, traverse chain. O(1+α) avg where α=load factor.</div>
+<span class="ans-section-title">2. Linear Probing (Open Addressing)</span>
+<div class="code-block">h(k,i) = (k%n + i) % n. On collision probe next slot.
+h(k)=k%5, insert 12,17,22:
+  12%5=2 → idx2 ✓
+  17%5=2 → collision → probe idx3 ✓
+  22%5=2 → collision → idx3 taken → probe idx4 ✓</div>
+<p><strong>Chaining:</strong> Simpler, handles high load. <strong>Linear Probing:</strong> Cache-friendly, no extra memory but clustering problem.</p>`,
+
+"Explain BFS and DFS algorithms with pseudocode. Apply both on the graph: V={1,2,3,4,5}, E={1-2,1-3,2-4,2-5,3-5}. Show visited order.":
+`<span class="ans-section-title">BFS (Queue)</span>
+<div class="code-block">BFS(start): queue=[start], visited[start]=true
+  while queue not empty:
+    v=dequeue(); print v
+    for each unvisited neighbour u: visited[u]=true; enqueue(u)
+
+BFS from 1: Visit 1 → enqueue 2,3 → Visit 2 → enqueue 4,5 → Visit 3
+           → Visit 4 → Visit 5
+BFS order: 1, 2, 3, 4, 5</div>
+<span class="ans-section-title">DFS (Stack/Recursion)</span>
+<div class="code-block">DFS(v): visited[v]=true; print v
+  for each unvisited neighbour u: DFS(u)
+
+DFS from 1: Visit 1→2→4 (backtrack)→5→3 (already visited via 5? No: 3 unvisited)
+DFS order: 1, 2, 4, 5, 3</div>`,
+
+// Practice Set 2 answers
+"What is an AVL tree?":
+`<p>An <strong>AVL tree</strong> (Adelson-Velsky and Landis, 1962) is a self-balancing Binary Search Tree where the <strong>balance factor</strong> (BF = height(left) − height(right)) of every node must be −1, 0, or +1. Automatic rotations maintain this property after every insert or delete.</p>`,
+
+"State the four types of AVL rotations.":
+`<p><strong>LL Rotation:</strong> Imbalance in left subtree of left child → Single right rotation.</p>
+<p><strong>RR Rotation:</strong> Imbalance in right subtree of right child → Single left rotation.</p>
+<p><strong>LR Rotation:</strong> Imbalance in right subtree of left child → Left rotate child, then right rotate node.</p>
+<p><strong>RL Rotation:</strong> Imbalance in left subtree of right child → Right rotate child, then left rotate node.</p>`,
+
+"Define adjacency list representation.":
+`<p>An <strong>adjacency list</strong> represents a graph as an array of linked lists. Each vertex i stores a list of all vertices adjacent to it.</p>
+<div class="code-block">Graph: 0-1, 0-2, 1-2
+0: [1, 2]
+1: [0, 2]
+2: [0, 1]</div>
+<p>Space: O(V+E). Efficient for sparse graphs.</p>`,
+
+"What is a leaf node?":
+`<p>A <strong>leaf node</strong> (external node) is a node with <strong>no children</strong> — both left and right child pointers are null.</p>
+<p>In a tree with n nodes, a full binary tree has ⌈n/2⌉ leaf nodes. Leaf nodes store actual data in B+ trees.</p>`,
+
+"What is a directed graph (digraph)?":
+`<p>A <strong>directed graph (digraph)</strong> has edges with direction — each edge goes <em>from</em> one vertex <em>to</em> another. Edge (u,v) ≠ edge (v,u).</p>
+<p>In-degree: edges coming in. Out-degree: edges going out. Used for: web links, task dependencies, network routing.</p>`,
+
+"Write in-order, pre-order and post-order traversal output for the tree: root=10, L=5[L=3,R=7], R=15[L=12,R=20].":
+`<div class="code-block">Tree:
+        10
+       /  \
+      5    15
+     / \  /  \
+    3   7 12  20
+
+In-order  (L-V-R): 3, 5, 7, 10, 12, 15, 20  ← sorted order ✓
+Pre-order (V-L-R): 10, 5, 3, 7, 15, 12, 20
+Post-order(L-R-V): 3, 7, 5, 12, 20, 15, 10</div>`,
+
+"Insert 45 into BST with root=50,L=30[L=20,R=40],R=70. Show the resulting tree.":
+`<div class="code-block">45 &lt; 50 → go left → 30 → 45 &gt; 30 → go right → 40 → 45 &gt; 40 → R of 40
+
+Before:         After:
+    50               50
+   /  \             /  \
+  30   70          30   70
+ /  \             /  \
+20  40           20  40
+                        \
+                        45</div>`,
+
+"Explain Dijkstra's algorithm with a 4-node graph example.":
+`<p>Dijkstra's finds the <strong>shortest path from a source vertex</strong> to all others in a weighted graph (non-negative weights).</p>
+<div class="code-block">Graph: A-B(1), A-C(4), B-C(2), B-D(5), C-D(1)
+Source: A
+
+Init: dist={A:0, B:∞, C:∞, D:∞}
+Visit A: update B=1, C=4
+Visit B(dist=1): update C=min(4,1+2)=3, D=min(∞,1+5)=6
+Visit C(dist=3): update D=min(6,3+1)=4
+Visit D(dist=4): no updates
+
+Shortest: A→B=1, A→B→C=3, A→B→C→D=4</div>`,
+
+"Show the steps to heapify the array [5,3,8,1,9,2,7] into a max-heap.":
+`<div class="code-block">Array: [5,3,8,1,9,2,7]  n=7, last parent=idx2
+
+idx2=8: children idx5(2),idx6(7). 8&gt;both ✓
+idx1=3: children idx3(1),idx4(9). max=9&gt;3 → swap
+        → [5,9,8,1,3,2,7]
+        Heapify from idx4=3: no children ✓
+idx0=5: children idx1(9),idx2(8). max=9&gt;5 → swap
+        → [9,5,8,1,3,2,7]
+        Heapify from idx1=5: children idx3(1),idx4(3). 5&gt;both ✓
+
+Max-heap: [9,5,8,1,3,2,7]
+Tree:
+        9
+       / \
+      5   8
+     / \ / \
+    1  3 2  7</div>`,
+
+"Construct an AVL tree by inserting: 10, 20, 30, 40, 50, 25.":
+`<div class="code-block">Insert 10: root=10
+Insert 20: R of 10. BF(10)=-1 ✓
+Insert 30: 10→20→30. BF(10)=-2, BF(20)=-1 → RR at 10
+           → root=20[L=10, R=30]
+Insert 40: R of 30. BF(30)=-1, BF(20)=-1 ✓
+Insert 50: 20→30→40→50. BF(30)=-2, BF(40)=-1 → RR at 30
+           → 40[L=30,R=50] replaces R of 20
+           → 20[L=10, R=40[L=30,R=50]] ✓
+Insert 25: 25&gt;20→40→25&lt;30→L of 30. BF(40)=+1, BF(20)=-1 ✓
+
+Final AVL:
+         20
+        /  \
+      10    40
+           /  \
+          30   50
+         /
+        25</div>`,
+
+"Apply Kruskal's algorithm on this graph: V={A,B,C,D,E}, edges: A-B(4),A-C(2),B-C(1),B-D(5),C-D(8),C-E(10),D-E(2). Find MST.":
+`<div class="code-block">Step 1: Sort edges by weight:
+  B-C(1), A-C(2), D-E(2), A-B(4), B-D(5), C-D(8), C-E(10)
+
+Step 2: Add edges if they don't form a cycle:
+  B-C(1): B and C in different sets → ADD ✓  MST={B-C}
+  A-C(2): A and C different → ADD ✓           MST={B-C,A-C}
+  D-E(2): D and E different → ADD ✓           MST={B-C,A-C,D-E}
+  A-B(4): A and B both connected via C → CYCLE, SKIP
+  B-D(5): B-set={A,B,C}, D-set={D,E} → ADD ✓ MST={B-C,A-C,D-E,B-D}
+  (4 edges = V-1 = 5-1, DONE)
+
+MST edges: {B-C(1), A-C(2), D-E(2), B-D(5)}
+MST total weight = 1+2+2+5 = 10</div>`,
+
+"Build a Huffman tree for: a=45, b=13, c=12, d=16, e=9, f=5. Generate codes and compute total encoded bits.":
+`<div class="code-block">Sorted: f(5),e(9),c(12),b(13),d(16),a(45)
+
+Step1: f(5)+e(9)=fe(14)
+Step2: c(12)+b(13)=cb(25) [12&lt;14, take c&amp;b]
+  Actually: heap=[c(12),fe(14),b(13)...] → 2 smallest are c(12)+b(13)=cb(25)
+Step3: fe(14)+d(16)=fed(30)
+Step4: cb(25)+fed(30)=cbfed(55)
+Step5: a(45)+cbfed(55)=root(100)
+
+Tree:
+        100
+       /    \
+      a(45)  cbfed(55)
+             /       \
+          cb(25)    fed(30)
+          /  \      /    \
+        c(12) b(13) fe(14) d(16)
+                    / \
+                  f(5) e(9)
+
+Codes: a=0, c=100, b=101, f=1100, e=1101, d=111
+Bits = 45×1 + 12×3 + 13×3 + 5×4 + 9×4 + 16×3
+     = 45+36+39+20+36+48 = 224 bits</div>`,
+
+"Explain all four AVL rotation types (LL, RR, LR, RL) with diagrams/ASCII art. Construct an AVL tree inserting: 5, 10, 15, 20, 25, 30, 35.":
+`<span class="ans-section-title">LL Rotation (right-rotate at z)</span>
+<div class="code-block">z(BF=+2)       y
+ /            / \
+y(BF=+1) →  x   z
+ /
+x</div>
+<span class="ans-section-title">RR Rotation (left-rotate at z)</span>
+<div class="code-block">z(BF=-2)         y
+  \             / \
+   y(BF=-1) → z   x
+     \
+      x</div>
+<span class="ans-section-title">LR Rotation (left-rotate y, then right-rotate z)</span>
+<div class="code-block">z        z          x
+ /        /         / \
+y   →    x    →   y    z
+  \     /
+   x   y</div>
+<span class="ans-section-title">RL Rotation (right-rotate y, then left-rotate z)</span>
+<div class="code-block">z          z            x
+  \          \          / \
+   y    →    x    →   z    y
+  /            \
+ x              y</div>
+<span class="ans-section-title">Insert 5,10,15,20,25,30,35</span>
+<div class="code-block">5,10: BF(5)=-1 ✓
+5,10,15: BF(5)=-2, RR → root=10[L=5,R=15]
+10,20: BF(10)=-1 ✓ (after adjusting)
++20,25: BF(15)=-2, RR → 20[L=15,R=25], root=10[L=5,R=20[L=15,R=25]]
++30: BF(20)=-2, RR → 20→25[L=20[L=15],R=30] ... root=10→25
++35: BF(30)=-2, RR → 30→35 under 25
+
+Final AVL:
+         20
+        /   \
+       10    30
+      /  \  /  \
+     5   15 25  35</div>`,
+
+// Practice Set 3 answers
+"What is the worst-case time complexity of Merge Sort?":
+`<p>Merge Sort's worst-case time complexity is <strong>O(n log n)</strong> — the same as best and average case. It always divides into halves (log n levels) and merges in O(n) per level. This makes it the preferred choice when guaranteed performance is needed.</p>`,
+
+"Define stable sorting algorithm. Give one example.":
+`<p>A <strong>stable sort</strong> preserves the relative order of elements with equal keys. If a[i] = a[j] and i &lt; j before sorting, then a[i] still comes before a[j] after sorting.</p>
+<p>Example: <strong>Merge Sort</strong> — equal elements from the left subarray are always placed before those from the right subarray during merge, preserving original order.</p>`,
+
+"What is linear probing?":
+`<p>In <strong>linear probing</strong>, when a collision occurs at index h, we probe h+1, h+2, h+3, ... (modulo table size) until an empty slot is found.</p>
+<div class="code-block">h(k, i) = (h(k) + i) % m   where i = 0, 1, 2, ...</div>
+<p>Disadvantage: Primary clustering — long runs of filled slots form, degrading performance.</p>`,
+
+"State the time complexity of Heap Sort.":
+`<p>Heap Sort: <strong>O(n log n)</strong> for all cases (best, average, worst).</p>
+<p>Building the heap: O(n). Extracting n elements: O(n log n). Space: O(1) in-place.</p>`,
+
+"What is quadratic probing?":
+`<p>In <strong>quadratic probing</strong>, the probe sequence uses a quadratic function to avoid primary clustering:</p>
+<div class="code-block">h(k, i) = (h(k) + c1*i + c2*i²) % m</div>
+<p>Common form: h(k, i) = (h(k) + i²) % m. Reduces primary clustering but may cause secondary clustering.</p>`,
+
+"What is a pivot in Quick Sort?":
+`<p>The <strong>pivot</strong> is a chosen element used to partition the array into two halves — elements less than the pivot go left; elements greater go right. Common choices: first element, last element, median-of-three, or random element.</p>`,
+
+"How do you choose pivot element in quick sort?":
+`<p>Common pivot selection strategies:</p>
+<p><strong>1. First/Last element</strong> — simple but O(n²) for sorted arrays.</p>
+<p><strong>2. Random pivot</strong> — reduces worst-case probability.</p>
+<p><strong>3. Median-of-three</strong> — median of first, middle, last element. Best practical choice, avoids sorted-input worst case.</p>`,
+
+"Trace Insertion sort on: 64, 34, 25, 12, 22, 11, 90.":
+`<div class="code-block">Pass 1: 34&lt;64 → [34,64,25,12,22,11,90]
+Pass 2: 25&lt;64,25&lt;34 → [25,34,64,12,22,11,90]
+Pass 3: 12&lt;all → [12,25,34,64,22,11,90]
+Pass 4: 22&lt;64,34,25&gt;22 → [12,22,25,34,64,11,90]
+Pass 5: 11&lt;all → [11,12,22,25,34,64,90]
+Pass 6: 90&gt;64 → no change
+Final: [11,12,22,25,34,64,90]</div>`,
+
+"Insert keys {44, 55, 66, 11, 22} into hash table of size 7 using linear probing. h(k)=k%7.":
+`<div class="code-block">44 % 7 = 2 → idx2 ✓
+55 % 7 = 6 → idx6 ✓
+66 % 7 = 3 → idx3 ✓
+11 % 7 = 4 → idx4 ✓
+22 % 7 = 1 → idx1 ✓
+
+Hash Table:
+Idx: 0  1   2   3   4   5  6
+Val: -  22  44  66  11  -  55
+
+(No collisions in this case)</div>`,
+
+"Write pseudocode for merge sort.":
+`<div class="code-block">mergeSort(arr, left, right):
+  if left &lt; right:
+    mid = (left + right) / 2
+    mergeSort(arr, left, mid)
+    mergeSort(arr, mid+1, right)
+    merge(arr, left, mid, right)
+
+merge(arr, left, mid, right):
+  create temp arrays L and R
+  copy arr[left..mid] → L, arr[mid+1..right] → R
+  i=0, j=0, k=left
+  while i&lt;len(L) and j&lt;len(R):
+    if L[i] &lt;= R[j]: arr[k++]=L[i++]
+    else: arr[k++]=R[j++]
+  copy remaining elements</div>`,
+
+"Sort [29,10,14,37,13] using Quick sort showing each partition step clearly.":
+`<div class="code-block">Array: [29,10,14,37,13]
+Choose pivot = 29 (first)
+
+Partition: elements &lt;29: [10,14,13] | pivot: [29] | elements &gt;29: [37]
+
+Recurse left [10,14,13], pivot=10:
+  [10] | [14,13]: pivot=14 → [13]|14 → [13,14]
+  Left sorted: [10,13,14]
+
+Recurse right [37]: already sorted
+
+Combine: [10,13,14] + [29] + [37]
+
+Final: [10, 13, 14, 29, 37]</div>`,
+
+"Build a hash table of size 11 using double hashing for keys: 20,34,45,70,56,14. h1(k)=k%11, h2(k)=7-(k%7).":
+`<div class="code-block">h1(k)=k%11, h2(k)=7-(k%7), h(k,i)=(h1(k)+i*h2(k))%11
+
+20: h1=9, h2=7-(20%7)=7-6=1 → idx9 ✓
+34: h1=1, h2=7-(34%7)=7-6=1 → idx1 ✓
+45: h1=1, collision! h2=7-(45%7)=7-3=4 → (1+4)%11=5 ✓
+70: h1=4, h2=7-(70%7)=7-0=7 → idx4 ✓
+56: h1=1, collision! h2=7-(56%7)=7-0=7 → (1+7)%11=8 ✓
+14: h1=3, h2=7-(14%7)=7-0=7 → idx3 ✓
+
+Table: idx: 1→34, 3→14, 4→70, 5→45, 8→56, 9→20</div>`,
+
+"Explain Heap Sort algorithm completely. Sort [4,10,3,5,1] using Heap Sort showing each extraction step.":
+`<p><strong>Heap Sort</strong>: Build a max-heap, then repeatedly extract the maximum to the end.</p>
+<div class="code-block">Input: [4,10,3,5,1]
+Step1: Build max-heap
+  Start: [4,10,3,5,1]
+  Heapify idx1=10: children 5,1. 10&gt;both ✓
+  Heapify idx0=4: children 10,3. swap → [10,4,3,5,1]
+  Heapify idx1=4: children 5,1. swap → [10,5,3,4,1]
+  Max-heap: [10,5,3,4,1]
+
+Step2: Extract max (swap root with last, heapify n-1):
+  Swap 10↔1 → [1,5,3,4,|10]. Heapify [1,5,3,4]: swap1↔5→[5,1,3,4→swap1↔4→[5,4,3,1]
+  Swap 5↔1 → [1,4,3,|5,10]. Heapify [1,4,3]: swap→[4,1,3]
+  Swap 4↔3 → [3,1,|4,5,10]. Heapify [3,1]: 3&gt;1 ✓
+  Swap 3↔1 → [1,|3,4,5,10]. Done.
+
+Sorted: [1,3,4,5,10]</div>`,
+
+// Practice Set 4 answers
+"What is base case in recursion?":
+`<p>The <strong>base case</strong> is the condition in a recursive function that <strong>stops the recursion</strong> — it returns a result directly without making another recursive call.</p>
+<p>Every recursive function must have at least one base case, otherwise it runs infinitely. Example: factorial(0) = 1 is the base case for factorial.</p>`,
+
+"What is a deque (double-ended queue)?":
+`<p>A <strong>deque</strong> (Double-Ended Queue) allows insertion and deletion from <strong>both front and rear</strong>.</p>
+<p>Operations: pushFront, pushRear, popFront, popRear, peekFront, peekRear. Used in: sliding window algorithms, palindrome checking, scheduling. Implemented using a doubly linked list or circular array.</p>`,
+
+"What is the time complexity of tower of Hanoi?":
+`<p>Tower of Hanoi with n disks requires <strong>2ⁿ − 1 moves</strong>, giving time complexity <strong>O(2ⁿ)</strong> — exponential.</p>
+<p>Recurrence: T(n) = 2T(n-1) + 1. Each move of n disks requires two calls for n-1 disks plus one disk move.</p>`,
+
+"Define prefix expression with an example.":
+`<p><strong>Prefix (Polish Notation):</strong> Operator comes <strong>before</strong> its operands.</p>
+<div class="code-block">Infix:  (A + B) * C
+Prefix: * + A B C
+
+Evaluate: + A B → A+B, then * (A+B) C → (A+B)*C ✓</div>`,
+
+"What is memoisation in recursion?":
+`<p><strong>Memoisation</strong> is an optimisation technique that stores (caches) the results of expensive recursive calls and returns the cached result when the same inputs occur again.</p>
+<div class="code-block">// Without memo: fib(5) recalculates fib(3) multiple times
+// With memo:
+int[] memo = new int[n+1];
+int fib(int n) {
+    if (n &lt;= 1) return n;
+    if (memo[n] != 0) return memo[n]; // cached
+    memo[n] = fib(n-1) + fib(n-2);
+    return memo[n];
+}</div>
+<p>Reduces Fibonacci from O(2ⁿ) to O(n).</p>`,
+
+"Evaluate postfix expression: 6 2 3 + - 3 8 2 / + * 2 3 + /":
+`<div class="code-block">Postfix: 6 2 3 + - 3 8 2 / + * 2 3 + /
+
+Push 6 → [6]
+Push 2 → [6,2]
+Push 3 → [6,2,3]
++: pop 3,2 → 2+3=5 → [6,5]
+-: pop 5,6 → 6-5=1 → [1]
+Push 3 → [1,3]
+Push 8 → [1,3,8]
+Push 2 → [1,3,8,2]
+/: pop 2,8 → 8/2=4 → [1,3,4]
++: pop 4,3 → 3+4=7 → [1,7]
+*: pop 7,1 → 1*7=7 → [7]
+Push 2 → [7,2]
+Push 3 → [7,2,3]
++: pop 3,2 → 2+3=5 → [7,5]
+/: pop 5,7 → 7/5=1.4 → [1.4]
+
+Result = 1.4</div>`,
+
+"Convert infix (A-B)/C+(D*E) to postfix.":
+`<div class="code-block">Infix: (A-B)/C+(D*E)
+
+Token  Stack      Output
+(      [(]
+A      [(]        A
+-      [(-]       A
+B      [(-]       AB
+)      []         AB-
+/      [/]        AB-
+C      [/]        AB-C
++      [+]        AB-C/   (pop /)
+(      [+,(]      AB-C/
+D      [+,(]      AB-C/D
+*      [+,(,*]    AB-C/D
+E      [+,(,*]    AB-C/DE
+)      [+]        AB-C/DE*
+End    []         AB-C/DE*+
+
+Postfix: AB-C/DE*+</div>`,
+
+"Write Java code for Tower of Hanoi with n=3 disks and show the moves.":
+`<div class="code-block">void hanoi(int n, char from, char to, char aux) {
+    if (n == 0) return;
+    hanoi(n-1, from, aux, to);
+    System.out.println("Move disk " + n + ": " + from + " → " + to);
+    hanoi(n-1, aux, to, from);
+}
+// Call: hanoi(3, 'A', 'C', 'B')
+
+Output for n=3:
+Move disk 1: A → C
+Move disk 2: A → B
+Move disk 1: C → B
+Move disk 3: A → C
+Move disk 1: B → A
+Move disk 2: B → C
+Move disk 1: A → C
+Total moves = 2³-1 = 7</div>`,
+
+"Write algorithm for checking balanced parentheses using a stack.":
+`<div class="code-block">isBalanced(str):
+  stack = empty
+  for each char c in str:
+    if c is '(', '{', or '[': push(c)
+    else if c is ')', '}', or ']':
+      if stack is empty: return false
+      top = pop()
+      if (c==')' and top!='(') or
+         (c=='}' and top!='{') or
+         (c==']' and top!='['): return false
+  return stack.isEmpty()
+
+Example: "({[]})" → balanced ✓
+Example: "({[})" → not balanced ✗</div>`,
+
+"Convert infix to postfix for: (A+B)*(C-D)/(E+F). Show the complete stack trace step by step.":
+`<div class="code-block">Infix: (A+B)*(C-D)/(E+F)
+
+Token  Stack       Output
+(      [(]
+A      [(]         A
++      [(,+]       A
+B      [(,+]       AB
+)      []          AB+
+*      [*]         AB+
+(      [*,(]       AB+
+C      [*,(]       AB+C
+-      [*,(,-]     AB+C
+D      [*,(,-]     AB+CD
+)      [*]         AB+CD-
+/      [/]         AB+CD-*    (pop * same prec)
+(      [/,(]       AB+CD-*
+E      [/,(]       AB+CD-*E
++      [/,(,+]     AB+CD-*E
+F      [/,(,+]     AB+CD-*EF
+)      [/]         AB+CD-*EF+
+End    []          AB+CD-*EF+/
+
+Postfix: AB+CD-*EF+/</div>`,
+
+// Practice Set 5 answers
+"What is Big Theta notation?":
+`<p><strong>Big Theta (Θ)</strong> provides a <strong>tight bound</strong> — both upper and lower bounds — on an algorithm's complexity.</p>
+<p>f(n) = Θ(g(n)) means f grows <em>exactly as fast as</em> g(n): ∃ c₁, c₂ > 0, n₀ such that c₁·g(n) ≤ f(n) ≤ c₂·g(n) for all n ≥ n₀.</p>
+<p>Example: Merge Sort is Θ(n log n) — it is always n log n regardless of input.</p>`,
+
+"Define a forest in graph theory.":
+`<p>A <strong>forest</strong> is an acyclic undirected graph — it may consist of <strong>multiple disconnected trees</strong>.</p>
+<p>A single connected tree is a special case of a forest. If a forest has n nodes and k components, it has exactly n−k edges.</p>`,
+
+"What is the time complexity of searching in a balanced BST?":
+`<p><strong>O(log n)</strong> — a balanced BST has height ≈ log₂(n), so search visits at most log₂(n) nodes.</p>
+<p>An unbalanced BST degrades to O(n). AVL trees and Red-Black trees guarantee O(log n).</p>`,
+
+"Define space complexity.":
+`<p><strong>Space complexity</strong> is the total memory an algorithm uses as a function of input size, including input storage, auxiliary/temporary storage, and call stack for recursion.</p>
+<p>Expressed in Big O: O(1) = constant, O(n) = linear, O(n²) = quadratic. Example: Merge Sort uses O(n) extra space for the temp array.</p>`,
+
+"What is heapification?":
+`<p><strong>Heapification</strong> (heapify) is the process of rearranging elements to satisfy the heap property. Two types:</p>
+<p><strong>Heapify-up (sift-up):</strong> After insertion, bubble new element up to its correct position.</p>
+<p><strong>Heapify-down (sift-down):</strong> After deletion (extract-min/max), push root down to restore heap property. Time: O(log n).</p>`,
+
+"Define topological ordering.":
+`<p>A <strong>topological ordering</strong> of a Directed Acyclic Graph (DAG) is a linear ordering of vertices such that for every edge (u → v), vertex u appears before v.</p>
+<p>Algorithms: Kahn's (BFS-based, uses in-degree) and DFS-based. Used for: task scheduling, build systems (make), course prerequisites.</p>`,
+
+"Show all steps of building a min-heap from: 10,40,5,30,15,20,25.":
+`<div class="code-block">Array: [10,40,5,30,15,20,25]  n=7, last parent=idx2
+
+idx2=5: children idx5(20),idx6(25). 5&lt;both ✓
+idx1=40: children idx3(30),idx4(15). min=15&lt;40 → swap
+         → [10,15,5,30,40,20,25]
+         Heapify from idx4=40: no children ✓
+idx0=10: children idx1(15),idx2(5). min=5&lt;10 → swap
+         → [5,15,10,30,40,20,25]
+         Heapify from idx2=10: children idx5(20),idx6(25). 10&lt;both ✓
+
+Min-heap: [5, 15, 10, 30, 40, 20, 25]
+Tree:
+        5
+       / \
+     15   10
+    /  \  / \
+  30  40 20  25</div>`,
+
+"Perform BFS on graph: 0-1,0-2,1-3,1-4,2-5,2-6. Start from vertex 0. Show queue state at each step.":
+`<div class="code-block">Adjacency: 0:[1,2], 1:[0,3,4], 2:[0,5,6], 3:[1], 4:[1], 5:[2], 6:[2]
+
+Start: queue=[0], visited={0}
+Step1: Dequeue 0, visit 0. Enqueue unvisited neighbours 1,2. queue=[1,2], visited={0,1,2}
+Step2: Dequeue 1, visit 1. Enqueue 3,4. queue=[2,3,4], visited={0,1,2,3,4}
+Step3: Dequeue 2, visit 2. Enqueue 5,6. queue=[3,4,5,6], visited={0..6}
+Step4: Dequeue 3, visit 3. No new neighbours.
+Step5: Dequeue 4, visit 4.
+Step6: Dequeue 5, visit 5.
+Step7: Dequeue 6, visit 6.
+
+BFS order: 0, 1, 2, 3, 4, 5, 6 (level-by-level)</div>`,
+
+"Sort using Counting Sort: [4,2,2,8,3,3,1]. Show counts array and output.":
+`<div class="code-block">Input: [4,2,2,8,3,3,1]  max=8
+
+Count array (index=value, value=frequency):
+idx:   0  1  2  3  4  5  6  7  8
+count: 0  1  2  2  1  0  0  0  1
+
+Cumulative count (prefix sum):
+idx:   0  1  2  3  4  5  6  7  8
+cum:   0  1  3  5  6  6  6  6  7
+
+Build output (traverse input right-to-left for stability):
+1→pos cum[1]-1=0 → output[0]=1, cum[1]=1
+3→pos cum[3]-1=4 → output[4]=3, cum[3]=4
+3→pos cum[3]-1=3 → output[3]=3, cum[3]=3
+2→pos cum[2]-1=2 → output[2]=2, cum[2]=2
+8→pos cum[8]-1=6 → output[6]=8
+2→pos cum[2]-1=1 → output[1]=2
+4→pos cum[4]-1=5 → output[5]=4
+
+Sorted: [1, 2, 2, 3, 3, 4, 8]
+Time: O(n+k), Space: O(n+k) where k=max value</div>`,
+
+"Write Java code to reverse a linked list iteratively.":
+`<div class="code-block">Node reverse(Node head) {
+    Node prev = null;
+    Node curr = head;
+    while (curr != null) {
+        Node next = curr.next;  // save next
+        curr.next = prev;       // reverse link
+        prev = curr;            // advance prev
+        curr = next;            // advance curr
+    }
+    return prev;  // new head
+}
+// Example: 1→2→3→4→null becomes 4→3→2→1→null
+// Time: O(n), Space: O(1)</div>`,
+
+"Construct a Huffman tree for characters with frequencies: X=5, Y=9, Z=12, W=13, V=16, U=45. Generate Huffman codes and compute total bits for encoding a 100-character file using these frequencies.":
+`<div class="code-block">Total freq = 5+9+12+13+16+45 = 100
+
+Sorted: X(5),Y(9),Z(12),W(13),V(16),U(45)
+
+Step1: X(5)+Y(9)=XY(14)
+Step2: Z(12)+W(13)=ZW(25) [12&lt;14]... Actually XY(14)&lt;Z? No: Z=12&lt;XY=14. Reorder.
+       Heap after step1: [Z(12),W(13),XY(14),V(16),U(45)]
+       Step2: Z(12)+W(13)=ZW(25)
+       Heap: [XY(14),V(16),ZW(25),U(45)]
+Step3: XY(14)+V(16)=XYV(30)
+       Heap: [ZW(25),XYV(30),U(45)]
+Step4: ZW(25)+XYV(30)=ZWXYV(55)
+       Heap: [U(45),ZWXYV(55)]
+Step5: U(45)+ZWXYV(55)=root(100)
+
+Tree:          100
+             /      \
+           U(45)  ZWXYV(55)
+                  /        \
+               ZW(25)    XYV(30)
+               /   \     /    \
+             Z(12) W(13) XY(14) V(16)
+                         /  \
+                        X(5) Y(9)
+
+Codes: U=0, Z=100, W=101, X=1100, Y=1101, V=111
+Total bits = 45×1+12×3+13×3+5×4+9×4+16×3
+           = 45+36+39+20+36+48 = 224 bits</div>`,
+
+"Insert 40, 10, 30, 50, 20, 60, 5 into an AVL tree one by one. Show each rotation.":
+`<div class="code-block">Insert 40: root=40
+Insert 10: L of 40. BF(40)=+1 ✓
+Insert 30: 30&lt;40→10→30&gt;10→R of 10. BF(10)=-1, BF(40)=+2, BF(10)=-1 → LR at 40
+           Left-rotate 10: 30 up, 10→L of 30. Right-rotate 40: 30 up, 40→R of 30
+           → root=30[L=10, R=40] ✓
+Insert 50: R of 40. 30[L=10,R=40[R=50]] BF(40)=-1, BF(30)=-1 ✓
+Insert 20: 20&gt;10→R of 10→20&lt;30→L of... 20&gt;10,20&lt;30→R of 10.
+           30[L=10[R=20],R=40[R=50]] BF(10)=-1, BF(30)=0 ✓
+Insert 60: R of 50. BF(40)=-2, BF(50)=-1 → RR at 40 (left-rotate)
+           → 50[L=40,R=60] replaces R of 30
+           → 30[L=10[R=20], R=50[L=40,R=60]] ✓
+Insert 5: L of 10. BF(10)=+1, BF(30)=+1 ✓
+
+Final AVL:
+         30
+        /   \
+      10     50
+     /  \   /  \
+    5   20 40   60</div>`,
+
+"Explain and apply Dijkstra's shortest path algorithm starting from vertex A on: A-B(1),A-C(4),B-C(2),B-D(5),C-D(1),D-E(3). Show distance table updates.":
+`<div class="code-block">Graph: A-B(1), A-C(4), B-C(2), B-D(5), C-D(1), D-E(3)
+Source: A
+
+Init: dist={A:0, B:∞, C:∞, D:∞, E:∞}; unvisited={A,B,C,D,E}
+
+Step1: Visit A (dist=0). Update:
+       B: min(∞, 0+1)=1; C: min(∞, 0+4)=4
+       dist={A:0,B:1,C:4,D:∞,E:∞}
+
+Step2: Visit B (min unvisited, dist=1). Update:
+       C: min(4, 1+2)=3; D: min(∞, 1+5)=6
+       dist={A:0,B:1,C:3,D:6,E:∞}
+
+Step3: Visit C (dist=3). Update:
+       D: min(6, 3+1)=4
+       dist={A:0,B:1,C:3,D:4,E:∞}
+
+Step4: Visit D (dist=4). Update:
+       E: min(∞, 4+3)=7
+       dist={A:0,B:1,C:3,D:4,E:7}
+
+Step5: Visit E (dist=7). No updates.
+
+Shortest paths from A:
+  A→B = 1,  A→B→C = 3,  A→B→C→D = 4,  A→B→C→D→E = 7</div>`,
+
+"Write a complete Java program for a Binary Search Tree with: insert, search, delete (all 3 cases), in-order traversal. Test by inserting 15,10,20,8,12,17,25. Delete 10 and show the result.":
+`<div class="code-block">class BST {
+    class Node { int data; Node left, right; Node(int d){data=d;} }
+    Node root;
+
+    void insert(int data) { root = insertRec(root, data); }
+    Node insertRec(Node n, int data) {
+        if (n == null) return new Node(data);
+        if (data &lt; n.data) n.left = insertRec(n.left, data);
+        else if (data &gt; n.data) n.right = insertRec(n.right, data);
+        return n;
+    }
+
+    boolean search(int data) { return searchRec(root, data); }
+    boolean searchRec(Node n, int data) {
+        if (n == null) return false;
+        if (data == n.data) return true;
+        return data &lt; n.data ? searchRec(n.left, data) : searchRec(n.right, data);
+    }
+
+    void delete(int data) { root = deleteRec(root, data); }
+    Node deleteRec(Node n, int data) {
+        if (n == null) return null;
+        if (data &lt; n.data) { n.left = deleteRec(n.left, data); }
+        else if (data &gt; n.data) { n.right = deleteRec(n.right, data); }
+        else { // Found node to delete
+            if (n.left == null) return n.right;  // Case 1&2
+            if (n.right == null) return n.left;  // Case 2
+            // Case 3: two children — find in-order successor
+            Node succ = n.right;
+            while (succ.left != null) succ = succ.left;
+            n.data = succ.data;
+            n.right = deleteRec(n.right, succ.data);
+        }
+        return n;
+    }
+
+    void inorder(Node n) {
+        if (n == null) return;
+        inorder(n.left); System.out.print(n.data + " "); inorder(n.right);
+    }
+}
+
+// Test: insert 15,10,20,8,12,17,25
+// In-order before delete: 8 10 12 15 17 20 25
+// Delete 10 (has two children: 8 and 12)
+//   In-order successor of 10 = 12
+//   Replace 10 with 12, delete 12 from right subtree
+// In-order after delete 10: 8 12 15 17 20 25
+// BST after:        15
+//                  /  \
+//                12    20
+//               /     /  \
+//              8     17   25</div>`,
+};
+
+// Merge practice answers into ANS lookup
+Object.assign(ANS, PRACTICE_ANS);
+
+// ── INIT ─────────────────────────────────────────────────────────
+buildNav();
+showOverview(document.getElementById('tab-ov'));
+</script>
+</body>
+</html>

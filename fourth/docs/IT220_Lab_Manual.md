@@ -7,8 +7,20 @@
 > for help. Do the labs **in order** — each one builds on the last.
 >
 > **One running example.** Across all 16 labs we build **one** database — a small college called
-> **Himalaya College** (students, teachers, courses, enrolments, fee payments). By Lab 16 you will
+> **Model College** (students, teachers, courses, enrolments, fee payments). By Lab 16 you will
 > have designed it, built it, queried it, secured it, and backed it up. This is also your **project**.
+
+---
+
+## What this lab is (and is not)
+
+**This lab is hands-on SQL.** From Lab 4 to Lab 15 you sit at a computer, type SQL, press Go, and
+look at the result. Every lab produces something you can screenshot.
+
+**What is *not* in this lab:** relational algebra notation (σ, π, ⋈), relational calculus, and
+pen-and-paper normalization. Those are **Unit 3 and Unit 4 theory** and are taught and practised in
+your **lecture classes**, not here — they are exam topics, not lab work. The one design lab (Lab 3)
+exists only because your project needs a schema before you can build it.
 
 ---
 
@@ -19,12 +31,11 @@
 | **XAMPP** | A free bundle that installs the **MySQL/MariaDB** database + a web server on your own computer | One installer gives you everything; works on Windows/Mac/Linux |
 | **MySQL / MariaDB** | The actual **database server** (the "DBMS") | This is the software the whole course is about |
 | **phpMyAdmin** | A **web page** (opens in your browser) that lets you click through databases and run SQL | Beginner-friendly — you see tables and results visually |
-| **dbdiagram.io** | A free website for drawing **ER diagrams** | Used in Labs 3–4 for design |
-| **RelaX** | A free website that runs **relational algebra** | Used in Labs 5–6 |
+| **dbdiagram.io** | A free website for drawing **ER diagrams** | Used once, in Lab 3, to design the schema |
 
 > **What is "SQL"?** SQL (say "sequel" or "S-Q-L") is the language you type to talk to a database —
-> to create tables, put data in, and ask questions of the data. You will learn it from Lab 8 onward.
-> Before that (Labs 1–7) you learn to *set up*, *design*, and *reason about* databases first.
+> to create tables, put data in, and ask questions of the data. You start writing it in **Lab 1**
+> and never stop.
 
 ---
 
@@ -32,7 +43,7 @@
 
 For **every** lab you must keep evidence for your final **lab report** (see
 [IT220_Lab_Report_Format.md](IT220_Lab_Report_Format.md)). After each lab, save:
-1. The **SQL / diagram** you produced (copy the text, or export).
+1. The **SQL** you ran (copy the text).
 2. A **screenshot** of the result on *your* screen.
 3. A **one-line note** in your own words of what it did.
 
@@ -41,16 +52,14 @@ Take screenshots as you go — do **not** try to recreate them at the end of the
 ---
 ---
 
-# PART 1 — Setup & Foundations (Labs 1–7)
-*You cannot write real SQL until Unit 5 (Week 8). These weeks get your tools working and teach you
-to design a database on paper/tools first — which is the part beginners usually skip and regret.*
+# PART 1 — Getting set up (Labs 1–3)
 
 ---
 
-## Lab 1 (Week 1) — Install everything & see a database for the first time
+## Lab 1 (Week 1) — Install everything & run your first query
 
 **Goal:** Get XAMPP installed, start the database server, open phpMyAdmin, and run your first
-*given* query to see live data. You are **not** expected to understand the SQL yet — just see it work.
+query to see live data. You are **not** expected to understand the SQL yet — just see it work.
 
 ### Before you start
 - A laptop where you can install software (you may need the admin/login password).
@@ -79,7 +88,7 @@ to design a database on paper/tools first — which is the part beginners usuall
 - You should see a page with a list of databases on the left and tabs (Databases, SQL, Status…)
   across the top. **This is your window into the database server.**
 
-**5. Load a sample database to look at.**
+**5. Make a practice database to look at.**
 - Click the **SQL** tab at the top.
 - A big empty text box appears. **Copy the block below exactly** and paste it in, then click **Go**
   (bottom right).
@@ -99,17 +108,25 @@ INSERT INTO product VALUES (3, 'Frooti', 35);
 
 - You should see a green **"success"** message. On the left, a new database **demo_shop** appears.
 
-**6. Run your first query.**
-- Still on the **SQL** tab, clear the box, type exactly this, and click **Go**:
+**6. Run your first queries.**
+- Still on the **SQL** tab, clear the box, type each of these, and click **Go**:
 
 ```sql
 SELECT * FROM product;
 ```
+```sql
+SELECT name, price FROM product;
+```
+```sql
+SELECT name FROM product WHERE price > 30;
+```
 
-- A table appears showing your 3 products. **Congratulations — you just queried a database.**
+- The first shows all 3 products, the second only two columns, the third only the items over Rs 30.
+  **Congratulations — you just queried a database.**
 
 ### What you should see
-A results grid with 3 rows (Wai Wai, Dairy Milk, Frooti). Take a **screenshot** of this.
+A results grid with 3 rows (Wai Wai, Dairy Milk, Frooti), then a 2-column version, then 2 rows.
+Take a **screenshot** of the first and the third.
 
 ### If it goes wrong
 - **MySQL won't turn green / stops immediately (Windows):** usually another program uses its port.
@@ -123,34 +140,44 @@ A results grid with 3 rows (Wai Wai, Dairy Milk, Frooti). Take a **screenshot** 
 ### What you learned
 A **database server** (MySQL) runs in the background; **phpMyAdmin** is just a friendly window onto
 it; and **SQL** is the text you send to make it do things. `SELECT * FROM product` means "show me
-every row from the product table."
+every row from the product table"; adding `WHERE` filters which rows come back.
 
 ---
 
-## Lab 2 (Week 2) — Look inside the DBMS: databases, schemas, users
+## Lab 2 (Week 2) — Inside the DBMS: databases, catalog, users
 
 **Goal:** Understand the *structure* of a database server — the difference between a **database**, a
-**table**, and a **row** — and create a **user** with limited permissions. This makes Unit 1's
-"three-schema architecture" and "DBA" concrete.
+**table**, and a **row** — query the server's own catalog, and create a **user** with limited
+permissions. This makes Unit 1's "three-schema architecture" and "DBA" concrete.
 
 ### Steps
 
-**1. See the three levels.** In phpMyAdmin, look at the left panel:
+**1. See the levels.** In phpMyAdmin, look at the left panel:
 - The **server** holds many **databases** (you see `demo_shop` and some system ones).
 - Click **demo_shop** → it holds **tables** (you see `product`).
 - Click **product** → it holds **rows** (your 3 items) and **columns** (id, name, price).
 
 Write this hierarchy in your report: **Server → Database → Table → Row/Column.**
 
-**2. See the "catalog" (data about data).** Click the database **`information_schema`** on the left,
-then its **TABLES** table, then **Browse**. This is the DBMS describing *itself* — every table on
-the server is listed here. Run this on the **SQL** tab to prove it:
+**2. Query the catalog (data about data).** The server keeps a database describing *itself*. Run
+these on the **SQL** tab:
 
 ```sql
-SELECT table_name FROM information_schema.tables WHERE table_schema = 'demo_shop';
+-- every table in your demo_shop database
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'demo_shop';
+
+-- every column of the product table, with its data type
+SELECT column_name, data_type, is_nullable
+FROM information_schema.columns
+WHERE table_schema = 'demo_shop' AND table_name = 'product';
+
+-- how many databases exist on this server
+SELECT COUNT(*) AS total_databases FROM information_schema.schemata;
 ```
 
-You should get one row: `product`. **This is metadata — "data about the data".**
+The first returns one row: `product`. **This is metadata — "data about the data".**
 
 **3. Create a database user (the DBA's job).**
 - Click the **User accounts** tab at the top.
@@ -165,49 +192,73 @@ You should get one row: `product`. **This is metadata — "data about the data".
 - You have just made a user who can *read and add* data but cannot *delete tables*. That is what a
   **DBA (Database Administrator)** does — hand out only the rights each person needs.
 
+**5. Confirm it with SQL:**
+
+```sql
+SHOW GRANTS FOR 'college_clerk'@'localhost';
+```
+
 ### What you should see
-The `information_schema` query returning `product`, and `college_clerk` listed with limited
-privileges. Screenshot both.
+The `information_schema` queries returning `product` and the column list, and `SHOW GRANTS` listing
+only SELECT and INSERT on `demo_shop`. Screenshot the catalog query and the grants.
+
+### If it goes wrong
+- **`information_schema` query returns nothing:** check the database name is spelled exactly
+  `demo_shop` and is inside quotes.
+- **"Access denied" creating the user:** you are not logged in as `root` — log out and back in.
 
 ### What you learned
 The DBMS separates **physical storage**, the **logical tables** you see, and the **views/permissions**
-each user gets — that layering is the **three-schema architecture**. A **DBA** manages users and
-their privileges with `GRANT`/`REVOKE` (phpMyAdmin did the GRANT for you behind the scenes).
+each user gets — that layering is the **three-schema architecture**. The **catalog**
+(`information_schema`) is the DBMS's own record of every database, table, and column. A **DBA**
+manages users and their privileges with `GRANT`/`REVOKE`.
 
 ---
 
-## Lab 3 (Week 3) — Design an ER diagram (on paper first, then a tool)
+## Lab 3 (Week 3) — Design the Model College database
 
-**Goal:** Before building any table, *design* the Himalaya College database as an **ER (Entity-
-Relationship) diagram**. This is Unit 2 made practical.
+**Goal:** Before building any table, *design* the database you will use for the rest of the semester
+and for your project. This is the **only** lab without SQL — you need a schema before you can create
+it in Lab 4.
 
 > **Vocabulary (don't skip):**
 > - **Entity** = a *thing* we store data about (a Student, a Course). Becomes a table.
 > - **Attribute** = a *fact* about an entity (a student's name, roll no). Becomes a column.
 > - **Primary key (PK)** = the attribute that *uniquely* identifies one row (roll_no for a student).
+> - **Foreign key (FK)** = a column pointing at another table's PK — it links the tables.
 > - **Relationship** = how entities connect ("a student *enrols in* a course").
 > - **Cardinality** = how many: one-to-one (1:1), one-to-many (1:N), many-to-many (M:N).
 
 ### Steps
 
-**1. On paper**, list the entities of Himalaya College and their attributes:
+**1. List the entities** of Model College and their attributes:
 - **Student** (roll_no [PK], name, address, phone, semester)
 - **Teacher** (teacher_id [PK], name, department, phone)
 - **Course** (course_code [PK], title, credit_hours)
+- **FeePayment** (receipt_no [PK], amount, paid_on) — belongs to a Student
 - **Enrolment** — a student takes a course in a semester (this connects Student and Course)
-- **FeePayment** (receipt_no [PK], amount, date) — belongs to a Student
 
 **2. Decide the relationships and cardinality:**
-- A **Student** *enrols in* many **Courses**, and a **Course** has many **Students** → **M:N**
-  (many-to-many). *(This M:N is why we will need a junction table in Lab 4 — remember it.)*
+- A **Student** *enrols in* many **Courses**, and a **Course** has many **Students** → **M:N**.
 - A **Teacher** *teaches* many **Courses**, a Course is taught by one Teacher → **1:N**.
 - A **Student** *makes* many **FeePayments**, each payment belongs to one Student → **1:N**.
 
-**3. Draw it in a tool.**
+**3. Resolve the M:N.** A student takes many courses *and* a course has many students. Neither table
+can hold this. The rule: **every M:N becomes a new table in the middle** — a **junction table**. Ours
+is **Enrolment**, and its primary key is the *pair* `(roll_no, course_code)` — a **composite primary
+key**, because a student cannot enrol in the same course twice.
+
+**4. Draw it in a tool.**
 - Go to **`https://dbdiagram.io`** → click **Go to app** (no login needed to start).
 - On the left code panel, delete the sample and type this (it draws the diagram on the right):
 
 ```
+Table Teacher {
+  teacher_id int [pk]
+  name varchar
+  department varchar
+  phone varchar
+}
 Table Student {
   roll_no int [pk]
   name varchar
@@ -215,16 +266,20 @@ Table Student {
   phone varchar
   semester int
 }
-Table Teacher {
-  teacher_id int [pk]
-  name varchar
-  department varchar
-}
 Table Course {
   course_code varchar [pk]
   title varchar
   credit_hours int
   teacher_id int [ref: > Teacher.teacher_id]   // 1:N teacher→course
+}
+Table Enrolment {
+  roll_no int [ref: > Student.roll_no]
+  course_code varchar [ref: > Course.course_code]
+  semester int
+  grade varchar
+  indexes {
+    (roll_no, course_code) [pk]   // composite primary key
+  }
 }
 Table FeePayment {
   receipt_no int [pk]
@@ -236,222 +291,64 @@ Table FeePayment {
 
 - The diagram appears on the right with lines connecting the tables. **Export it: Export → PNG.**
 
+**5. Write out the schema in text** — this is your build plan for Lab 4:
+
+```
+Student(roll_no PK, name, address, phone, semester)
+Teacher(teacher_id PK, name, department, phone)
+Course(course_code PK, title, credit_hours, teacher_id FK→Teacher)
+Enrolment(roll_no FK→Student, course_code FK→Course, semester, grade)
+          PK = (roll_no, course_code)
+FeePayment(receipt_no PK, roll_no FK→Student, amount, paid_on)
+```
+
 ### What you should see
-A clean ER diagram showing Student, Teacher, Course, FeePayment and the lines between them.
-(The M:N Student↔Course we will resolve in Lab 4.) Screenshot / export the diagram.
+A clean 5-table ER diagram with Enrolment sitting between Student and Course. Export the PNG — it
+goes straight into your report.
 
 ### If it goes wrong
 - **Red error in dbdiagram:** you mistyped a keyword — check every `[pk]`, `ref:` and the curly
   braces `{ }`. Copy the block again carefully.
 
 ### What you learned
-You **model the real world before touching SQL**. Entities become tables, attributes become columns,
-and relationships become the foreign keys you'll create later. M:N relationships need special
-handling — next lab.
-
----
-
-## Lab 4 (Week 4) — Turn the ER diagram into tables (the relational schema)
-
-**Goal:** Convert your Lab 3 design into a precise **table plan** with primary keys, foreign keys,
-and — crucially — a **junction table** for the many-to-many relationship.
-
-### Steps
-
-**1. Resolve the M:N.** A student takes many courses and a course has many students. A single table
-cannot store this. The rule: **every M:N becomes a new table in the middle** (a *junction* table)
-that holds the two keys. We call it **Enrolment**:
-
-```
-Enrolment( roll_no  → Student.roll_no,
-           course_code → Course.course_code,
-           semester,
-           grade )
-```
-
-Its **primary key** is the *pair* (roll_no, course_code) — a student can't enrol in the same course
-twice. This is called a **composite primary key**.
-
-**2. Add it to your dbdiagram** (append to the code from Lab 3):
-
-```
-Table Enrolment {
-  roll_no int [ref: > Student.roll_no]
-  course_code varchar [ref: > Course.course_code]
-  semester int
-  grade varchar
-  indexes {
-    (roll_no, course_code) [pk]   // composite primary key
-  }
-}
-```
-
-**3. Write out the full schema in text** (this goes in your report — it's your build plan for Lab 8):
-
-```
-Student(roll_no PK, name, address, phone, semester)
-Teacher(teacher_id PK, name, department, phone)
-Course(course_code PK, title, credit_hours, teacher_id FK→Teacher)
-Enrolment(roll_no FK→Student, course_code FK→Course, semester, grade)   PK=(roll_no, course_code)
-FeePayment(receipt_no PK, roll_no FK→Student, amount, paid_on)
-```
-
-### What you should see
-The updated diagram now has **5 tables**, with Enrolment sitting between Student and Course.
-
-### What you learned
-- **Foreign key (FK):** a column that points to another table's primary key — it *enforces* that you
-  can't enrol a student who doesn't exist.
-- **Junction table:** how you store a many-to-many relationship.
-- **Composite key:** a primary key made of two columns together.
-
----
-
-## Lab 5 (Week 5) — Relational algebra by hand (RelaX)
-
-**Goal:** Practise the operations from Unit 3 — **SELECT (σ), PROJECT (π), JOIN (⋈)** and set
-operations — on sample data, using a tool that shows you the result of each.
-
-### Steps
-
-**1. Open the tool.** Go to **`https://dbis-uibk.github.io/relax`** → choose **"relalg" / RelaX
-calculator**. It comes with a sample dataset (tables like `Student`, `Course`).
-
-**2. Try each operation.** Type these one at a time in the query box and press **Enter/Execute**:
-
-| You type | Meaning | Relational-algebra form |
-|----------|---------|-------------------------|
-| `Student` | show the whole table | (base relation) |
-| `σ semester = 2 (Student)` | rows where semester is 2 | **SELECT** σ |
-| `π Student.name (Student)` | only the name column | **PROJECT** π |
-| `π name (σ semester = 2 (Student))` | names of 2nd-sem students | σ then π |
-| `Student ⋈ Enrolment` | combine matching rows | **JOIN** ⋈ |
-
-*(RelaX has buttons for the symbols σ π ⋈ ∪ ∩ − if you can't type them.)*
-
-**3. Match each to plain English** in your report — e.g. "σ = filter rows, π = pick columns,
-⋈ = combine two tables where a column matches."
-
-### What you should see
-Each query returns a small result table. Screenshot at least the SELECT, PROJECT, and JOIN results.
-
-### What you learned
-Relational algebra is the *math* behind SQL. When you write `SELECT name FROM Student WHERE
-semester=2` in Lab 9, you are really doing **π** on top of **σ** — the same thing you did here.
-
----
-
-## Lab 6 (Week 6) — Relational calculus & spotting functional dependencies
-
-**Goal:** Express a couple of queries in **relational calculus** (Unit 3), then learn to **spot
-functional dependencies (FDs)** in a messy table — the skill you need to normalize in Lab 7.
-
-### Steps
-
-**1. Calculus (short, on paper + RelaX).** Relational calculus describes *what* you want, not the
-steps. Write, for the Student table:
-- Tuple calculus: `{ t | t ∈ Student ∧ t.semester = 2 }` — "all tuples t in Student where semester = 2."
-- Confirm it gives the same rows as `σ semester=2 (Student)` from Lab 5.
-
-**2. Spot FDs in a bad table.** Look at this deliberately messy "enrolment sheet":
-
-| roll_no | student_name | course_code | course_title | teacher_name |
-|---------|-------------|-------------|--------------|--------------|
-| 101 | Sita | CMP101 | Programming | Ram Sir |
-| 101 | Sita | ENG101 | English | Gita Miss |
-| 102 | Hari | CMP101 | Programming | Ram Sir |
-
-Ask: *"if I know column X, is column Y always fixed?"* That arrow is a **functional dependency**:
-- `roll_no → student_name` (a roll number always gives the same name) ✔
-- `course_code → course_title` (a course code always gives the same title) ✔
-- `course_code → teacher_name` (each course has one teacher here) ✔
-- But `roll_no` alone does **not** give `course_code` (Sita has two) ✘
-
-**3. Write the FD list** in your report. Notice the table repeats "Programming / Ram Sir" — that
-**redundancy** is the problem normalization fixes next week.
-
-### What you learned
-A **functional dependency X → Y** means "X decides Y." Finding FDs tells you which facts belong in
-which table — the foundation of normalization.
-
----
-
-## Lab 7 (Week 7) — Normalization: fix a messy table step by step
-
-**Goal:** Take the messy table from Lab 6 and normalize it to **1NF → 2NF → 3NF**, showing your work
-(Unit 4). No SQL yet — this is pen-and-paper design.
-
-### Steps — follow the ladder
-
-**Start (unnormalized / has problems):**
-`Enrolment(roll_no, student_name, course_code, course_title, teacher_name)`
-Problems: the same course title and teacher are repeated on every row (**update anomaly** — change
-the teacher and you must edit many rows).
-
-**1. First Normal Form (1NF):** every cell holds **one value** (no lists), and there's a key.
-Our table is already 1NF (no multi-valued cells). Key = (roll_no, course_code).
-
-**2. Second Normal Form (2NF):** remove attributes that depend on **only part** of the composite key.
-- `student_name` depends on `roll_no` alone → move it out to a **Student** table.
-- `course_title` depends on `course_code` alone → move it to a **Course** table.
-
-Result:
-```
-Student(roll_no PK, student_name)
-Course(course_code PK, course_title, teacher_name)
-Enrolment(roll_no, course_code)  PK=(roll_no, course_code)
-```
-
-**3. Third Normal Form (3NF):** remove attributes that depend on a **non-key** attribute.
-- In Course, does `teacher_name` depend on the key `course_code`, or on something else? If a teacher
-  can be identified separately, split teachers out:
-```
-Teacher(teacher_id PK, teacher_name)
-Course(course_code PK, course_title, teacher_id FK→Teacher)
-```
-
-**Final (3NF):** Student, Teacher, Course, Enrolment — **the same design you drew in Lab 4.** That's
-the point: good ER design already gives you normalized tables.
-
-### What you should see
-A written step-by-step showing 1NF → 2NF → 3NF with the reason for each split. This is a key exam
-skill — keep it neat.
-
-### What you learned
-Normalization removes **redundancy** and **anomalies** by splitting one wide table into several
-focused tables joined by keys. You now have a verified, normalized design ready to **build in SQL**.
+You **model the database before typing SQL**. Entities become tables, attributes become columns,
+relationships become foreign keys, and every **M:N** relationship needs a **junction table** with a
+**composite primary key**. Next week you build exactly this in SQL.
 
 ---
 ---
 
-# PART 2 — Building & Querying in SQL (Labs 8–12)
-*Unit 5 has started. Now you write real SQL to build and use the Himalaya College database.*
+# PART 2 — Building and querying in SQL (Labs 4–12)
+*From here on, every lab is SQL you type and run.*
 
 > **Where you type SQL from now on:** phpMyAdmin → click your database → the **SQL** tab → type →
 > **Go**. You can run one statement or several at once.
 
 ---
 
-## Lab 8 (Week 8) — Create the database & tables (DDL) and add data
+## Lab 4 (Week 4) — Create the database and tables (DDL)
 
-**Goal:** Build the normalized Himalaya College schema from Lab 4/7 using **DDL** (Data Definition
-Language: `CREATE`), with proper keys and constraints, then `INSERT` sample data.
+**Goal:** Build the Lab 3 schema for real using **DDL** (Data Definition Language: `CREATE`), with
+proper keys and constraints.
 
 ### Steps
 
 **1. Create the database.** phpMyAdmin → **SQL** tab → run:
 
 ```sql
-CREATE DATABASE himalaya_college;
-USE himalaya_college;
+CREATE DATABASE model_college;
+USE model_college;
 ```
+
+> From now on, click **model_college** in the left panel *before* using the SQL tab, so your
+> statements go to the right database.
 
 **2. Create the tables** (run this whole block). Read the comments — they explain each **constraint**:
 
 ```sql
 CREATE TABLE Teacher (
-  teacher_id  INT PRIMARY KEY,                 -- unique id for each teacher
-  name        VARCHAR(60) NOT NULL,            -- NOT NULL = must have a value
+  teacher_id  INT PRIMARY KEY,        -- unique id for each teacher
+  name        VARCHAR(60) NOT NULL,   -- NOT NULL = must have a value
   department  VARCHAR(40),
   phone       VARCHAR(15)
 );
@@ -461,15 +358,16 @@ CREATE TABLE Student (
   name      VARCHAR(60) NOT NULL,
   address   VARCHAR(60),
   phone     VARCHAR(15),
-  semester  INT CHECK (semester BETWEEN 1 AND 8)   -- CHECK = only allow 1..8
+  semester  INT CHECK (semester BETWEEN 1 AND 8)  -- CHECK = only 1..8
 );
 
 CREATE TABLE Course (
   course_code  VARCHAR(10) PRIMARY KEY,
   title        VARCHAR(60) NOT NULL,
-  credit_hours INT DEFAULT 3,                   -- DEFAULT if none given
+  credit_hours INT DEFAULT 3,         -- DEFAULT if none given
   teacher_id   INT,
-  FOREIGN KEY (teacher_id) REFERENCES Teacher(teacher_id)  -- must be a real teacher
+  -- FOREIGN KEY = must point to a real teacher
+  FOREIGN KEY (teacher_id) REFERENCES Teacher(teacher_id)
 );
 
 CREATE TABLE Enrolment (
@@ -491,130 +389,470 @@ CREATE TABLE FeePayment (
 );
 ```
 
-- On the left you now see 5 tables under `himalaya_college`. **Screenshot the table list.**
-
-**3. Insert data** (run this block):
+**3. Inspect what you built:**
 
 ```sql
-INSERT INTO Teacher VALUES
- (1,'Ram Thapa','Computer','9841000001'),
- (2,'Gita Sharma','English','9841000002');
-
-INSERT INTO Student VALUES
- (101,'Sita Rai','Bhaktapur','9801000101',2),
- (102,'Hari Karki','Lalitpur','9801000102',2),
- (103,'Mina Gurung','Kathmandu','9801000103',4);
-
-INSERT INTO Course VALUES
- ('CMP101','Programming',3,1),
- ('ENG101','English',3,2),
- ('DBM220','Database Management',3,1);
-
-INSERT INTO Enrolment VALUES
- (101,'CMP101',2,'A'),
- (101,'ENG101',2,'B'),
- (102,'CMP101',2,'A'),
- (103,'DBM220',4,NULL);
-
-INSERT INTO FeePayment VALUES
- (5001,101,15000,'2026-01-10'),
- (5002,102,15000,'2026-01-12');
+SHOW TABLES;              -- lists all 5 tables
+DESCRIBE Student;         -- shows Student's columns, types, keys
+DESCRIBE Enrolment;       -- note the composite PRIMARY KEY
 ```
 
-**4. Verify:** run `SELECT * FROM Student;` — you should see 3 students.
+**4. Try to break a constraint on purpose** (this is the point of the lab — see the database defend
+itself). Each of these should give an **error**:
+
+```sql
+-- CHECK fails: semester 99
+INSERT INTO Student VALUES (1,'Test','KTM','98',99);
+
+-- FK fails: no teacher 999
+INSERT INTO Course VALUES ('X1','Fake',3,999);
+
+-- NOT NULL fails: name is null
+INSERT INTO Student VALUES (2,NULL,'KTM','98',2);
+```
+
+Screenshot one of these errors — it proves the constraint works.
+
+### What you should see
+Five tables listed on the left under `model_college`; `DESCRIBE` output showing PRI on the key
+columns; and a red error message from each deliberate mistake in step 4.
 
 ### If it goes wrong
-- **"Cannot add or update a child row: a foreign key constraint fails":** you inserted a row that
-  points to something that doesn't exist yet (e.g. an Enrolment before its Student). Insert **parents
-  first** (Teacher, Student, Course) *then* children (Enrolment, FeePayment) — the order above already
-  does this.
-- **"Duplicate entry for key PRIMARY":** you ran the INSERT twice. Either skip it or delete the rows.
+- **"Table already exists":** you ran the block twice. Either skip it, or run
+  `DROP TABLE Enrolment, FeePayment, Course, Student, Teacher;` and start again (children first).
+- **`CHECK` seems ignored:** very old MariaDB/MySQL versions parse but don't enforce CHECK. Note it
+  in your report and move on — the other constraints still work.
 
 ### What you learned
 **DDL** builds structure. **Constraints** (`PRIMARY KEY`, `FOREIGN KEY`, `NOT NULL`, `CHECK`,
-`DEFAULT`) are the database *protecting itself* from bad data — the FK is why you can never enrol a
+`DEFAULT`) are the database *protecting itself* from bad data — this is why you can never enrol a
 student who doesn't exist.
 
 ---
 
-## Lab 9 (Week 9) — Ask questions: SELECT, WHERE, ORDER BY, aggregates
+## Lab 5 (Week 5) — Put data in (INSERT)
 
-**Goal:** Query the data with the most-used SQL: filtering, sorting, and summarising (Unit 5). Run
-each, read the result, and note what it does.
+**Goal:** Populate all five tables with `INSERT`, in the correct order, and read the data back.
 
-### Steps — run these one at a time
+### Steps
+
+**1. Insert the parent tables first** (Teacher, Student, Course — nothing points at them yet):
 
 ```sql
--- 1. Everything, specific columns
+INSERT INTO Teacher VALUES
+ (1,'Ram Thapa','Computer','9841000001'),
+ (2,'Gita Sharma','English','9841000002'),
+ (3,'Sunil Basnet','Management','9841000003');
+
+INSERT INTO Student VALUES
+ (101,'Sita Rai','Bhaktapur','9801000101',2),
+ (102,'Hari Karki','Lalitpur','9801000102',2),
+ (103,'Mina Gurung','Kathmandu','9801000103',4),
+ (104,'Bikash Lama','Pokhara','9801000104',4),
+ (105,'Anita Shrestha','Kathmandu','9801000105',2);
+
+INSERT INTO Course VALUES
+ ('CMP101','Programming',3,1),
+ ('ENG101','English',3,2),
+ ('DBM220','Database Management',3,1),
+ ('MGT210','Management',3,3);
+```
+
+**2. Now the child tables** (they reference the rows you just made):
+
+```sql
+INSERT INTO Enrolment VALUES
+ (101,'CMP101',2,'A'),
+ (101,'ENG101',2,'B'),
+ (102,'CMP101',2,'A'),
+ (102,'ENG101',2,'C'),
+ (103,'DBM220',4,'B'),
+ (104,'DBM220',4,NULL),
+ (104,'MGT210',4,'A'),
+ (105,'CMP101',2,NULL);
+
+INSERT INTO FeePayment VALUES
+ (5001,101,15000,'2026-01-10'),
+ (5002,102,15000,'2026-01-12'),
+ (5003,103,12000,'2026-01-15'),
+ (5004,101,5000,'2026-02-10');
+```
+
+**3. Insert only some columns** — the rest take their DEFAULT or NULL:
+
+```sql
+INSERT INTO Course (course_code, title, teacher_id)
+VALUES ('STA201','Statistics',3);
+
+-- credit_hours filled itself with 3
+SELECT * FROM Course WHERE course_code = 'STA201';
+```
+
+**4. Read everything back:**
+
+```sql
+SELECT * FROM Student;
+SELECT * FROM Enrolment;
+SELECT * FROM FeePayment;
+```
+
+**5. Prove the order mattered.** Try inserting a child whose parent doesn't exist:
+
+```sql
+-- ERROR: student 999 doesn't exist
+INSERT INTO Enrolment VALUES (999,'CMP101',2,'A');
+```
+
+### What you should see
+5 students, 8 enrolments, 4 payments; `STA201` with credit_hours = 3 even though you never typed it;
+and a foreign-key error on step 5. Screenshot the `SELECT * FROM Student;` result and the error.
+
+### If it goes wrong
+- **"Cannot add or update a child row: a foreign key constraint fails":** you inserted a row that
+  points to something that doesn't exist yet. Insert **parents first** (Teacher, Student, Course)
+  *then* children (Enrolment, FeePayment) — the order above already does this.
+- **"Duplicate entry for key PRIMARY":** you ran the INSERT twice. Skip it, or delete the rows first.
+
+### What you learned
+`INSERT INTO … VALUES` adds rows. You may insert **all** columns positionally, or **named** columns
+only — the rest fall back to `DEFAULT` or `NULL`. Foreign keys force an insert **order**: parents
+before children.
+
+---
+
+## Lab 6 (Week 6) — Asking questions: SELECT, WHERE, ORDER BY, DISTINCT
+
+**Goal:** The single most-used SQL statement. Filter rows, choose columns, sort, and remove
+duplicates.
+
+### Steps — run these one at a time and read each result
+
+```sql
+-- 1. All columns, all rows
+SELECT * FROM Student;
+
+-- 2. Only the columns you want
 SELECT name, semester FROM Student;
 
--- 2. WHERE = filter rows
+-- 3. Rename a column in the output with AS
+SELECT name AS student_name, semester AS sem FROM Student;
+
+-- 4. WHERE = filter rows
 SELECT name FROM Student WHERE semester = 2;
+SELECT * FROM FeePayment WHERE amount > 12000;
 
--- 3. ORDER BY = sort; DESC = high to low
+-- 5. Combine conditions with AND / OR / NOT
+SELECT name FROM Student WHERE semester = 2 AND address = 'Kathmandu';
+SELECT name FROM Student WHERE semester = 2 OR semester = 4;
+
+-- 6. IN = "is any one of these"; BETWEEN = a range
+SELECT name FROM Student WHERE address IN ('Kathmandu','Pokhara');
+SELECT * FROM FeePayment WHERE amount BETWEEN 10000 AND 15000;
+
+-- 7. LIKE = pattern match. % means "any characters"
+SELECT name FROM Student WHERE name LIKE 'S%';      -- starts with S
+SELECT name FROM Student WHERE name LIKE '%Rai';    -- ends with Rai
+SELECT title FROM Course WHERE title LIKE '%Manage%';
+
+-- 8. ORDER BY = sort. ASC = A→Z (default), DESC = Z→A / high→low
 SELECT name, semester FROM Student ORDER BY name ASC;
+SELECT * FROM FeePayment ORDER BY amount DESC;
+SELECT name, semester FROM Student ORDER BY semester DESC, name ASC;
 
--- 4. DISTINCT = remove duplicates
+-- 9. DISTINCT = remove duplicate values
 SELECT DISTINCT semester FROM Student;
+SELECT DISTINCT address FROM Student;
 
--- 5. Aggregate functions summarise many rows into one number
-SELECT COUNT(*) AS total_students FROM Student;
-SELECT AVG(amount) AS average_fee FROM FeePayment;
-SELECT MAX(amount) AS biggest_payment FROM FeePayment;
+-- 10. LIMIT = only the first N rows
+SELECT * FROM FeePayment ORDER BY amount DESC LIMIT 2;   -- top 2 payments
+```
 
--- 6. GROUP BY = one summary row per group
+### What you should see
+Query 4 returns 3 second-semester students (Sita, Hari, Anita); query 5's first form returns only
+Anita Shrestha; query 7's `LIKE 'S%'` returns only Sita Rai; query 9 returns just `2` and `4`.
+Screenshot queries 4, 7, and 8.
+
+### If it goes wrong
+- **"Unknown column 'name' in field list":** you are querying the wrong database or misspelled the
+  column — click `model_college` on the left first, and check with `DESCRIBE Student;`.
+- **`LIKE 'S%'` returns nothing:** the `%` must be inside the quotes.
+
+### What you learned
+`SELECT columns FROM table WHERE condition ORDER BY column` is the shape of nearly every query you
+will ever write. `WHERE` picks **rows**, the column list picks **columns**, `ORDER BY` sorts,
+`DISTINCT` de-duplicates, and `LIKE` does pattern matching.
+
+---
+
+## Lab 7 (Week 7) — Summarising: aggregates, GROUP BY, HAVING, NULL
+
+**Goal:** Collapse many rows into useful numbers — counts, totals, averages — and filter those
+summaries.
+
+### Steps
+
+**1. Aggregate functions** — many rows in, one number out:
+
+```sql
+SELECT COUNT(*)   AS total_students   FROM Student;
+SELECT COUNT(*)   AS total_payments   FROM FeePayment;
+SELECT SUM(amount) AS total_collected FROM FeePayment;
+SELECT AVG(amount) AS average_payment FROM FeePayment;
+SELECT MAX(amount) AS biggest, MIN(amount) AS smallest FROM FeePayment;
+```
+
+**2. GROUP BY** — one summary row *per group*:
+
+```sql
+-- how many students in each semester
 SELECT semester, COUNT(*) AS how_many
 FROM Student
 GROUP BY semester;
 
--- 7. HAVING = filter AFTER grouping
+-- how many students enrolled in each course
+SELECT course_code, COUNT(*) AS students_in_course
+FROM Enrolment
+GROUP BY course_code;
+
+-- total fees paid by each student
+SELECT roll_no, SUM(amount) AS total_paid
+FROM FeePayment
+GROUP BY roll_no;
+```
+
+**3. HAVING** — filter the *groups*, after grouping:
+
+```sql
+-- only courses with 2 or more students
 SELECT course_code, COUNT(*) AS students_in_course
 FROM Enrolment
 GROUP BY course_code
 HAVING COUNT(*) >= 2;
 
--- 8. NULL check — grade not yet given
-SELECT roll_no, course_code FROM Enrolment WHERE grade IS NULL;
+-- only students who have paid more than Rs 15000 in total
+SELECT roll_no, SUM(amount) AS total_paid
+FROM FeePayment
+GROUP BY roll_no
+HAVING SUM(amount) > 15000;
 ```
 
+**4. WHERE vs HAVING** — run both and compare. `WHERE` runs **before** grouping, `HAVING` **after**:
+
+```sql
+-- WHERE first: only sem-2 enrolments, then group
+SELECT course_code, COUNT(*) FROM Enrolment
+WHERE semester = 2
+GROUP BY course_code;
+```
+
+**5. NULL handling** — NULL means *unknown*, and is never equal to anything:
+
+```sql
+-- correct
+SELECT roll_no, course_code FROM Enrolment WHERE grade IS NULL;
+
+-- WRONG: returns nothing
+SELECT roll_no, course_code FROM Enrolment WHERE grade = NULL;
+
+SELECT roll_no, course_code FROM Enrolment WHERE grade IS NOT NULL;
+
+SELECT COUNT(*) AS rows_total, COUNT(grade) AS rows_with_grade
+FROM Enrolment;
+```
+
+Notice the last query: `COUNT(*)` counts rows, `COUNT(grade)` **skips NULLs**.
+
 ### What you should see
-Each query returns a small, sensible result (e.g. query 6 shows semester 2 → 2 students, semester
-4 → 1). Screenshot queries 2, 6, and 7.
+Semester 2 → 3 students, semester 4 → 2. `CMP101` has 3 students. Roll 101 paid 20000 total. The
+`= NULL` query returns **zero rows** while `IS NULL` returns 2. Screenshot the GROUP BY, the HAVING,
+and the `= NULL` vs `IS NULL` pair.
 
 ### If it goes wrong
-- **`WHERE grade = NULL` returns nothing:** you must use **`IS NULL`**, never `= NULL` — NULL means
-  "unknown" and isn't equal to anything.
+- **"Expression not in GROUP BY clause":** every column in your SELECT must either be inside an
+  aggregate, or listed in the `GROUP BY`.
+- **`HAVING` gives an error:** `HAVING` only works with `GROUP BY` — use `WHERE` for plain row
+  filtering.
 
 ### What you learned
-`SELECT … FROM … WHERE … GROUP BY … HAVING … ORDER BY` is the shape of almost every query.
-**Aggregates** (COUNT/SUM/AVG/MIN/MAX) collapse many rows into a summary; **GROUP BY** does it per
-category; **HAVING** filters those summaries.
+**Aggregates** (COUNT/SUM/AVG/MIN/MAX) collapse many rows into one value; **GROUP BY** does it per
+category; **HAVING** filters those summaries. `WHERE` filters **rows before** grouping, `HAVING`
+filters **groups after**. Use `IS NULL`, never `= NULL`.
 
 ---
 
-## Lab 10 (Week 10) — Subqueries and Views
+## Lab 8 (Week 8) — Combining tables: JOINs
 
-**Goal:** Write a query *inside* another query (subquery) and save a query as a reusable **view**.
+**Goal:** Your data is split across five tables. A **JOIN** stitches them back together using the
+foreign keys you designed in Lab 3.
 
 ### Steps
 
-**1. Subquery — a query used as a value:**
+**1. INNER JOIN — only rows that match in both tables:**
 
 ```sql
--- Students who have made at least one fee payment
+-- each enrolment with the student's real name
+SELECT s.name, e.course_code, e.grade
+FROM Enrolment e
+JOIN Student s ON e.roll_no = s.roll_no;
+
+-- three tables at once: student + course title + grade
+SELECT s.name, c.title, e.grade
+FROM Enrolment e
+JOIN Student s ON e.roll_no = s.roll_no
+JOIN Course  c ON e.course_code = c.course_code;
+
+-- each course with its teacher's name
+SELECT c.title, t.name AS teacher
+FROM Course c
+JOIN Teacher t ON c.teacher_id = t.teacher_id;
+```
+
+**2. LEFT JOIN — keep ALL rows from the left table, even unmatched ones:**
+
+```sql
+-- every student, including those with no enrolment (they show NULL)
+SELECT s.name, e.course_code
+FROM Student s
+LEFT JOIN Enrolment e ON s.roll_no = e.roll_no;
+
+-- every student and what they have paid — non-payers show NULL
+SELECT s.name, f.amount, f.paid_on
+FROM Student s
+LEFT JOIN FeePayment f ON s.roll_no = f.roll_no;
+
+-- find the non-payers: LEFT JOIN then keep only the NULLs
+SELECT s.roll_no, s.name
+FROM Student s
+LEFT JOIN FeePayment f ON s.roll_no = f.roll_no
+WHERE f.receipt_no IS NULL;
+```
+
+**3. Self-join — join a table to itself.** Find pairs of classmates in the same semester:
+
+```sql
+SELECT a.name AS student_1, b.name AS student_2, a.semester
+FROM Student a
+JOIN Student b ON a.semester = b.semester AND a.roll_no < b.roll_no;
+```
+
+The `a.roll_no < b.roll_no` stops you getting each pair twice (and a student paired with themselves).
+
+**4. JOIN + GROUP BY — the combination you will use most:**
+
+```sql
+-- how many students in each course, by course TITLE not code
+SELECT c.title, COUNT(*) AS students
+FROM Enrolment e
+JOIN Course c ON e.course_code = c.course_code
+GROUP BY c.title;
+
+-- total fees paid, per student name
+SELECT s.name, SUM(f.amount) AS total_paid
+FROM Student s
+JOIN FeePayment f ON s.roll_no = f.roll_no
+GROUP BY s.name;
+```
+
+### What you should see
+The 3-table INNER JOIN lists name + course title + grade together. The LEFT JOIN shows every student,
+with NULL for any without enrolments. The non-payer query returns roll 104 and 105. Screenshot the
+INNER JOIN, the LEFT JOIN, and the non-payer query.
+
+### If it goes wrong
+- **"Column 'name' in field list is ambiguous":** both tables have a `name` column — you must say
+  which one: `s.name`, not `name`.
+- **The JOIN returns far too many rows:** you forgot the `ON` condition, so every row matched every
+  row (a *cartesian product*). Always give an `ON`.
+
+### What you learned
+**INNER JOIN** keeps only rows that match in both tables; **LEFT JOIN** keeps everything from the
+left table and fills NULLs where there's no match — which is how you find the "missing" ones. A
+**self-join** compares rows within one table. Joins work because of the **foreign keys** from Lab 3.
+
+---
+
+## Lab 9 (Week 9) — Subqueries
+
+**Goal:** Put a query *inside* another query, so one question's answer feeds the next.
+
+### Steps
+
+**1. Subquery returning one value** (use it like a number):
+
+```sql
+-- the single largest payment
+SELECT * FROM FeePayment
+WHERE amount = (SELECT MAX(amount) FROM FeePayment);
+
+-- students who paid more than the average payment
+SELECT roll_no, amount FROM FeePayment
+WHERE amount > (SELECT AVG(amount) FROM FeePayment);
+```
+
+**2. Subquery returning a list — `IN` / `NOT IN`:**
+
+```sql
+-- students who have made at least one fee payment
 SELECT name FROM Student
 WHERE roll_no IN (SELECT roll_no FROM FeePayment);
 
--- Students who have NOT paid (note NOT IN)
+-- students who have NOT paid anything
 SELECT name FROM Student
 WHERE roll_no NOT IN (SELECT roll_no FROM FeePayment);
 
--- EXISTS version (true if the inner query finds any row)
-SELECT name FROM Student s
-WHERE EXISTS (SELECT 1 FROM Enrolment e WHERE e.roll_no = s.roll_no);
+-- courses taught by someone from the Computer department
+SELECT title FROM Course
+WHERE teacher_id IN (SELECT teacher_id FROM Teacher
+                     WHERE department = 'Computer');
 ```
 
-**2. Create a View** — a saved query you can treat like a table:
+**3. `EXISTS` — true if the inner query finds any row at all:**
+
+```sql
+-- students who are enrolled in something
+SELECT name FROM Student s
+WHERE EXISTS (SELECT 1 FROM Enrolment e WHERE e.roll_no = s.roll_no);
+
+-- students enrolled in nothing
+SELECT name FROM Student s
+WHERE NOT EXISTS (SELECT 1 FROM Enrolment e WHERE e.roll_no = s.roll_no);
+```
+
+**4. Subquery in FROM (a derived table)** — treat a query's result as a table:
+
+```sql
+SELECT AVG(total_paid) AS average_per_student
+FROM (SELECT roll_no, SUM(amount) AS total_paid
+      FROM FeePayment
+      GROUP BY roll_no) AS totals;
+```
+
+### What you should see
+The `IN` query returns the students who paid (101, 102, 103); `NOT IN` returns 104 and 105 —
+the same answer you got with a LEFT JOIN in Lab 8. Screenshot the `IN`, the `NOT IN`, and the
+derived table.
+
+### If it goes wrong
+- **`NOT IN` returns nothing unexpectedly:** if the inner query returns any NULL, `NOT IN` gives no
+  rows. Add `WHERE roll_no IS NOT NULL` inside it.
+- **"Subquery returns more than 1 row":** you used `=` with a subquery that returns a list — use
+  `IN` instead.
+- **Derived table error:** a subquery in `FROM` **must** be given an alias (`AS totals`).
+
+### What you learned
+A **subquery** is a query whose result feeds an outer query — as a single value, a list (`IN`), a
+test (`EXISTS`), or a whole table (in `FROM`). Many subqueries can also be written as JOINs; both
+are correct.
+
+---
+
+## Lab 10 (Week 10) — Views
+
+**Goal:** Save a query under a name and use it like a table.
+
+### Steps
+
+**1. Create a view:**
 
 ```sql
 CREATE VIEW paid_students AS
@@ -623,87 +861,203 @@ FROM Student s
 JOIN FeePayment f ON s.roll_no = f.roll_no;
 ```
 
-Now use it like a table:
+**2. Use it exactly like a table:**
 
 ```sql
 SELECT * FROM paid_students;
+SELECT name FROM paid_students WHERE amount > 12000;
+SELECT roll_no, SUM(amount) FROM paid_students GROUP BY roll_no;
+```
+
+**3. Make a second, more useful view** — a full enrolment sheet:
+
+```sql
+CREATE VIEW enrolment_sheet AS
+SELECT s.roll_no, s.name AS student, c.title AS course,
+       t.name AS teacher, e.grade
+FROM Enrolment e
+JOIN Student s ON e.roll_no = s.roll_no
+JOIN Course  c ON e.course_code = c.course_code
+JOIN Teacher t ON c.teacher_id = t.teacher_id;
+
+SELECT * FROM enrolment_sheet;
+SELECT * FROM enrolment_sheet WHERE grade IS NULL;
+```
+
+Notice you just asked a 4-table question in one short line. **That is what views are for.**
+
+**4. Views are live, not copies.** Change the underlying data and re-query the view:
+
+```sql
+UPDATE Enrolment SET grade = 'B'
+WHERE roll_no = 104 AND course_code = 'DBM220';
+
+-- the view already shows B
+SELECT * FROM enrolment_sheet WHERE roll_no = 104;
+```
+
+**5. Updatable vs read-only views.** A simple one-table view can be updated through:
+
+```sql
+CREATE VIEW sem2_students AS
+SELECT roll_no, name, phone FROM Student WHERE semester = 2;
+
+UPDATE sem2_students SET phone = '9800000000' WHERE roll_no = 105;
+SELECT * FROM Student WHERE roll_no = 105;   -- the real table changed
+```
+
+But a view with a JOIN or GROUP BY generally **cannot** be updated — try it and note the error:
+
+```sql
+-- expect an error
+UPDATE enrolment_sheet SET grade = 'A' WHERE roll_no = 101;
+```
+
+**6. Housekeeping:**
+
+```sql
+SHOW FULL TABLES WHERE table_type = 'VIEW';   -- list your views
+-- DROP VIEW sem2_students;                   -- how you remove one
 ```
 
 ### What you should see
-The subqueries return the right students (101 & 102 paid, 103 hasn't). `paid_students` behaves like
-a table. Screenshot both.
+`paid_students` and `enrolment_sheet` behaving like tables; the view reflecting the UPDATE
+immediately; the update through `sem2_students` changing the real `Student` row; and an error when
+updating the joined view. Screenshot `enrolment_sheet` and the update-through-view result.
+
+### If it goes wrong
+- **"View's SELECT contains a subquery in the FROM clause":** MySQL does not allow that in a view —
+  simplify the query.
+- **"Table 'paid_students' already exists":** you created it twice — use `CREATE OR REPLACE VIEW`.
 
 ### What you learned
-A **subquery** lets one query depend on another's result. A **view** stores a query under a name so
-you (or a limited user) can reuse it without rewriting the SQL — and without seeing the underlying
-tables directly (a security/simplicity tool).
+A **view** is a **saved query**, not stored data — it computes its rows fresh every time, so it is
+always current. Views simplify complex joins, and let you expose only certain columns to a
+restricted user. Simple views are **updatable**; joined/aggregated ones are read-only.
 
 ---
 
-## Lab 11 (Week 11) — Changing data (UPDATE/DELETE) and JOINs
+## Lab 11 (Week 11) — Changing data: UPDATE and DELETE
 
-**Goal:** Modify existing data safely, and combine tables with every kind of **JOIN**.
+**Goal:** Modify existing rows safely. This is the lab where carelessness destroys data — so the
+technique matters as much as the syntax.
+
+> ⚠️ **The most dangerous beginner mistake:** `UPDATE Student SET semester = 1;` with **no WHERE**
+> changes *every single row*. `DELETE FROM Student;` empties the whole table. **Always write the
+> `WHERE` first, then go back and write the `UPDATE`/`DELETE` in front of it.**
 
 ### Steps
 
-**1. Modify data:**
+**1. The safe habit — SELECT before you UPDATE.** Always run the `WHERE` as a `SELECT` first, to see
+exactly which rows you are about to hit:
 
 ```sql
--- INSERT one new student
-INSERT INTO Student VALUES (104,'Bikash Lama','Pokhara','9801000104',2);
+-- STEP 1: check which rows the WHERE matches
+SELECT * FROM Student WHERE roll_no = 105;
 
--- UPDATE — ALWAYS include WHERE, or you change every row!
-UPDATE Student SET phone = '9811111111' WHERE roll_no = 104;
+-- STEP 2: only now, change them
+UPDATE Student SET phone = '9811111111' WHERE roll_no = 105;
 
--- DELETE — again, ALWAYS a WHERE
-DELETE FROM Student WHERE roll_no = 104;
+-- STEP 3: confirm
+SELECT * FROM Student WHERE roll_no = 105;
 ```
 
-> ⚠️ **The most dangerous beginner mistake:** `UPDATE Student SET semester = 1;` with **no WHERE**
-> changes *every* student. Always write the `WHERE` first.
-
-**2. JOINs — combine tables:**
+**2. More UPDATEs:**
 
 ```sql
--- INNER JOIN: only rows that match in both tables
-SELECT s.name, c.title, e.grade
-FROM Enrolment e
-JOIN Student s ON e.roll_no = s.roll_no
-JOIN Course c ON e.course_code = c.course_code;
+-- change several columns at once
+UPDATE Student SET address = 'Bhaktapur', phone = '9812222222'
+WHERE roll_no = 104;
 
--- LEFT JOIN: keep ALL students, even those with no enrolment
-SELECT s.name, e.course_code
-FROM Student s
-LEFT JOIN Enrolment e ON s.roll_no = e.roll_no;
+-- update using the existing value (a 10% fee increase)
+UPDATE FeePayment SET amount = amount * 1.10 WHERE receipt_no = 5003;
 
--- Join to show each course with its teacher's name
-SELECT c.title, t.name AS teacher
-FROM Course c
-JOIN Teacher t ON c.teacher_id = t.teacher_id;
+-- fill in a missing grade
+UPDATE Enrolment SET grade = 'C'
+WHERE roll_no = 105 AND course_code = 'CMP101';
+
+-- update many rows on purpose (note it still has a WHERE)
+UPDATE Student SET semester = semester + 1 WHERE semester = 2;
+```
+
+Check the last one, then put it back:
+
+```sql
+SELECT roll_no, name, semester FROM Student;
+UPDATE Student SET semester = semester - 1 WHERE semester = 3;
+```
+
+**3. DELETE — same rule:**
+
+```sql
+-- add a throwaway row so we can delete it
+INSERT INTO Student VALUES (199,'Temp Test','Nowhere','9800000000',1);
+
+-- STEP 1: see what will die
+SELECT * FROM Student WHERE roll_no = 199;
+-- STEP 2: delete it
+DELETE FROM Student WHERE roll_no = 199;
+-- STEP 3: confirm it's gone
+SELECT * FROM Student WHERE roll_no = 199;
+```
+
+**4. Foreign keys protect you from deleting a parent:**
+
+```sql
+-- ERROR: rows in Enrolment/FeePayment reference it
+DELETE FROM Student WHERE roll_no = 101;
+```
+
+To really remove that student you must delete the children first (don't run this on your project
+data unless you mean it):
+
+```sql
+-- DELETE FROM Enrolment  WHERE roll_no = 101;
+-- DELETE FROM FeePayment WHERE roll_no = 101;
+-- DELETE FROM Student    WHERE roll_no = 101;
+```
+
+**5. The safety net.** Before any risky change, wrap it in a transaction you can undo (this is a
+preview of Lab 13):
+
+```sql
+START TRANSACTION;
+UPDATE Student SET semester = 1;     -- deliberately missing WHERE!
+SELECT roll_no, semester FROM Student;   -- everything is 1 — disaster
+ROLLBACK;                                 -- undo it
+SELECT roll_no, semester FROM Student;   -- back to normal
 ```
 
 ### What you should see
-The INNER JOIN lists student + course + grade together; the LEFT JOIN shows every student (a student
-with no enrolment shows NULL for course). Screenshot both joins.
+Each UPDATE reporting "N rows affected" — and that N should match what your `SELECT` predicted. The
+DELETE on roll 101 failing with a foreign-key error. The no-WHERE disaster in step 5 wiping every
+semester, then `ROLLBACK` restoring it. Screenshot the SELECT-then-UPDATE pair, the FK error, and the
+rollback recovery.
+
+### If it goes wrong
+- **"0 rows affected":** your `WHERE` matched nothing — check the value exists with a `SELECT`.
+- **You updated everything by accident:** if you were inside a transaction, `ROLLBACK`. If not,
+  restore from your backup (Lab 15). This is why step 5 exists.
+- **"Cannot delete or update a parent row":** a child row still references it — delete children first.
 
 ### What you learned
-`UPDATE`/`DELETE` **must** have a `WHERE`. A **JOIN** stitches related tables back together using the
-foreign keys you designed — **INNER** keeps only matches, **LEFT** keeps everything from the left
-table.
+`UPDATE table SET column = value WHERE condition` and `DELETE FROM table WHERE condition`. The
+`WHERE` is not optional in practice — without it you hit every row. **SELECT first, then modify.**
+Foreign keys stop you orphaning child rows, and a transaction gives you an undo button.
 
 ---
 
 ## Lab 12 (Week 12) — Stored procedures, triggers, indexing · **SQL practical test week**
 
-**Goal:** Automate logic inside the database with a **stored procedure** and a **trigger**, and speed
-up queries with an **index**.
+**Goal:** Put logic *inside* the database with a **stored procedure** and a **trigger**, and speed up
+searching with an **index**.
 
 > **Note:** In phpMyAdmin, when you create a procedure or trigger that contains semicolons, set the
 > **Delimiter** box (below the SQL area) to `$$` first, or use the code exactly as written below.
 
 ### Steps
 
-**1. Stored procedure** — a saved block of SQL you can call by name:
+**1. Stored procedure** — a saved block of SQL you call by name:
 
 ```sql
 DELIMITER $$
@@ -718,9 +1072,24 @@ Run it:
 
 ```sql
 CALL students_in_semester(2);
+CALL students_in_semester(4);
 ```
 
-**2. Trigger** — SQL that runs *automatically* on an event. Make an audit log of new payments:
+**2. A procedure with an OUT value:**
+
+```sql
+DELIMITER $$
+CREATE PROCEDURE total_paid_by(IN roll INT, OUT total INT)
+BEGIN
+  SELECT SUM(amount) INTO total FROM FeePayment WHERE roll_no = roll;
+END $$
+DELIMITER ;
+
+CALL total_paid_by(101, @t);
+SELECT @t AS total_paid_by_101;
+```
+
+**3. Trigger** — SQL that runs *automatically* on an event. Make an audit log of new payments:
 
 ```sql
 CREATE TABLE payment_log (
@@ -740,42 +1109,59 @@ END $$
 DELIMITER ;
 ```
 
-Test it — insert a payment, then check the log filled itself:
+Test it — insert a payment, then check the log filled itself. **You never touched `payment_log`:**
 
 ```sql
-INSERT INTO FeePayment VALUES (5003, 103, 15000, '2026-01-15');
+INSERT INTO FeePayment VALUES (5005, 104, 15000, '2026-01-20');
 SELECT * FROM payment_log;
 ```
 
-**3. Index** — speeds up searching a column:
+**4. Index** — a lookup structure that speeds up searching a column:
 
 ```sql
-CREATE INDEX idx_student_name ON Student(name);
--- See the plan: does the query use the index?
+-- before: see how the database plans the query
 EXPLAIN SELECT * FROM Student WHERE name = 'Sita Rai';
+
+CREATE INDEX idx_student_name ON Student(name);
+
+-- after: the plan now uses the index
+EXPLAIN SELECT * FROM Student WHERE name = 'Sita Rai';
+
+SHOW INDEX FROM Student;
 ```
 
+Compare the two `EXPLAIN` outputs — the `key` column changes from `NULL` to `idx_student_name`, and
+`rows` drops.
+
 ### What you should see
-`CALL` returns the 2nd-sem students; after the INSERT, `payment_log` has an auto-created row; EXPLAIN
-shows the query can use `idx_student_name`. Screenshot all three.
+`CALL` returning the right students; `@t` = 20000; `payment_log` containing a row you never inserted;
+and the two `EXPLAIN` outputs differing in the `key` column. Screenshot all four.
+
+### If it goes wrong
+- **"You have an error in your SQL syntax near 'END'":** the delimiter — set the Delimiter box to
+  `$$`, or paste the `DELIMITER $$ … DELIMITER ;` block exactly as written.
+- **"PROCEDURE already exists":** `DROP PROCEDURE students_in_semester;` then create it again.
+- **EXPLAIN looks the same:** with only 5 students the optimiser may skip the index — say so in your
+  report; the `SHOW INDEX` output still proves the index exists.
 
 ### What you learned
-- **Stored procedure:** reusable logic stored *in* the database, called by name.
-- **Trigger:** logic that fires **automatically** on INSERT/UPDATE/DELETE — great for audit logs.
-- **Index:** a lookup structure that makes searches faster (like a book's index).
+- **Stored procedure:** reusable logic stored *in* the database, called by name, can take `IN`/`OUT`
+  parameters.
+- **Trigger:** logic that fires **automatically** on INSERT/UPDATE/DELETE — used for audit logs.
+- **Index:** makes searches on a column faster (like a book's index); costs extra storage and
+  slightly slower writes.
 
 ---
 ---
 
-# PART 3 — Reliability: Transactions, Recovery, Project (Labs 13–16)
-*Unit 6 & 7. Now you make the database trustworthy under failure and finish your project.*
+# PART 3 — Reliability and the project (Labs 13–16)
 
 ---
 
 ## Lab 13 (Week 13) — Transactions & ACID
 
-**Goal:** See how a **transaction** groups steps so they **all succeed or all fail together** (Unit 6).
-Example: paying fees should reduce a balance *and* record a receipt — never one without the other.
+**Goal:** Group several statements so they **all succeed or all fail together**. Example: paying fees
+should reduce a balance *and* record a receipt — never one without the other.
 
 ### Steps
 
@@ -786,7 +1172,7 @@ CREATE TABLE account (
   roll_no INT PRIMARY KEY,
   balance INT
 );
-INSERT INTO account VALUES (101, 20000), (102, 20000);
+INSERT INTO account VALUES (101, 20000), (102, 20000), (103, 20000);
 ```
 
 **2. A good transaction (COMMIT):**
@@ -794,42 +1180,84 @@ INSERT INTO account VALUES (101, 20000), (102, 20000);
 ```sql
 START TRANSACTION;
 UPDATE account SET balance = balance - 15000 WHERE roll_no = 101;
-INSERT INTO FeePayment VALUES (5004, 101, 15000, '2026-01-20');
+INSERT INTO FeePayment VALUES (5006, 101, 15000, '2026-02-20');
 COMMIT;   -- both steps are now permanent, together
 ```
 
 Check: `SELECT * FROM account WHERE roll_no = 101;` → balance is 5000.
 
-**3. A rolled-back transaction (ROLLBACK):** imagine you notice a mistake before committing:
+**3. A rolled-back transaction (ROLLBACK):** you notice a mistake before committing:
 
 ```sql
 START TRANSACTION;
-UPDATE account SET balance = balance - 99999 WHERE roll_no = 102;  -- oops, wrong amount
-SELECT balance FROM account WHERE roll_no = 102;   -- see the temporary change
-ROLLBACK;                                          -- undo everything
+SELECT balance FROM account WHERE roll_no = 102;   -- 20000 before
+
+-- oops, wrong amount
+UPDATE account SET balance = balance - 99999 WHERE roll_no = 102;
+
+-- see the temporary change
+SELECT balance FROM account WHERE roll_no = 102;
+
+ROLLBACK;   -- undo everything
+
 SELECT balance FROM account WHERE roll_no = 102;   -- back to 20000
 ```
 
+**4. Atomicity in action — a transaction that fails halfway:**
+
+```sql
+START TRANSACTION;
+UPDATE account SET balance = balance - 5000 WHERE roll_no = 103;
+-- ERROR: receipt 5001 exists
+INSERT INTO FeePayment VALUES (5001, 103, 5000, '2026-02-21');
+ROLLBACK;
+
+-- still 20000: the deduction was undone too
+SELECT balance FROM account WHERE roll_no = 103;
+```
+
+This is the whole point: the money was **not** taken, because the receipt could not be written.
+
+**5. SAVEPOINT — a partial undo:**
+
+```sql
+START TRANSACTION;
+UPDATE account SET balance = balance - 1000 WHERE roll_no = 101;
+SAVEPOINT after_first;
+UPDATE account SET balance = balance - 2000 WHERE roll_no = 102;
+ROLLBACK TO after_first;   -- undo only the second update
+COMMIT;                    -- keep the first
+SELECT * FROM account;
+```
+
 ### What you should see
-After COMMIT the change stays; after ROLLBACK it disappears. Screenshot the balance before/after
-ROLLBACK.
+After COMMIT the change stays; after ROLLBACK it disappears; in step 4 the balance is untouched
+because the whole group failed. Screenshot the balance **before and after** the ROLLBACK, and the
+step-4 result.
+
+### If it goes wrong
+- **ROLLBACK does nothing:** your table is MyISAM, which ignores transactions. Check with
+  `SHOW TABLE STATUS WHERE Name = 'account';` — the Engine must be **InnoDB** (the default).
+- **phpMyAdmin commits each statement separately:** paste the whole `START TRANSACTION … COMMIT;`
+  block in **one** SQL box and run it once, not line by line.
 
 ### What you learned
 A transaction is **all-or-nothing** — the **A** in **ACID (Atomicity, Consistency, Isolation,
-Durability)**. `COMMIT` makes changes permanent; `ROLLBACK` undoes them. This is why banks and
-eSewa-style transfers use transactions.
+Durability)**. `COMMIT` makes changes permanent; `ROLLBACK` undoes everything since
+`START TRANSACTION`; `SAVEPOINT` lets you undo just part. This is why banks and eSewa-style
+transfers use transactions.
 
 ---
 
 ## Lab 14 (Week 14) — Concurrency: two users at once
 
 **Goal:** See what happens when **two sessions** touch the same data, and how the database uses
-**locking** and **isolation levels** to keep things correct (Unit 6).
+**locking** and **isolation levels** to keep things correct.
 
 ### Steps
 
 **1. Open two SQL sessions.** Easiest way: open phpMyAdmin in **two browser tabs** (or one normal +
-one incognito window). Call them **Tab A** and **Tab B**.
+one incognito window). Call them **Tab A** and **Tab B**. Both should have `model_college` selected.
 
 **2. See a lock.**
 - In **Tab A** run (and do *not* commit yet):
@@ -849,112 +1277,165 @@ UPDATE account SET balance = balance - 500 WHERE roll_no = 101;
 - Go back to **Tab A** and run `COMMIT;` — now **Tab B** completes. The database made them take
   turns so neither overwrites the other blindly.
 
-**3. Isolation levels (read the idea).** Run in a session:
+**3. Prove they didn't clash.** Both deductions applied, in order:
 
 ```sql
-SELECT @@transaction_isolation;   -- shows the current level (usually REPEATABLE-READ)
+SELECT balance FROM account WHERE roll_no = 101;
 ```
 
-Note in your report: higher isolation (SERIALIZABLE) = safer but slower; lower = faster but risks
-anomalies like **dirty reads** (reading another transaction's uncommitted change).
+**4. Rows lock, not whole tables.** In Tab A start a transaction on roll 101 without committing, then
+in Tab B update **roll 102** — it goes through immediately, because it's a different row:
+
+```sql
+-- Tab A
+START TRANSACTION;
+UPDATE account SET balance = balance - 100 WHERE roll_no = 101;
+-- Tab B (runs instantly, no waiting)
+UPDATE account SET balance = balance - 100 WHERE roll_no = 102;
+-- Tab A
+COMMIT;
+```
+
+**5. Isolation levels.** Run in either session:
+
+```sql
+SELECT @@transaction_isolation;   -- usually REPEATABLE-READ
+```
+
+Note in your report: higher isolation (SERIALIZABLE) = safer but slower; lower (READ UNCOMMITTED) =
+faster but risks **dirty reads** (reading another transaction's uncommitted change).
+
+**6. See who is waiting** (optional, run while Tab B is blocked):
+
+```sql
+-- the blocked session shows State = 'updating' / 'Waiting for lock'
+SHOW PROCESSLIST;
+```
 
 ### What you should see
-Tab B pausing until Tab A commits. Screenshot both tabs (the waiting one and then the completed one).
+Tab B pausing until Tab A commits, then completing. Step 4 showing **no** wait for a different row.
+Screenshot both tabs — the waiting one, and then the completed one.
+
+### If it goes wrong
+- **Tab B doesn't wait:** you forgot `START TRANSACTION` in Tab A, so its update auto-committed
+  instantly and released the lock.
+- **Tab B errors with "Lock wait timeout exceeded":** you waited too long (50 s default) — that is
+  still a valid result; screenshot it and explain that the DBMS gave up waiting.
+- **Both tabs share one session:** use an incognito window for Tab B.
 
 ### What you learned
-When many users share data, the DBMS uses **locks** so changes don't clash (**concurrency control**).
-**Isolation levels** let you trade safety for speed. A **deadlock** is when two transactions each wait
-for the other — the DBMS detects it and cancels one.
+When many users share data the DBMS uses **locks** so changes don't clash — that is **concurrency
+control**. Locks are held until `COMMIT` and are taken **per row**, not per table. **Isolation
+levels** trade safety against speed. A **deadlock** is two transactions each waiting on the other;
+the DBMS detects it and cancels one.
 
 ---
 
 ## Lab 15 (Week 15) — Backup, recovery & security
 
 **Goal:** Make a **backup**, simulate a disaster, **restore** it, and set up basic **security** with
-users and privileges (Unit 6 recovery + Unit 7 security).
+users and privileges.
 
 ### Steps
 
-**1. Back up (export).** In phpMyAdmin, click the `himalaya_college` database → **Export** tab →
+**1. Back up (export).** In phpMyAdmin, click the `model_college` database → **Export** tab →
 method **Quick** → format **SQL** → **Go**. A `.sql` file downloads. **This file is your backup** — it
-contains the SQL to rebuild everything.
+contains the SQL to rebuild everything. Open it in Notepad and look: it is just `CREATE TABLE` and
+`INSERT` statements.
 
 **2. Simulate a disaster.** Run (carefully!):
 
 ```sql
 DROP TABLE payment_log;   -- pretend this was lost
+SELECT * FROM payment_log;   -- errors: the table is gone
 ```
-
-Confirm it's gone (`SELECT * FROM payment_log;` errors).
 
 **3. Restore.** Click the database → **Import** tab → **Choose file** → pick the `.sql` backup you
 just downloaded → **Go**. The dropped table returns. *(If it complains that other tables already
 exist, that's fine — the table you dropped is what matters; or restore into a fresh empty database to
 see a clean recovery.)*
 
-**4. Security — least privilege.** Recreate the limited user idea from Lab 2 with SQL:
+```sql
+SELECT * FROM payment_log;   -- back, with its rows
+```
+
+**4. Security — least privilege.** Create a limited user with SQL this time:
 
 ```sql
 CREATE USER 'clerk'@'localhost' IDENTIFIED BY 'clerk123';
-GRANT SELECT, INSERT ON himalaya_college.* TO 'clerk'@'localhost';
--- NOT granting DROP/DELETE — the clerk cannot destroy data
-REVOKE INSERT ON himalaya_college.* FROM 'clerk'@'localhost';  -- take a right back
+
+-- give only what is needed
+GRANT SELECT, INSERT ON model_college.* TO 'clerk'@'localhost';
+SHOW GRANTS FOR 'clerk'@'localhost';
+
+-- take a right back
+REVOKE INSERT ON model_college.* FROM 'clerk'@'localhost';
 SHOW GRANTS FOR 'clerk'@'localhost';
 ```
 
+**5. Grant on a single table or view only** — even tighter:
+
+```sql
+CREATE USER 'reader'@'localhost' IDENTIFIED BY 'read123';
+GRANT SELECT ON model_college.paid_students TO 'reader'@'localhost';
+SHOW GRANTS FOR 'reader'@'localhost';
+```
+
+`reader` can see the `paid_students` **view** but not the underlying `Student` table — this is the
+external level of the three-schema architecture, enforced.
+
+**6. Clean up (optional):**
+
+```sql
+-- DROP USER 'reader'@'localhost';
+```
+
 ### What you should see
-The export file on your disk; the table gone after DROP and back after Import; `SHOW GRANTS` listing
-the clerk's limited rights. Screenshot the export dialog and the restored table.
+The `.sql` export file on your disk; the table gone after DROP and back after Import; `SHOW GRANTS`
+changing after the REVOKE. Screenshot the export dialog, the restored table, and both `SHOW GRANTS`
+outputs.
+
+### If it goes wrong
+- **Import fails with "table already exists":** tick **"Enable foreign key checks: off"** in the
+  Import options, or drop the database and import into an empty one.
+- **"Access denied" creating a user:** you must be logged in as `root`.
+- **The export downloads a `.sql.gz`:** set Compression to **None** in the Export options.
 
 ### What you learned
-**Backups** are your insurance — recovery means replaying them. **Security** follows *least
-privilege*: give each user only the rights they need, using `GRANT` and `REVOKE`.
+**Backups** are your insurance — recovery means replaying the saved SQL. **Security** follows
+**least privilege**: give each user only the rights they need, with `GRANT` and `REVOKE`, and use a
+**view** to expose a slice of the data without the underlying table.
 
 ---
 
-## Lab 16 (Week 16) — Project demo + a taste of NoSQL
+## Lab 16 (Week 16) — Project demo
 
-**Goal:** Present your complete Himalaya College database as your **project**, and see how a **NoSQL**
-database differs from the relational one you built (Unit 7).
+**Goal:** Present your complete Model College database as your **project** and explain any part of it
+on request.
 
 ### Steps
 
 **1. Assemble your project** (individual or a group of up to 4). It must show the full journey:
-- The **ER diagram** (Lab 3–4)
-- The **normalized schema** (Lab 7)
-- The **CREATE + INSERT** SQL (Lab 8)
-- At least **5 useful queries** including a JOIN, an aggregate/GROUP BY, and a subquery (Labs 9–11)
-- One **view**, one **stored procedure or trigger**, and one **index** (Labs 10, 12)
-- A **transaction** example and a **backup** file (Labs 13, 15)
+- The **ER diagram** (Lab 3)
+- The **CREATE TABLE** script with constraints (Lab 4) and the **INSERT** data (Lab 5)
+- At least **6 queries**: a `WHERE`, an aggregate + `GROUP BY`, a `HAVING`, an `INNER JOIN`, a
+  `LEFT JOIN`, and a subquery (Labs 6–9)
+- One **view**, one **stored procedure**, one **trigger**, one **index** (Labs 10, 12)
+- A **transaction** with `ROLLBACK` (Lab 13) and a **backup file** (Lab 15)
+- One **limited user** with `SHOW GRANTS` (Lab 15)
 
-**2. Compare with NoSQL (understand, don't install).** In SQL, a student's data is spread across
-rows in several tables. In a **document** (NoSQL, e.g. MongoDB) database, the *same* student could be
-one document:
+**2. Run it live.** Have phpMyAdmin open with `model_college` loaded. Be ready to run any query from
+your report on the spot — the examiner may pick one and ask you to change it (e.g. "now show only
+semester 4").
 
-```json
-{
-  "roll_no": 101,
-  "name": "Sita Rai",
-  "enrolments": [
-    { "course": "CMP101", "grade": "A" },
-    { "course": "ENG101", "grade": "B" }
-  ]
-}
-```
-
-Write in your report: **relational** = fixed tables + relationships + strong consistency (great for
-fees/records); **NoSQL document** = flexible, nested, scales easily (great for changing/huge data),
-but weaker on cross-table guarantees.
-
-**3. Present** your project to the class/instructor and answer questions on any part of it.
+**3. Present** your project and answer questions on any part of it.
 
 ### What you should see
-A complete, working database you can explain end to end, plus a written relational-vs-NoSQL
-comparison.
+A complete, working database you can explain end to end.
 
 ### What you learned
-You designed, built, queried, secured, and backed up a real relational database — and you can now
-explain *when* a different model (NoSQL) fits better. **This is the whole course in one project.**
+You designed, built, populated, queried, joined, secured and backed up a real relational database.
+**This is the whole course in one project.**
 
 ---
 ---
@@ -966,19 +1447,31 @@ explain *when* a different model (NoSQL) fits better. **This is the whole course
 | MySQL won't start (XAMPP) | Port 3306 in use / previous crash | Close other DB tools; restart PC; Start again |
 | `http://localhost/phpmyadmin` not found | Apache not started | Start Apache in XAMPP |
 | "Access denied for user root" | Typed a password | User `root`, password **empty** on fresh XAMPP |
-| "Foreign key constraint fails" | Inserted child before parent | Insert Teacher/Student/Course **before** Enrolment/FeePayment |
+| "Unknown column …" | Wrong database selected | Click `model_college` on the left first |
+| "Foreign key constraint fails" (INSERT) | Inserted child before parent | Insert Teacher/Student/Course **before** Enrolment/FeePayment |
+| "Cannot delete or update a parent row" | Child rows still reference it | Delete the children first |
 | "Duplicate entry for PRIMARY" | Ran an INSERT twice | Don't re-run, or delete the duplicate row |
 | `WHERE x = NULL` returns nothing | NULL isn't equal to anything | Use `IS NULL` / `IS NOT NULL` |
-| Procedure/trigger gives a syntax error | Semicolons confuse phpMyAdmin | Set the **Delimiter** box to `$$` |
-| An `UPDATE`/`DELETE` changed everything | You forgot `WHERE` | Restore from your backup (Lab 15) — and always write `WHERE` first |
+| "Column 'name' is ambiguous" | Two joined tables share a column name | Qualify it: `s.name` |
+| JOIN returns a huge number of rows | Missing `ON` condition | Always give the `ON` |
+| "Expression not in GROUP BY clause" | Selected a column that isn't grouped or aggregated | Add it to `GROUP BY` or wrap it in an aggregate |
+| Procedure/trigger syntax error near `END` | Semicolons confuse phpMyAdmin | Set the **Delimiter** box to `$$` |
+| `ROLLBACK` does nothing | Table engine is MyISAM | Use InnoDB (`SHOW TABLE STATUS`) |
+| An `UPDATE`/`DELETE` changed everything | You forgot `WHERE` | `ROLLBACK` if in a transaction; else restore the Lab 15 backup |
 
-## Appendix B — SQL keywords you learned, in one place
+## Appendix B — SQL you learned, in one place
 
-`CREATE DATABASE/TABLE`, `PRIMARY KEY`, `FOREIGN KEY … REFERENCES`, `NOT NULL`, `CHECK`, `DEFAULT`,
-`INSERT INTO … VALUES`, `SELECT … FROM … WHERE`, `ORDER BY`, `DISTINCT`, `COUNT/SUM/AVG/MIN/MAX`,
-`GROUP BY`, `HAVING`, `IS NULL`, subqueries `IN`/`NOT IN`/`EXISTS`, `CREATE VIEW`, `UPDATE`, `DELETE`,
-`JOIN`/`LEFT JOIN … ON`, `CREATE PROCEDURE`/`CALL`, `CREATE TRIGGER`, `CREATE INDEX`, `EXPLAIN`,
-`START TRANSACTION`/`COMMIT`/`ROLLBACK`, `CREATE USER`, `GRANT`/`REVOKE`, Export/Import (backup).
+**DDL:** `CREATE DATABASE`, `CREATE TABLE`, `PRIMARY KEY`, `FOREIGN KEY … REFERENCES`, `NOT NULL`,
+`CHECK`, `DEFAULT`, `SHOW TABLES`, `DESCRIBE`, `DROP TABLE`
+**DML:** `INSERT INTO … VALUES`, `UPDATE … SET … WHERE`, `DELETE FROM … WHERE`
+**Querying:** `SELECT … FROM … WHERE`, `AS`, `AND`/`OR`/`NOT`, `IN`, `BETWEEN`, `LIKE`, `ORDER BY`,
+`DISTINCT`, `LIMIT`
+**Summarising:** `COUNT`/`SUM`/`AVG`/`MIN`/`MAX`, `GROUP BY`, `HAVING`, `IS NULL`/`IS NOT NULL`
+**Combining:** `JOIN … ON`, `LEFT JOIN`, self-join, subqueries with `IN`/`NOT IN`/`EXISTS`, derived
+tables
+**Objects:** `CREATE VIEW`, `CREATE PROCEDURE`/`CALL`, `CREATE TRIGGER`, `CREATE INDEX`, `EXPLAIN`
+**Reliability:** `START TRANSACTION`/`COMMIT`/`ROLLBACK`/`SAVEPOINT`, `SHOW PROCESSLIST`
+**Security & backup:** `CREATE USER`, `GRANT`, `REVOKE`, `SHOW GRANTS`, Export/Import
 
 > **Next:** answer the questions in [IT220_Lab_Questions.md](IT220_Lab_Questions.md), lay them out
 > using [IT220_Lab_Report_Format.md](IT220_Lab_Report_Format.md), and get each lab signed off.

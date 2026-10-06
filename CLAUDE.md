@@ -44,6 +44,8 @@ Run the pre-ship checklist in the standard before declaring a deck done.
 ## Build
 - Diagrams: `cd <sem> && python3 build_unitN_images.py` → PNGs in `<sem>/images/`.
 - Deck: `python3 build_unitN_pptx.py` → `IT###_UnitN.pptx` (in the same folder).
+- Lab manual PDF: `cd fourth && python3 build_lab_manual_pdf.py` → `docs/IT220_Lab_Manual.pdf`.
+  Use this instead of an online md→PDF converter — those clip long SQL lines; this one wraps them.
 - Content source of truth is `UnitN_material.md`; slides are built from it (and carry the same §7A tables).
 - IT 246 (sixth) scripts share `sixth/deckkit.py` (`from deckkit import *`; `save("…")` writes relative to
   the script — no hardcoded paths). Copy `deckkit.py` into each new course folder (e.g. `eighth/`).

@@ -2,7 +2,7 @@
 ### Database Management System · How to prepare and print your lab report
 
 Your lab report is the document you submit and are examined on. It must, on its own, prove that you
-designed, built, queried, and secured the **Himalaya College** database. Follow this exact structure
+designed, built, queried, and secured the **Model College** database. Follow this exact structure
 so every report is consistent and easy for the examiner to mark.
 
 Answer the 16 questions in **[IT220_Lab_Questions.md](IT220_Lab_Questions.md)**. Each answer =
@@ -25,7 +25,7 @@ Answer the 16 questions in **[IT220_Lab_Questions.md](IT220_Lab_Questions.md)**.
 Centered, one page:
 - College / campus name and logo
 - **IT 220: Database Management System — Lab Report**
-- The database you built: *"Himalaya College — a student/course/fees database"*
+- The database you built: *"Model College — a student/course/fees database"*
 - Student name, roll number, section/group
 - Submitted to: (instructor name), Department of …
 - Date
@@ -41,29 +41,29 @@ A short certificate plus a sign-off table (the examiner looks for the instructor
 
 | # | Lab work | Date completed | Instructor signature |
 |---|----------|----------------|----------------------|
-| 1 | Install XAMPP; first look | | |
-| 2 | Inside the DBMS | | |
-| 3 | ER diagram | | |
-| 4 | ER → relational schema | | |
-| 5 | Relational algebra | | |
-| 6 | Calculus & functional dependencies | | |
-| 7 | Normalization | | |
-| 8 | DDL & constraints | | |
-| 9 | Querying (SELECT/aggregates) | | |
-| 10 | Subqueries & views | | |
-| 11 | Modification & joins | | |
+| 1 | Install XAMPP; first query | | |
+| 2 | Inside the DBMS: catalog & users | | |
+| 3 | Database design (ER diagram + schema) | | |
+| 4 | DDL: create tables & constraints | | |
+| 5 | INSERT: populating the database | | |
+| 6 | SELECT, WHERE, ORDER BY, DISTINCT | | |
+| 7 | Aggregates, GROUP BY, HAVING, NULL | | |
+| 8 | JOINs (inner, left, self) | | |
+| 9 | Subqueries | | |
+| 10 | Views | | |
+| 11 | UPDATE & DELETE | | |
 | 12 | Procedures, triggers, indexing | | |
 | 13 | Transactions & ACID | | |
 | 14 | Concurrency & locking | | |
 | 15 | Backup, recovery & security | | |
-| 16 | Project + NoSQL | | |
+| 16 | Project demo | | |
 
 ### 3. Index
 A table: **Question no. · Title · Page no.** — so the examiner can jump to any answer.
 
 ### 4. Introduction (½ page)
-- What you built (the Himalaya College database — what it stores and why).
-- The tools: MySQL/MariaDB via XAMPP, phpMyAdmin, dbdiagram.io (design), RelaX (relational algebra).
+- What you built (the Model College database — what it stores and why).
+- The tools: MySQL/MariaDB via XAMPP, phpMyAdmin, and dbdiagram.io (used once, for the design).
 - One line on how the labs progressed: design → build → query → secure → back up.
 
 ### 5. Answers (main body)
@@ -97,12 +97,15 @@ failure) and how you fixed them.
 - **Your own work:** the SQL in the report must match what you can explain in the viva.
 
 ## What makes a screenshot count as proof
-- **phpMyAdmin** shots must show the actual table + rows (Q8 the 5 tables; Q12 the auto-filled
-  `payment_log`; Q15 the restored table).
-- **Result grids** must show your query's real output (Q9 the GROUP BY counts; Q11 the joined rows).
+- **phpMyAdmin** shots must show the actual table + rows (Q4 the 5 tables; Q5 the inserted students;
+  Q12 the auto-filled `payment_log`; Q15 the restored table).
+- **Result grids** must show your query's real output (Q7 the GROUP BY counts; Q8 the joined rows).
+- **Error messages count as evidence** where the question asks for one (Q4 the constraint violation,
+  Q5 the foreign-key error, Q11 the failed DELETE) — screenshot the red message.
+- For design (Q3), show the exported ER diagram and the written schema.
 - For transactions (Q13), show the balance **before and after** ROLLBACK.
 - For concurrency (Q14), show the **second session waiting**, then completing after COMMIT.
-- For design (Q3, Q7), show the ER diagram and the normalization steps.
+- For security (Q15), show `SHOW GRANTS` **twice** — before and after the REVOKE.
 
 ## Before you print
 1. Answer all 16 questions; check each has SQL/diagram **and** a screenshot **and** an explanation.

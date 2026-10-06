@@ -3,7 +3,9 @@
 > **Purpose of this file.** A durable handoff so a fresh conversation can continue without
 > re-deriving anything. Read this + [`COURSE_MATERIAL_STANDARD.md`](COURSE_MATERIAL_STANDARD.md)
 > (the governing spec) + [`CLAUDE.md`](CLAUDE.md) (auto-loaded summary) and you're caught up.
-> Last updated: 2026-07-09 (IT246 Units 1–4 done; **pivoting to a NEW semester: `eighth/` = IT 250 Digital Economy**).
+> Last updated: 2026-08 — **IT 220 (fourth) Units 1–7 and IT 246 (sixth) Units 1–9 ALL BUILT + §7A example-enriched**
+> (17 decks, ~1,585 slides, ~370 tables, all page-numbered/verified; every deck has its material.md).
+> (Prior focus note: `eighth/` = IT 250 Digital Economy — see §0; that track is maintained separately.)
 
 ---
 
@@ -70,27 +72,33 @@ For `eighth/`, the source is currently the raw lecture PDFs, so an outline-extra
 
 - **IT 250 (eighth): NEW — current focus.** Build all 6 units to the full standard + §7A depth. No prior
   scaffolding exists (raw lecture PDFs only) — extract outlines first (§0). This is where new work goes.
-- **IT 220 (fourth) Units 1–4: DONE and FROZEN — do NOT touch** their decks / build scripts / images.
-- **IT 220 Units 5–7: pending.** Must include §7A depth tables when built.
-- **IT 246 (sixth): Units 1–4 DONE** (standard + §7A depth). **Units 5–9 pending** (outlines only).
+- **IT 220 (fourth): ALL Units 1–7 BUILT** and §7A example-enriched (Units 1–4 unfrozen 2026-08 to add concrete-
+  example tables; 5–7 newly built). All decks + materials complete (SQL Unit 5 = 219 slides, 47 tables, 1971-line material).
+- **IT 246 (sixth): ALL Units 1–9 BUILT** to the full standard + §7A depth (1–4 also example-enriched).
+- **Enrichment (2026-08):** +66 example tables across IT220 U1–4, +48 across IT246 U1–4, via a reusable JSON-driven
+  inserter (see build note). New fourth units use **`fourth/deckkit.py`** (= sixth's deckkit + `add_solved_problem`).
 
 ## 4. Status by unit
 
 | Course | Unit | Deck | Slides | State |
 |---|---|---|---|---|
-| IT220 | 1 (DB Concepts & Architecture) | `IT220_Unit1.pptx` | 58 | ✅ done, frozen |
-| IT220 | 2 S5–S8 (ER model) | `IT220_Unit2.pptx` | 51 | ✅ done, frozen |
-| IT220 | 2 S9–S12 (ER model) | `IT220_Unit2b.pptx` | 50 | ✅ done, frozen |
-| IT220 | 3 (Relational Algebra & Calculus) | `IT220_Unit3.pptx` | 56 | ✅ done, frozen |
-| IT220 | 4 (Normalization) | `IT220_Unit4.pptx` | 49 | ✅ done, frozen |
-| IT220 | 5 (SQL, 15 sessions S22–S36) | — | — | ⏳ pending (has content outline only) |
-| IT220 | 6 (Transactions/Concurrency/Recovery) | — | — | ⏳ pending (outline only) |
-| IT220 | 7 (Advanced Topics) | — | — | ⏳ pending (outline only) |
-| IT246 | 1 (An Overview of Ethics) | `IT246_Unit1.pptx` | 87 | ✅ rebuilt to standard + §7A depth |
-| IT246 | 2 (Ethics for IT Workers & Users) | `IT246_Unit2.pptx` | 92 | ✅ rebuilt to standard + §7A depth |
-| IT246 | 3 (Intellectual Property) | `IT246_Unit3.pptx` | 81 | ✅ built to standard + §7A depth |
-| IT246 | 4 (Software Dev & IT Org Ethics) | `IT246_Unit4.pptx` | 80 | ✅ built to standard + §7A depth |
-| IT246 | 5–9 | — | — | ⏳ pending build (5–9 have content outlines only) |
+| IT220 | 1 (DB Concepts & Architecture) | `IT220_Unit1.pptx` | 74 | ✅ done + §7A example-enriched (was 58/0 tables) |
+| IT220 | 2 S5–S8 (ER model) | `IT220_Unit2.pptx` | 64 | ✅ done + §7A example-enriched (was 51/0) |
+| IT220 | 2 S9–S12 (ER model) | `IT220_Unit2b.pptx` | 62 | ✅ done + §7A example-enriched (was 50/0) |
+| IT220 | 3 (Relational Algebra & Calculus) | `IT220_Unit3.pptx` | 69 | ✅ done + §7A example-enriched (was 56/0) |
+| IT220 | 4 (Normalization) | `IT220_Unit4.pptx` | 61 | ✅ done + §7A example-enriched (was 49/0) |
+| IT220 | 5 (SQL, 15 sessions S22–S36) | `IT220_Unit5.pptx` | 219 | ✅ built (47 tables, 15 diag, 11 solved) + material.md (1971 lines) |
+| IT220 | 6 (Transactions/Concurrency/Recovery) | `IT220_Unit6.pptx` | 136 | ✅ built to standard + §7A depth |
+| IT220 | 7 (Advanced Topics + course finale S48) | `IT220_Unit7.pptx` | 82 | ✅ built to standard + §7A depth |
+| IT246 | 1 (An Overview of Ethics) | `IT246_Unit1.pptx` | 101 | ✅ standard + §7A, example-enriched (was 87/25 tables) |
+| IT246 | 2 (Ethics for IT Workers & Users) | `IT246_Unit2.pptx` | 104 | ✅ standard + §7A, example-enriched (was 92/23) |
+| IT246 | 3 (Intellectual Property) | `IT246_Unit3.pptx` | 89 | ✅ standard + §7A, example-enriched (was 81/16) |
+| IT246 | 4 (Software Dev & IT Org Ethics) | `IT246_Unit4.pptx` | 94 | ✅ standard + §7A, example-enriched (was 80/17) |
+| IT246 | 5 (Fundamentals of Cybersecurity) | `IT246_Unit5.pptx` | 94 | ✅ built to standard + §7A depth |
+| IT246 | 6 (Personal Cybersecurity) | `IT246_Unit6.pptx` | 92 | ✅ built to standard + §7A depth |
+| IT246 | 7 (Social Engineering & Cyber Terrorism) | `IT246_Unit7.pptx` | 76 | ✅ built to standard + §7A depth |
+| IT246 | 8 (Digital Forensics) | `IT246_Unit8.pptx` | 100 | ✅ built to standard + §7A depth |
+| IT246 | 9 (Cyber Law in Nepal) | `IT246_Unit9.pptx` | 68 | ✅ built (illustrative law; "verify current law" caution) |
 | **IT250** | **1 (Introduction — digital/K-economy, 4IR)** | `IT250_Unit1.pptx` | 107 | ✅ **built to standard + §7A depth (pending user review)** |
 | IT250 | 2 (Fundamentals — platforms, network effects, monopolies) | `IT250_Unit2.pptx` | 100 | ✅ built to standard + §7A depth (pending user review) |
 | IT250 | 3 (Digital Markets, Strategy & Innovation) | — | — | ⏳ lecture PDFs only |
